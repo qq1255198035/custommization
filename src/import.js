@@ -7,7 +7,8 @@ import {
   Icon,
   Input,
   Upload,
-  Tag
+  Tag,
+  Slider
 } from "ant-design-vue";
 Vue.use(Button);
 Vue.use(Row);
@@ -17,3 +18,4 @@ Vue.use(Icon);
 Vue.use(Input);
 Vue.use(Upload);
 Vue.use(Tag);
+Vue.use(Slider);

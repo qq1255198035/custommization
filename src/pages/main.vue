@@ -21,15 +21,26 @@
                               </a-sub-menu>
                               
                         </a-menu>
+                        <dl class="shapescolor">
+                              <dt>图形填充颜色：</dt>
+                              <dd><colorPicker v-model="fillcolor" @change="changeFillColor"/></dd>
+                              <dt>图形描边颜色：</dt>
+                              <dd><colorPicker v-model="strokecolor" @change="changeStrokeColor"/></dd>
+                        </dl>
+                        <dl>
+                              <dt>描边大小</dt>
+                              <dd><a-slider :min="2" :max="10" v-model="drawWidth" @change="changeDrawWidth"/></dd>
+                        </dl>
+                        <a-upload name="file" :beforeUpload="beforeUpload" class="my-upload">
+                              <a-button type="primary">
+                                    <a-icon type="upload"/> 上传图片
+                              </a-button>
+                        </a-upload>
                   </a-col>
                   <a-col :span="12">
                         <div class="controlers">
                               <a-button type="primary" icon="plus" @click="addText">添加文字</a-button>
-                              <a-upload name="file" :beforeUpload="beforeUpload" class="my-upload">
-                                    <a-button type="primary">
-                                          <a-icon type="upload"/> 上传图片
-                                    </a-button>
-                              </a-upload>
+                              
                               <span title="填充颜色" style="position: relative">
                                     <a-icon type="font-colors" />
                                     <colorPicker v-model="color" @change="changeColor"/>
@@ -76,6 +87,7 @@
                         </dl>
                         <div class="btn-box">
                               <a-button type="primary" @click="saveImg">保存</a-button>
+                              
                               <a-button><a class="downLoad" download="downImg" @click="downLoadImg" :href="dataUrl">下载</a></a-button>
                         </div>
                   </a-col>
@@ -118,7 +130,7 @@ export default {
                         img8,
                         img10
                   ],
-                  colors:['#f1f1f1','#000','#ccc'],
+                  colors:['#fff','#000','#ccc'],
                   sizes: ['S', 'M', 'L', 'XL'],
                   resize,
                   remove,
@@ -149,32 +161,58 @@ export default {
                         overimg1,
                         overimg2,
                         overimg3,
-                  ]
+                  ],
+                  strokecolor:'#000000',
+                  fillcolor:'#000000',
+                  drawWidth:2
             }
       },
       mounted(){
             this.bindCanvas(this.selected)
       },
       methods: {
+            changeDrawWidth(){
+                  var text = this.$refs.canvas.getEditObj() || ''
+                  if (text) {
+                        text.drawWidth = this.drawWidth
+                        this.$refs.canvas.setEditObj(text)
+                  }
+            },
+            changeStrokeColor(){
+                  var text = this.$refs.canvas.getEditObj() || ''
+                  if (text) {
+                        text.color = this.strokecolor
+                        this.$refs.canvas.setEditObj(text)
+                  }
+            },
+            changeFillColor(){
+                  var text = this.$refs.canvas.getEditObj() || ''
+                  if (text) {
+                        text.fillColor = this.fillcolor
+                        this.$refs.canvas.setEditObj(text)
+                  }
+            },
             handleselected(){
-                  console.log(11)
+                  
+                 
+                 
             },
             beforeUpload (file) {
                   console.log(file)
                   getBase64(file,(imageUrl) => {
-                        console.log(imageUrl)
+                        
                         this.$refs.canvas.createImage(imageUrl,{left:300,top:300,registeObjectEvent:true,originX:'left',originY:'left'})
                   })
 
             },
             createRect(){
-                  this.$refs.canvas.createRect({left:280,top:250,width:50,height: 50,fillColor:'#000000',color:'#000000'})
+                  this.$refs.canvas.createRect({left:280,top:250,width:50,height: 50,fillColor:this.fillcolor,color:this.strokecolor,drawWidth:this.drawWidth})
             },
             createCircle(){
-                  this.$refs.canvas.createCircle({left:250,top:250,fillColor:'#000000',radius: 50,color:'#000000'})
+                  this.$refs.canvas.createCircle({left:250,top:250,fillColor:this.fillcolor,radius: 50,color:this.strokecolor,drawWidth:this.drawWidth})
             },
             createTriangle(){
-                  this.$refs.canvas.createTriangle({x:300,y:250,x1:250,y1:300,x2:350,y2:300,left: 250,top:300,color:'#000000',fillColor: '#000000'})
+                  this.$refs.canvas.createTriangle({x:300,y:250,x1:250,y1:300,x2:350,y2:300,left: 250,top:300,color:this.strokecolor,fillColor: this.fillcolor,drawWidth:this.drawWidth})
             },
             addImg(url,i){
                   
@@ -197,8 +235,8 @@ export default {
                               this.fontSize = text.fontSize;
                               this.createText(this.text,this.left,this.top,this.color,this.fontSize,this.bgcolor,this.fontWeight,this.fontStyle,this.underline)
                         }
-                  }else{
-                        this.$refs.canvas.setEditObj(text);
+                  }else if (text) {
+                        this.$refs.canvas.setEditObj(text)
                   }
                   
             },
@@ -217,10 +255,8 @@ export default {
                               this.underline = text.underline;
                               this.createText(this.text,this.left,this.top,this.color,this.fontSize,this.bgcolor,this.fontWeight,this.fontStyle,this.underline)
                         }
-                  }else{
-                        text.fillColor = this.color;
-                        
-                        this.$refs.canvas.createCircle({left:250,top:250,fillColor:this.color,radius: 50,color:'#000000'})
+                  }else if (text) {
+                        this.$refs.canvas.setEditObj(text)
                   }
                   
             },
@@ -238,22 +274,28 @@ export default {
             },
             alignRight(){
                   var text = this.$refs.canvas.getEditObj() || ''
-                  if (text) {
+                  if (text && text.text) {
                         text.left = 300 + text.width
+                        this.$refs.canvas.setEditObj(text)
+                  }else if (text) {
                         this.$refs.canvas.setEditObj(text)
                   }
             },
             alignLeft(){
                   var text = this.$refs.canvas.getEditObj() || ''
-                  if (text) {
+                  if (text && text.text) {
                         text.left = 300 - text.width*2
+                        this.$refs.canvas.setEditObj(text)
+                  }else if (text) {
                         this.$refs.canvas.setEditObj(text)
                   }
             },
             alignCenter(){
                   var text = this.$refs.canvas.getEditObj() || ''
-                  if (text) {
+                  if (text && text.text) {
                         text.left = 300 - text.width/2
+                        this.$refs.canvas.setEditObj(text)
+                  }else if (text) {
                         this.$refs.canvas.setEditObj(text)
                   }
             },
@@ -270,7 +312,7 @@ export default {
                               this.fontStyle = 'normal'
                               this.$refs.canvas.setEditObj(text)
                         }
-                  }else{
+                  }else if (text) {
                         this.$refs.canvas.setEditObj(text)
                   }
             },
@@ -287,8 +329,8 @@ export default {
                               this.$refs.canvas.setEditObj(text)
                         }
                         
-                  }else{
-                        this.$refs.canvas.setEditObj(text)  
+                  }else if (text) {
+                        this.$refs.canvas.setEditObj(text)
                   }
             },
             delObject(){
@@ -373,17 +415,20 @@ export default {
       }
       #main{
             padding: 100px;
-            .m-colorPicker{
-                  position: absolute; 
-                  left: 0px; 
-                  bottom: 0px;
-                  .colorBtn{
-                        width: 24px;
-                        height: 36px;
-                        opacity: 0;
+            background-color: #f8f8f8;
+            .my-upload{
+                  display: flex;
+                  justify-content: center;
+                  margin-top: 30px;
+                  .ant-upload-list{
+                        display: none;
                   }
-                  .box{
-                        z-index: 1000;
+            }
+            .shapescolor{
+                  display: flex;
+                  margin: 40px 0;
+                  dt{
+                        margin-left: 10px;
                   }
             }
             .btn-box{
@@ -394,15 +439,26 @@ export default {
                   }
                   
             }
+            .canvas-container{
+                  background-color: #fff;
+            }
             .controlers{
                   display: flex;
                   align-items: center;
-                  .my-upload{
-                        display: flex;
-                        .ant-upload-list{
-                              display: none;
+                  .m-colorPicker{
+                        position: absolute; 
+                        left: 0px; 
+                        bottom: 0px;
+                        .colorBtn{
+                              width: 24px;
+                              height: 36px;
+                              opacity: 0;
+                        }
+                        .box{
+                              z-index: 1000;
                         }
                   }
+                  
                   > span{
                         font-size: 24px;
                         margin: 0 10px;
