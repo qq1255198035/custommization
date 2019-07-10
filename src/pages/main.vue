@@ -2,94 +2,102 @@
       <div id="main">
             <a-row>
                   <a-col :span="6">
-                        <a-menu mode="inline" :openKeys="openKeys" @openChange="onOpenChange" @click="handleClick">
-                              <a-sub-menu key="sub2" class="my-submenu" @titleClick="titleClick">
-                                    <span slot="title"><a-icon type="area-chart" /><span>图片</span></span>
-                                    <a-sub-menu key="sub3" title="剪贴画" class="img-cell">
-                                          <a-menu-item :key="img" v-for="(img,index) in imgs" @click="addImg(img,index)">
-                                                <img :src="img" alt="">
-                                          </a-menu-item>
+                        <div class="section1">
+                              <a-menu mode="inline" :openKeys="openKeys" @openChange="onOpenChange" @click="handleClick">
+                                    <a-sub-menu key="sub2" class="my-submenu" @titleClick="titleClick">
+                                          <span slot="title"><a-icon type="area-chart" /><span>图片</span></span>
+                                          <a-sub-menu key="sub3" title="剪贴画" class="img-cell">
+                                                <a-menu-item :key="img" v-for="(img,index) in imgs" @click="addImg(img,index)">
+                                                      <img :src="img" alt="">
+                                                </a-menu-item>
+                                                
+                                          </a-sub-menu>
                                           
                                     </a-sub-menu>
+                                    <a-sub-menu key="sub4" class="my-submenu">
+                                          <span slot="title"><a-icon type="pie-chart" /><span>图形</span></span>
+                                          <a-menu-item key="9" @click="createTriangle">三角形</a-menu-item>
+                                          <a-menu-item key="10" @click="createRect">矩形</a-menu-item>
+                                          <a-menu-item key="11" @click="createCircle">圆形</a-menu-item>
+                                    </a-sub-menu>
                                     
-                              </a-sub-menu>
-                              <a-sub-menu key="sub4" class="my-submenu">
-                                    <span slot="title"><a-icon type="pie-chart" /><span>图形</span></span>
-                                    <a-menu-item key="9" @click="createTriangle">三角形</a-menu-item>
-                                    <a-menu-item key="10" @click="createRect">矩形</a-menu-item>
-                                    <a-menu-item key="11" @click="createCircle">圆形</a-menu-item>
-                              </a-sub-menu>
-                              
-                        </a-menu>
-                        <dl class="shapescolor">
-                              <dt>图形填充颜色：</dt>
-                              <dd><colorPicker v-model="fillcolor" @change="changeFillColor"/></dd>
-                              <dt>图形描边颜色：</dt>
-                              <dd><colorPicker v-model="strokecolor" @change="changeStrokeColor"/></dd>
-                        </dl>
-                        <dl>
-                              <dt>描边大小</dt>
-                              <dd><a-slider :min="2" :max="10" v-model="drawWidth" @change="changeDrawWidth"/></dd>
-                        </dl>
-                        <a-upload name="file" :beforeUpload="beforeUpload" class="my-upload">
-                              <a-button type="primary">
-                                    <a-icon type="upload"/> 上传图片
-                              </a-button>
-                        </a-upload>
+                              </a-menu>
+                              <dl class="shapescolor">
+                                    <dt>图形填充颜色：</dt>
+                                    <dd><colorPicker v-model="fillcolor" @change="changeFillColor"/></dd>
+                                    <dt>图形描边颜色：</dt>
+                                    <dd><colorPicker v-model="strokecolor" @change="changeStrokeColor"/></dd>
+                              </dl>
+                              <dl>
+                                    <dt>描边大小</dt>
+                                    <dd><a-slider :min="2" :max="10" v-model="drawWidth" @change="changeDrawWidth"/></dd>
+                              </dl>
+                              <a-upload name="file" :beforeUpload="beforeUpload" class="my-upload">
+                                    <a-button type="primary">
+                                          <a-icon type="upload"/> 上传图片
+                                    </a-button>
+                              </a-upload>
+                        </div>
+                        
                   </a-col>
                   <a-col :span="12">
-                        <div class="controlers">
-                              <a-button type="primary" icon="plus" @click="addText">添加文字</a-button>
-                              
-                              <span title="填充颜色" style="position: relative">
-                                    <a-icon type="font-colors" />
-                                    <colorPicker v-model="color" @change="changeColor"/>
-                              </span>
-                              <span title="背景/描边颜色" style="position: relative">
-                                    <a-icon type="bg-colors" />
-                                    <colorPicker v-model="bgcolor" @change="changeBgColor"/>
-                              </span>
-                              <span title="左对齐" @click="alignLeft"><a-icon type="align-left" /></span>
-                              <span title="居中" @click="alignCenter"><a-icon type="align-center" /></span>
-                              <span title="右对齐" @click="alignRight"><a-icon type="align-right" /></span>
-                              <span title="删除" @click="delObject"><a-icon type="delete" /></span>
-                              <span title="加粗" @click="changeFontWeight"><a-icon type="bold" /></span>
-                              <span title="倾斜" @click="changeFontStyle"><a-icon type="italic" /></span>
-                              <span title="右旋转" @click="rotateRight"><a-icon type="redo" /></span>
-                              <span title="左旋转" @click="rotateLeft"><a-icon type="undo" /></span>
-                              <span title="移动到下一层" @click="toNextLayer"><a-icon type="sort-ascending" /></span>
-                              <span title="移动倒上一层" @click="toLastLayer"><a-icon type="sort-descending" /></span>
+                        <div class="section2">
+                              <div class="controlers">
+                                    <a-button type="primary" icon="plus" @click="addText">添加文字</a-button>
+                                    <span title="填充颜色" style="position: relative">
+                                          <a-icon type="font-colors" />
+                                          <colorPicker v-model="color" @change="changeColor"/>
+                                    </span>
+                                    <span title="背景/描边颜色" style="position: relative">
+                                          <a-icon type="bg-colors" />
+                                          <colorPicker v-model="bgcolor" @change="changeBgColor"/>
+                                    </span>
+                                    <span title="左对齐" @click="alignLeft"><a-icon type="align-left" /></span>
+                                    <span title="居中" @click="alignCenter"><a-icon type="align-center" /></span>
+                                    <span title="右对齐" @click="alignRight"><a-icon type="align-right" /></span>
+                                    <span title="删除" @click="delObject"><a-icon type="delete" /></span>
+                                    <span title="加粗" @click="changeFontWeight"><a-icon type="bold" /></span>
+                                    <span title="倾斜" @click="changeFontStyle"><a-icon type="italic" /></span>
+                                    <span title="右旋转" @click="rotateRight"><a-icon type="redo" /></span>
+                                    <span title="左旋转" @click="rotateLeft"><a-icon type="undo" /></span>
+                                    <span title="移动到下一层" @click="toNextLayer"><a-icon type="sort-ascending" /></span>
+                                    <span title="移动倒上一层" @click="toLastLayer"><a-icon type="sort-descending" /></span>
+                              </div>
+                              <div class="canvas-container">
+                                    <vue-fabric ref="canvas" :width="600" :height="600" @selection:created="handleselected"></vue-fabric>
+                              </div>
                         </div>
-                        <div class="canvas-container">
-                              <vue-fabric ref="canvas" :width="600" :height="600" @selection:created="handleselected"></vue-fabric>
-                        </div>
+                        
                   </a-col>
                   <a-col :span="6">
-                        <h3>选择颜色</h3>
-                        <dl class="color-select">
-                              
-                              <dd v-for="(color,index) in colors" :key="color" :class="{active: selected == index}" @click="selectColor(index)">
-                                    <i :style="{backgroundColor: color}"></i>
-                              </dd>
-                        </dl>
-                        <h3>选择尺寸</h3>
-                        <dl class="size-select">
-                              <dd v-for="(size,index) in sizes" :key="size">
-                                     <a-checkable-tag
-                                          :key="index"
-                                          :checked="selectedTags.indexOf(size) > -1"
-                                          @change="(checked) => handleChange(size, checked)"
-                                          class="my-tag"
-                                    >
-                                     {{size}} 
-                                    </a-checkable-tag>
-                              </dd>
-                        </dl>
-                        <div class="btn-box">
-                              <a-button type="primary" @click="saveImg">保存</a-button>
-                              
-                              <a-button><a class="downLoad" download="downImg" @click="downLoadImg" :href="dataUrl">下载</a></a-button>
+                        <div class="section3">
+                              <h3>选择颜色</h3>
+                              <dl class="color-select">
+                                    
+                                    <dd v-for="(color,index) in colors" :key="color" :class="{active: selected == index}" @click="selectColor(index)">
+                                          <i :style="{backgroundColor: color}"></i>
+                                    </dd>
+                              </dl>
+                              <h3>选择尺寸</h3>
+                              <dl class="size-select">
+                                    <dd v-for="(size,index) in sizes" :key="size">
+                                          <a-checkable-tag
+                                                :key="index"
+                                                :checked="selectedTags.indexOf(size) > -1"
+                                                @change="(checked) => handleChange(size, checked)"
+                                                class="my-tag"
+                                          >
+                                          {{size}} 
+                                          </a-checkable-tag>
+                                    </dd>
+                              </dl>
+                              <div class="btn-box">
+                                    <a-button type="primary" @click="saveImg">保存</a-button>
+                                    
+                                    <a-button><a class="downLoad" download="downImg" @click="downLoadImg" :href="dataUrl">下载</a></a-button>
+                              </div>
                         </div>
+                        
                   </a-col>
             </a-row>
       </div>
@@ -416,122 +424,129 @@ export default {
       #main{
             padding: 100px;
             background-color: #f8f8f8;
-            .my-upload{
-                  display: flex;
-                  justify-content: center;
-                  margin-top: 30px;
-                  .ant-upload-list{
-                        display: none;
-                  }
-            }
-            .shapescolor{
-                  display: flex;
-                  margin: 40px 0;
-                  dt{
-                        margin-left: 10px;
-                  }
-            }
-            .btn-box{
-                  display: flex;
-                  justify-content: center;
-                  button{
-                        margin: 20px;
-                  }
-                  
-            }
-            .canvas-container{
-                  background-color: #fff;
-            }
-            .controlers{
-                  display: flex;
-                  align-items: center;
-                  .m-colorPicker{
-                        position: absolute; 
-                        left: 0px; 
-                        bottom: 0px;
-                        .colorBtn{
-                              width: 24px;
-                              height: 36px;
-                              opacity: 0;
-                        }
-                        .box{
-                              z-index: 1000;
-                        }
-                  }
-                  
-                  > span{
-                        font-size: 24px;
-                        margin: 0 10px;
-                        cursor: pointer;
-                  }
-                  button{
-                        margin:0 10px; 
-                  }
-            }
-            .size-select{
-                  display: flex;
-                  .my-tag{
-                        padding: 0 20px;
-                  }
-            }
-            .color-select{
-                  display: flex;
-                  height: 64px;
-                  dd{
+            .section1{
+                  padding: 0 10px;
+                  .my-upload{
                         display: flex;
-                        align-items: center;
                         justify-content: center;
-                        padding: 5px;
-                        border-radius: 100%;
-                        margin: 10px 4px;
-                        width: 44px;
-                        height: 44px;
-                        i{
-                              width: 30px;
-                              height: 30px;
-                              border-radius: 100%;
-                              display: inline-block;
-                              cursor: pointer;
-                              
-                        }
-                        &:hover{
-                              border: 2px solid #ebebeb;
-                              
+                        margin-top: 30px;
+                        .ant-upload-list{
+                              display: none;
                         }
                   }
-            }
-            .canvas-container{
-                  display: flex;
-                  justify-content: center;
-            }
-            .my-submenu{
-                  .img-cell{
-                        > div{
-                              font-size: 16px;
+                  .shapescolor{
+                        display: flex;
+                        margin: 40px 0;
+                        dt{
+                              margin-left: 10px;
                         }
-                        .ant-menu{
-                              display: flex;
-                              flex-wrap: wrap;
-                              li{
-                                    padding: 20px !important;
-                                    width: 25%;
-                                    height: auto;
+                  }
+                  .my-submenu{
+                        .img-cell{
+                              > div{
+                                    font-size: 16px;
+                              }
+                              .ant-menu{
                                     display: flex;
-                                    justify-content: center;
-                                    align-items: center;
-                                    &::after{
-                                          border-right: none;
-                                    }
-                                    
-                                    img{
-                                          width: 50px;
-                                          height: 50px;
+                                    flex-wrap: wrap;
+                                    li{
+                                          padding: 20px !important;
+                                          width: 25%;
+                                          height: auto;
+                                          display: flex;
+                                          justify-content: center;
+                                          align-items: center;
+                                          &::after{
+                                                border-right: none;
+                                          }
+                                          
+                                          img{
+                                                width: 50px;
+                                                height: 50px;
+                                          }
                                     }
                               }
                         }
+                        span{
+                              font-size: 18px;
+                        }
                   }
-                  span{
-                        font-size: 18px;
+            }
+            .section2{
+                  .canvas-container{
+                        background-color: #fff;
+                        margin-top: 10px;
+                        display: flex;
+                        justify-content: center;
+                  }
+                  .controlers{
+                        display: flex;
+                        align-items: center;
+                        .m-colorPicker{
+                              position: absolute; 
+                              left: 0px; 
+                              bottom: 0px;
+                              .colorBtn{
+                                    width: 24px;
+                                    height: 36px;
+                                    opacity: 0;
+                              }
+                              .box{
+                                    z-index: 1000;
+                              }
+                        }
+                        
+                        > span{
+                              font-size: 24px;
+                              margin: 0 10px;
+                              cursor: pointer;
+                        }
+                        button{
+                              margin:0 10px; 
+                        }
+                  }
+            }
+            .section3{
+                  padding: 0 10px;
+                  .size-select{
+                        display: flex;
+                        .my-tag{
+                              padding: 0 20px;
+                        }
+                  }
+                  .color-select{
+                        display: flex;
+                        height: 64px;
+                        dd{
+                              display: flex;
+                              align-items: center;
+                              justify-content: center;
+                              padding: 5px;
+                              border-radius: 100%;
+                              margin: 10px 4px;
+                              width: 44px;
+                              height: 44px;
+                              i{
+                                    width: 30px;
+                                    height: 30px;
+                                    border-radius: 100%;
+                                    display: inline-block;
+                                    cursor: pointer;
+                                    
+                              }
+                              &:hover{
+                                    border: 2px solid #ebebeb;
+                                    
+                              }
+                        }
+                  }
+                  .btn-box{
+                        display: flex;
+                        justify-content: center;
+                        button{
+                              margin: 20px;
+                        }
+                        
                   }
             }
       }
