@@ -8,7 +8,8 @@ import {
   Input,
   Upload,
   Tag,
-  Slider
+  Slider,
+  Drawer
 } from "ant-design-vue";
 Vue.use(Button);
 Vue.use(Row);
@@ -19,3 +20,4 @@ Vue.use(Input);
 Vue.use(Upload);
 Vue.use(Tag);
 Vue.use(Slider);
+Vue.use(Drawer);

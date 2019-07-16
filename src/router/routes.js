@@ -2,12 +2,12 @@
 const routes = [
       {
             path: "/",
-            redirect: "/main"
+            redirect: "/test"
       },
       {
-            path: "/main",
-            name: "main",
-            component: () => import("@/pages/main")
+            path: "/test",
+            name: "test",
+            component: () => import("@/pages/test")
       }
 ];
 export default routes;

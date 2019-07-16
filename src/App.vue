@@ -1,15 +1,16 @@
 <template>
   <div id="app">
-    <orders/>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import orders from './pages/main.vue'
+
+
 export default {
   name: 'app',
   components: {
-    orders
+    
   }
 }
 </script>
@@ -20,6 +21,14 @@ export default {
 }
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  
 }
+ul{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  p{
+    margin: 0;
+    padding: 0
+  }
 </style>
