@@ -9,7 +9,8 @@ import {
   Upload,
   Tag,
   Slider,
-  Drawer
+  Drawer,
+  Switch
 } from "ant-design-vue";
 Vue.use(Button);
 Vue.use(Row);
@@ -21,3 +22,4 @@ Vue.use(Upload);
 Vue.use(Tag);
 Vue.use(Slider);
 Vue.use(Drawer);
+Vue.use(Switch);

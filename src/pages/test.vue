@@ -18,31 +18,24 @@
                                                 </a-menu-item>
                                                 
                                           </a-sub-menu>
-                                          
+                                          <a-menu-item style="display: flex; align-items:center;justify-content: center">
+                                                <a-upload name="file" class="my-upload" :beforeUpload="beforeUpload">
+                                                      <a-button type="primary">
+                                                            <a-icon type="upload"/> 上传图片
+                                                      </a-button>
+                                                </a-upload>
+                                          </a-menu-item>
                                     </a-sub-menu>
                                     <a-sub-menu key="sub4" class="my-submenu">
                                           <span slot="title"><a-icon type="pie-chart" /><span>图形</span></span>
-                                          <a-menu-item key="9">三角形</a-menu-item>
-                                          <a-menu-item key="10">矩形</a-menu-item>
-                                          <a-menu-item key="11">圆形</a-menu-item>
+                                          <a-menu-item key="9" @click="createEqualTriangle">三角形</a-menu-item>
+                                          <a-menu-item key="10" @click="createRect">矩形</a-menu-item>
+                                          <a-menu-item key="11" @click="createCircle">圆形</a-menu-item>
                                     </a-sub-menu>
                                     
                               </a-menu>
-                              <dl class="shapescolor">
-                                    <dt>图形填充颜色：</dt>
-                                    <dd><colorPicker v-model="fillcolor"/></dd>
-                                    <dt>图形描边颜色：</dt>
-                                    <dd><colorPicker v-model="strokecolor"/></dd>
-                              </dl>
-                              <dl>
-                                    <dt>描边大小</dt>
-                                    <dd><a-slider :min="2" :max="10" v-model="drawWidth"/></dd>
-                              </dl>
-                              <a-upload name="file" class="my-upload">
-                                    <a-button type="primary">
-                                          <a-icon type="upload"/> 上传图片
-                                    </a-button>
-                              </a-upload>
+                              
+                              
                         </div>
                         
                   </a-col>
@@ -94,27 +87,26 @@
                   <div v-if="visibletype == 1">
                         <ul class="textcolor-control">
                               <li>
-                                    <dl>
-                                          <dt>字体颜色:</dt>
-                                          <dd>
+                                    
+                                          字体颜色:
+                                          
                                                 <span title="字体颜色" style="position: relative">
                                                       <a-icon type="font-colors" :style="{color:color}"/>
-                                                      <colorPicker v-model="color" @change="changeTextColor"/>
+                                                      <colorPicker v-model="color" @change="changeFillColor"/>
                                                 </span>
-                                          </dd>
-                                    </dl>
+                                   
                                     
                               </li>
                               <li>
-                                    <dl>
-                                          <dt>字体背景颜色:</dt>
-                                          <dd>
+                                    
+                                          字体背景颜色:
+                                        
                                                 <span title="背景颜色" style="position: relative">
                                                       <a-icon type="bg-colors" :style="{color:bgcolor}"/>
                                                       <colorPicker v-model="bgcolor" @change="changeTextBgColor"/>
                                                 </span>
-                                          </dd>
-                                    </dl>
+                                         
+                                    
                                     
                               </li>
                               
@@ -155,11 +147,100 @@
                                     <span title="删除线" @click="setTextThrough"><a-icon type="strikethrough" /></span>
                               </dd>
                         </dl>
+                        <ul class="stroke-control">
+                              <li>
+                                    描边颜色：
+                                    <colorPicker v-model="stroke" @change="changestrokeColor"/>
+                              </li>
+                              <li>
+                                    描边大小：
+                                    <a-slider :min="0" :max="10" v-model="strokeWidth" :step="1" @change="changestrokeWidth"/>
+                              </li>
+                              
+                        </ul>
+                        <ul class="stroke-control">
+                              <li>
+                                    阴影颜色：
+                                    <colorPicker v-model="shdowcolor" @change="changeShadowColor"/>
+                              </li>
+                              <li>
+                                    阴影大小：
+                                    <a-slider :min="-10" :max="10" v-model="Shadow1" :step="1" @change="changeShadowWidth1"/>
+                                    <a-slider :min="-10" :max="10" v-model="Shadow2" :step="1" @change="changeShadowWidth2"/>
+                                    <a-slider :min="0" :max="10" v-model="Shadow3" :step="1" @change="changeShadowWidth3"/>
+                              </li>
+                              
+                        </ul>
                   </div>
                   <div v-else-if="visibletype == 2">
-                        <p>Some2 contents...</p>
-                        <p>Some2 contents...</p>
-                        <p>Some2 contents...</p>
+                        <dl>
+                              <dt>
+                                    透明度：
+                              </dt>
+                              <dd>
+                                    <a-slider :min="0" :max="1" v-model="opacity" :step="0.1" @change="changeOpacity"/>
+                              </dd>
+                        </dl>
+                        <ul style="display: flex;justify-content: space-around;margin:20px 0">
+                              <li>
+                                    X轴翻转：
+                                    <a-switch @change='changeFilPx' v-model="filpx"/>
+                              </li>
+                              <li>
+                                    Y轴翻转：
+                                    <a-switch @change='changeFilPy' v-model="filpy"/>
+                              </li>
+                        </ul>         
+                        <ul>
+                              <li>
+                                    X轴斜切：
+                                    <a-slider :min="0" :max="80" :step="1" @change='changeSkewX' v-model="skewx"/>
+                              </li>
+                              <li>
+                                    Y轴斜切：
+                                    <a-slider :min="0" :max="80" :step="1" @change='changeSkewY' v-model="skewy"/>
+                              </li>
+                        </ul>
+                  </div>
+                  <div v-else-if="visibletype == 3">
+                        <ul class="color-control">
+                              <li>
+                                    描边颜色：
+                                    <colorPicker v-model="stroke" @change="changestrokeColor"/>
+                              </li>
+                              <li>
+                                    填充颜色：
+                                    <colorPicker v-model="color" @change="changeFillColor"/>
+                              </li>
+                        </ul>
+                        <p>
+                              描边大小：
+                              <a-slider :min="0" :max="10" v-model="strokeWidth" :step="1" @change="changestrokeWidth"/>
+                        </p>
+                        <ul class="stroke-control">
+                              <li>
+                                    阴影颜色：
+                                    <colorPicker v-model="shdowcolor" @change="changeShadowColor"/>
+                              </li>
+                              <li>
+                                    阴影大小：
+                                    <a-slider :min="-10" :max="10" v-model="Shadow1" :step="1" @change="changeShadowWidth1"/>
+                                    <a-slider :min="-10" :max="10" v-model="Shadow2" :step="1" @change="changeShadowWidth2"/>
+                                    <a-slider :min="0" :max="10" v-model="Shadow3" :step="1" @change="changeShadowWidth3"/>
+                              </li>
+                              
+                        </ul>
+                              
+                        <ul>
+                              <li>
+                                    X轴斜切：
+                                    <a-slider :min="0" :max="80" :step="1" @change='changeSkewX' v-model="skewx"/>
+                              </li>
+                              <li>
+                                    Y轴斜切：
+                                    <a-slider :min="0" :max="80" :step="1" @change='changeSkewY' v-model="skewy"/>
+                              </li>
+                        </ul>
                   </div>
             </a-drawer>
       </div>
@@ -184,6 +265,11 @@ import resize from '@/assets/icons/resize.svg'
 import remove from '@/assets/icons/remove.svg'
 import rotate from '@/assets/icons/rotate.svg'
 import diagonal from "@/assets/icons/repair-tools-cross.svg";
+function getBase64 (img, callback) {
+      const reader = new FileReader()
+      reader.addEventListener('load', () => callback(reader.result))
+      reader.readAsDataURL(img)
+}
 export default {
       data () {
             return {
@@ -211,7 +297,7 @@ export default {
                   left: 280,
                   top: 200,
                   color:'#000000',
-                  bgcolor:'#f1f1f1',
+                  bgcolor:'#000000',
                   fontWeight: 'normal',
                   fontStyle: 'normal',
                   underline:false,
@@ -234,7 +320,19 @@ export default {
                   drawWidth:2,
                   myCanvas: null,
                   visible:false,
-                  visibletype:0
+                  visibletype:0,
+                  opacity:1,
+                  filpx:false,
+                  filpy:false,
+                  skewx:0,
+                  skewy:0,
+                  strokeWidth:0,
+                  stroke: '#000000',
+                  shdowcolor:'#000000',
+                  Shadow1:0,
+                  Shadow2:0,
+                  Shadow3:0,
+                  uploadId:0
             }
       },
       mounted(){
@@ -250,6 +348,178 @@ export default {
             
       },
       methods: {
+            createCircle () {
+                  let that = this;
+                  let options = Object.assign({ left: 260, top: 200, radius: 40, shadow:'#000 0 0 0',fillColor: 'rgba(0, 0, 0, 1)', color: '#000', drawWidth: 0 }, options);
+                  let defaultOption = {
+                        ...options,
+                        fill: options.fillColor,
+                        strokeWidth: options.drawWidth,
+                        stroke: options.color
+                  };
+                  let Circle = new fabric.Circle(defaultOption);
+                  Circle.on("selected", function() {
+                        that.visibletype = 3;
+                        let obj = that.myCanvas.getActiveObject();
+                        that.color = obj.fill;
+                        that.stroke = obj.stroke;
+                        that.strokeWidth = obj.strokeWidth;
+                        that.Shadow1 = obj.shadow.offsetX;
+                        that.Shadow2 = obj.shadow.offsetY;
+                        that.Shadow3 = obj.shadow.blur;
+                        that.shdowcolor = obj.shadow.color;
+                        that.skewx = obj.skewX;
+                        that.skewy = obj.skewY;
+                        console.log(obj)
+                        
+                  });
+                  that.myCanvas.add(Circle).setActiveObject(Circle);
+                  that.visibletype = 2
+                  that.myCanvas.renderAll();
+            },
+            createRect () {
+                  let that = this;
+                  let options = Object.assign({ width: 80, height: 80, shadow:'#000 0 0 0',fillColor: 'rgba(0, 0, 0, 1)', left: 260, top: 200,color: '#000', drawWidth: 0 }, options);
+                  let rect = new fabric.Rect({
+                        ...options,
+                        fill: options.fillColor, 
+                        strokeWidth: options.drawWidth,
+                        stroke: options.color
+                  });
+                  rect.on("selected", function() {
+                        that.visibletype = 3;
+                        let obj = that.myCanvas.getActiveObject();
+                        that.color = obj.fill;
+                        that.stroke = obj.stroke;
+                        that.strokeWidth = obj.strokeWidth;
+                        that.Shadow1 = obj.shadow.offsetX;
+                        that.Shadow2 = obj.shadow.offsetY;
+                        that.Shadow3 = obj.shadow.blur;
+                        that.shdowcolor = obj.shadow.color;
+                        that.skewx = obj.skewX;
+                        that.skewy = obj.skewY;
+                        console.log(obj)
+                        
+                  });
+                  that.myCanvas.add(rect).setActiveObject(rect);
+                  that.visibletype = 3;
+                  that.myCanvas.renderAll();
+            },
+            createEqualTriangle () {
+                  let that = this;
+                  let options = Object.assign({ left: 260, top: 200, width: 80, height: 80, shadow:'#000 0 0 0',fillColor: 'rgba(0, 0, 0, 1)', color: '#000', drawWidth: 0 }, options);
+                  // console.log(defaultOption);
+                  let triangle = new fabric.Triangle({
+                        ...options,
+                        fill: options.fillColor,
+                        strokeWidth: options.drawWidth,
+                        stroke: options.color
+                  });
+                  triangle.on("selected", function() {
+                        that.visibletype = 3;
+                        let obj = that.myCanvas.getActiveObject()
+                        that.color = obj.fill;
+                        that.stroke = obj.stroke;
+                        that.strokeWidth = obj.strokeWidth;
+                        that.Shadow1 = obj.shadow.offsetX;
+                        that.Shadow2 = obj.shadow.offsetY;
+                        that.Shadow3 = obj.shadow.blur;
+                        that.shdowcolor = obj.shadow.color
+                        that.skewx = obj.skewX;
+                        that.skewy = obj.skewY;
+                  });
+                  that.myCanvas.add(triangle).setActiveObject(triangle);
+                  that.visibletype = 3;
+                  that.myCanvas.renderAll();
+            },
+            beforeUpload (file) {
+                  console.log(file)
+                  this.uploadId ++;
+
+                  getBase64(file,(imageUrl) => {
+                        this.selectImg(imageUrl,'upload' + this.uploadId);
+                        
+                  })
+
+            },
+            changeShadowWidth1(){
+                  let obj = this.myCanvas.getActiveObject()
+                  if (obj) {
+                        obj.set('shadow', this.shdowcolor +' '+ this.Shadow1 +' '+ this.Shadow2 +' '+ this.Shadow3);
+                        this.myCanvas.requestRenderAll();
+                  }
+            },
+            changeShadowWidth2(){
+                  let obj = this.myCanvas.getActiveObject()
+                  if (obj) {
+                        obj.set('shadow', this.shdowcolor +' '+ this.Shadow1 +' '+ this.Shadow2 +' '+ this.Shadow3);
+                        this.myCanvas.requestRenderAll();
+                  }
+            },
+            changeShadowWidth3(){
+                  let obj = this.myCanvas.getActiveObject()
+                  if (obj) {
+                        obj.set('shadow', this.shdowcolor +' '+ this.Shadow1 +' '+ this.Shadow2 +' '+ this.Shadow3);
+                        this.myCanvas.requestRenderAll();
+                  }
+            },
+            changeShadowColor(){
+                  let obj = this.myCanvas.getActiveObject()
+                  if (obj) {
+                        obj.set('shadow', this.shdowcolor +' '+ this.Shadow1 +' '+ this.Shadow2 +' '+ this.Shadow3);
+                        this.myCanvas.requestRenderAll();
+                  }
+            },
+            changestrokeColor(){
+                  let obj = this.myCanvas.getActiveObject()
+                  if (obj) {
+                        obj.set('stroke', this.stroke);
+                        this.myCanvas.requestRenderAll();
+                  }
+            },
+            changestrokeWidth(){
+                  let obj = this.myCanvas.getActiveObject()
+                  if (obj) {
+                        obj.set('strokeWidth', this.strokeWidth);
+                        this.myCanvas.requestRenderAll();
+                  }
+            },
+            changeSkewY(){
+                  let obj = this.myCanvas.getActiveObject()
+                  if (obj) {
+                        obj.set('skewY', this.skewy).setCoords();
+                        this.myCanvas.requestRenderAll();
+                  }
+            },
+            changeSkewX(){
+                  let obj = this.myCanvas.getActiveObject()
+                  if (obj) {
+                        obj.set('skewX', this.skewx).setCoords();
+                        this.myCanvas.requestRenderAll();
+                  }
+            },
+               
+            changeFilPx(){
+                  let obj = this.myCanvas.getActiveObject()
+                  if (obj) {
+                        obj.set('flipX',this.filpx);
+                        this.myCanvas.requestRenderAll();
+                  }
+            },
+            changeFilPy(){
+                  let obj = this.myCanvas.getActiveObject()
+                  if (obj) {
+                        obj.set('flipY',this.filpy);
+                        this.myCanvas.requestRenderAll();
+                  }
+            },
+            changeOpacity(){
+                  let obj = this.myCanvas.getActiveObject()
+                  if (obj) {
+                        obj.set("opacity", this.opacity);
+                        this.myCanvas.requestRenderAll();
+                  }
+            },
             onClose() {
                   this.visible = false
             },
@@ -325,16 +595,23 @@ export default {
             selectImg(imgUrl,id) {
                   let that = this;
                   fabric.Image.fromURL(imgUrl, function(oImg) {
-                        // oImg.filters.push(new fabric.Image.filters.Grayscale());
-                        // oImg.applyFilters(that.myCanvas.renderAll.bind(that.myCanvas));
                         oImg.on("selected", function() {
                               that.visibletype = 2
-                              console.log(that.visibletype)
+                              let obj = that.myCanvas.getActiveObject();
+                              that.opacity = obj.opacity;
+                              that.filpx = obj.flipX;
+                              that.filpy = obj.flipY;
+                              that.skewx = obj.skewX;
+                              that.skewy = obj.skewY;
                         });
                         
                         that.myCanvas.add(
                               oImg.set({
                                     id: id,
+                                    flipX:false,
+                                    flipY:false,
+                                    skewX:0,
+                                    skewY:0,
                                     originX: "center",
                                     originY: "center",
                                     left: 300,
@@ -385,21 +662,35 @@ export default {
             addItext(text, options) {
                   let that = this;
                   that.visibletype = 1
-                  options = Object.assign({ fontSize: 25, fillColor: that.color, registeObjectEvent: false, left: 280, top: 250,textBackgroundColor:that.bgcolor }, options);
+                  options = Object.assign({ fontSize: 30, fillColor: '#000000', shadow:'#000 0 0 0',strokeWidth: 0,stroke: '#000',registeObjectEvent: true, left: 280, top: 250,textBackgroundColor:'' }, options);
                   var canvasObj = new fabric.Textbox('Text', {
                         ...options,
                         fill: options.fillColor,
-                        textBackgroundColor: options.textBackgroundColor
+                        textBackgroundColor: options.textBackgroundColor,
+                        strokeWidth:options.strokeWidth,
+                        stroke:options.stroke,
+                        shadow:options.shadow,
                   });
-                  that.myCanvas.add(canvasObj).setActiveObject(canvasObj);
                   canvasObj.on("selected", function() {
                         that.visibletype = 1
-                        console.log(that.visibletype)
+                        let obj = that.myCanvas.getActiveObject()
+                        console.log(obj)
+                        that.color = obj.fill;
+                        that.bgcolor = obj.textBackgroundColor || '#000000';
+                        that.stroke = obj.stroke;
+                        that.strokeWidth = obj.strokeWidth;
+                        that.Shadow1 = obj.shadow.offsetX;
+                        that.Shadow2 = obj.shadow.offsetY;
+                        that.Shadow3 = obj.shadow.blur;
+                        that.shdowcolor = obj.shadow.color
                   });
+                  that.myCanvas.add(canvasObj).setActiveObject(canvasObj);
+                  
+                  
                   
                   
             },
-            changeTextColor(){
+            changeFillColor(){
                   let obj = this.myCanvas.getActiveObject()
                   if (obj) {
                         obj.set("fill", this.color);
@@ -541,7 +832,7 @@ export default {
             li:nth-child(2){
               margin-left: 120px;
             }
-            dl{
+            li{
                   display: flex;
                   align-items: center;
                   .m-colorPicker{
@@ -557,14 +848,14 @@ export default {
                               z-index: 1000;
                         }
                   }
-                  dd{
-                        > span{
-                              font-size: 24px;
-                              margin: 0 10px;
-                              cursor: pointer;
-                        }
+                  > span{
+                        font-size: 24px;
+                        margin: 0 10px;
+                        cursor: pointer;
                   }
+                  
             }
+            
       }
       .textalign-control{
             display: flex;
@@ -588,6 +879,20 @@ export default {
                   }
             }
       }
+      .stroke-control{
+            li{
+                  margin: 20px 0;
+            }
+            
+      }
+      .color-control{
+            display: flex;
+            align-items: center;
+            list-style: none;
+            li:nth-child(2){
+              margin-left: 120px;
+            }
+      }
       #main{
             padding: 100px;
             background-color: #f8f8f8;
@@ -596,7 +901,9 @@ export default {
                   .my-upload{
                         display: flex;
                         justify-content: center;
-                        margin-top: 30px;
+                        span{
+                              font-size: 14px !important;
+                        }
                         .ant-upload-list{
                               display: none;
                         }
