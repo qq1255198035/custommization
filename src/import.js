@@ -10,7 +10,9 @@ import {
   Tag,
   Slider,
   Drawer,
-  Switch
+  Switch,
+  Checkbox,
+  Select
 } from "ant-design-vue";
 Vue.use(Button);
 Vue.use(Row);
@@ -23,3 +25,5 @@ Vue.use(Tag);
 Vue.use(Slider);
 Vue.use(Drawer);
 Vue.use(Switch);
+Vue.use(Checkbox);
+Vue.use(Select);

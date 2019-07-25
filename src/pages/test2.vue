@@ -1,6 +1,5 @@
 <template>
       <div id="main">
-            <My-Header></My-Header>
             <a-row>
                   <a-col :span="6">
                         <div class="section1">
@@ -52,12 +51,12 @@
                                     <span title="移动倒上一层" @click="toPreLayer"><a-icon type="sort-descending" /></span>
                               </div>
                               <div class="canvas-container"  v-show="model == 'front'">
-                                    <canvas id="canvas1" width="600" height="600"></canvas>
+                                    <canvas id="canvas" width="600" height="600"></canvas>
                                     
                               </div>
                               <div class="canvas-container"  v-show="model == 'back'">
                                     
-                                    <canvas id="canvas2" width="600" height="600"></canvas>
+                                    <canvas id="canvas1" width="600" height="600"></canvas>
                               </div>
                         </div>
                         
@@ -67,7 +66,7 @@
                               <h3>选择颜色</h3>
                               <dl class="color-select">
                                     
-                                    <dd v-for="(color,index) in colors" :key="color" :class="{active: selected == index}" @click="selectColor(index,myCanvas)">
+                                    <dd v-for="(color,index) in colors" :key="color" :class="{active: selected == index}" @click="selectColor(index)">
                                           <i :style="{backgroundColor: color}"></i>
                                     </dd>
                               </dl>
@@ -84,7 +83,6 @@
                                     </dd>
                               </dl>
                               <div class="btn-box">
-                                    <a-button type="primary" @click="$router.push({path:'/swiper'})">保存</a-button>
                                     <a-button type="primary" @click="saveImg">保存</a-button>
                                     <a-button type="primary" @click="handleSetFront">正面</a-button>
                                     <a-button type="primary" @click="handleSetback">背面</a-button>
@@ -344,11 +342,11 @@ import img10 from '@/assets/0010.png'
 import bgimg1 from '@/assets/bg-white.png'
 import bgimg2 from '@/assets/black.jpg'
 import bgimg3 from '@/assets/jaw.jpg'
+
 import resize from '@/assets/icons/resize.svg'
 import remove from '@/assets/icons/remove.svg'
 import rotate from '@/assets/icons/rotate.svg'
 import diagonal from "@/assets/icons/repair-tools-cross.svg";
-import MyHeader from '@/components/header/Header'
 function getBase64 (img, callback) {
       const reader = new FileReader()
       reader.addEventListener('load', () => callback(reader.result))
@@ -394,24 +392,7 @@ export default {
                         bgimg2,
                         bgimg3
                   ],
-                  suits:{
-                        frontimg:{
-                              bgimgs:[
-                                    bgimg1,
-                                    bgimg2,
-                                    bgimg3
-                              ]
-                              
-                        },
-                        backimg:{
-                              bgimgs:[
-                                    bgimg1,
-                                    bgimg2,
-                                    bgimg3
-                              ]
-                              
-                        },
-                  },
+                  
                   strokecolor:'#000000',
                   fillcolor:'#000000',
                   drawWidth:2,
@@ -449,41 +430,20 @@ export default {
                   myCanvas2: null
             }
       },
-      components:{
-            MyHeader
-      },
       mounted(){
             
             this.$nextTick(function() {
-                  //11：当选择画布中的对象时，该对象不出现在顶层。
-                  //canvas.preserveObjectStacking = true;
-                  this.myCanvas1 = new fabric.Canvas("canvas1");
-                  this.myCanvas2 = new fabric.Canvas("canvas2");
-                  this.myCanvas = this.myCanvas1
-                  this.bindCanvas1(this.selected);
-                  this.bindCanvas2(this.selected);
-                  this.setEditIcon();
-                  this.setEditPointer();
-                  initAligningGuidelines(this.myCanvas1);
-                  initAligningGuidelines(this.myCanvas2);
-                  this.handleObjectMove(this.myCanvas1);
-                  this.handleObjectMove(this.myCanvas2)
-                  //14: 画布对象居中设置：
-                  //var t = canvas.getActiveObject();
-                  //t.center();    全部居中
-                  //t.centerH();   水平居中
-                  //t.centerV();   垂直居中
-                  //t.setCoords(); 注：必须设coords以上设置才会有效。
-                  //object.set('selectable',false) 单个元素禁止选中
-            })
-            
-      },
-      watch:{
-           
-      },
-      methods: {
-            handleObjectMove(object){
-                  object.on("object:moving", function(e) {
+                  let that = this;
+                  that.myCanvas1 = new fabric.Canvas("canvas");
+                  that.myCanvas2 = new fabric.Canvas("canvas1");
+                  that.myCanvas = that.myCanvas1
+                  console.log(that.myCanvas)
+                  that.bindCanvas(that.selected);
+                  that.setEditIcon();
+                  that.setEditPointer();
+                  initAligningGuidelines(that.myCanvas)
+                  
+                  that.myCanvas1.on("object:moving", function(e) {
                         //console.log(e.target)
                         var obj = e.target;
                         var canvas = obj.canvas;
@@ -513,10 +473,10 @@ export default {
                         }
 
                         // if you need margins set them here
-                        var top_margin = 120 / zoom;
-                        var bottom_margin = 100 / zoom;
-                        var left_margin = 200 / zoom;
-                        var right_margin = 200 / zoom;
+                        var top_margin = 120;
+                        var bottom_margin = 100;
+                        var left_margin = 200;
+                        var right_margin = 200;
 
 
                         var top_bound = top_margin + top_adjust - pan_y;
@@ -531,27 +491,38 @@ export default {
                         }
 
                         if( h > c_height ) {
-                              obj.set('top',top_bound);
-                              
-                              
+                        obj.set('top',top_bound);
                         } else {
-                              obj.set('top',Math.min(Math.max(top, top_bound), bottom_bound)); 
-                              console.log(obj.get("top"))       
+                        obj.set('top',Math.min(Math.max(top, top_bound), bottom_bound));          
                         }
                   });
-            },
+            })
+            
+      },
+      watch:{
+            // model(val){
+            //       if (val == 'front') {
+                        
+            //       }else if (val == 'back') {
+            //             this.myCanvas = this.myCanvas2;
+            //       }
+            // }
+      },
+      methods: {
             handleSetFront(){
                   this.myCanvas = this.myCanvas1;
                   this.model = 'front'
             },
             handleSetback(){
                   this.myCanvas = this.myCanvas2;
+                  this.bindCanvas(this.selected);
                   this.model = 'back'
             },
             loadAndUse(font) {
                   let that = this;
                   var myfont = new FontFaceObserver(font)
-                  myfont.load().then(function() {
+                  myfont.load()
+                  .then(function() {
                         // when font is loaded, use it.
                         that.myCanvas.getActiveObject().set("fontFamily", font);
                         that.myCanvas.requestRenderAll();
@@ -769,6 +740,8 @@ export default {
             },
             downLoadImg(){
                   this.dataUrl = this.myCanvas.toDataURL();
+                  
+                  
             },
             saveImg(){
                   let json = this.myCanvas.toJSON();
@@ -777,14 +750,12 @@ export default {
             },
             createCircle () {
                   let that = this;
-                  let options = Object.assign({ left: 300, top: 300, radius: 40, shadow:'#000 0 0 0',fillColor: 'rgba(0, 0, 0, 1)', color: '#000', drawWidth: 0 }, options);
+                  let options = Object.assign({ left: 260, top: 200, radius: 40, shadow:'#000 0 0 0',fillColor: 'rgba(0, 0, 0, 1)', color: '#000', drawWidth: 0 }, options);
                   let defaultOption = {
                         ...options,
                         fill: options.fillColor,
                         strokeWidth: options.drawWidth,
-                        stroke: options.color,
-                        originX:'center',
-                        originY: 'center'
+                        stroke: options.color
                   };
                   let Circle = new fabric.Circle(defaultOption);
                   Circle.on("selected", function() {
@@ -808,14 +779,12 @@ export default {
             },
             createRect () {
                   let that = this;
-                  let options = Object.assign({ width: 80, height: 80, shadow:'#000 0 0 0',fillColor: 'rgba(0, 0, 0, 1)', left: 300, top: 300,color: '#000', drawWidth: 0 }, options);
+                  let options = Object.assign({ width: 80, height: 80, shadow:'#000 0 0 0',fillColor: 'rgba(0, 0, 0, 1)', left: 260, top: 200,color: '#000', drawWidth: 0 }, options);
                   let rect = new fabric.Rect({
                         ...options,
                         fill: options.fillColor, 
                         strokeWidth: options.drawWidth,
-                        stroke: options.color,
-                        originX:'center',
-                        originY: 'center'
+                        stroke: options.color
                   });
                   rect.on("selected", function() {
                         that.visibletype = 3;
@@ -838,15 +807,13 @@ export default {
             },
             createEqualTriangle () {
                   let that = this;
-                  let options = Object.assign({ left: 300, top: 300, width: 80, height: 80, shadow:'#000 0 0 0',fillColor: 'rgba(0, 0, 0, 1)', color: '#000', drawWidth: 0 }, options);
+                  let options = Object.assign({ left: 260, top: 200, width: 80, height: 80, shadow:'#000 0 0 0',fillColor: 'rgba(0, 0, 0, 1)', color: '#000', drawWidth: 0 }, options);
                   // console.log(defaultOption);
                   let triangle = new fabric.Triangle({
                         ...options,
                         fill: options.fillColor,
                         strokeWidth: options.drawWidth,
-                        stroke: options.color,
-                        originX:'center',
-                        originY: 'center'
+                        stroke: options.color
                   });
                   triangle.on("selected", function() {
                         that.visibletype = 3;
@@ -956,7 +923,6 @@ export default {
             onClose() {
                   this.visible = false
             },
-            //设置选中框外观
             setEditIcon(){
                   let that = this;
                   fabric.Object.prototype.customiseCornerIcons(
@@ -1063,32 +1029,14 @@ export default {
                   }
                   return color;
             },
-            bindCanvas1(i) {
+            bindCanvas(i) {
                   var that = this
-                  that.myCanvas1.setBackgroundImage(that.suits.frontimg.bgimgs[i],that.myCanvas.renderAll.bind(that.myCanvas1),{
-                              opacity: 1,
-                              angle: 0,
-                              left: 300,
-                              top: 300,
-                              originX: "center",
-                              originY: "center"
-                  });
-            },
-            bindCanvas2(i) {
-                  var that = this
-                  that.myCanvas2.setBackgroundImage(that.suits.backimg.bgimgs[i],that.myCanvas.renderAll.bind(that.myCanvas2),
-                        {
-                              opacity: 1,
-                              angle: 0,
-                              left: 300,
-                              top: 300,
-                              originX: "center",
-                              originY: "center"
-                        });
+                  that.myCanvas.setBackgroundImage(that.bgimgs[i],that.myCanvas.renderAll.bind(that.myCanvas));
+                  
             },
             selectColor(i){
-                  this.bindCanvas1(i)
-                  this.bindCanvas2(i)
+                  console.log(i)
+                  this.bindCanvas(i)
                   this.selected = i
             },
             onOpenChange (openKeys) {
@@ -1105,7 +1053,7 @@ export default {
             addItext(text, options) {
                   let that = this;
                   that.visibletype = 1
-                  options = Object.assign({ fontSize: 30, fillColor: '#000000', shadow:'#000 0 0 0',strokeWidth: 0,stroke: '#000',registeObjectEvent: true, left: 300, top: 250,textBackgroundColor:'' }, options);
+                  options = Object.assign({ fontSize: 30, fillColor: '#000000', shadow:'#000 0 0 0',strokeWidth: 0,stroke: '#000',registeObjectEvent: true, left: 280, top: 250,textBackgroundColor:'' }, options);
                   var canvasObj = new fabric.Textbox('Text', {
                         ...options,
                         fill: options.fillColor,
@@ -1113,9 +1061,7 @@ export default {
                         strokeWidth:options.strokeWidth,
                         stroke:options.stroke,
                         shadow:options.shadow,
-                        fontFamily: 'Microsoft YaHei',
-                        originX:'center',
-                        originY:'center',
+                        fontFamily: 'Microsoft YaHei'
                   });
                   canvasObj.on("selected", function() {
                         that.visibletype = 1
