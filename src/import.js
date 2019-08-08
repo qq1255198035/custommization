@@ -12,7 +12,14 @@ import {
   Drawer,
   Switch,
   Checkbox,
-  Select
+  Select,
+  Table,
+  Steps,
+  Avatar,
+  Divider,
+  DatePicker,
+  Modal,
+  Radio
 } from "ant-design-vue";
 Vue.use(Button);
 Vue.use(Row);
@@ -27,3 +34,10 @@ Vue.use(Drawer);
 Vue.use(Switch);
 Vue.use(Checkbox);
 Vue.use(Select);
+Vue.use(Table);
+Vue.use(Steps);
+Vue.use(Avatar);
+Vue.use(Divider);
+Vue.use(DatePicker);
+Vue.use(Modal);
+Vue.use(Radio);

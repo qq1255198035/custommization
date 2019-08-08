@@ -1,6 +1,6 @@
 <template>
       <div id="main">
-            <My-Header></My-Header>
+            
             <a-row>
                   <a-col :span="6">
                         <div class="section1">
@@ -21,7 +21,7 @@
                                           </a-sub-menu>
                                           <a-menu-item style="display: flex; align-items:center;justify-content: center">
                                                 <a-upload name="file" class="my-upload" :beforeUpload="beforeUpload">
-                                                      <a-button type="primary">
+                                                      <a-button>
                                                             <a-icon type="upload"/> 上传图片
                                                       </a-button>
                                                 </a-upload>
@@ -52,12 +52,12 @@
                                     <span title="移动倒上一层" @click="toPreLayer"><a-icon type="sort-descending" /></span>
                               </div>
                               <div class="canvas-container"  v-show="model == 'front'">
-                                    <canvas id="canvas1" width="600" height="600"></canvas>
+                                    <canvas id="canvas1" :width="screenWidth" :height="screenWidth"></canvas>
                                     
                               </div>
                               <div class="canvas-container"  v-show="model == 'back'">
                                     
-                                    <canvas id="canvas2" width="600" height="600"></canvas>
+                                    <canvas id="canvas2" :width="screenWidth" :height="screenWidth"></canvas>
                               </div>
                         </div>
                         
@@ -67,10 +67,16 @@
                               <h3>选择颜色</h3>
                               <dl class="color-select">
                                     
-                                    <dd v-for="(color,index) in colors" :key="color" :class="{active: selected == index}" @click="selectColor(index,myCanvas)">
+                                    <dd v-for="(color,index) in colors" :key="color" :class="{active: selected == index}" @click="selectColor(index,color)">
                                           <i :style="{backgroundColor: color}"></i>
                                     </dd>
                               </dl>
+                              <h3>选择领型</h3>
+                              <ul style="display: flex;">
+                                    <li v-for="(img,index) in lximgs" :key="img" style="cursor:pointer" @click="selectLx(index)">
+                                          <img :src="img" alt="" width="200" height="50">
+                                    </li>
+                              </ul>
                               <h3>选择尺寸</h3>
                               <dl class="size-select">
                                     <dd v-for="(size,index) in sizes" :key="size">
@@ -84,10 +90,10 @@
                                     </dd>
                               </dl>
                               <div class="btn-box">
-                                    <a-button type="primary" @click="$router.push({path:'/swiper'})">保存</a-button>
-                                    <a-button type="primary" @click="saveImg">保存</a-button>
-                                    <a-button type="primary" @click="handleSetFront">正面</a-button>
-                                    <a-button type="primary" @click="handleSetback">背面</a-button>
+                                    <a-button @click="$router.push({path:'/swiper'})">保存</a-button>
+                                    <a-button @click="saveImg">保存</a-button>
+                                    <a-button @click="handleSetFront">正面</a-button>
+                                    <a-button @click="handleSetback">背面</a-button>
                                     <a-button><a class="downLoad" download="downImg" @click="downLoadImg" :href="dataUrl">下载</a></a-button>
                               </div>
                         </div>
@@ -341,14 +347,15 @@ import img3 from '@/assets/0003.png'
 import img7 from '@/assets/0007.png'
 import img8 from '@/assets/0008.png'
 import img10 from '@/assets/0010.png'
-import bgimg1 from '@/assets/bg-white.png'
+import bgimg1 from '@/assets/white-2fbe8472bccef1a454b2b5e2ceb1e7293a86b971a0aa7522fe8f91.png'
 import bgimg2 from '@/assets/black.jpg'
 import bgimg3 from '@/assets/jaw.jpg'
 import resize from '@/assets/icons/resize.svg'
 import remove from '@/assets/icons/remove.svg'
 import rotate from '@/assets/icons/rotate.svg'
 import diagonal from "@/assets/icons/repair-tools-cross.svg";
-import MyHeader from '@/components/header/Header'
+import lximg from '@/assets/lximg.png'
+import lximg2 from '@/assets/lximg2.png'
 function getBase64 (img, callback) {
       const reader = new FileReader()
       reader.addEventListener('load', () => callback(reader.result))
@@ -367,7 +374,7 @@ export default {
                         img8,
                         img10
                   ],
-                  colors:['#fff','#000','#ccc'],
+                  colors:['#ccc','red','#456865'],
                   sizes: ['S', 'M', 'L', 'XL'],
                   resize,
                   remove,
@@ -389,17 +396,16 @@ export default {
                   isDrawingMode:false,
                   dataUrl:'',
                   dataPost:'',
-                  bgimgs:[
-                        bgimg1,
-                        bgimg2,
-                        bgimg3
+                  lximgs:[
+                        lximg,
+                        lximg2,
                   ],
                   suits:{
                         frontimg:{
                               bgimgs:[
                                     bgimg1,
-                                    bgimg2,
-                                    bgimg3
+                                    bgimg1,
+                                    bgimg1
                               ]
                               
                         },
@@ -446,14 +452,19 @@ export default {
                   fontfamily:'Microsoft YaHei',
                   model: 'front',
                   myCanvas1: null,
-                  myCanvas2: null
+                  myCanvas2: null,
+                  screenWidth: 600
+                  
             }
       },
       components:{
-            MyHeader
+            
+      },
+      created(){
+            this.watchScreenWidth();
       },
       mounted(){
-            
+            console.log(screen.width)
             this.$nextTick(function() {
                   //11：当选择画布中的对象时，该对象不出现在顶层。
                   //canvas.preserveObjectStacking = true;
@@ -467,7 +478,9 @@ export default {
                   initAligningGuidelines(this.myCanvas1);
                   initAligningGuidelines(this.myCanvas2);
                   this.handleObjectMove(this.myCanvas1);
-                  this.handleObjectMove(this.myCanvas2)
+                  this.handleObjectMove(this.myCanvas2);
+                  //this.selectLx(0)
+                  console.log(this.myCanvas2.getImageData)
                   //14: 画布对象居中设置：
                   //var t = canvas.getActiveObject();
                   //t.center();    全部居中
@@ -476,12 +489,33 @@ export default {
                   //t.setCoords(); 注：必须设coords以上设置才会有效。
                   //object.set('selectable',false) 单个元素禁止选中
             })
-            
+            console.log(22);
       },
       watch:{
            
       },
       methods: {
+            selectLx(i){
+                  var that = this
+                  that.model = 'front'
+                  that.myCanvas1.setOverlayImage(that.lximgs[i],that.myCanvas1.renderAll.bind(that.myCanvas1),{
+                              opacity: 1,
+                              angle: 0,
+                              left: that.screenWidth / 2,
+                              top: 60,
+                              originX: "center",
+                              originY: "center",
+                              scaleX: that.screenWidth / 600,
+                              scaleY: 1
+                  });
+            },
+            watchScreenWidth(){
+                  if (screen.width >= 1024 && screen.width <= 1366) {
+                        this.screenWidth = 400; 
+                  }else if (screen.width >= 320 && screen.width < 1024) {
+                        this.screenWidth = 240;
+                  }
+            },
             handleObjectMove(object){
                   object.on("object:moving", function(e) {
                         //console.log(e.target)
@@ -513,11 +547,19 @@ export default {
                         }
 
                         // if you need margins set them here
-                        var top_margin = 120 / zoom;
-                        var bottom_margin = 100 / zoom;
-                        var left_margin = 200 / zoom;
-                        var right_margin = 200 / zoom;
-
+                        
+                        var top_margin,bottom_margin,left_margin,right_margin
+                        if(zoom > 1){
+                              top_margin = 0;
+                              bottom_margin = 40;
+                              left_margin = 70;
+                              right_margin = 140;
+                        }else{
+                              top_margin = 120;
+                              bottom_margin = 100;
+                              left_margin = 200;
+                              right_margin = 200;
+                        }
 
                         var top_bound = top_margin + top_adjust - pan_y;
                         var bottom_bound = c_height - bottom_adjust - bottom_margin - pan_y;
@@ -532,11 +574,11 @@ export default {
 
                         if( h > c_height ) {
                               obj.set('top',top_bound);
-                              
+                              console.log(top_bound)
                               
                         } else {
                               obj.set('top',Math.min(Math.max(top, top_bound), bottom_bound)); 
-                              console.log(obj.get("top"))       
+                              console.log(top_bound)       
                         }
                   });
             },
@@ -563,17 +605,16 @@ export default {
             zoomIn(){
                   var zoom = this.myCanvas.getZoom();
                   console.log(zoom)
-                  zoom = zoom + 0.1;
-                  if (zoom > 20) zoom = 20;
-                  if (zoom < 0.01) zoom = 0.01;
+                  zoom = zoom + 0.4;
+                  if (zoom > 1.4) zoom = 1.4;
                   this.myCanvas.zoomToPoint({ x: 300, y: 300 }, zoom);
             },
             zoomOut(){
                   var zoom = this.myCanvas.getZoom();
                   console.log(zoom)
-                  zoom = zoom - 0.1;
-                  if (zoom > 20) zoom = 20;
-                  if (zoom < 0.01) zoom = 0.01;
+                  zoom = zoom - 0.4;
+                  
+                  if (zoom < 1) zoom = 1;
                   this.myCanvas.zoomToPoint({ x: 300, y: 300 }, zoom);
             },
             changeFontFamily(value){
@@ -773,18 +814,20 @@ export default {
             saveImg(){
                   let json = this.myCanvas.toJSON();
                   this.dataPost = JSON.stringify(json)
-                  //console.log(this.dataPost)
+                  console.log(json)
             },
             createCircle () {
                   let that = this;
-                  let options = Object.assign({ left: 300, top: 300, radius: 40, shadow:'#000 0 0 0',fillColor: 'rgba(0, 0, 0, 1)', color: '#000', drawWidth: 0 }, options);
+                  let options = Object.assign({ radius: 40, shadow:'#000 0 0 0',fillColor: 'rgba(0, 0, 0, 1)', color: '#000', drawWidth: 0 }, options);
                   let defaultOption = {
                         ...options,
                         fill: options.fillColor,
                         strokeWidth: options.drawWidth,
                         stroke: options.color,
                         originX:'center',
-                        originY: 'center'
+                        originY: 'center',
+                        left: that.screenWidth / 2,
+                        top: that.screenWidth / 2,
                   };
                   let Circle = new fabric.Circle(defaultOption);
                   Circle.on("selected", function() {
@@ -808,14 +851,16 @@ export default {
             },
             createRect () {
                   let that = this;
-                  let options = Object.assign({ width: 80, height: 80, shadow:'#000 0 0 0',fillColor: 'rgba(0, 0, 0, 1)', left: 300, top: 300,color: '#000', drawWidth: 0 }, options);
+                  let options = Object.assign({ width: 80, height: 80, shadow:'#000 0 0 0',fillColor: 'rgba(0, 0, 0, 1)',color: '#000', drawWidth: 0 }, options);
                   let rect = new fabric.Rect({
                         ...options,
                         fill: options.fillColor, 
                         strokeWidth: options.drawWidth,
                         stroke: options.color,
                         originX:'center',
-                        originY: 'center'
+                        originY: 'center',
+                        left: that.screenWidth / 2,
+                        top: that.screenWidth / 2,
                   });
                   rect.on("selected", function() {
                         that.visibletype = 3;
@@ -838,7 +883,7 @@ export default {
             },
             createEqualTriangle () {
                   let that = this;
-                  let options = Object.assign({ left: 300, top: 300, width: 80, height: 80, shadow:'#000 0 0 0',fillColor: 'rgba(0, 0, 0, 1)', color: '#000', drawWidth: 0 }, options);
+                  let options = Object.assign({ width: 80, height: 80, shadow:'#000 0 0 0',fillColor: 'rgba(0, 0, 0, 1)', color: '#000', drawWidth: 0 }, options);
                   // console.log(defaultOption);
                   let triangle = new fabric.Triangle({
                         ...options,
@@ -846,7 +891,9 @@ export default {
                         strokeWidth: options.drawWidth,
                         stroke: options.color,
                         originX:'center',
-                        originY: 'center'
+                        originY: 'center',
+                        left: that.screenWidth / 2,
+                        top: that.screenWidth / 2
                   });
                   triangle.on("selected", function() {
                         that.visibletype = 3;
@@ -1048,8 +1095,8 @@ export default {
                                     skewY:0,
                                     originX: "center",
                                     originY: "center",
-                                    left: 300,
-                                    top: 300
+                                    left: that.screenWidth / 2,
+                                    top: that.screenWidth / 2
                               })
                         ).setActiveObject(oImg);
                   });
@@ -1065,31 +1112,38 @@ export default {
             },
             bindCanvas1(i) {
                   var that = this
-                  that.myCanvas1.setBackgroundImage(that.suits.frontimg.bgimgs[i],that.myCanvas.renderAll.bind(that.myCanvas1),{
+                  that.myCanvas1.setBackgroundImage(that.suits.frontimg.bgimgs[i],that.myCanvas1.renderAll.bind(that.myCanvas1),{
                               opacity: 1,
                               angle: 0,
-                              left: 300,
-                              top: 300,
+                              left: that.screenWidth / 2,
+                              top: that.screenWidth / 2,
                               originX: "center",
-                              originY: "center"
+                              originY: "center",
+                              scaleX: that.screenWidth / 600,
+                              scaleY: that.screenWidth / 600
                   });
+                  
             },
             bindCanvas2(i) {
                   var that = this
-                  that.myCanvas2.setBackgroundImage(that.suits.backimg.bgimgs[i],that.myCanvas.renderAll.bind(that.myCanvas2),
+                  that.myCanvas2.setBackgroundImage(that.suits.backimg.bgimgs[i],that.myCanvas2.renderAll.bind(that.myCanvas2),
                         {
                               opacity: 1,
                               angle: 0,
-                              left: 300,
-                              top: 300,
+                              left: that.screenWidth / 2,
+                              top: that.screenWidth / 2,
                               originX: "center",
-                              originY: "center"
+                              originY: "center",
+                              scaleX: that.screenWidth / 600,
+                              scaleY: that.screenWidth / 600
                         });
             },
-            selectColor(i){
-                  this.bindCanvas1(i)
-                  this.bindCanvas2(i)
-                  this.selected = i
+            selectColor(i,color){
+                  let that = this
+                  that.bindCanvas1(i)
+                  that.bindCanvas2(i)
+                  that.selected = i
+                  that.myCanvas.setBackgroundColor(color, that.myCanvas.renderAll.bind(that.myCanvas))
             },
             onOpenChange (openKeys) {
                   const latestOpenKey = openKeys.find(key => this.openKeys.indexOf(key) === -1)
@@ -1105,7 +1159,7 @@ export default {
             addItext(text, options) {
                   let that = this;
                   that.visibletype = 1
-                  options = Object.assign({ fontSize: 30, fillColor: '#000000', shadow:'#000 0 0 0',strokeWidth: 0,stroke: '#000',registeObjectEvent: true, left: 300, top: 250,textBackgroundColor:'' }, options);
+                  options = Object.assign({ fontSize: 30, fillColor: '#000000', shadow:'#000 0 0 0',strokeWidth: 0,stroke: '#000',registeObjectEvent: true,textBackgroundColor:'' }, options);
                   var canvasObj = new fabric.Textbox('Text', {
                         ...options,
                         fill: options.fillColor,
@@ -1116,6 +1170,8 @@ export default {
                         fontFamily: 'Microsoft YaHei',
                         originX:'center',
                         originY:'center',
+                        left: that.screenWidth / 2,
+                        top: that.screenWidth / 2
                   });
                   canvasObj.on("selected", function() {
                         that.visibletype = 1
@@ -1356,8 +1412,8 @@ export default {
       }
       
       #main{
-            padding: 100px;
-            background-color: #f8f8f8;
+            padding-top: 100px;
+            background-image: linear-gradient( 45deg, #11bbe8 10%, #4ac37a 100%);
             .section1{
                   padding: 0 10px;
                   .my-upload{
@@ -1409,9 +1465,9 @@ export default {
                   }
             }
             .section2{
-                  background-color: #000;
+                  
                   .canvas-container{
-                        background-image: linear-gradient( 135deg, #E2B0FF 10%, #9F44D3 100%);
+                        
                         display: flex;
                         justify-content: center;
                   }

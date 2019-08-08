@@ -1,19 +1,19 @@
 <template>
       <div id="nav-bar">
             <ul class="nav-list-pc">
-                  <li :class="{active: false}">
-                        <router-link to="">Home</router-link>
+                  <li :class="{'nav-active': $route.name == 'home'}">
+                        <router-link to="/home">Home</router-link>
                         <!-- <span class="active-border" v-if="this.$route.name == 'home'"></span> -->
                   </li>
-                  <li :class="{active: false}">
-                        <router-link to="/play">Commodity</router-link>
+                  <li :class="{'nav-active': $route.name == 'products'}">
+                        <router-link to="/products">Products</router-link>
                         
                   </li>
-                  <li :class="{active: false}">
+                  <li :class="{'nav-active': false}">
                         <router-link to="/scores">About us</router-link>
                         
                   </li>
-                  <li :class="{active: false}">
+                  <li :class="{'nav-active': false}">
                         <router-link to="">Become a seller</router-link>
                         
                   </li>
@@ -48,7 +48,6 @@ export default {
             }
       },
       mounted(){
-            //console.log(this.isActive)
             
       },
       computed:{
@@ -73,31 +72,7 @@ export default {
                   justify-content: center;
                   align-items: center;
                   position: relative;
-                  &:hover::before{
-                        background-color: rgba(89,87,87,0.5);
-                        -webkit-transform: scaleY(1);
-                        transform: scaleY(1);
-                        
-                  }      
-                  &::before {
-                        content: '';
-                        position: absolute;
-                        width: 100%;
-                        height: 100%;
-                        bottom: 0;
-                        left: 0;
-                        
-                        z-index: 0;
-                        -webkit-transform: scaleY(0);
-                        transform: scaleY(0);
-                        -webkit-transform-origin: 0 50%;
-                        transform-origin: 0 50%;
-                        -webkit-transition-property: transform;
-                        transition-property: transform;
-                        -webkit-transition-duration: 0.4s;
-                        transition-duration: 0.4s;
-                        transition-timing-function: ease-out;
-                  }
+                  
                   .hidden-menu{
                         width: 240px;
                         padding: 0 10px;
@@ -152,8 +127,9 @@ export default {
             }
       }
 }
-.active{
-      background-color: rgba(89,87,87,0.5);
+.nav-active{
+      transform: scale(1.3);
+      text-shadow: 4px 4px 2px rgba(51,44,43,0.22)
 }
 @media screen and(max-width: 800px){
       #nav-bar{

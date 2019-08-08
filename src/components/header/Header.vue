@@ -2,7 +2,7 @@
       <div id="header">
             <div class="header">
                   <div  class="logo">
-                        <img src="@/assets/header-logo.png" alt="LOGO">
+                        <img src="@/assets/logo.png" alt="LOGO">
                   </div>
                   
                   <nav-bar></nav-bar>
@@ -42,16 +42,15 @@ export default {
             display: flex;
             justify-content: space-between;      
             align-items: center;
-            background-color: rgba(0, 0, 0, 0.7);
-            padding: 0 100px;
+            
+            padding: 0 80px;
             .logo{
-                  width: 122px;
-                  height: 100px;
+                  padding: 10px;
                   display: flex;
                   align-items: center;
                   justify-content: center;
                   img{
-                        width: 100%;
+                        width: 90%;
                   }
             }
       }

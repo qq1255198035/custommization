@@ -5,7 +5,6 @@
                         <div class="swiper-slide" v-for="(item,index) in imgUrl" :key="index">
                               <a href="http://baidu.com">
                                     <img :src="item" alt="banner">
-                                    
                               </a>
                               
                         </div>

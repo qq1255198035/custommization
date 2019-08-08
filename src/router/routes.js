@@ -1,32 +1,54 @@
-
+import BasicLayout from "./../layouts/BasicLayout.vue";
 const routes = [
       {
             path: "/",
-            redirect: "/test"
+            name: "index",
+            component: BasicLayout,
+            redirect: "/home",
+            children:[
+                  {
+                        path: "/home",
+                        name: "home",
+                        component: () => import("@/pages/home"),
+                        meta: {
+
+                        }
+                  },
+                  {
+                        path: "/test",
+                        name: "test",
+                        component: () => import("@/pages/test"),
+                        meta: {
+                              
+                        }
+                  },
+                  {
+                        path: "/swiper",
+                        name: "swiper",
+                        component: () => import("@/pages/Swiper"),
+                        meta: {
+                              
+                        }
+                  },
+                  {
+                        path: "/products",
+                        name: "products",
+                        component: () => import("@/pages/products"),
+                        meta: {
+                              
+                        }
+                  },
+                  {
+                        path: "/comtest",
+                        name: "comtest",
+                        component: () => import("@/pages/comtest"),
+                        meta: {
+                              
+                        }
+                  }
+            ]
       },
-      {
-            path: "/test",
-            name: "test",
-            component: () => import("@/pages/test"),
-            meta:{
-                  index:1
-            }
-      },
-      {
-            path: "/swiper",
-            name: "swiper",
-            component: () => import("@/pages/Swiper"),
-            meta:{
-                  index:2
-            }
-      },
-      {
-            path: "/test2",
-            name: "test2",
-            component: () => import("@/pages/test2"),
-            meta: {
-                  index: 3
-            }
-      },
+      
+
 ];
 export default routes;

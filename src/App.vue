@@ -1,8 +1,6 @@
 <template>
   <div id="app">
-    <transition :name="transitionName">
-      <router-view class="router-view"></router-view>
-    </transition>
+      <router-view></router-view>
   </div>
 </template>
 
@@ -16,22 +14,13 @@ export default {
   },
   data(){
     return {
-      transitionName:'vux-pop-in'
+      
    }
   },
   
   mounted(){
     
-  },
-  watch:{
-  $route(to, from) {
-   if(to.meta.index > from.meta.index){
-    this.transitionName = 'vux-pop-in';
-   }else{
-    this.transitionName = 'vux-pop-out';
-   }
   }
- }
 }
 </script>
 
@@ -42,44 +31,20 @@ export default {
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   width: 100%;
-  
+  height: 100%;
+  ul{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  p{
+    margin: 0;
+    padding: 0;
+  }
+  input::-webkit-input-placeholder{
+    color: #fff;
+  }
 }
-.router-view{
-    width: 100%;
-    position: absolute;
-    -webkit-transition: all .3s cubic-bezier(.55,0,.1,1);
-    -moz-transition: all .3s cubic-bezier(.55,0,.1,1);
-    -ms-transition: all .3s cubic-bezier(.55,0,.1,1);
-    -o-transition: all .3s cubic-bezier(.55,0,.1,1);
-    transition: all .3s cubic-bezier(.55,0,.1,1);
-    height:100%;
- }
-.vux-pop-out-enter-active,
-.vux-pop-out-leave-active,
-.vux-pop-in-enter-active,
-.vux-pop-in-leave-active {
- will-change: transform;
- transition: all 500ms;
- height: 100%;
- position: absolute;
- backface-visibility: hidden;
- perspective: 1000;
-}
-.vux-pop-out-enter {
- opacity: 0;
- transform: translate3d(0, -100%, 0);
-}
-.vux-pop-out-leave-active {
- opacity: 0;
- transform: translate3d(0, 100%, 0);
-}
-.vux-pop-in-enter {
- opacity: 0;
- transform: translate3d(0, 100%, 0);
-}
-.vux-pop-in-leave-active {
- opacity: 0;
- transform: translate3d(0, -100%, 0);
-}
+
   
 </style>
