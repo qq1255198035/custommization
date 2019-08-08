@@ -10,6 +10,9 @@
                         <p><a-icon type="phone" style="transform: rotateY(180deg)"/> +12 12345698654455</p>
                         <p><a-icon type="mail" /> www@qq.com</p>
                         <p><span><a-icon type="facebook" /></span><span><a-icon type="instagram" /></span><span><a-icon type="wechat" /></span><span><a-icon type="weibo-circle" /></span><span><a-icon type="qq" /></span></p>
+                        <p>
+                              <img src="@/assets/map-img.png" alt="">
+                        </p>
                   </div>
             </div>
             <Footer></Footer>
@@ -47,7 +50,7 @@ export default {
                   background-repeat: no-repeat;
                   p{
                         word-wrap: break-word;
-                        margin: 20px 0;
+                        margin: 25px 0;
                         span{
                               
                               width: 35px;
@@ -65,6 +68,10 @@ export default {
                         > i{
                               font-size: 20px;
                               margin-right: 20px;
+                        }
+                        > img{
+                              width: 100%;
+                              display: block;
                         }
                   }
             }

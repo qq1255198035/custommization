@@ -16,9 +16,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.focus-btn{
-      
-}
+
 #input-box{
       display: flex;
       justify-content: space-between;
