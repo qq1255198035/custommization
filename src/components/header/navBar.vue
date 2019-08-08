@@ -9,8 +9,8 @@
                         <router-link to="/products">Products</router-link>
                         
                   </li>
-                  <li :class="{'nav-active': false}">
-                        <router-link to="/scores">About us</router-link>
+                  <li :class="{'nav-active': $route.name == 'about'}">
+                        <router-link to="/about">About us</router-link>
                         
                   </li>
                   <li :class="{'nav-active': false}">

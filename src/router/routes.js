@@ -15,6 +15,22 @@ const routes = [
                         }
                   },
                   {
+                        path: "/products",
+                        name: "products",
+                        component: () => import("@/pages/products"),
+                        meta: {
+
+                        }
+                  },
+                  {
+                        path: "/about",
+                        name: "about",
+                        component: () => import("@/pages/about"),
+                        meta: {
+
+                        }
+                  },
+                  {
                         path: "/test",
                         name: "test",
                         component: () => import("@/pages/test"),
@@ -30,14 +46,7 @@ const routes = [
                               
                         }
                   },
-                  {
-                        path: "/products",
-                        name: "products",
-                        component: () => import("@/pages/products"),
-                        meta: {
-                              
-                        }
-                  },
+                  
                   {
                         path: "/comtest",
                         name: "comtest",

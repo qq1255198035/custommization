@@ -29,14 +29,16 @@
                         </div>
                   </div>
             </full-page>
-
+            <Footer></Footer>
       </div>
 </template>
 <script>
-import Swiper from '@/components/Swiper/Swiper'
+import Swiper from '@/components/Swiper/Swiper';
+import Footer from '@/components/Footer/Footer'
 export default {
       components:{
-            Swiper
+            Swiper,
+            Footer
       },
       data () {
             return {

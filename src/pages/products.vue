@@ -39,14 +39,15 @@
                         </a-row>
                   </a-col>
             </a-row>
-            
+            <Footer></Footer>
       </div>
 </template>
 <script>
-import InputSearch from '@/components/InputSearch/InputSearch.vue'
+
+import Footer from '@/components/Footer/Footer'
 export default {
       components:{
-            InputSearch
+            Footer
       }
 }
 </script>
