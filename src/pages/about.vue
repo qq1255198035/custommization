@@ -9,7 +9,13 @@
                         <p><a-icon type="environment" /> 吉林省长春市南关区卫星路与健民街交汇创新花园三号楼5单元209</p>
                         <p><a-icon type="phone" style="transform: rotateY(180deg)"/> +12 12345698654455</p>
                         <p><a-icon type="mail" /> www@qq.com</p>
-                        <p><span><a-icon type="facebook" /></span><span><a-icon type="instagram" /></span><span><a-icon type="wechat" /></span><span><a-icon type="weibo-circle" /></span><span><a-icon type="qq" /></span></p>
+                        <p>
+                              <span><a href="" target="_blank"><a-icon type="facebook" /></a></span>
+                              <span><a href="" target="_blank"><a-icon type="instagram" /></a></span>
+                              <span><a href="" target="_blank"><a-icon type="wechat" /></a></span>
+                              <span><a href="" target="_blank"><a-icon type="weibo-circle" /></a></span>
+                              <span><a href="" target="_blank"><a-icon type="qq" /></a></span>
+                        </p>
                         <p>
                               <img src="@/assets/map-img.png" alt="">
                         </p>
@@ -61,6 +67,10 @@ export default {
                               border: 1px solid #fff;
                               border-radius: 50%;
                               margin-right: 20px;
+                              transition: 0.1s;
+                              &:hover{
+                                    transform: scale(1.1)
+                              }
                               i{
                                     font-size: 20px;
                               }

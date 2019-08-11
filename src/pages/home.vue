@@ -26,10 +26,11 @@
                               <div class="bg">
                                     <a href=""></a>
                               </div>
+                              <Footer></Footer>
                         </div>
                   </div>
             </full-page>
-            <Footer></Footer>
+            
       </div>
 </template>
 <script>
@@ -100,8 +101,9 @@ export default {
                   background-position: right 150px;
                   background-repeat: no-repeat;
                   display: flex;
-                        justify-content: center;
-                        align-items: center;
+                  justify-content: center;
+                  align-items: center;
+                  position: relative;
                   .bg{
                         width: 90%;
                         height: 100%;
@@ -109,11 +111,15 @@ export default {
                         background-position: center;
                         background-repeat: no-repeat;
                         background-size: 100%;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
                         a{
                               width: 250px;
                               height: 250px;
-                              transform: rotate(45deg);
+                             
                               margin-top:25px; 
+                              
                         }
                   }
                   

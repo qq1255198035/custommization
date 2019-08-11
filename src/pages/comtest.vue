@@ -89,7 +89,7 @@ export default {
 <style lang="less">
 #test{
       width: 100%;
-      height: 100%;
+     
       padding: 150px 80px;
       background-image: linear-gradient(-45deg, #11bbe8 10%, #4ac37a 100%);
       .hiden-menu{

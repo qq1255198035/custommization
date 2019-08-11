@@ -101,7 +101,9 @@ export default {
                         font-size: 18px;
                         position: relative;
                         z-index: 1;
-                        
+                        &:active{
+                              text-decoration: none;
+                        }
                   }
                   
                   .active-border{
