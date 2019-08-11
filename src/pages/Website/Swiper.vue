@@ -18,12 +18,12 @@
 </template>
 <script>
 import Swiper from "swiper"
-import imgurl from './../assets/bg-white.png'
-import imgurl1 from './../assets/bg-white.png'
-import imgurl2 from './../assets/bg-white.png'
-import imgurl3 from './../assets/bg-white.png'
-import imgurl4 from './../assets/bg-white.png'
-import imgurl5 from './../assets/bg-white.png'
+import imgurl from '@/assets/bg-white.png'
+import imgurl1 from '@/assets/bg-white.png'
+import imgurl2 from '@/assets/bg-white.png'
+import imgurl3 from '@/assets/bg-white.png'
+import imgurl4 from '@/assets/bg-white.png'
+import imgurl5 from '@/assets/bg-white.png'
 import 'swiper/dist/css/swiper.css'
 //import { fabric } from 'fabric'
 export default {
@@ -78,7 +78,7 @@ export default {
 <style lang="less">
 
 #swiper{
-      background: url('./../assets/swiper-bg.png') center;
+      background: url('./../../assets/swiper-bg.png') center;
       padding: 50px;
 }
 .swiper-wrapper{

@@ -68,7 +68,7 @@ export default {
                   padding-top: 150px;
             }
             .box2{
-                  background-image: url("./../assets/home-page2-bg.png");
+                  background-image: url("./../../assets/home-page2-bg.png");
                   background-position: left 150px;
                   background-repeat: no-repeat;
                   display:flex;
@@ -78,7 +78,7 @@ export default {
                         height: 100%;
                         width: 50%;
                         padding-top: 5%;
-                        background-image: url("./../assets/home-page2-bgright.png");
+                        background-image: url("./../../assets/home-page2-bgright.png");
                         
                         background-position: right 0;
                         background-repeat: no-repeat;
@@ -97,7 +97,7 @@ export default {
                  
             }
             .box3{
-                  background-image: url("./../assets/home-page2-bgright.png");
+                  background-image: url("./../../assets/home-page2-bgright.png");
                   background-position: right 150px;
                   background-repeat: no-repeat;
                   display: flex;
@@ -107,7 +107,7 @@ export default {
                   .bg{
                         width: 90%;
                         height: 100%;
-                        background-image: url("./../assets/home-page3-center.png");
+                        background-image: url("./../../assets/home-page3-center.png");
                         background-position: center;
                         background-repeat: no-repeat;
                         background-size: 100%;

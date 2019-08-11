@@ -9,7 +9,7 @@ const routes = [
                   {
                         path: "/home",
                         name: "home",
-                        component: () => import("@/pages/home"),
+                        component: () => import("@/pages/Website/home"),
                         meta: {
 
                         }
@@ -17,7 +17,7 @@ const routes = [
                   {
                         path: "/products",
                         name: "products",
-                        component: () => import("@/pages/products"),
+                        component: () => import("@/pages/Website/products"),
                         meta: {
 
                         }
@@ -25,7 +25,7 @@ const routes = [
                   {
                         path: "/about",
                         name: "about",
-                        component: () => import("@/pages/about"),
+                        component: () => import("@/pages/Website/about"),
                         meta: {
 
                         }
@@ -33,7 +33,7 @@ const routes = [
                   {
                         path: "/test",
                         name: "test",
-                        component: () => import("@/pages/test"),
+                        component: () => import("@/pages/Website/test"),
                         meta: {
                               
                         }
@@ -41,7 +41,7 @@ const routes = [
                   {
                         path: "/swiper",
                         name: "swiper",
-                        component: () => import("@/pages/Swiper"),
+                        component: () => import("@/pages/Website/Swiper"),
                         meta: {
                               
                         }
@@ -50,7 +50,7 @@ const routes = [
                   {
                         path: "/comtest",
                         name: "comtest",
-                        component: () => import("@/pages/comtest"),
+                        component: () => import("@/pages/Website/comtest"),
                         meta: {
                               
                         }

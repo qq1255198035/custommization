@@ -44,14 +44,14 @@ export default {
             display: flex;
             justify-content: flex-end;
             align-items: center;
-            background-image: url("./../assets/about-bg.png");
+            background-image: url("./../../assets/about-bg.png");
             background-position: left 150px;
             background-repeat: no-repeat;
             .desc{
                   width: 50%;
                   height: 100%;
                   padding: 5% 50px;
-                  background-image: url("./../assets/home-page2-bgright.png");
+                  background-image: url("./../../assets/home-page2-bgright.png");
                   background-position: right 0;
                   background-repeat: no-repeat;
                   p{
