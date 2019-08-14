@@ -9,7 +9,7 @@ module.exports = {
             loaderOptions: {
                   less: {
                         modifyVars: {
-                              'btn-default-bg': 'rgba(255,255,255,0.5)',
+                              'btn-default-bg': 'rgba(255,255,255,0.3)',
                               'border-color-base': 'rgba(255,255,255,0.5)',
                               'link-hover-color': '#fff',
                               'link-color': '#fff',

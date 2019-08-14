@@ -1,34 +1,42 @@
 <template>
       <div id="OrderItem">
-            <div class="order-title">
-                  <p>
-                        <span>订单Id:XXXXXXXXXX</span>
-                        <span>订单时间: 2019-07-02 15: 00: 33</span>
-                        <span>订单关闭时间： 2019-07-02</span>
-                  </p>
-                  <slot></slot>
-            </div>
-            <div class="order-content">
-                  <div class="order-item">
-                        <div class="left">
-                              <img src="@/assets/jaw.jpg" alt="" width="100" height="120">
-                              <div class="desc">
-                                    <h3>篮球训练服</h3>
-                                    <p>颜色： 蓝色</p>
+            <div  v-for="items in orderArr" :key="items.id">
+                  <div class="order-title">
+                        <p>
+                              <span>订单Id:{{items.orderId}}</span>
+                              <span>订单时间: {{items.time}}</span>
+                              <span>订单关闭时间： {{items.closeTime}}</span>
+                        </p>
+                        <slot></slot>
+                  </div>
+                  <div class="order-content">
+                        <div class="order-item" v-for="item in items.list" :key="item.id">
+                              <div class="left">
+                                    <img src="@/assets/jaw.jpg" alt="" width="100" height="120">
+                                    <div class="desc">
+                                          <h3>{{item.name}}</h3>
+                                          <p>颜色： {{item.color}}</p>
+                                    </div>
                               </div>
-                        </div>
-                        <div class="right">
-                              <span>26/56</span>
-                              <span>状态： 团购中</span>
-                              <a-button>样稿确认</a-button>
+                              <div class="right">
+                                    <span>26/56</span>
+                                    <span>状态： {{item.status}}</span>
+                                    <a-button>样稿确认</a-button>
+                              </div>
                         </div>
                   </div>
             </div>
+            
       </div>
 </template>
 <script>
+
 export default {
-      
+      props:{
+            orderArr:{
+                  type: Array
+            }
+      }
 }
 </script>
 <style lang="less">
@@ -38,6 +46,7 @@ export default {
             justify-content: space-between;
             border-bottom: 1px solid rgba(255, 255, 255, 0.3);
             padding: 10px 0;
+            margin-top: 20px;
             p{
                   width: 90%;
                   display: flex;

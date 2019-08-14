@@ -482,7 +482,6 @@ export default {
                   this.handleObjectMove(this.myCanvas1);
                   this.handleObjectMove(this.myCanvas2);
                   //this.selectLx(0)
-                  console.log(this.myCanvas2.getImageData)
                   //14: 画布对象居中设置：
                   //var t = canvas.getActiveObject();
                   //t.center();    全部居中
@@ -518,6 +517,7 @@ export default {
                         this.screenWidth = 240;
                   }
             },
+            //设置绘图区域
             handleObjectMove(object){
                   object.on("object:moving", function(e) {
                         //console.log(e.target)

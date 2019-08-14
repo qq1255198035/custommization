@@ -40,13 +40,14 @@
             <a-checkbox>自动登录</a-checkbox>
             <a-date-picker dropdownClassName="my-date-picker"/>
             <a-modal
-                  title="管理地址"
                   v-model="show"
                   :footer="null"
             >
-                  <p>Bla bla ...</p>
-                  <p>Bla bla ...</p>
-                  <p>Bla bla ...</p>
+                  <template slot="title">
+                        <div>
+                              <img src="@/assets/jaw.jpg" alt="" width="30">
+                        </div>
+                  </template>
             </a-modal>
             
       </div>
@@ -78,7 +79,7 @@ export default {
       data(){
             return{
                   number:0,
-                  show: false,
+                  show: true,
                   itemTitle: '订单详情',
                   hidemenu:false
             }

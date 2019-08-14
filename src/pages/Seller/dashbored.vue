@@ -1,6 +1,5 @@
 <template>
     <div id="dashbored">
-        
         <my-header></my-header>
         <order-total></order-total>
         <my-title :title="'进行中的订单'">
@@ -12,7 +11,6 @@
 </template>
 <script>
 import MyHeader from "@/components/MyHeader/MyHeader";
-
 import OrderTotal from '@/components/OrderTotal/OrderTotal';
 import MyTitle from "@/components/MyTitle/MyTitle";
 import OrderList  from "@/components/OrderList/OrderList";
@@ -33,7 +31,5 @@ export default {
 <style lang="less" scoped>
 #dashbored{
     width: 100%;
-    
-    
 }
 </style>

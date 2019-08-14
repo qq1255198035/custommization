@@ -1,5 +1,5 @@
 <template>
-      <div id="stpes" :class="{column: vertical == 'mycolumn'}">
+      <div id="Stpes" :class="{column: vertical == 'mycolumn'}">
             <div class="section">
                   <doct2 v-if="mycurrent - 0 > 0"></doct2>
                   <doct1 v-else-if="mycurrent - 0 === 0"></doct1>
@@ -55,7 +55,6 @@ export default {
             },
             //一共分为几步
             stpesnum:{
-                  type: Number,
                   default: 4
             }
       },
@@ -74,7 +73,7 @@ export default {
             height: 100px !important;
       }
 }
-#stpes{
+#Stpes{
       display: flex;
       justify-content: space-around;
       
@@ -93,10 +92,13 @@ export default {
       }
       .line{
             height: 1px;
-            width: 30%;
+            width: 45%;
             background-color: rgba(255, 255, 255, 0.5);
             margin-bottom: 25px;
             min-width: 20px;
+      }
+      .more-lang{
+
       }
       .doct3{
             width: 18px;

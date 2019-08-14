@@ -1,7 +1,7 @@
 <template>
       <div id="Footer">
             <p>
-                  Copyright: Jilin Province Thermal Sports Development Co., Ltd
+                  © 2019 Westacks Ltd. All Rights Reserved
             </p>
       </div>      
 </template>

@@ -7,12 +7,10 @@
                   <a-col :span="6">
                         <div class="section1">
                               <a-menu mode="inline" :openKeys="openKeys" @openChange="onOpenChange" @click="handleClick">
-                                    
                                     <a-menu-item @click="openAddText">
                                           <a-icon type="edit" />
                                           <span style="font-size: 18px;" >文字</span>
                                     </a-menu-item>
-                                    
                                     <a-sub-menu key="sub2" class="my-submenu">
                                           <span slot="title"><a-icon type="area-chart" /><span>图片</span></span>
                                           <a-sub-menu key="sub3" title="剪贴画" class="img-cell">
@@ -29,16 +27,11 @@
                                                 </a-upload>
                                           </a-menu-item>
                                     </a-sub-menu>
-                                    <!-- <a-sub-menu key="sub4" class="my-submenu">
-                                          <span slot="title"><a-icon type="pie-chart" /><span>图形</span></span>
-                                          <a-menu-item key="9" @click="createEqualTriangle">三角形</a-menu-item>
-                                          <a-menu-item key="10" @click="createRect">矩形</a-menu-item>
-                                          <a-menu-item key="11" @click="createCircle">圆形</a-menu-item>
-                                          
-                                    </a-sub-menu> -->
                                     <a-sub-menu key="sub4" class="my-submenu">
                                           <span slot="title"><a-icon type="pie-chart" /><span>产品颜色</span></span>
-                                          <a-menu-item key="9">红色</a-menu-item>
+                                          <a-menu-item key="9" class="color-picker">
+                                                
+                                          </a-menu-item>
                                     </a-sub-menu>
                               </a-menu>
                         </div>
@@ -61,6 +54,11 @@
                                           <img src="@/assets/zoom-out.png" alt="">
                                     </span>
                               </div>
+                              <div class="bottom-side">
+                                    <span class="btn">
+                                          
+                                    </span>
+                              </div>
                         </div>
                         
                   </a-col>
@@ -68,7 +66,10 @@
                         <transition :name="transitionName" mode="out-in">
                               <div v-show="drawerShow" style="width: 100%;">
                                     <div class="drawer">
-                                          <h2 style="color: #fff;text-align: right;"><a-icon type="close" style="cursor: pointer;" @click="closeDrawer"/></h2>
+                                          <h2 style="color: #fff;text-align: right;">
+                                                <a-icon type="arrow-left" style="cursor: pointer;" @click="goBackDrawer" v-if="visibletype > 2"/>
+                                                <a-icon type="close" style="cursor: pointer;" @click="closeDrawer" v-else/>
+                                          </h2>
                                           <h3 style="color: #fff;padding-bottom: 3px; border-bottom: 1px solid #fff;">图层</h3>
                                           <div class="controlers">
                                                 <span title="移动到下一层" @click="toNextLayer"><a-icon type="up" /></span>
@@ -186,7 +187,6 @@
                                                 <ul class="font-color-list">
                                                       <li v-for="item in fontColorArr" :key="item.name" :style="{backgroundColor: item.color}" @click="changestrokeColor(item.color)"></li>
                                                 </ul>
-
                                           </div>
                                     </div>
                                     
@@ -263,6 +263,12 @@ function getBase64 (img, callback) {
 export default {
       data () {
             return {
+                  suitsList:[
+                        bgimg3,
+                        bgimg3,
+                        bgimg3,
+                        bgimg3
+                  ],
                   fontFamilyArr:[
                         {
                               id:1,
@@ -285,8 +291,6 @@ export default {
                               color: '#ff0000'
                         }
                   ],
-                        
-                  
                   addText:'',
                   rotateNum:0,
                   drawerShow:false,
@@ -381,7 +385,6 @@ export default {
                   myCanvas1: null,
                   myCanvas2: null,
                   screenWidth: 600
-                  
             }
       },
       components:{
@@ -422,6 +425,10 @@ export default {
            
       },
       methods: {
+            goBackDrawer(){
+                  this.toogleDrawer();
+                  this.visibletype = 1;
+            },
             changeLineHeight(){
                   let that = this;
                   let obj = that.myCanvas.getActiveObject()
@@ -436,12 +443,10 @@ export default {
                   t.setCoords(); 
             },
             openAddText(){
-                  
                   if(this.visibletype !== 1){
                         this.toogleDrawer();
                         this.visibletype = 1;
                   }
-                  
             },
             openFontFamilyBox(){
                   this.toogleDrawer();
@@ -592,17 +597,13 @@ export default {
                   this.myCanvas.zoomToPoint({ x: 300, y: 300 }, zoom);
             },
             changeFontFamily(value){
-                  this.toogleDrawer();
-                  this.visibletype = 1;
                   console.log(`selected ${value}`);
                   if (value == 'testFont') {
                         this.loadAndUse(value);
-                        
                   }else{
                         let obj = this.myCanvas.getActiveObject()
                         if (obj) {
                               obj.set('fontFamily', value);
-                              
                               this.myCanvas.requestRenderAll();
                         }
                   }
@@ -837,8 +838,6 @@ export default {
                         obj.set('stroke', val);
                         this.myCanvas.requestRenderAll();
                   }
-                  this.toogleDrawer();
-                  this.visibletype = 1;
             },
             //描边大小
             changestrokeWidth(){
@@ -944,7 +943,6 @@ export default {
                         br: {
                               action: function(e, target) {
                                     console.log(target);
-                                    
                                     that.openDrawer();
                               },
                               cursor: "pointer"
@@ -1096,9 +1094,7 @@ export default {
                         obj.set("fill", val);
                         this.myCanvas.requestRenderAll();
                   }
-                  this.visibletype = 1;
                   this.colorName = name;
-                  this.toogleDrawer();
             },
             changeTextBgColor(){
                   let obj = this.myCanvas.getActiveObject()

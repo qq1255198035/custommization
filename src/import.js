@@ -19,7 +19,8 @@ import {
   Divider,
   DatePicker,
   Modal,
-  Radio
+  Radio,
+  Pagination
 } from "ant-design-vue";
 Vue.use(Button);
 Vue.use(Row);
@@ -41,3 +42,4 @@ Vue.use(Divider);
 Vue.use(DatePicker);
 Vue.use(Modal);
 Vue.use(Radio);
+Vue.use(Pagination);

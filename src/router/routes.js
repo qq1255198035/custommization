@@ -1,17 +1,17 @@
 import BasicLayout from "@/layouts/BasicLayout.vue";
 import SellerLayout from "@/layouts/SellerLayout.vue";
+import BlankLayout from "@/layouts/BlankLayout.vue";
 const routes = [
       {
             path: "/",
             name: "index",
-            
             component: BasicLayout,
             redirect: "/home",
             children:[
                   {
                         path: "/home",
                         name: "home",
-                        component: () => import("@/pages/Website/home"),
+                        component: () => import("@/pages/Website/Home"),
                         meta: {
 
                         }
@@ -19,7 +19,7 @@ const routes = [
                   {
                         path: "/products",
                         name: "products",
-                        component: () => import("@/pages/Website/products"),
+                        component: () => import("@/pages/Website/Products"),
                         meta: {
 
                         }
@@ -27,7 +27,7 @@ const routes = [
                   {
                         path: "/about",
                         name: "about",
-                        component: () => import("@/pages/Website/about"),
+                        component: () => import("@/pages/Website/About"),
                         meta: {
 
                         }
@@ -76,11 +76,52 @@ const routes = [
                   {
                         path: "/dashbored",
                         name: "dashbored",
-                        component: () => import("@/pages/Seller/dashbored"),
+                        component: () => import("@/pages/Seller/DashBored"),
                         meta: {
                               
                         }
-                  }
+                  },
+                  {
+                        path: "/perorder",
+                        name: "perorder",
+                        component: () => import("@/pages/Seller/PerOrder"),
+                        meta: {
+                              
+                        }
+                  },
+            ]
+      },
+      {
+            path: "/order",
+            name: "order",
+            component: BlankLayout,
+            redirect: "/neworder",
+            children:[
+                  {
+                        path: "/neworder",
+                        name: "neworder",
+                        component: () => import("@/pages/Seller/NewOrder"),
+                        meta: {
+                              
+                        }
+                  },
+                  {
+                        path: "/orderres",
+                        name: "orderres",
+                        component: () => import("@/pages/Seller/OrderResult"),
+                        meta: {
+                              
+                        }
+                  },
+                  {
+                        path: "/orderdetails",
+                        name: "orderdetails",
+                        component: () => import("@/pages/Seller/OrderDetails"),
+                        meta: {
+                              
+                        }
+                  },
+                  
             ]
       }
       
