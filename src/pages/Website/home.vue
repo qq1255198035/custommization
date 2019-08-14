@@ -1,9 +1,15 @@
 <template>
       <div id="Home">
-            <full-page :options="options">
+            <full-page :options="options" ref="fullpage">
                   <div class="section">
                         <div class="box1 box">
                               <Swiper/>
+                        </div>
+                        <div class="bottom">
+                              <span @click="moveSectionDown">
+                                    <a-icon type="down" />
+                              </span>
+                              
                         </div>
                   </div>
                   <div class="section">
@@ -19,6 +25,11 @@
                               </div>
                               
                               
+                        </div>
+                        <div class="bottom">
+                              <span @click="moveSectionDown">
+                                    <a-icon type="down" />
+                              </span> 
                         </div>
                   </div>
                   <div class="section">
@@ -55,14 +66,43 @@ export default {
                   
                   }
             }
+      },
+      methods:{
+            moveSectionDown(){
+                  this.$refs.fullpage.api.moveSectionDown();
+            }
+            
       }
 }
 </script>
 <style lang="less">
+@keyframes mymove{
+      0% {transform: scale(1.0);}
+      50% {transform: scale(1.2)}
+      100% {transform: scale(1.0)}
+}
 #Home{
       background-image: linear-gradient(-45deg, #11bbe8 10%, #4ac37a 100%);
       height: 100%;
       .section{
+            position: relative;
+            .bottom{
+                  position: absolute;
+                  bottom: 20px;
+                  width: 100%;
+                  text-align: center;
+                  z-index: 100;
+                  animation:mymove 2s infinite;
+                  cursor: pointer;
+                  span{
+                        background-color: rgba(255, 255, 255, 0.3);
+                        border-radius: 12px;
+                        width: 24px;
+                        height: 24px;
+                        display: inline-block;
+                        padding-top: 3px;
+                  }
+            }
             .box{
                   height: 100%;
                   padding-top: 150px;

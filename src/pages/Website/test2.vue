@@ -1,15 +1,18 @@
 <template>
       <div id="main">
-            <a-row>
+            <my-title :title="'新建订单'">
+                  <a-button size="small">返回</a-button>
+            </my-title>
+            <a-row id="myrow">
                   <a-col :span="6">
                         <div class="section1">
                               <a-menu mode="inline" :openKeys="openKeys" @openChange="onOpenChange" @click="handleClick">
-                                    <a-sub-menu key="sub1" class="my-submenu">
-                                          <span slot="title"><a-icon type="edit" /><span>文字</span></span>
-                                          <a-menu-item @click="addItext">
-                                                添加文字
-                                          </a-menu-item>
-                                    </a-sub-menu>
+                                    
+                                    <a-menu-item @click="openAddText">
+                                          <a-icon type="edit" />
+                                          <span style="font-size: 18px;" >文字</span>
+                                    </a-menu-item>
+                                    
                                     <a-sub-menu key="sub2" class="my-submenu">
                                           <span slot="title"><a-icon type="area-chart" /><span>图片</span></span>
                                           <a-sub-menu key="sub3" title="剪贴画" class="img-cell">
@@ -20,56 +23,191 @@
                                           </a-sub-menu>
                                           <a-menu-item style="display: flex; align-items:center;justify-content: center">
                                                 <a-upload name="file" class="my-upload" :beforeUpload="beforeUpload">
-                                                      <a-button type="primary">
+                                                      <a-button>
                                                             <a-icon type="upload"/> 上传图片
                                                       </a-button>
                                                 </a-upload>
                                           </a-menu-item>
                                     </a-sub-menu>
-                                    <a-sub-menu key="sub4" class="my-submenu">
+                                    <!-- <a-sub-menu key="sub4" class="my-submenu">
                                           <span slot="title"><a-icon type="pie-chart" /><span>图形</span></span>
                                           <a-menu-item key="9" @click="createEqualTriangle">三角形</a-menu-item>
                                           <a-menu-item key="10" @click="createRect">矩形</a-menu-item>
                                           <a-menu-item key="11" @click="createCircle">圆形</a-menu-item>
                                           
+                                    </a-sub-menu> -->
+                                    <a-sub-menu key="sub4" class="my-submenu">
+                                          <span slot="title"><a-icon type="pie-chart" /><span>产品颜色</span></span>
+                                          <a-menu-item key="9">红色</a-menu-item>
                                     </a-sub-menu>
-                                    
                               </a-menu>
-                              
-                              
                         </div>
-                        
                   </a-col>
                   <a-col :span="12">
                         <div class="section2">
-                              <div class="controlers">
-                                    <span title="放大" @click="zoomIn"><a-icon type="zoom-in" /></span>
-                                    <span title="缩小" @click="zoomOut"><a-icon type="zoom-out" /></span>
-                                    <span title="右旋转" @click="setTextRotateR"><a-icon type="redo" /></span>
-                                    <span title="左旋转" @click="setTextRotateL"><a-icon type="undo" /></span>
-                                    <span title="移动到下一层" @click="toNextLayer"><a-icon type="sort-ascending" /></span>
-                                    <span title="移动倒上一层" @click="toPreLayer"><a-icon type="sort-descending" /></span>
-                              </div>
+                              
                               <div class="canvas-container"  v-show="model == 'front'">
-                                    <canvas id="canvas" width="600" height="600"></canvas>
+                                    <canvas id="canvas1" :width="screenWidth" :height="screenWidth"></canvas>
                                     
                               </div>
                               <div class="canvas-container"  v-show="model == 'back'">
-                                    
-                                    <canvas id="canvas1" width="600" height="600"></canvas>
+                                    <canvas id="canvas2" :width="screenWidth" :height="screenWidth"></canvas>
+                              </div>
+                              <div class="left-side">
+                                    <span @click="zoomIn">
+                                          <img src="@/assets/zoom-in.png" alt="">
+                                    </span>
+                                    <span @click="zoomOut">
+                                          <img src="@/assets/zoom-out.png" alt="">
+                                    </span>
                               </div>
                         </div>
                         
                   </a-col>
                   <a-col :span="6">
+                        <transition :name="transitionName" mode="out-in">
+                              <div v-show="drawerShow" style="width: 100%;">
+                                    <div class="drawer">
+                                          <h2 style="color: #fff;text-align: right;"><a-icon type="close" style="cursor: pointer;" @click="closeDrawer"/></h2>
+                                          <h3 style="color: #fff;padding-bottom: 3px; border-bottom: 1px solid #fff;">图层</h3>
+                                          <div class="controlers">
+                                                <span title="移动到下一层" @click="toNextLayer"><a-icon type="up" /></span>
+                                                <span title="移动倒上一层" @click="toPreLayer"><a-icon type="down" /></span>
+                                                <span title="移动到顶层" @click="toTopLayer"><img src="@/assets/top-layer.png" alt=""></span>
+                                                <span title="移动倒底层" @click="toBottomLayer"><img src="@/assets/bottom-layer.png" alt=""></span>
+                                          </div>
+                                          <div class="tool-box1" v-if="visibletype == 1">
+                                                <div class="add-text">
+                                                      <p>Add Text</p>
+                                                      <a-input v-model="addText"></a-input>
+                                                      <a-button @click="addItext">Add To Design</a-button>
+                                                </div>
+                                                <div class="second">
+                                                      <div class="text-tool">
+                                                            <p>
+                                                                  <span @click="setObjCenter">
+                                                                        <img src="@/assets/obj-center.png" alt=""><br/>
+                                                                  </span>
+                                                                  Center
+                                                            </p>
+                                                            <p>
+                                                                  <span @click="setTextalignLeft">
+                                                                        <a-icon type="align-left" style="font-size: 24px;"/>
+                                                                  </span>
+                                                                  <span @click="setTextalignCenter">
+                                                                        <a-icon type="align-center" style="font-size: 24px;"/>
+                                                                  </span>
+                                                                  <span @click="setTextalignRight">
+                                                                        <a-icon type="align-right" style="font-size: 24px;"/><br/>
+                                                                  </span>
+                                                                  Text Align
+                                                            </p>
+                                                      </div>
+                                                      <div>
+                                                            <p>Rotation</p>
+                                                            <a-slider :min="0" :max="360" :step="10" @change="setTextRotate" v-model="rotateNum"/>
+                                                      </div>
+                                                </div>
+                                                <ul class="tool-list">
+                                                      <li @click="openFontFamilyBox">
+                                                            <span>Change Font</span>
+                                                            <p>
+                                                                  <span>{{fontfamily}}</span>
+                                                                  <a-icon type="right" />
+                                                            </p>
+                                                      </li>
+                                                      <li @click="openFontColorBox">
+                                                            <span>Text Color</span>
+                                                            <p>
+                                                                  <span>{{colorName}} <i class="square" :style="{backgroundColor:color}"></i></span>
+                                                                  <a-icon type="right" />
+                                                            </p>
+                                                      </li>
+                                                      <li @click="openFontOutlineBox">
+                                                            <span>Text Outline</span>
+                                                            <p>
+                                                                  <span v-if="strokeWidth > 0">Add Outline</span>
+                                                                  <a-icon type="right" />
+                                                            </p>
+                                                      </li>
+                                                      <li>
+                                                            <span>Font Height</span>
+                                                            <p>
+                                                                  <a-input type="number" @change="changeLineHeight" v-model="lineHeight"></a-input>
+                                                            </p>
+                                                      </li>
+                                                </ul>
+                                          </div>
+                                          <div class="tool-box2" v-else-if="visibletype == 2">
+                                                <dl>
+                                                      <dt>
+                                                            透明度：
+                                                      </dt>
+                                                      <dd>
+                                                            <a-slider :min="0" :max="1" v-model="opacity" :step="0.1" @change="changeOpacity"/>
+                                                      </dd>
+                                                </dl>
+                                                <ul style="display: flex;justify-content: space-around;margin:20px 0">
+                                                      <li>
+                                                            X轴翻转：
+                                                            <a-switch @change='changeFilPx' v-model="filpx"/>
+                                                      </li>
+                                                      <li>
+                                                            Y轴翻转：
+                                                            <a-switch @change='changeFilPy' v-model="filpy"/>
+                                                      </li>
+                                                </ul>         
+                                                <ul>
+                                                      <li>
+                                                            X轴斜切：
+                                                            <a-slider :min="0" :max="80" :step="1" @change='changeSkewX' v-model="skewx"/>
+                                                      </li>
+                                                      <li>
+                                                            Y轴斜切：
+                                                            <a-slider :min="0" :max="80" :step="1" @change='changeSkewY' v-model="skewy"/>
+                                                      </li>
+                                                </ul>
+                                          </div>
+                                          <div class="tool-box3" v-else-if="visibletype == 3">
+                                                <ul class="font-family-list">
+                                                      <li v-for="item in fontFamilyArr" :key="item.id" @click="changeFontFamily(item.name)">
+                                                            <span :style="{fontFamily: item.name}" >ABC</span>
+                                                            <span>{{item.name}}</span>
+                                                      </li>
+                                                </ul>
+                                          </div>
+                                          <div class="tool-box4" v-else-if="visibletype == 4">
+                                                <ul class="font-color-list">
+                                                      <li v-for="item in fontColorArr" :key="item.name" :style="{backgroundColor: item.color}" @click="changeFillColor(item.color,item.name)"></li>
+                                                </ul>
+                                          </div>
+                                          <div class="tool-box5" v-else-if="visibletype == 5">
+                                                <a-slider :min="0" :max="10" v-model="strokeWidth" :step="1" @change="changestrokeWidth"/>
+                                                <ul class="font-color-list">
+                                                      <li v-for="item in fontColorArr" :key="item.name" :style="{backgroundColor: item.color}" @click="changestrokeColor(item.color)"></li>
+                                                </ul>
+
+                                          </div>
+                                    </div>
+                                    
+                              </div>
+                        </transition>
+                  </a-col>
+                  <!-- <a-col :span="6">
                         <div class="section3">
                               <h3>选择颜色</h3>
                               <dl class="color-select">
                                     
-                                    <dd v-for="(color,index) in colors" :key="color" :class="{active: selected == index}" @click="selectColor(index)">
+                                    <dd v-for="(color,index) in colors" :key="color" :class="{active: selected == index}" @click="selectColor(index,color)">
                                           <i :style="{backgroundColor: color}"></i>
                                     </dd>
                               </dl>
+                              <h3>选择领型</h3>
+                              <ul style="display: flex;">
+                                    <li v-for="(img,index) in lximgs" :key="img" style="cursor:pointer" @click="selectLx(index)">
+                                          <img :src="img" alt="" width="200" height="50">
+                                    </li>
+                              </ul>
                               <h3>选择尺寸</h3>
                               <dl class="size-select">
                                     <dd v-for="(size,index) in sizes" :key="size">
@@ -83,249 +221,17 @@
                                     </dd>
                               </dl>
                               <div class="btn-box">
-                                    <a-button type="primary" @click="saveImg">保存</a-button>
-                                    <a-button type="primary" @click="handleSetFront">正面</a-button>
-                                    <a-button type="primary" @click="handleSetback">背面</a-button>
+                                    <a-button @click="$router.push({path:'/swiper'})">保存</a-button>
+                                    <a-button @click="saveImg">保存</a-button>
+                                    <a-button @click="handleSetFront">正面</a-button>
+                                    <a-button @click="handleSetback">背面</a-button>
                                     <a-button><a class="downLoad" download="downImg" @click="downLoadImg" :href="dataUrl">下载</a></a-button>
                               </div>
                         </div>
                         
-                  </a-col>
+                  </a-col> -->
             </a-row>
-            <a-drawer placement="right" title="工具箱" :visible="visible" :mask="false" @close="onClose" :width="540">
-                  <div class="tools">
-                        <div v-if="visibletype == 1" class="text-tools">
-                              <dl style="display: flex">
-                                    <dt>选择字体：</dt>
-                                    <dd>
-                                          <a-select placeholder="选择字体" @change="changeFontFamily" :value="fontfamily" style="width: 240px;">
-                                                <a-select-option value="test-font">test-font</a-select-option>
-                                                <a-select-option value="Microsoft YaHei">Microsoft YaHei</a-select-option>
-                                                <a-select-option value="Corbel">Corbel</a-select-option>
-                                                <a-select-option value="Impact">Impact</a-select-option>
-                                                <a-select-option value="Ink Free">Ink Free</a-select-option>
-                                                <a-select-option value="Raleway">Raleway</a-select-option>
-                                                <a-select-option value="Helvetica">Helvetica</a-select-option>
-                                                <a-select-option value="Arial">Arial</a-select-option>
-                                                <a-select-option value="sans-serif">sans-serif</a-select-option>
-                                          </a-select>
-                                    </dd>
-                              </dl>
-                              
-                              <ul class="textcolor-control">
-                                    <li>
-                                          
-                                                字体颜色:
-                                                
-                                                      <span title="字体颜色" style="position: relative">
-                                                            <a-icon type="font-colors" :style="{color:color}"/>
-                                                            <colorPicker v-model="color" @change="changeFillColor"/>
-                                                      </span>
-                                    
-                                          
-                                    </li>
-                                    <li>
-                                          
-                                                字体背景颜色:
-                                          
-                                                      <span title="背景颜色" style="position: relative">
-                                                            <a-icon type="bg-colors" :style="{color:bgcolor}"/>
-                                                            <colorPicker v-model="bgcolor" @change="changeTextBgColor"/>
-                                                      </span>
-                                          
-                                          
-                                          
-                                    </li>
-                                    
-                              </ul>
-                              <dl class="textalign-control">
-                                    <dt>
-                                          对齐方式：
-                                    </dt>
-                                    <dd>
-                                          <span title="左对齐" @click="setTextalignLeft"><a-icon type="align-left" /></span>
-                                          
-                                    </dd>
-                                    <dd>
-                                          <span title="居中" @click="setTextalignCenter"><a-icon type="align-center" /></span>
-                                          
-                                    </dd>
-                                    <dd>
-                                          <span title="右对齐" @click="setTextalignRight"><a-icon type="align-right" /></span>
-                                    </dd>
-                              </dl>
-                              <dl class="fonTstyle-control">
-                                    <dt>
-                                          字体样式：
-                                    </dt>
-                                    <dd>
-                                          <span title="加粗" @click="setFontWeight"><a-icon type="bold" /></span>
-                                          
-                                    </dd>
-                                    <dd>
-                                          <span title="倾斜" @click="setFontStyle"><a-icon type="italic" /></span>
-                                          
-                                    </dd>
-                                    <dd>
-                                          <span title="下划线" @click="setTextDown"><a-icon type="underline" /></span>
-                                          
-                                    </dd>
-                                    <dd>
-                                          <span title="删除线" @click="setTextThrough"><a-icon type="strikethrough" /></span>
-                                    </dd>
-                              </dl>
-                              <ul class="stroke-control">
-                                    <li>
-                                          描边颜色：
-                                          <colorPicker v-model="stroke" @change="changestrokeColor"/>
-                                    </li>
-                                    <li>
-                                          描边大小：
-                                          <a-slider :min="0" :max="10" v-model="strokeWidth" :step="1" @change="changestrokeWidth"/>
-                                    </li>
-                                    
-                              </ul>
-                              <ul class="stroke-control">
-                                    <li>
-                                          阴影颜色：
-                                          <colorPicker v-model="shdowcolor" @change="changeShadowColor"/>
-                                    </li>
-                                    <li>
-                                          阴影大小：
-                                          <a-slider :min="-10" :max="10" v-model="Shadow1" :step="1" @change="changeShadowWidth1"/>
-                                          <a-slider :min="-10" :max="10" v-model="Shadow2" :step="1" @change="changeShadowWidth2"/>
-                                          <a-slider :min="0" :max="10" v-model="Shadow3" :step="1" @change="changeShadowWidth3"/>
-                                    </li>
-                                    
-                              </ul>
-                        </div>
-                        <div v-else-if="visibletype == 2" class="imgs-tools">
-                              <dl>
-                                    <dt>
-                                          透明度：
-                                    </dt>
-                                    <dd>
-                                          <a-slider :min="0" :max="1" v-model="opacity" :step="0.1" @change="changeOpacity"/>
-                                    </dd>
-                              </dl>
-                              <ul style="display: flex;justify-content: space-around;margin:20px 0">
-                                    <li>
-                                          X轴翻转：
-                                          <a-switch @change='changeFilPx' v-model="filpx"/>
-                                    </li>
-                                    <li>
-                                          Y轴翻转：
-                                          <a-switch @change='changeFilPy' v-model="filpy"/>
-                                    </li>
-                              </ul>         
-                              <ul>
-                                    <li>
-                                          X轴斜切：
-                                          <a-slider :min="0" :max="80" :step="1" @change='changeSkewX' v-model="skewx"/>
-                                    </li>
-                                    <li>
-                                          Y轴斜切：
-                                          <a-slider :min="0" :max="80" :step="1" @change='changeSkewY' v-model="skewy"/>
-                                    </li>
-                              </ul>
-                              <dl class="filters-part1">
-                                    <dt>滤镜：</dt>
-                                    <dd><a-checkbox @change="selectGrayscale">灰阶</a-checkbox></dd>
-                                    <dd><a-checkbox @change="selectInvert">倒置</a-checkbox></dd>
-                                    <dd><a-checkbox @change="selectSepia">深棕色</a-checkbox></dd>
-                                    <dd><a-checkbox @change="selectblackwhite">黑白</a-checkbox></dd>
-                                    <dd><a-checkbox @change="selectBrownie">棕色</a-checkbox></dd>
-                                    <dd><a-checkbox @change="selectVintage">复古</a-checkbox></dd>
-                                    <dd><a-checkbox @change="selectKodachrome">Kodachrome</a-checkbox></dd>
-                                    <dd><a-checkbox @change="selectTechnicolor">Technicolor</a-checkbox></dd>
-                                    <dd><a-checkbox @change="selectPolaroid">Polaroid</a-checkbox></dd>
-                              </dl>
-                              <ul>
-                                    <li>
-                                          删除颜色:<br>
-                                          color: <colorPicker v-model="removecolor" @change="changeRemoveColor"/><br>
-                                          distance: <a-slider :min="0" :max="1" :step="0.01" @change='changeDistance' v-model="distance"/>
-                                    </li>
-                                    <li>
-                                          明度：
-                                          <a-slider :min="-1" :max="1" :step="0.01" @change='changeBrightness' v-model="brightness"/>
-                                    </li>
-                                    <li>
-                                          Gamma：
-                                          <a-slider :min="0" :max="2" :step="0.01" @change='changeGammaRed' v-model="red"/>
-                                          <a-slider :min="0" :max="2" :step="0.01" @change='changeGammaGreen' v-model="green"/>
-                                          <a-slider :min="0" :max="2" :step="0.01" @change='changeGammaBlue' v-model="blue"/>
-                                    </li>
-                                    <li>
-                                          对比度：
-                                          <a-slider :min="-1" :max="1" :step="0.01" @change='changeContrast' v-model="contrast"/>
-                                    </li>
-                                    <li>
-                                          饱和度：
-                                          <a-slider :min="-1" :max="1" :step="0.01" @change='changeSaturation' v-model="saturation"/>
-                                    </li>
-                                    <li>
-                                          色调：
-                                          <a-slider :min="-2" :max="2" :step="0.01" @change='changeHue' v-model="hue"/>
-                                    </li>
-                                    <li>
-                                          噪声：
-                                          <a-slider :min="0" :max="1000" :step="50" @change='changeNoise' v-model="noise"/>
-                                    </li>
-                                    <li>
-                                          像素化：
-                                          <a-slider :min="1" :max="20" :step="1" @change='changePixelate' v-model="pixelate"/>
-                                    </li>
-                                    <li>
-                                          模糊：
-                                          <a-slider :min="0" :max="1" :step="0.01" @change='changeBlur' v-model="blur"/>
-                                    </li>
-                                    <li><a-checkbox @change="selectSharpen">锐化</a-checkbox></li>
-                                    <li><a-checkbox @change="selectEmboss">浮雕</a-checkbox></li>
-                              </ul>
-                        </div>
-                        <div v-else-if="visibletype == 3" class="rect-tools">
-                              <ul class="color-control">
-                                    <li>
-                                          描边颜色：
-                                          <colorPicker v-model="stroke" @change="changestrokeColor"/>
-                                    </li>
-                                    <li>
-                                          填充颜色：
-                                          <colorPicker v-model="color" @change="changeFillColor"/>
-                                    </li>
-                              </ul>
-                              <p>
-                                    描边大小：
-                                    <a-slider :min="0" :max="10" v-model="strokeWidth" :step="1" @change="changestrokeWidth"/>
-                              </p>
-                              <ul class="stroke-control">
-                                    <li>
-                                          阴影颜色：
-                                          <colorPicker v-model="shdowcolor" @change="changeShadowColor"/>
-                                    </li>
-                                    <li>
-                                          阴影大小：
-                                          <a-slider :min="-10" :max="10" v-model="Shadow1" :step="1" @change="changeShadowWidth1"/>
-                                          <a-slider :min="-10" :max="10" v-model="Shadow2" :step="1" @change="changeShadowWidth2"/>
-                                          <a-slider :min="0" :max="10" v-model="Shadow3" :step="1" @change="changeShadowWidth3"/>
-                                    </li>
-                                    
-                              </ul>
-                                    
-                              <ul>
-                                    <li>
-                                          X轴斜切：
-                                          <a-slider :min="0" :max="80" :step="1" @change='changeSkewX' v-model="skewx"/>
-                                    </li>
-                                    <li>
-                                          Y轴斜切：
-                                          <a-slider :min="0" :max="80" :step="1" @change='changeSkewY' v-model="skewy"/>
-                                    </li>
-                              </ul>
-                        </div>
-                  </div>
-            </a-drawer>
+            
       </div>
 </template>
 <script>
@@ -339,14 +245,16 @@ import img3 from '@/assets/0003.png'
 import img7 from '@/assets/0007.png'
 import img8 from '@/assets/0008.png'
 import img10 from '@/assets/0010.png'
-import bgimg1 from '@/assets/bg-white.png'
+import bgimg1 from '@/assets/white-2fbe8472bccef1a454b2b5e2ceb1e7293a86b971a0aa7522fe8f91.png'
 import bgimg2 from '@/assets/black.jpg'
 import bgimg3 from '@/assets/jaw.jpg'
-
 import resize from '@/assets/icons/resize.svg'
 import remove from '@/assets/icons/remove.svg'
 import rotate from '@/assets/icons/rotate.svg'
 import diagonal from "@/assets/icons/repair-tools-cross.svg";
+import lximg from '@/assets/lximg.png'
+import lximg2 from '@/assets/lximg2.png'
+import MyTitle from "@/components/MyTitle/MyTitle";
 function getBase64 (img, callback) {
       const reader = new FileReader()
       reader.addEventListener('load', () => callback(reader.result))
@@ -355,6 +263,34 @@ function getBase64 (img, callback) {
 export default {
       data () {
             return {
+                  fontFamilyArr:[
+                        {
+                              id:1,
+                              name: 'Microsoft YaHei'
+                        },
+                        {
+                              id:2,
+                              name: 'testFont'
+                        }
+                  ],
+                  lineHeight: 1,
+                  colorName:'',
+                  fontColorArr:[
+                        {
+                              name: 'Black',
+                              color: '#000'
+                        },
+                        {
+                              name: 'Red',
+                              color: '#ff0000'
+                        }
+                  ],
+                        
+                  
+                  addText:'',
+                  rotateNum:0,
+                  drawerShow:false,
+                  transitionName:'vux-pop-in',
                   rootSubmenuKeys: ['sub1', 'sub2', 'sub4'],
                   openKeys: ['sub1'],
                   imgs:[
@@ -365,7 +301,7 @@ export default {
                         img8,
                         img10
                   ],
-                  colors:['#fff','#000','#ccc'],
+                  colors:['#ccc','red','#456865'],
                   sizes: ['S', 'M', 'L', 'XL'],
                   resize,
                   remove,
@@ -387,12 +323,28 @@ export default {
                   isDrawingMode:false,
                   dataUrl:'',
                   dataPost:'',
-                  bgimgs:[
-                        bgimg1,
-                        bgimg2,
-                        bgimg3
+                  lximgs:[
+                        lximg,
+                        lximg2,
                   ],
-                  
+                  suits:{
+                        frontimg:{
+                              bgimgs:[
+                                    bgimg1,
+                                    bgimg1,
+                                    bgimg1
+                              ]
+                              
+                        },
+                        backimg:{
+                              bgimgs:[
+                                    bgimg1,
+                                    bgimg2,
+                                    bgimg3
+                              ]
+                              
+                        },
+                  },
                   strokecolor:'#000000',
                   fillcolor:'#000000',
                   drawWidth:2,
@@ -424,26 +376,122 @@ export default {
                   noise:0,
                   pixelate:1,
                   blur:0,
-                  fontfamily:'Microsoft YaHei',
+                  fontfamily:'',
                   model: 'front',
                   myCanvas1: null,
-                  myCanvas2: null
+                  myCanvas2: null,
+                  screenWidth: 600
+                  
             }
+      },
+      components:{
+            MyTitle
+      },
+      created(){
+            this.watchScreenWidth();
       },
       mounted(){
             
             this.$nextTick(function() {
+                  //11：当选择画布中的对象时，该对象不出现在顶层。
+                  //canvas.preserveObjectStacking = true;
+                  this.myCanvas1 = new fabric.Canvas("canvas1");
+                  this.myCanvas2 = new fabric.Canvas("canvas2");
+                  this.myCanvas = this.myCanvas1
+                  this.bindCanvas1(this.selected);
+                  this.bindCanvas2(this.selected);
+                  this.setEditIcon();
+                  this.setEditPointer();
+                  initAligningGuidelines(this.myCanvas1);
+                  initAligningGuidelines(this.myCanvas2);
+                  this.handleObjectMove(this.myCanvas1);
+                  this.handleObjectMove(this.myCanvas2);
+                  //this.selectLx(0)
+                  console.log(this.myCanvas2.getImageData)
+                  //14: 画布对象居中设置：
+                  //var t = canvas.getActiveObject();
+                  //t.center();    全部居中
+                  //t.centerH();   水平居中
+                  //t.centerV();   垂直居中
+                  //t.setCoords(); 注：必须设coords以上设置才会有效。
+                  //object.set('selectable',false) 单个元素禁止选中
+            })
+            console.log(22);
+      },
+      watch:{
+           
+      },
+      methods: {
+            changeLineHeight(){
                   let that = this;
-                  that.myCanvas1 = new fabric.Canvas("canvas");
-                  that.myCanvas2 = new fabric.Canvas("canvas1");
-                  that.myCanvas = that.myCanvas1
-                  console.log(that.myCanvas)
-                  that.bindCanvas(that.selected);
-                  that.setEditIcon();
-                  that.setEditPointer();
-                  initAligningGuidelines(that.myCanvas)
+                  let obj = that.myCanvas.getActiveObject()
+                  if (obj) {
+                        obj.set("lineHeight", that.lineHeight);
+                        that.myCanvas.requestRenderAll();
+                  }
+            },
+            setObjCenter(){
+                  let t = this.myCanvas.getActiveObject();
+                  t.center();
+                  t.setCoords(); 
+            },
+            openAddText(){
                   
-                  that.myCanvas1.on("object:moving", function(e) {
+                  if(this.visibletype !== 1){
+                        this.toogleDrawer();
+                        this.visibletype = 1;
+                  }
+                  
+            },
+            openFontFamilyBox(){
+                  this.toogleDrawer();
+                  this.visibletype = 3;
+            },
+            openFontColorBox(){
+                  this.toogleDrawer();
+                  this.visibletype = 4;
+            },
+            openFontOutlineBox(){
+                  this.toogleDrawer();
+                  this.visibletype = 5;
+            },
+            toogleDrawer(){
+                  this.closeDrawer();
+                  setTimeout(() => {
+                        this.openDrawer();
+                  },300)
+            },
+            openDrawer(){
+                  this.drawerShow = true;
+                  this.transitionName = 'vux-pop-in'
+            },
+            closeDrawer(){
+                  this.drawerShow = false;
+                  this.transitionName = 'vux-pop-out'
+            },
+            selectLx(i){
+                  var that = this
+                  that.model = 'front'
+                  that.myCanvas1.setOverlayImage(that.lximgs[i],that.myCanvas1.renderAll.bind(that.myCanvas1),{
+                              opacity: 1,
+                              angle: 0,
+                              left: that.screenWidth / 2,
+                              top: 60,
+                              originX: "center",
+                              originY: "center",
+                              scaleX: that.screenWidth / 600,
+                              scaleY: 1
+                  });
+            },
+            watchScreenWidth(){
+                  if (screen.width >= 1024 && screen.width <= 1366) {
+                        this.screenWidth = 400; 
+                  }else if (screen.width >= 320 && screen.width < 1024) {
+                        this.screenWidth = 240;
+                  }
+            },
+            handleObjectMove(object){
+                  object.on("object:moving", function(e) {
                         //console.log(e.target)
                         var obj = e.target;
                         var canvas = obj.canvas;
@@ -473,11 +521,19 @@ export default {
                         }
 
                         // if you need margins set them here
-                        var top_margin = 120;
-                        var bottom_margin = 100;
-                        var left_margin = 200;
-                        var right_margin = 200;
-
+                        
+                        var top_margin,bottom_margin,left_margin,right_margin
+                        if(zoom > 1){
+                              top_margin = 0;
+                              bottom_margin = 40;
+                              left_margin = 70;
+                              right_margin = 140;
+                        }else{
+                              top_margin = 120;
+                              bottom_margin = 100;
+                              left_margin = 200;
+                              right_margin = 200;
+                        }
 
                         var top_bound = top_margin + top_adjust - pan_y;
                         var bottom_bound = c_height - bottom_adjust - bottom_margin - pan_y;
@@ -491,38 +547,27 @@ export default {
                         }
 
                         if( h > c_height ) {
-                        obj.set('top',top_bound);
+                              obj.set('top',top_bound);
+                              console.log(top_bound)
+                              
                         } else {
-                        obj.set('top',Math.min(Math.max(top, top_bound), bottom_bound));          
+                              obj.set('top',Math.min(Math.max(top, top_bound), bottom_bound)); 
+                              console.log(top_bound)       
                         }
                   });
-            })
-            
-      },
-      watch:{
-            // model(val){
-            //       if (val == 'front') {
-                        
-            //       }else if (val == 'back') {
-            //             this.myCanvas = this.myCanvas2;
-            //       }
-            // }
-      },
-      methods: {
+            },
             handleSetFront(){
                   this.myCanvas = this.myCanvas1;
                   this.model = 'front'
             },
             handleSetback(){
                   this.myCanvas = this.myCanvas2;
-                  this.bindCanvas(this.selected);
                   this.model = 'back'
             },
             loadAndUse(font) {
                   let that = this;
                   var myfont = new FontFaceObserver(font)
-                  myfont.load()
-                  .then(function() {
+                  myfont.load().then(function() {
                         // when font is loaded, use it.
                         that.myCanvas.getActiveObject().set("fontFamily", font);
                         that.myCanvas.requestRenderAll();
@@ -534,29 +579,30 @@ export default {
             zoomIn(){
                   var zoom = this.myCanvas.getZoom();
                   console.log(zoom)
-                  zoom = zoom + 0.1;
-                  if (zoom > 20) zoom = 20;
-                  if (zoom < 0.01) zoom = 0.01;
+                  zoom = zoom + 0.4;
+                  if (zoom > 1.4) zoom = 1.4;
                   this.myCanvas.zoomToPoint({ x: 300, y: 300 }, zoom);
+                  console.log(11)
             },
             zoomOut(){
                   var zoom = this.myCanvas.getZoom();
                   console.log(zoom)
-                  zoom = zoom - 0.1;
-                  if (zoom > 20) zoom = 20;
-                  if (zoom < 0.01) zoom = 0.01;
+                  zoom = zoom - 0.4;
+                  if (zoom < 1) zoom = 1;
                   this.myCanvas.zoomToPoint({ x: 300, y: 300 }, zoom);
             },
             changeFontFamily(value){
+                  this.toogleDrawer();
+                  this.visibletype = 1;
                   console.log(`selected ${value}`);
-                  if (value == 'test-font') {
+                  if (value == 'testFont') {
                         this.loadAndUse(value);
-                        this.fontfamily = value;
+                        
                   }else{
                         let obj = this.myCanvas.getActiveObject()
                         if (obj) {
                               obj.set('fontFamily', value);
-                              this.fontfamily = value;
+                              
                               this.myCanvas.requestRenderAll();
                         }
                   }
@@ -740,97 +786,11 @@ export default {
             },
             downLoadImg(){
                   this.dataUrl = this.myCanvas.toDataURL();
-                  
-                  
             },
             saveImg(){
                   let json = this.myCanvas.toJSON();
                   this.dataPost = JSON.stringify(json)
-                  //console.log(this.dataPost)
-            },
-            createCircle () {
-                  let that = this;
-                  let options = Object.assign({ left: 260, top: 200, radius: 40, shadow:'#000 0 0 0',fillColor: 'rgba(0, 0, 0, 1)', color: '#000', drawWidth: 0 }, options);
-                  let defaultOption = {
-                        ...options,
-                        fill: options.fillColor,
-                        strokeWidth: options.drawWidth,
-                        stroke: options.color
-                  };
-                  let Circle = new fabric.Circle(defaultOption);
-                  Circle.on("selected", function() {
-                        that.visibletype = 3;
-                        let obj = that.myCanvas.getActiveObject();
-                        that.color = obj.fill;
-                        that.stroke = obj.stroke;
-                        that.strokeWidth = obj.strokeWidth;
-                        that.Shadow1 = obj.shadow.offsetX;
-                        that.Shadow2 = obj.shadow.offsetY;
-                        that.Shadow3 = obj.shadow.blur;
-                        that.shdowcolor = obj.shadow.color;
-                        that.skewx = obj.skewX;
-                        that.skewy = obj.skewY;
-                        console.log(obj)
-                        
-                  });
-                  that.myCanvas.add(Circle).setActiveObject(Circle);
-                  that.visibletype = 2
-                  that.myCanvas.renderAll();
-            },
-            createRect () {
-                  let that = this;
-                  let options = Object.assign({ width: 80, height: 80, shadow:'#000 0 0 0',fillColor: 'rgba(0, 0, 0, 1)', left: 260, top: 200,color: '#000', drawWidth: 0 }, options);
-                  let rect = new fabric.Rect({
-                        ...options,
-                        fill: options.fillColor, 
-                        strokeWidth: options.drawWidth,
-                        stroke: options.color
-                  });
-                  rect.on("selected", function() {
-                        that.visibletype = 3;
-                        let obj = that.myCanvas.getActiveObject();
-                        that.color = obj.fill;
-                        that.stroke = obj.stroke;
-                        that.strokeWidth = obj.strokeWidth;
-                        that.Shadow1 = obj.shadow.offsetX;
-                        that.Shadow2 = obj.shadow.offsetY;
-                        that.Shadow3 = obj.shadow.blur;
-                        that.shdowcolor = obj.shadow.color;
-                        that.skewx = obj.skewX;
-                        that.skewy = obj.skewY;
-                        console.log(obj)
-                        
-                  });
-                  that.myCanvas.add(rect).setActiveObject(rect);
-                  that.visibletype = 3;
-                  that.myCanvas.renderAll();
-            },
-            createEqualTriangle () {
-                  let that = this;
-                  let options = Object.assign({ left: 260, top: 200, width: 80, height: 80, shadow:'#000 0 0 0',fillColor: 'rgba(0, 0, 0, 1)', color: '#000', drawWidth: 0 }, options);
-                  // console.log(defaultOption);
-                  let triangle = new fabric.Triangle({
-                        ...options,
-                        fill: options.fillColor,
-                        strokeWidth: options.drawWidth,
-                        stroke: options.color
-                  });
-                  triangle.on("selected", function() {
-                        that.visibletype = 3;
-                        let obj = that.myCanvas.getActiveObject()
-                        that.color = obj.fill;
-                        that.stroke = obj.stroke;
-                        that.strokeWidth = obj.strokeWidth;
-                        that.Shadow1 = obj.shadow.offsetX;
-                        that.Shadow2 = obj.shadow.offsetY;
-                        that.Shadow3 = obj.shadow.blur;
-                        that.shdowcolor = obj.shadow.color
-                        that.skewx = obj.skewX;
-                        that.skewy = obj.skewY;
-                  });
-                  that.myCanvas.add(triangle).setActiveObject(triangle);
-                  that.visibletype = 3;
-                  that.myCanvas.renderAll();
+                  console.log(json)
             },
             beforeUpload (file) {
                   console.log(file)
@@ -870,13 +830,17 @@ export default {
                         this.myCanvas.requestRenderAll();
                   }
             },
-            changestrokeColor(){
+            //描边颜色
+            changestrokeColor(val){
                   let obj = this.myCanvas.getActiveObject()
                   if (obj) {
-                        obj.set('stroke', this.stroke);
+                        obj.set('stroke', val);
                         this.myCanvas.requestRenderAll();
                   }
+                  this.toogleDrawer();
+                  this.visibletype = 1;
             },
+            //描边大小
             changestrokeWidth(){
                   let obj = this.myCanvas.getActiveObject()
                   if (obj) {
@@ -923,6 +887,7 @@ export default {
             onClose() {
                   this.visible = false
             },
+            //设置选中框外观
             setEditIcon(){
                   let that = this;
                   fabric.Object.prototype.customiseCornerIcons(
@@ -979,7 +944,8 @@ export default {
                         br: {
                               action: function(e, target) {
                                     console.log(target);
-                                    that.visible = true
+                                    
+                                    that.openDrawer();
                               },
                               cursor: "pointer"
                         },
@@ -990,13 +956,20 @@ export default {
             },
             addImg(imgUrl,id){
                   this.selectImg(imgUrl,id);
-                  this.visibletype = 2
+                  if(this.visibletype !== 2){
+                        this.visibletype = 2;
+                        this.toogleDrawer();
+                  }
             },
             selectImg(imgUrl,id) {
                   let that = this;
                   fabric.Image.fromURL(imgUrl, function(oImg) {
                         oImg.on("selected", function() {
-                              that.visibletype = 2
+                              
+                              if(that.visibletype !== 2){
+                                    that.visibletype = 2;
+                                    that.toogleDrawer();
+                              }
                               let obj = that.myCanvas.getActiveObject();
                               that.opacity = obj.opacity;
                               that.filpx = obj.flipX;
@@ -1014,8 +987,8 @@ export default {
                                     skewY:0,
                                     originX: "center",
                                     originY: "center",
-                                    left: 300,
-                                    top: 300
+                                    left: that.screenWidth / 2,
+                                    top: that.screenWidth / 2
                               })
                         ).setActiveObject(oImg);
                   });
@@ -1029,15 +1002,41 @@ export default {
                   }
                   return color;
             },
-            bindCanvas(i) {
+            bindCanvas1(i) {
                   var that = this
-                  that.myCanvas.setBackgroundImage(that.bgimgs[i],that.myCanvas.renderAll.bind(that.myCanvas));
+                  that.myCanvas1.setBackgroundImage(that.suits.frontimg.bgimgs[i],that.myCanvas1.renderAll.bind(that.myCanvas1),{
+                              opacity: 1,
+                              angle: 0,
+                              left: that.screenWidth / 2,
+                              top: that.screenWidth / 2,
+                              originX: "center",
+                              originY: "center",
+                              scaleX: that.screenWidth / 600,
+                              scaleY: that.screenWidth / 600
+                  });
                   
             },
-            selectColor(i){
-                  console.log(i)
-                  this.bindCanvas(i)
-                  this.selected = i
+            bindCanvas2(i) {
+                  var that = this
+                  that.myCanvas2.setBackgroundImage(that.suits.backimg.bgimgs[i],that.myCanvas2.renderAll.bind(that.myCanvas2),
+                        {
+                              opacity: 1,
+                              angle: 0,
+                              left: that.screenWidth / 2,
+                              top: that.screenWidth / 2,
+                              originX: "center",
+                              originY: "center",
+                              scaleX: that.screenWidth / 600,
+                              scaleY: that.screenWidth / 600
+                        });
+            },
+            //改变衣服颜色
+            selectColor(i,color){
+                  let that = this
+                  that.bindCanvas1(i)
+                  that.bindCanvas2(i)
+                  that.selected = i
+                  that.myCanvas.setBackgroundColor(color, that.myCanvas.renderAll.bind(that.myCanvas))
             },
             onOpenChange (openKeys) {
                   const latestOpenKey = openKeys.find(key => this.openKeys.indexOf(key) === -1)
@@ -1052,44 +1051,54 @@ export default {
             },
             addItext(text, options) {
                   let that = this;
-                  that.visibletype = 1
-                  options = Object.assign({ fontSize: 30, fillColor: '#000000', shadow:'#000 0 0 0',strokeWidth: 0,stroke: '#000',registeObjectEvent: true, left: 280, top: 250,textBackgroundColor:'' }, options);
-                  var canvasObj = new fabric.Textbox('Text', {
-                        ...options,
-                        fill: options.fillColor,
-                        textBackgroundColor: options.textBackgroundColor,
-                        strokeWidth:options.strokeWidth,
-                        stroke:options.stroke,
-                        shadow:options.shadow,
-                        fontFamily: 'Microsoft YaHei'
-                  });
-                  canvasObj.on("selected", function() {
-                        that.visibletype = 1
-                        let obj = that.myCanvas.getActiveObject()
-                        console.log(obj)
-                        that.color = obj.fill;
-                        that.bgcolor = obj.textBackgroundColor || '#000000';
-                        that.stroke = obj.stroke;
-                        that.strokeWidth = obj.strokeWidth;
-                        that.Shadow1 = obj.shadow.offsetX;
-                        that.Shadow2 = obj.shadow.offsetY;
-                        that.Shadow3 = obj.shadow.blur;
-                        that.shdowcolor = obj.shadow.color;
-                        that.fontfamily = obj.fontFamily
-                  });
-                  that.myCanvas.add(canvasObj).setActiveObject(canvasObj);
-                  
-                  
-                  
-                  
+                  if(that.addText){
+                        options = Object.assign({ fontSize: 30, fillColor: '#000000', shadow:'#000 0 0 0',strokeWidth: 0,stroke: '#000',registeObjectEvent: true,textBackgroundColor:'' }, options);
+                        var canvasObj = new fabric.Textbox(that.addText, {
+                              ...options,
+                              fill: options.fillColor,
+                              textBackgroundColor: options.textBackgroundColor,
+                              strokeWidth:options.strokeWidth,
+                              stroke:options.stroke,
+                              shadow:options.shadow,
+                              fontFamily: 'Microsoft YaHei',
+                              originX:'center',
+                              originY:'center',
+                              left: that.screenWidth / 2,
+                              top: that.screenWidth / 2
+                        });
+                        canvasObj.on("selected", function() {
+                              
+                              if(that.visibletype !== 1){
+                                    that.toogleDrawer();
+                                    that.visibletype = 1;
+                              }
+                              let obj = that.myCanvas.getActiveObject()
+                              console.log(obj.angle)
+                              that.color = obj.fill;
+                              that.rotateNum = obj.angle;
+                              that.bgcolor = obj.textBackgroundColor || '#000000';
+                              that.stroke = obj.stroke;
+                              that.strokeWidth = obj.strokeWidth;
+                              that.Shadow1 = obj.shadow.offsetX;
+                              that.Shadow2 = obj.shadow.offsetY;
+                              that.Shadow3 = obj.shadow.blur;
+                              that.shdowcolor = obj.shadow.color;
+                              that.fontfamily = obj.fontFamily
+                        });
+                        that.myCanvas.add(canvasObj).setActiveObject(canvasObj);
+                  }
             },
-            changeFillColor(){
-                  let obj = this.myCanvas.getActiveObject()
+            //改变字体颜色
+            changeFillColor(val,name){
+                  let obj = this.myCanvas.getActiveObject();
+                  this.color = val;
                   if (obj) {
-                        obj.set("fill", this.color);
+                        obj.set("fill", val);
                         this.myCanvas.requestRenderAll();
                   }
-                  
+                  this.visibletype = 1;
+                  this.colorName = name;
+                  this.toogleDrawer();
             },
             changeTextBgColor(){
                   let obj = this.myCanvas.getActiveObject()
@@ -1171,6 +1180,13 @@ export default {
                   }
                   
             },
+            setTextRotate(){
+                  let obj = this.myCanvas.getActiveObject();
+                  if (obj) {
+                        obj.rotate(this.rotateNum);
+                        this.myCanvas.requestRenderAll();
+                  }
+            },
             setTextRotateR(){
                   let obj = this.myCanvas.getActiveObject();
                   if (obj) {
@@ -1188,6 +1204,24 @@ export default {
                         this.myCanvas.requestRenderAll();
                   }
                   
+            },
+            toTopLayer () {
+                  let obj = this.myCanvas.getActiveObject();
+                  if (obj) {
+                        obj.bringToFront();
+                        this.myCanvas.renderTop();
+                        this.myCanvas.discardActiveObject();
+                        this.myCanvas.requestRenderAll();
+                  }
+            },
+            toBottomLayer () {
+                  let obj = this.myCanvas.getActiveObject();
+                  if (obj) {
+                        obj.sendToBack();
+                        this.myCanvas.renderTop();
+                        this.myCanvas.discardActiveObject();
+                        this.myCanvas.requestRenderAll();
+                  }
             },
             toNextLayer(){
                   let obj = this.myCanvas.getActiveObject();
@@ -1216,8 +1250,35 @@ export default {
 
 <style lang="less">
       @font-face {
-            font-family:'test-font';
+            font-family:'testFont';
             src:url('https://cdnjs.loli.net/ajax/libs/MaterialDesign-Webfont/3.8.95/fonts/materialdesignicons-webfont.ttf')
+      }
+      .vux-pop-out-enter-active,
+      .vux-pop-out-leave-active,
+      .vux-pop-in-enter-active,
+      .vux-pop-in-leave-active {
+            will-change: transform;
+            transition: all 300ms;
+            height: 100%;
+            position: absolute;
+            backface-visibility: hidden;
+            perspective: 1000;
+      }
+      .vux-pop-out-enter {
+            opacity: 0;
+            transform: translate3d(-100%, 0, 0);
+      }
+      .vux-pop-out-leave-active {
+            opacity: 0;
+            transform: translate3d(100%, 0, 0);
+      }
+      .vux-pop-in-enter {
+      opacity: 0;
+      transform: translate3d(100%, 0, 0);
+      }
+      .vux-pop-in-leave-active {
+      opacity: 0;
+      transform: translate3d(-100%, 0, 0);
       }
       .active{
             border: 2px solid #ff59a7 !important;
@@ -1300,121 +1361,258 @@ export default {
                   flex-wrap: wrap;
             }
       }
-      
+      .ant-drawer{
+            color: #000;
+      }
       #main{
-            padding: 100px;
-            background-color: #f8f8f8;
-            .section1{
-                  padding: 0 10px;
-                  .my-upload{
-                        display: flex;
-                        justify-content: center;
-                        span{
-                              font-size: 14px !important;
-                        }
-                        .ant-upload-list{
-                              display: none;
-                        }
-                  }
-                  .shapescolor{
-                        display: flex;
-                        margin: 40px 0;
-                        dt{
-                              margin-left: 10px;
-                        }
-                  }
-                  .my-submenu{
-                        .img-cell{
-                              > div{
-                                    font-size: 16px;
+            padding: 150px 80px 0;
+            height: 100%;
+            background-image: linear-gradient( 45deg, #11bbe8 10%, #4ac37a 100%);
+            overflow: hidden;
+            #myrow{
+                  .section1{
+                        padding: 0 10px;
+                        .my-upload{
+                              display: flex;
+                              justify-content: center;
+                              span{
+                                    font-size: 14px !important;
                               }
-                              .ant-menu{
-                                    display: flex;
-                                    flex-wrap: wrap;
-                                    li{
-                                          padding: 20px !important;
-                                          width: 25%;
-                                          height: auto;
+                              .ant-upload-list{
+                                    display: none;
+                              }
+                        }
+                        .shapescolor{
+                              display: flex;
+                              margin: 40px 0;
+                              dt{
+                                    margin-left: 10px;
+                              }
+                        }
+                        .my-submenu{
+                              .img-cell{
+                                    > div{
+                                          font-size: 16px;
+                                    }
+                                    .ant-menu{
                                           display: flex;
-                                          justify-content: center;
+                                          flex-wrap: wrap;
+                                          li{
+                                                padding: 20px !important;
+                                                width: 25%;
+                                                height: auto;
+                                                display: flex;
+                                                justify-content: center;
+                                                align-items: center;
+                                                &::after{
+                                                      border-right: none;
+                                                }
+                                                
+                                                img{
+                                                      width: 50px;
+                                                      height: 50px;
+                                                }
+                                          }
+                                    }
+                              }
+                              span{
+                                    font-size: 18px;
+                              }
+                        }
+                  }
+                  .section2{
+                        position: relative;
+                        .left-side{
+                              position: absolute;
+                              right: 20px;
+                              bottom: 10px;
+                              display: flex;
+                              flex-direction: column;
+                              cursor: pointer;
+                              span{
+                                    margin: 10px 0;
+                                    width: 30px;
+                                    height: 30px;
+                                    img{
+                                          width: 100%;
+                                    }
+                              }
+                        }
+                        .canvas-container{
+                              
+                              display: flex;
+                              justify-content: center;
+                        }
+                        
+                  }
+                  .section3{
+                        padding: 0 10px;
+                        .size-select{
+                              display: flex;
+                              .my-tag{
+                                    padding: 0 20px;
+                              }
+                        }
+                        .color-select{
+                              display: flex;
+                              height: 64px;
+                              dd{
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    padding: 5px;
+                                    border-radius: 100%;
+                                    margin: 10px 4px;
+                                    width: 44px;
+                                    height: 44px;
+                                    i{
+                                          width: 30px;
+                                          height: 30px;
+                                          border-radius: 100%;
+                                          display: inline-block;
+                                          cursor: pointer;
+                                          
+                                    }
+                                    &:hover{
+                                          border: 2px solid #ebebeb;
+                                          
+                                    }
+                              }
+                        }
+                        .btn-box{
+                              display: flex;
+                              justify-content: center;
+                              button{
+                                    margin: 20px;
+                              }
+                              
+                        }
+                  }
+                  .drawer{
+                        background-color: rgba(255, 255, 255, 0.3);
+                        width: 100%;
+                        border-radius: 10px;
+                        padding: 20px 25px;
+                        
+                        .controlers{
+                              display: flex;
+                              align-items: center;
+                              > span{
+                                    font-size: 24px;
+                                    margin: 0 10px;
+                                    cursor: pointer;
+                                    color: #f1f1f1;
+                              }
+                        }
+                        .tool-box1{
+                              .second{
+                                    padding: 10px;
+                                    background-color: rgba(80, 168, 176, 0.507);
+                                    border-radius: 6px;
+                                    .text-tool{
+                                          display: flex;
+                                          margin: 30px 0;
+                                          p{
+                                                text-align: center;
+                                                margin: 0 10px;
+                                                span{
+                                                      background-color: rgba(255, 255, 255, 0.3);
+                                                      border-radius: 4px;
+                                                      display: inline-block;
+                                                      padding: 4px 10px;
+                                                      margin: 0 2px;
+                                                      cursor: pointer;
+                                                }
+                                          }
+                                    }
+                                    
+                              }
+                              
+                              .add-text{
+                                    display: flex;
+                                    flex-direction: column;
+                                    justify-content: center;
+                                    align-items: center;
+                                    margin: 30px 0;
+                                    input{
+                                          margin: 10px 0;
+                                    }
+                              }
+                              .tool-list{
+                                    margin-top: 30px;
+                                    .square{
+                                          width: 14px;
+                                          height: 14px;
+                                          display: inline-block;
+                                          margin-left: 5px;
+                                    }
+                                    li{
+                                          padding: 10px 0;
+                                          border-bottom:1px solid #fff; 
+                                          display: flex;
+                                          justify-content: space-between;
                                           align-items: center;
-                                          &::after{
-                                                border-right: none;
+                                          cursor: pointer;
+                                          p{
+                                                display: flex;
+                                                align-items: center;
+                                                span{
+                                                      margin-right: 5px;
+                                                      display: flex;
+                                                      align-items: center;
+                                                }
                                           }
                                           
-                                          img{
-                                                width: 50px;
-                                                height: 50px;
+                                    }
+                              }
+                        }
+                        .tool-box3{
+                              .font-family-list{
+                                    li{
+                                          display: flex;
+                                          flex-direction: column;
+                                          align-items: center;
+                                          justify-content: center;
+                                          margin: 10px 0;
+                                          cursor: pointer;
+                                          span:nth-child(1){
+                                                font-size: 18px;
+                                          }
+                                          &:hover{
+                                                background-color: rgba(255, 255, 255, 0.3);
                                           }
                                     }
                               }
                         }
-                        span{
-                              font-size: 18px;
-                        }
-                  }
-            }
-            .section2{
-                  background-color: #000;
-                  .canvas-container{
-                        background-image: linear-gradient( 135deg, #E2B0FF 10%, #9F44D3 100%);
-                        display: flex;
-                        justify-content: center;
-                  }
-                  .controlers{
-                        display: flex;
-                        align-items: center;
-                        > span{
-                              font-size: 24px;
-                              margin: 0 10px;
-                              cursor: pointer;
-                              color: #f1f1f1;
-                        }
-                  }
-            }
-            .section3{
-                  padding: 0 10px;
-                  .size-select{
-                        display: flex;
-                        .my-tag{
-                              padding: 0 20px;
-                        }
-                  }
-                  .color-select{
-                        display: flex;
-                        height: 64px;
-                        dd{
-                              display: flex;
-                              align-items: center;
-                              justify-content: center;
-                              padding: 5px;
-                              border-radius: 100%;
-                              margin: 10px 4px;
-                              width: 44px;
-                              height: 44px;
-                              i{
-                                    width: 30px;
-                                    height: 30px;
-                                    border-radius: 100%;
-                                    display: inline-block;
-                                    cursor: pointer;
-                                    
+                        .tool-box4{
+                              margin-top: 20px;
+                              .font-color-list{
+                                    display: flex;
+                                    li{
+                                          width: 25px;
+                                          height: 25px;
+                                          margin: 0 5px;
+                                          cursor: pointer;
+                                    }
                               }
-                              &:hover{
-                                    border: 2px solid #ebebeb;
-                                    
+                              
+                        }
+                        .tool-box5{
+                              margin-top: 20px;
+                              .font-color-list{
+                                    display: flex;
+                                    li{
+                                          width: 25px;
+                                          height: 25px;
+                                          margin: 0 5px;
+                                          cursor: pointer;
+                                    }
                               }
+                              
                         }
-                  }
-                  .btn-box{
-                        display: flex;
-                        justify-content: center;
-                        button{
-                              margin: 20px;
-                        }
-                        
                   }
             }
+            
       }
 </style>
 

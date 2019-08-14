@@ -1,5 +1,6 @@
 <template>
       <div id="test">
+            <my-menu></my-menu>
             <order-list></order-list>
             <goods-list></goods-list>
             <order-item>
@@ -51,7 +52,7 @@
       </div>
 </template>
 <script>
-
+import MyMenu from "@/components/MyMenu/MyMenu";
 import MyTable from "@/components/MyTable/MyTable";
 import MyStpes from "@/components/MyStpes/MyStpes";
 import MyHeader from "@/components/MyHeader/MyHeader";
@@ -71,7 +72,8 @@ export default {
             TableItem,
             OrderItem,
             GoodsList,
-            OrderList
+            OrderList,
+            MyMenu
       },
       data(){
             return{

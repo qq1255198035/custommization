@@ -1,39 +1,58 @@
 <template>
       <div id="MyMenu">
-            <a-menu mode="inline" :openKeys="openKeys" @openChange="onOpenChange" @click="handleClick">
-                  <a-sub-menu key="sub1" class="my-submenu">
-                        <span slot="title"><a-icon type="edit" /><router-link>仪表盘</router-link></span>
-                  </a-sub-menu>
+            <a-menu mode="inline" @openChange="onOpenChange" :defaultSelectedKeys="['5']">
+                  <a-menu-item key="1">
+                        <a-icon type="dashboard" class="title-icon"/>
+                        <span style="font-size: 20px;">仪表盘</span>
+                  </a-menu-item>
                   <a-sub-menu key="sub2" class="my-submenu">
-                        <span slot="title"><a-icon type="area-chart" /><span>订单管理</span></span>
-                        <a-sub-menu key="sub3" title="剪贴画" class="img-cell">
-                              <a-menu-item :key="img" v-for="(img,index) in imgs" @click="addImg(img,index)">
-                                    <img :src="img" alt="">
-                              </a-menu-item>
-                              
-                        </a-sub-menu>
-                        <a-menu-item style="display: flex; align-items:center;justify-content: center">
-                              <a-upload name="file" class="my-upload" :beforeUpload="beforeUpload">
-                                    <a-button>
-                                          <a-icon type="upload"/> 上传图片
-                                    </a-button>
-                              </a-upload>
+                        <span slot="title"><a-icon type="file-text" class="title-icon"/><span>订单管理</span></span>
+                        <a-menu-item key="2">
+                              <router-link to="">个人订单</router-link>
                         </a-menu-item>
+                        <a-menu-item key="3">
+                              <router-link to="">团体订单</router-link>
+                        </a-menu-item>
+                        
                   </a-sub-menu>
-                  <a-sub-menu key="sub4" class="my-submenu">
-                        <span slot="title"><a-icon type="pie-chart" /><span>图形</span></span>
-                        <a-menu-item key="9" @click="createEqualTriangle">三角形</a-menu-item>
-                        <a-menu-item key="10" @click="createRect">矩形</a-menu-item>
-                        <a-menu-item key="11" @click="createCircle">圆形</a-menu-item>
+                  <a-sub-menu key="sub3" class="my-submenu">
+                        <span slot="title"><a-icon type="dollar" class="title-icon"/><span>佣金管理</span></span>
+                        <a-menu-item key="4"><router-link to="">佣金管理</router-link></a-menu-item>
+                        <a-menu-item key="5"><router-link to="">佣金明细</router-link></a-menu-item>
+                        
                   </a-sub-menu>
+                  <a-menu-item key="6">
+                        <a-icon type="idcard" class="title-icon"/>
+                        <span style="font-size: 20px;">账号设置</span>
+                  </a-menu-item>
             </a-menu>
       </div>
 </template>
 <script>
 export default {
-      
+      data(){
+            return{
+                  
+                 
+            }
+      },
+      methods: {
+            onOpenChange (openKeys) {
+                  const latestOpenKey = openKeys.find(key => this.openKeys.indexOf(key) === -1)
+                  if (this.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
+                  this.openKeys = openKeys
+                  } else {
+                  this.openKeys = latestOpenKey ? [latestOpenKey] : []
+                  }
+            },
+      },
 }
 </script>
-<style lang="less" scoped>
-@import url("@/components/index.less");
+<style lang="less">
+@import "./../index.less";
+#MyMenu{
+      .title-icon{
+            font-size: 24px;
+      }
+}
 </style>

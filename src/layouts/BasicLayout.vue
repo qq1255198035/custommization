@@ -1,15 +1,20 @@
 <template>
       <div id="basiclayouts">
-            <My-Header></My-Header>
+            <My-Header :showNav="true"></My-Header>
             <router-view></router-view>
       </div>
 </template>
 <script>
-import MyHeader from '@/components/header/Header'
+import MyHeader from '@/components/Header/Header'
 export default {
       components:{
             MyHeader
       },
+      data(){
+            return{
+                  
+            }
+      }
 }
 </script>
 <style lang="less" scoped>

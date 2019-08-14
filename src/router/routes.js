@@ -1,8 +1,10 @@
-import BasicLayout from "./../layouts/BasicLayout.vue";
+import BasicLayout from "@/layouts/BasicLayout.vue";
+import SellerLayout from "@/layouts/SellerLayout.vue";
 const routes = [
       {
             path: "/",
             name: "index",
+            
             component: BasicLayout,
             redirect: "/home",
             children:[
@@ -39,6 +41,14 @@ const routes = [
                         }
                   },
                   {
+                        path: "/test2",
+                        name: "test2",
+                        component: () => import("@/pages/Website/test2"),
+                        meta: {
+                              
+                        }
+                  },
+                  {
                         path: "/swiper",
                         name: "swiper",
                         component: () => import("@/pages/Website/Swiper"),
@@ -55,8 +65,24 @@ const routes = [
                               
                         }
                   }
-            ]
+            ],
       },
+      {
+            path: "/seller",
+            name: "seller",
+            component: SellerLayout,
+            redirect: "/dashbored",
+            children:[
+                  {
+                        path: "/dashbored",
+                        name: "dashbored",
+                        component: () => import("@/pages/Seller/dashbored"),
+                        meta: {
+                              
+                        }
+                  }
+            ]
+      }
       
 
 ];

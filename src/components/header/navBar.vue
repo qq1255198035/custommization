@@ -10,12 +10,14 @@
                         
                   </li>
                   <li :class="{'nav-active': $route.name == 'about'}">
-                        <router-link to="/about">About us</router-link>
+                        <router-link to="/about">About Us</router-link>
                         
                   </li>
                   <li :class="{'nav-active': false}">
-                        <router-link to="">Become a seller</router-link>
-                        
+                        <router-link to="">Sign Up</router-link>
+                  </li>
+                  <li :class="{'nav-active': false}">
+                        <router-link to="">My Account</router-link>
                   </li>
             </ul>
             
@@ -26,14 +28,16 @@
                               <router-link to="/home">Home</router-link>
                         </li>
                         <li @click="hiddenMenuM = false">
-                              <router-link to="/play">Commodity</router-link>
+                              <router-link to="/products">Products</router-link>
                         </li>
                         <li @click="hiddenMenuM = false">
-                              <router-link to="/scores">About</router-link>
+                              <router-link to="/about">About Us</router-link>
                         </li>
-                        <li @click="sideNav = !sideNav">
-                              <router-link to="">Become a seller</router-link>
-                              
+                        <li @click="hiddenMenuM = false">
+                              <router-link to="">Sign Up</router-link>
+                        </li>
+                        <li @click="hiddenMenuM = false">
+                              <router-link to="">My Account</router-link>
                         </li>
                   </ul>
             </div>
@@ -65,14 +69,14 @@ export default {
             display: flex;
             > li{
                   height: 100%;
-                  padding: 0 30px;
+                  padding: 0 40px;
                   display: flex;
                   
                   flex-direction: column;
                   justify-content: center;
                   align-items: center;
                   position: relative;
-                  
+                 
                   .hidden-menu{
                         width: 240px;
                         padding: 0 10px;
@@ -98,10 +102,13 @@ export default {
                   > a{
                         color: #fff;
                         padding: 10px 0;
-                        font-size: 18px;
+                        font-size: 30px;
                         position: relative;
                         z-index: 1;
                         &:active{
+                              text-decoration: none;
+                        }
+                        &:focus{
                               text-decoration: none;
                         }
                   }
@@ -130,8 +137,11 @@ export default {
       }
 }
 .nav-active{
-      transform: scale(1.3);
-      text-shadow: 4px 4px 2px rgba(51,44,43,0.22)
+      
+      text-shadow: 8px 0 7px rgba(0,0,0,0.43);
+      a{
+            font-size: 40px !important;
+      }
 }
 @media screen and(max-width: 800px){
       #nav-bar{

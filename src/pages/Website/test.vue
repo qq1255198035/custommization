@@ -1,7 +1,9 @@
 <template>
       <div id="main">
-            
-            <a-row>
+            <my-title :title="'新建订单'">
+                  <a-button size="small">返回</a-button>
+            </my-title>
+            <a-row id="myrow">
                   <a-col :span="6">
                         <div class="section1">
                               <a-menu mode="inline" :openKeys="openKeys" @openChange="onOpenChange" @click="handleClick">
@@ -34,12 +36,8 @@
                                           <a-menu-item key="11" @click="createCircle">圆形</a-menu-item>
                                           
                                     </a-sub-menu>
-                                    
                               </a-menu>
-                              
-                              
                         </div>
-                        
                   </a-col>
                   <a-col :span="12">
                         <div class="section2">
@@ -56,13 +54,248 @@
                                     
                               </div>
                               <div class="canvas-container"  v-show="model == 'back'">
-                                    
                                     <canvas id="canvas2" :width="screenWidth" :height="screenWidth"></canvas>
                               </div>
                         </div>
                         
                   </a-col>
-                  <a-col :span="6">
+                  <a-col :span="6" id="box">
+                        <a-drawer placement="right" title="工具箱" :visible="visible" :mask="false" @close="onClose" :width="540" :getContainer="ele">
+                              <div class="tools">
+                                    <div v-if="visibletype == 1" class="text-tools">
+                                          <dl style="display: flex">
+                                                <dt>选择字体：</dt>
+                                                <dd>
+                                                      <a-select placeholder="选择字体" @change="changeFontFamily" :value="fontfamily" style="width: 240px;">
+                                                            <a-select-option value="test-font">test-font</a-select-option>
+                                                            <a-select-option value="Microsoft YaHei">Microsoft YaHei</a-select-option>
+                                                            <a-select-option value="Corbel">Corbel</a-select-option>
+                                                            <a-select-option value="Impact">Impact</a-select-option>
+                                                            <a-select-option value="Ink Free">Ink Free</a-select-option>
+                                                            <a-select-option value="Raleway">Raleway</a-select-option>
+                                                            <a-select-option value="Helvetica">Helvetica</a-select-option>
+                                                            <a-select-option value="Arial">Arial</a-select-option>
+                                                            <a-select-option value="sans-serif">sans-serif</a-select-option>
+                                                      </a-select>
+                                                </dd>
+                                          </dl>
+                                          
+                                          <ul class="textcolor-control">
+                                                <li>
+                                                      
+                                                            字体颜色:
+                                                            
+                                                                  <span title="字体颜色" style="position: relative">
+                                                                        <a-icon type="font-colors" :style="{color:color}"/>
+                                                                        <colorPicker v-model="color" @change="changeFillColor"/>
+                                                                  </span>
+                                                
+                                                      
+                                                </li>
+                                                <li>
+                                                      
+                                                            字体背景颜色:
+                                                      
+                                                                  <span title="背景颜色" style="position: relative">
+                                                                        <a-icon type="bg-colors" :style="{color:bgcolor}"/>
+                                                                        <colorPicker v-model="bgcolor" @change="changeTextBgColor"/>
+                                                                  </span>
+                                                      
+                                                      
+                                                      
+                                                </li>
+                                                
+                                          </ul>
+                                          <dl class="textalign-control">
+                                                <dt>
+                                                      对齐方式：
+                                                </dt>
+                                                <dd>
+                                                      <span title="左对齐" @click="setTextalignLeft"><a-icon type="align-left" /></span>
+                                                      
+                                                </dd>
+                                                <dd>
+                                                      <span title="居中" @click="setTextalignCenter"><a-icon type="align-center" /></span>
+                                                      
+                                                </dd>
+                                                <dd>
+                                                      <span title="右对齐" @click="setTextalignRight"><a-icon type="align-right" /></span>
+                                                </dd>
+                                          </dl>
+                                          <dl class="fonTstyle-control">
+                                                <dt>
+                                                      字体样式：
+                                                </dt>
+                                                <dd>
+                                                      <span title="加粗" @click="setFontWeight"><a-icon type="bold" /></span>
+                                                      
+                                                </dd>
+                                                <dd>
+                                                      <span title="倾斜" @click="setFontStyle"><a-icon type="italic" /></span>
+                                                      
+                                                </dd>
+                                                <dd>
+                                                      <span title="下划线" @click="setTextDown"><a-icon type="underline" /></span>
+                                                      
+                                                </dd>
+                                                <dd>
+                                                      <span title="删除线" @click="setTextThrough"><a-icon type="strikethrough" /></span>
+                                                </dd>
+                                          </dl>
+                                          <ul class="stroke-control">
+                                                <li>
+                                                      描边颜色：
+                                                      <colorPicker v-model="stroke" @change="changestrokeColor"/>
+                                                </li>
+                                                <li>
+                                                      描边大小：
+                                                      <a-slider :min="0" :max="10" v-model="strokeWidth" :step="1" @change="changestrokeWidth"/>
+                                                </li>
+                                                
+                                          </ul>
+                                          <ul class="stroke-control">
+                                                <li>
+                                                      阴影颜色：
+                                                      <colorPicker v-model="shdowcolor" @change="changeShadowColor"/>
+                                                </li>
+                                                <li>
+                                                      阴影大小：
+                                                      <a-slider :min="-10" :max="10" v-model="Shadow1" :step="1" @change="changeShadowWidth1"/>
+                                                      <a-slider :min="-10" :max="10" v-model="Shadow2" :step="1" @change="changeShadowWidth2"/>
+                                                      <a-slider :min="0" :max="10" v-model="Shadow3" :step="1" @change="changeShadowWidth3"/>
+                                                </li>
+                                                
+                                          </ul>
+                                    </div>
+                                    <div v-else-if="visibletype == 2" class="imgs-tools">
+                                          <dl>
+                                                <dt>
+                                                      透明度：
+                                                </dt>
+                                                <dd>
+                                                      <a-slider :min="0" :max="1" v-model="opacity" :step="0.1" @change="changeOpacity"/>
+                                                </dd>
+                                          </dl>
+                                          <ul style="display: flex;justify-content: space-around;margin:20px 0">
+                                                <li>
+                                                      X轴翻转：
+                                                      <a-switch @change='changeFilPx' v-model="filpx"/>
+                                                </li>
+                                                <li>
+                                                      Y轴翻转：
+                                                      <a-switch @change='changeFilPy' v-model="filpy"/>
+                                                </li>
+                                          </ul>         
+                                          <ul>
+                                                <li>
+                                                      X轴斜切：
+                                                      <a-slider :min="0" :max="80" :step="1" @change='changeSkewX' v-model="skewx"/>
+                                                </li>
+                                                <li>
+                                                      Y轴斜切：
+                                                      <a-slider :min="0" :max="80" :step="1" @change='changeSkewY' v-model="skewy"/>
+                                                </li>
+                                          </ul>
+                                          <dl class="filters-part1">
+                                                <dt>滤镜：</dt>
+                                                <dd><a-checkbox @change="selectGrayscale">灰阶</a-checkbox></dd>
+                                                <dd><a-checkbox @change="selectInvert">倒置</a-checkbox></dd>
+                                                <dd><a-checkbox @change="selectSepia">深棕色</a-checkbox></dd>
+                                                <dd><a-checkbox @change="selectblackwhite">黑白</a-checkbox></dd>
+                                                <dd><a-checkbox @change="selectBrownie">棕色</a-checkbox></dd>
+                                                <dd><a-checkbox @change="selectVintage">复古</a-checkbox></dd>
+                                                <dd><a-checkbox @change="selectKodachrome">Kodachrome</a-checkbox></dd>
+                                                <dd><a-checkbox @change="selectTechnicolor">Technicolor</a-checkbox></dd>
+                                                <dd><a-checkbox @change="selectPolaroid">Polaroid</a-checkbox></dd>
+                                          </dl>
+                                          <ul>
+                                                <li>
+                                                      删除颜色:<br>
+                                                      color: <colorPicker v-model="removecolor" @change="changeRemoveColor"/><br>
+                                                      distance: <a-slider :min="0" :max="1" :step="0.01" @change='changeDistance' v-model="distance"/>
+                                                </li>
+                                                <li>
+                                                      明度：
+                                                      <a-slider :min="-1" :max="1" :step="0.01" @change='changeBrightness' v-model="brightness"/>
+                                                </li>
+                                                <li>
+                                                      Gamma：
+                                                      <a-slider :min="0" :max="2" :step="0.01" @change='changeGammaRed' v-model="red"/>
+                                                      <a-slider :min="0" :max="2" :step="0.01" @change='changeGammaGreen' v-model="green"/>
+                                                      <a-slider :min="0" :max="2" :step="0.01" @change='changeGammaBlue' v-model="blue"/>
+                                                </li>
+                                                <li>
+                                                      对比度：
+                                                      <a-slider :min="-1" :max="1" :step="0.01" @change='changeContrast' v-model="contrast"/>
+                                                </li>
+                                                <li>
+                                                      饱和度：
+                                                      <a-slider :min="-1" :max="1" :step="0.01" @change='changeSaturation' v-model="saturation"/>
+                                                </li>
+                                                <li>
+                                                      色调：
+                                                      <a-slider :min="-2" :max="2" :step="0.01" @change='changeHue' v-model="hue"/>
+                                                </li>
+                                                <li>
+                                                      噪声：
+                                                      <a-slider :min="0" :max="1000" :step="50" @change='changeNoise' v-model="noise"/>
+                                                </li>
+                                                <li>
+                                                      像素化：
+                                                      <a-slider :min="1" :max="20" :step="1" @change='changePixelate' v-model="pixelate"/>
+                                                </li>
+                                                <li>
+                                                      模糊：
+                                                      <a-slider :min="0" :max="1" :step="0.01" @change='changeBlur' v-model="blur"/>
+                                                </li>
+                                                <li><a-checkbox @change="selectSharpen">锐化</a-checkbox></li>
+                                                <li><a-checkbox @change="selectEmboss">浮雕</a-checkbox></li>
+                                          </ul>
+                                    </div>
+                                    <div v-else-if="visibletype == 3" class="rect-tools">
+                                          <ul class="color-control">
+                                                <li>
+                                                      描边颜色：
+                                                      <colorPicker v-model="stroke" @change="changestrokeColor"/>
+                                                </li>
+                                                <li>
+                                                      填充颜色：
+                                                      <colorPicker v-model="color" @change="changeFillColor"/>
+                                                </li>
+                                          </ul>
+                                          <p>
+                                                描边大小：
+                                                <a-slider :min="0" :max="10" v-model="strokeWidth" :step="1" @change="changestrokeWidth"/>
+                                          </p>
+                                          <ul class="stroke-control">
+                                                <li>
+                                                      阴影颜色：
+                                                      <colorPicker v-model="shdowcolor" @change="changeShadowColor"/>
+                                                </li>
+                                                <li>
+                                                      阴影大小：
+                                                      <a-slider :min="-10" :max="10" v-model="Shadow1" :step="1" @change="changeShadowWidth1"/>
+                                                      <a-slider :min="-10" :max="10" v-model="Shadow2" :step="1" @change="changeShadowWidth2"/>
+                                                      <a-slider :min="0" :max="10" v-model="Shadow3" :step="1" @change="changeShadowWidth3"/>
+                                                </li>
+                                                
+                                          </ul>
+                                                
+                                          <ul>
+                                                <li>
+                                                      X轴斜切：
+                                                      <a-slider :min="0" :max="80" :step="1" @change='changeSkewX' v-model="skewx"/>
+                                                </li>
+                                                <li>
+                                                      Y轴斜切：
+                                                      <a-slider :min="0" :max="80" :step="1" @change='changeSkewY' v-model="skewy"/>
+                                                </li>
+                                          </ul>
+                                    </div>
+                              </div>
+                        </a-drawer>
+                  </a-col>
+                  <!-- <a-col :span="6">
                         <div class="section3">
                               <h3>选择颜色</h3>
                               <dl class="color-select">
@@ -98,242 +331,9 @@
                               </div>
                         </div>
                         
-                  </a-col>
+                  </a-col> -->
             </a-row>
-            <a-drawer placement="right" title="工具箱" :visible="visible" :mask="false" @close="onClose" :width="540">
-                  <div class="tools">
-                        <div v-if="visibletype == 1" class="text-tools">
-                              <dl style="display: flex">
-                                    <dt>选择字体：</dt>
-                                    <dd>
-                                          <a-select placeholder="选择字体" @change="changeFontFamily" :value="fontfamily" style="width: 240px;">
-                                                <a-select-option value="test-font">test-font</a-select-option>
-                                                <a-select-option value="Microsoft YaHei">Microsoft YaHei</a-select-option>
-                                                <a-select-option value="Corbel">Corbel</a-select-option>
-                                                <a-select-option value="Impact">Impact</a-select-option>
-                                                <a-select-option value="Ink Free">Ink Free</a-select-option>
-                                                <a-select-option value="Raleway">Raleway</a-select-option>
-                                                <a-select-option value="Helvetica">Helvetica</a-select-option>
-                                                <a-select-option value="Arial">Arial</a-select-option>
-                                                <a-select-option value="sans-serif">sans-serif</a-select-option>
-                                          </a-select>
-                                    </dd>
-                              </dl>
-                              
-                              <ul class="textcolor-control">
-                                    <li>
-                                          
-                                                字体颜色:
-                                                
-                                                      <span title="字体颜色" style="position: relative">
-                                                            <a-icon type="font-colors" :style="{color:color}"/>
-                                                            <colorPicker v-model="color" @change="changeFillColor"/>
-                                                      </span>
-                                    
-                                          
-                                    </li>
-                                    <li>
-                                          
-                                                字体背景颜色:
-                                          
-                                                      <span title="背景颜色" style="position: relative">
-                                                            <a-icon type="bg-colors" :style="{color:bgcolor}"/>
-                                                            <colorPicker v-model="bgcolor" @change="changeTextBgColor"/>
-                                                      </span>
-                                          
-                                          
-                                          
-                                    </li>
-                                    
-                              </ul>
-                              <dl class="textalign-control">
-                                    <dt>
-                                          对齐方式：
-                                    </dt>
-                                    <dd>
-                                          <span title="左对齐" @click="setTextalignLeft"><a-icon type="align-left" /></span>
-                                          
-                                    </dd>
-                                    <dd>
-                                          <span title="居中" @click="setTextalignCenter"><a-icon type="align-center" /></span>
-                                          
-                                    </dd>
-                                    <dd>
-                                          <span title="右对齐" @click="setTextalignRight"><a-icon type="align-right" /></span>
-                                    </dd>
-                              </dl>
-                              <dl class="fonTstyle-control">
-                                    <dt>
-                                          字体样式：
-                                    </dt>
-                                    <dd>
-                                          <span title="加粗" @click="setFontWeight"><a-icon type="bold" /></span>
-                                          
-                                    </dd>
-                                    <dd>
-                                          <span title="倾斜" @click="setFontStyle"><a-icon type="italic" /></span>
-                                          
-                                    </dd>
-                                    <dd>
-                                          <span title="下划线" @click="setTextDown"><a-icon type="underline" /></span>
-                                          
-                                    </dd>
-                                    <dd>
-                                          <span title="删除线" @click="setTextThrough"><a-icon type="strikethrough" /></span>
-                                    </dd>
-                              </dl>
-                              <ul class="stroke-control">
-                                    <li>
-                                          描边颜色：
-                                          <colorPicker v-model="stroke" @change="changestrokeColor"/>
-                                    </li>
-                                    <li>
-                                          描边大小：
-                                          <a-slider :min="0" :max="10" v-model="strokeWidth" :step="1" @change="changestrokeWidth"/>
-                                    </li>
-                                    
-                              </ul>
-                              <ul class="stroke-control">
-                                    <li>
-                                          阴影颜色：
-                                          <colorPicker v-model="shdowcolor" @change="changeShadowColor"/>
-                                    </li>
-                                    <li>
-                                          阴影大小：
-                                          <a-slider :min="-10" :max="10" v-model="Shadow1" :step="1" @change="changeShadowWidth1"/>
-                                          <a-slider :min="-10" :max="10" v-model="Shadow2" :step="1" @change="changeShadowWidth2"/>
-                                          <a-slider :min="0" :max="10" v-model="Shadow3" :step="1" @change="changeShadowWidth3"/>
-                                    </li>
-                                    
-                              </ul>
-                        </div>
-                        <div v-else-if="visibletype == 2" class="imgs-tools">
-                              <dl>
-                                    <dt>
-                                          透明度：
-                                    </dt>
-                                    <dd>
-                                          <a-slider :min="0" :max="1" v-model="opacity" :step="0.1" @change="changeOpacity"/>
-                                    </dd>
-                              </dl>
-                              <ul style="display: flex;justify-content: space-around;margin:20px 0">
-                                    <li>
-                                          X轴翻转：
-                                          <a-switch @change='changeFilPx' v-model="filpx"/>
-                                    </li>
-                                    <li>
-                                          Y轴翻转：
-                                          <a-switch @change='changeFilPy' v-model="filpy"/>
-                                    </li>
-                              </ul>         
-                              <ul>
-                                    <li>
-                                          X轴斜切：
-                                          <a-slider :min="0" :max="80" :step="1" @change='changeSkewX' v-model="skewx"/>
-                                    </li>
-                                    <li>
-                                          Y轴斜切：
-                                          <a-slider :min="0" :max="80" :step="1" @change='changeSkewY' v-model="skewy"/>
-                                    </li>
-                              </ul>
-                              <dl class="filters-part1">
-                                    <dt>滤镜：</dt>
-                                    <dd><a-checkbox @change="selectGrayscale">灰阶</a-checkbox></dd>
-                                    <dd><a-checkbox @change="selectInvert">倒置</a-checkbox></dd>
-                                    <dd><a-checkbox @change="selectSepia">深棕色</a-checkbox></dd>
-                                    <dd><a-checkbox @change="selectblackwhite">黑白</a-checkbox></dd>
-                                    <dd><a-checkbox @change="selectBrownie">棕色</a-checkbox></dd>
-                                    <dd><a-checkbox @change="selectVintage">复古</a-checkbox></dd>
-                                    <dd><a-checkbox @change="selectKodachrome">Kodachrome</a-checkbox></dd>
-                                    <dd><a-checkbox @change="selectTechnicolor">Technicolor</a-checkbox></dd>
-                                    <dd><a-checkbox @change="selectPolaroid">Polaroid</a-checkbox></dd>
-                              </dl>
-                              <ul>
-                                    <li>
-                                          删除颜色:<br>
-                                          color: <colorPicker v-model="removecolor" @change="changeRemoveColor"/><br>
-                                          distance: <a-slider :min="0" :max="1" :step="0.01" @change='changeDistance' v-model="distance"/>
-                                    </li>
-                                    <li>
-                                          明度：
-                                          <a-slider :min="-1" :max="1" :step="0.01" @change='changeBrightness' v-model="brightness"/>
-                                    </li>
-                                    <li>
-                                          Gamma：
-                                          <a-slider :min="0" :max="2" :step="0.01" @change='changeGammaRed' v-model="red"/>
-                                          <a-slider :min="0" :max="2" :step="0.01" @change='changeGammaGreen' v-model="green"/>
-                                          <a-slider :min="0" :max="2" :step="0.01" @change='changeGammaBlue' v-model="blue"/>
-                                    </li>
-                                    <li>
-                                          对比度：
-                                          <a-slider :min="-1" :max="1" :step="0.01" @change='changeContrast' v-model="contrast"/>
-                                    </li>
-                                    <li>
-                                          饱和度：
-                                          <a-slider :min="-1" :max="1" :step="0.01" @change='changeSaturation' v-model="saturation"/>
-                                    </li>
-                                    <li>
-                                          色调：
-                                          <a-slider :min="-2" :max="2" :step="0.01" @change='changeHue' v-model="hue"/>
-                                    </li>
-                                    <li>
-                                          噪声：
-                                          <a-slider :min="0" :max="1000" :step="50" @change='changeNoise' v-model="noise"/>
-                                    </li>
-                                    <li>
-                                          像素化：
-                                          <a-slider :min="1" :max="20" :step="1" @change='changePixelate' v-model="pixelate"/>
-                                    </li>
-                                    <li>
-                                          模糊：
-                                          <a-slider :min="0" :max="1" :step="0.01" @change='changeBlur' v-model="blur"/>
-                                    </li>
-                                    <li><a-checkbox @change="selectSharpen">锐化</a-checkbox></li>
-                                    <li><a-checkbox @change="selectEmboss">浮雕</a-checkbox></li>
-                              </ul>
-                        </div>
-                        <div v-else-if="visibletype == 3" class="rect-tools">
-                              <ul class="color-control">
-                                    <li>
-                                          描边颜色：
-                                          <colorPicker v-model="stroke" @change="changestrokeColor"/>
-                                    </li>
-                                    <li>
-                                          填充颜色：
-                                          <colorPicker v-model="color" @change="changeFillColor"/>
-                                    </li>
-                              </ul>
-                              <p>
-                                    描边大小：
-                                    <a-slider :min="0" :max="10" v-model="strokeWidth" :step="1" @change="changestrokeWidth"/>
-                              </p>
-                              <ul class="stroke-control">
-                                    <li>
-                                          阴影颜色：
-                                          <colorPicker v-model="shdowcolor" @change="changeShadowColor"/>
-                                    </li>
-                                    <li>
-                                          阴影大小：
-                                          <a-slider :min="-10" :max="10" v-model="Shadow1" :step="1" @change="changeShadowWidth1"/>
-                                          <a-slider :min="-10" :max="10" v-model="Shadow2" :step="1" @change="changeShadowWidth2"/>
-                                          <a-slider :min="0" :max="10" v-model="Shadow3" :step="1" @change="changeShadowWidth3"/>
-                                    </li>
-                                    
-                              </ul>
-                                    
-                              <ul>
-                                    <li>
-                                          X轴斜切：
-                                          <a-slider :min="0" :max="80" :step="1" @change='changeSkewX' v-model="skewx"/>
-                                    </li>
-                                    <li>
-                                          Y轴斜切：
-                                          <a-slider :min="0" :max="80" :step="1" @change='changeSkewY' v-model="skewy"/>
-                                    </li>
-                              </ul>
-                        </div>
-                  </div>
-            </a-drawer>
+            
       </div>
 </template>
 <script>
@@ -356,6 +356,7 @@ import rotate from '@/assets/icons/rotate.svg'
 import diagonal from "@/assets/icons/repair-tools-cross.svg";
 import lximg from '@/assets/lximg.png'
 import lximg2 from '@/assets/lximg2.png'
+import MyTitle from "@/components/MyTitle/MyTitle";
 function getBase64 (img, callback) {
       const reader = new FileReader()
       reader.addEventListener('load', () => callback(reader.result))
@@ -364,6 +365,7 @@ function getBase64 (img, callback) {
 export default {
       data () {
             return {
+                  ele:document.querySelector('#box'),
                   rootSubmenuKeys: ['sub1', 'sub2', 'sub4'],
                   openKeys: ['sub1'],
                   imgs:[
@@ -458,13 +460,13 @@ export default {
             }
       },
       components:{
-            
+            MyTitle
       },
       created(){
             this.watchScreenWidth();
       },
       mounted(){
-            console.log(screen.width)
+            console.log(this.$refs.myrow)
             this.$nextTick(function() {
                   //11：当选择画布中的对象时，该对象不出现在顶层。
                   //canvas.preserveObjectStacking = true;
@@ -608,12 +610,12 @@ export default {
                   zoom = zoom + 0.4;
                   if (zoom > 1.4) zoom = 1.4;
                   this.myCanvas.zoomToPoint({ x: 300, y: 300 }, zoom);
+                  console.log(11)
             },
             zoomOut(){
                   var zoom = this.myCanvas.getZoom();
                   console.log(zoom)
                   zoom = zoom - 0.4;
-                  
                   if (zoom < 1) zoom = 1;
                   this.myCanvas.zoomToPoint({ x: 300, y: 300 }, zoom);
             },
@@ -1410,9 +1412,12 @@ export default {
                   flex-wrap: wrap;
             }
       }
-      
+      .ant-drawer{
+            color: #000;
+      }
       #main{
-            padding-top: 100px;
+            padding: 150px 80px 0;
+            height: 100%;
             background-image: linear-gradient( 45deg, #11bbe8 10%, #4ac37a 100%);
             .section1{
                   padding: 0 10px;
