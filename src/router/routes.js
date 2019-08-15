@@ -1,4 +1,6 @@
-import BasicLayout from "./../layouts/BasicLayout.vue";
+import BasicLayout from "@/layouts/BasicLayout.vue";
+import SellerLayout from "@/layouts/SellerLayout.vue";
+import BlankLayout from "@/layouts/BlankLayout.vue";
 const routes = [
       {
             path: "/",
@@ -9,7 +11,23 @@ const routes = [
                   {
                         path: "/home",
                         name: "home",
-                        component: () => import("@/pages/home"),
+                        component: () => import("@/pages/Website/Home"),
+                        meta: {
+
+                        }
+                  },
+                  {
+                        path: "/products",
+                        name: "products",
+                        component: () => import("@/pages/Website/Products"),
+                        meta: {
+
+                        }
+                  },
+                  {
+                        path: "/about",
+                        name: "about",
+                        component: () => import("@/pages/Website/About"),
                         meta: {
 
                         }
@@ -17,7 +35,15 @@ const routes = [
                   {
                         path: "/test",
                         name: "test",
-                        component: () => import("@/pages/test"),
+                        component: () => import("@/pages/Website/test"),
+                        meta: {
+                              
+                        }
+                  },
+                  {
+                        path: "/test2",
+                        name: "test2",
+                        component: () => import("@/pages/Website/test2"),
                         meta: {
                               
                         }
@@ -25,27 +51,60 @@ const routes = [
                   {
                         path: "/swiper",
                         name: "swiper",
-                        component: () => import("@/pages/Swiper"),
+                        component: () => import("@/pages/Website/Swiper"),
                         meta: {
                               
                         }
                   },
-                  {
-                        path: "/products",
-                        name: "products",
-                        component: () => import("@/pages/products"),
-                        meta: {
-                              
-                        }
-                  },
+                  
                   {
                         path: "/comtest",
                         name: "comtest",
-                        component: () => import("@/pages/comtest"),
+                        component: () => import("@/pages/Website/comtest"),
                         meta: {
                               
                         }
                   }
+            ],
+      },
+      {
+            path: "/seller",
+            name: "seller",
+            component: SellerLayout,
+            redirect: "/dashbored",
+            children:[
+                  {
+                        path: "/dashbored",
+                        name: "dashbored",
+                        component: () => import("@/pages/Seller/DashBored"),
+                        meta: {
+                              
+                        }
+                  },
+                  {
+                        path: "/grouporder",
+                        name: "grouporder",
+                        component: () => import("@/pages/Seller/GroupOrder"),
+                        meta: {
+                              
+                        }
+                  },
+                  {
+                        path: "/commissions",
+                        name: "commissions",
+                        component: () => import("@/pages/Seller/Commissions"),
+                        meta: {
+                              
+                        }
+                  },
+                  {
+                        path: "/commissionsdetails",
+                        name: "commissionsdetails",
+                        component: () => import("@/pages/Seller/CommissionsDeatils"),
+                        meta: {
+                              
+                        }
+                  },
             ]
       },
       {
@@ -82,6 +141,39 @@ const routes = [
             path: "/register",
             name: "register",
             component: () => import("@/pages/common/register")
+      },
+      {
+            path: "/order",
+            name: "order",
+            component: BlankLayout,
+            redirect: "/neworder",
+            children:[
+                  {
+                        path: "/neworder",
+                        name: "neworder",
+                        component: () => import("@/pages/Seller/NewOrder"),
+                        meta: {
+                              
+                        }
+                  },
+                  {
+                        path: "/orderres",
+                        name: "orderres",
+                        component: () => import("@/pages/Seller/OrderResult"),
+                        meta: {
+                              
+                        }
+                  },
+                  {
+                        path: "/orderdetails",
+                        name: "orderdetails",
+                        component: () => import("@/pages/Seller/OrderDetails"),
+                        meta: {
+                              
+                        }
+                  },
+                  
+            ]
       }
       
 

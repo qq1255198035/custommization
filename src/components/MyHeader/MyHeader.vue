@@ -23,6 +23,10 @@ export default {
             margin-left: 20px;
             h3{
                   color: #fff;
+                  font-size: 24px;
+            }
+            P{
+                  font-size: 20px;
             }
       }
 }

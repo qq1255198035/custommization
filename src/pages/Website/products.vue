@@ -4,19 +4,19 @@
                   <a-col :span="13">
                         <a-row>
                               <a-col :span="9" >
-                                    <img src="./../assets/1.png" alt="">
+                                    <img src="@/assets/1.png" alt="">
                               </a-col>
                               <a-col :span="15">
-                                    <img src="./../assets/2.png" alt="" srcset="">
+                                    <img src="@/assets/2.png" alt="" srcset="">
                               </a-col>
                         </a-row>
                               
                         <a-row>
                               <a-col :span="17">
-                                    <img src="./../assets/3.png" alt="" srcset="">
+                                    <img src="@/assets/3.png" alt="" srcset="">
                               </a-col>
                               <a-col :span="7">
-                                    <img src="./../assets/4.png" alt="" srcset="">
+                                    <img src="@/assets/4.png" alt="" srcset="">
                               </a-col>
                         </a-row>
                               
@@ -24,29 +24,30 @@
                   </a-col>
                   <a-col :span="5">
                         
-                        <img src="./../assets/5.png" alt="" srcset="">
+                        <img src="@/assets/5.png" alt="" srcset="">
                   </a-col>
                   <a-col :span="4">
                         <a-row>
                               <a-col :span="24">
-                                    <img src="./../assets/6.png" alt="" srcset="">
+                                    <img src="@/assets/6.png" alt="" srcset="">
                               </a-col>
                         </a-row>
                         <a-row>
                               <a-col :span="24">
-                                    <img src="./../assets/7.png" alt="" srcset="">
+                                    <img src="@/assets/7.png" alt="" srcset="">
                               </a-col>
                         </a-row>
                   </a-col>
             </a-row>
-            
+            <Footer></Footer>
       </div>
 </template>
 <script>
-import InputSearch from '@/components/InputSearch/InputSearch.vue'
+
+import Footer from '@/components/Footer/Footer'
 export default {
       components:{
-            InputSearch
+            Footer
       }
 }
 </script>

@@ -26,7 +26,9 @@ import {
   Popover,
   Progress,
   message,
-  notification
+  notification,
+  Pagination,
+  Badge
 } from "ant-design-vue";
 Vue.use(Button);
 Vue.use(Row);
@@ -56,3 +58,6 @@ Vue.use(Progress);
 Vue.use(message);
 Vue.use(notification);
 
+Vue.use(Pagination);
+Vue.use(Form);
+Vue.use(Badge);

@@ -1,6 +1,9 @@
 <template>
       <div id="main">
-            <a-row>
+            <my-title :title="'新建订单'">
+                  <a-button size="small">返回</a-button>
+            </my-title>
+            <a-row id="myrow">
                   <a-col :span="6">
                         <div class="section1">
                               <a-menu mode="inline" :openKeys="openKeys" @openChange="onOpenChange" @click="handleClick">
@@ -20,7 +23,7 @@
                                           </a-sub-menu>
                                           <a-menu-item style="display: flex; align-items:center;justify-content: center">
                                                 <a-upload name="file" class="my-upload" :beforeUpload="beforeUpload">
-                                                      <a-button type="primary">
+                                                      <a-button>
                                                             <a-icon type="upload"/> 上传图片
                                                       </a-button>
                                                 </a-upload>
@@ -33,12 +36,8 @@
                                           <a-menu-item key="11" @click="createCircle">圆形</a-menu-item>
                                           
                                     </a-sub-menu>
-                                    
                               </a-menu>
-                              
-                              
                         </div>
-                        
                   </a-col>
                   <a-col :span="12">
                         <div class="section2">
@@ -51,25 +50,266 @@
                                     <span title="移动倒上一层" @click="toPreLayer"><a-icon type="sort-descending" /></span>
                               </div>
                               <div class="canvas-container"  v-show="model == 'front'">
-                                    <canvas id="canvas" width="600" height="600"></canvas>
+                                    <canvas id="canvas1" :width="screenWidth" :height="screenWidth"></canvas>
                                     
                               </div>
                               <div class="canvas-container"  v-show="model == 'back'">
-                                    
-                                    <canvas id="canvas1" width="600" height="600"></canvas>
+                                    <canvas id="canvas2" :width="screenWidth" :height="screenWidth"></canvas>
                               </div>
                         </div>
                         
                   </a-col>
-                  <a-col :span="6">
+                  <a-col :span="6" id="box">
+                        <a-drawer placement="right" title="工具箱" :visible="visible" :mask="false" @close="onClose" :width="540" :getContainer="ele">
+                              <div class="tools">
+                                    <div v-if="visibletype == 1" class="text-tools">
+                                          <dl style="display: flex">
+                                                <dt>选择字体：</dt>
+                                                <dd>
+                                                      <a-select placeholder="选择字体" @change="changeFontFamily" :value="fontfamily" style="width: 240px;">
+                                                            <a-select-option value="test-font">test-font</a-select-option>
+                                                            <a-select-option value="Microsoft YaHei">Microsoft YaHei</a-select-option>
+                                                            <a-select-option value="Corbel">Corbel</a-select-option>
+                                                            <a-select-option value="Impact">Impact</a-select-option>
+                                                            <a-select-option value="Ink Free">Ink Free</a-select-option>
+                                                            <a-select-option value="Raleway">Raleway</a-select-option>
+                                                            <a-select-option value="Helvetica">Helvetica</a-select-option>
+                                                            <a-select-option value="Arial">Arial</a-select-option>
+                                                            <a-select-option value="sans-serif">sans-serif</a-select-option>
+                                                      </a-select>
+                                                </dd>
+                                          </dl>
+                                          
+                                          <ul class="textcolor-control">
+                                                <li>
+                                                      
+                                                            字体颜色:
+                                                            
+                                                                  <span title="字体颜色" style="position: relative">
+                                                                        <a-icon type="font-colors" :style="{color:color}"/>
+                                                                        <colorPicker v-model="color" @change="changeFillColor"/>
+                                                                  </span>
+                                                
+                                                      
+                                                </li>
+                                                <li>
+                                                      
+                                                            字体背景颜色:
+                                                      
+                                                                  <span title="背景颜色" style="position: relative">
+                                                                        <a-icon type="bg-colors" :style="{color:bgcolor}"/>
+                                                                        <colorPicker v-model="bgcolor" @change="changeTextBgColor"/>
+                                                                  </span>
+                                                      
+                                                      
+                                                      
+                                                </li>
+                                                
+                                          </ul>
+                                          <dl class="textalign-control">
+                                                <dt>
+                                                      对齐方式：
+                                                </dt>
+                                                <dd>
+                                                      <span title="左对齐" @click="setTextalignLeft"><a-icon type="align-left" /></span>
+                                                      
+                                                </dd>
+                                                <dd>
+                                                      <span title="居中" @click="setTextalignCenter"><a-icon type="align-center" /></span>
+                                                      
+                                                </dd>
+                                                <dd>
+                                                      <span title="右对齐" @click="setTextalignRight"><a-icon type="align-right" /></span>
+                                                </dd>
+                                          </dl>
+                                          <dl class="fonTstyle-control">
+                                                <dt>
+                                                      字体样式：
+                                                </dt>
+                                                <dd>
+                                                      <span title="加粗" @click="setFontWeight"><a-icon type="bold" /></span>
+                                                      
+                                                </dd>
+                                                <dd>
+                                                      <span title="倾斜" @click="setFontStyle"><a-icon type="italic" /></span>
+                                                      
+                                                </dd>
+                                                <dd>
+                                                      <span title="下划线" @click="setTextDown"><a-icon type="underline" /></span>
+                                                      
+                                                </dd>
+                                                <dd>
+                                                      <span title="删除线" @click="setTextThrough"><a-icon type="strikethrough" /></span>
+                                                </dd>
+                                          </dl>
+                                          <ul class="stroke-control">
+                                                <li>
+                                                      描边颜色：
+                                                      <colorPicker v-model="stroke" @change="changestrokeColor"/>
+                                                </li>
+                                                <li>
+                                                      描边大小：
+                                                      <a-slider :min="0" :max="10" v-model="strokeWidth" :step="1" @change="changestrokeWidth"/>
+                                                </li>
+                                                
+                                          </ul>
+                                          <ul class="stroke-control">
+                                                <li>
+                                                      阴影颜色：
+                                                      <colorPicker v-model="shdowcolor" @change="changeShadowColor"/>
+                                                </li>
+                                                <li>
+                                                      阴影大小：
+                                                      <a-slider :min="-10" :max="10" v-model="Shadow1" :step="1" @change="changeShadowWidth1"/>
+                                                      <a-slider :min="-10" :max="10" v-model="Shadow2" :step="1" @change="changeShadowWidth2"/>
+                                                      <a-slider :min="0" :max="10" v-model="Shadow3" :step="1" @change="changeShadowWidth3"/>
+                                                </li>
+                                                
+                                          </ul>
+                                    </div>
+                                    <div v-else-if="visibletype == 2" class="imgs-tools">
+                                          <dl>
+                                                <dt>
+                                                      透明度：
+                                                </dt>
+                                                <dd>
+                                                      <a-slider :min="0" :max="1" v-model="opacity" :step="0.1" @change="changeOpacity"/>
+                                                </dd>
+                                          </dl>
+                                          <ul style="display: flex;justify-content: space-around;margin:20px 0">
+                                                <li>
+                                                      X轴翻转：
+                                                      <a-switch @change='changeFilPx' v-model="filpx"/>
+                                                </li>
+                                                <li>
+                                                      Y轴翻转：
+                                                      <a-switch @change='changeFilPy' v-model="filpy"/>
+                                                </li>
+                                          </ul>         
+                                          <ul>
+                                                <li>
+                                                      X轴斜切：
+                                                      <a-slider :min="0" :max="80" :step="1" @change='changeSkewX' v-model="skewx"/>
+                                                </li>
+                                                <li>
+                                                      Y轴斜切：
+                                                      <a-slider :min="0" :max="80" :step="1" @change='changeSkewY' v-model="skewy"/>
+                                                </li>
+                                          </ul>
+                                          <dl class="filters-part1">
+                                                <dt>滤镜：</dt>
+                                                <dd><a-checkbox @change="selectGrayscale">灰阶</a-checkbox></dd>
+                                                <dd><a-checkbox @change="selectInvert">倒置</a-checkbox></dd>
+                                                <dd><a-checkbox @change="selectSepia">深棕色</a-checkbox></dd>
+                                                <dd><a-checkbox @change="selectblackwhite">黑白</a-checkbox></dd>
+                                                <dd><a-checkbox @change="selectBrownie">棕色</a-checkbox></dd>
+                                                <dd><a-checkbox @change="selectVintage">复古</a-checkbox></dd>
+                                                <dd><a-checkbox @change="selectKodachrome">Kodachrome</a-checkbox></dd>
+                                                <dd><a-checkbox @change="selectTechnicolor">Technicolor</a-checkbox></dd>
+                                                <dd><a-checkbox @change="selectPolaroid">Polaroid</a-checkbox></dd>
+                                          </dl>
+                                          <ul>
+                                                <li>
+                                                      删除颜色:<br>
+                                                      color: <colorPicker v-model="removecolor" @change="changeRemoveColor"/><br>
+                                                      distance: <a-slider :min="0" :max="1" :step="0.01" @change='changeDistance' v-model="distance"/>
+                                                </li>
+                                                <li>
+                                                      明度：
+                                                      <a-slider :min="-1" :max="1" :step="0.01" @change='changeBrightness' v-model="brightness"/>
+                                                </li>
+                                                <li>
+                                                      Gamma：
+                                                      <a-slider :min="0" :max="2" :step="0.01" @change='changeGammaRed' v-model="red"/>
+                                                      <a-slider :min="0" :max="2" :step="0.01" @change='changeGammaGreen' v-model="green"/>
+                                                      <a-slider :min="0" :max="2" :step="0.01" @change='changeGammaBlue' v-model="blue"/>
+                                                </li>
+                                                <li>
+                                                      对比度：
+                                                      <a-slider :min="-1" :max="1" :step="0.01" @change='changeContrast' v-model="contrast"/>
+                                                </li>
+                                                <li>
+                                                      饱和度：
+                                                      <a-slider :min="-1" :max="1" :step="0.01" @change='changeSaturation' v-model="saturation"/>
+                                                </li>
+                                                <li>
+                                                      色调：
+                                                      <a-slider :min="-2" :max="2" :step="0.01" @change='changeHue' v-model="hue"/>
+                                                </li>
+                                                <li>
+                                                      噪声：
+                                                      <a-slider :min="0" :max="1000" :step="50" @change='changeNoise' v-model="noise"/>
+                                                </li>
+                                                <li>
+                                                      像素化：
+                                                      <a-slider :min="1" :max="20" :step="1" @change='changePixelate' v-model="pixelate"/>
+                                                </li>
+                                                <li>
+                                                      模糊：
+                                                      <a-slider :min="0" :max="1" :step="0.01" @change='changeBlur' v-model="blur"/>
+                                                </li>
+                                                <li><a-checkbox @change="selectSharpen">锐化</a-checkbox></li>
+                                                <li><a-checkbox @change="selectEmboss">浮雕</a-checkbox></li>
+                                          </ul>
+                                    </div>
+                                    <div v-else-if="visibletype == 3" class="rect-tools">
+                                          <ul class="color-control">
+                                                <li>
+                                                      描边颜色：
+                                                      <colorPicker v-model="stroke" @change="changestrokeColor"/>
+                                                </li>
+                                                <li>
+                                                      填充颜色：
+                                                      <colorPicker v-model="color" @change="changeFillColor"/>
+                                                </li>
+                                          </ul>
+                                          <p>
+                                                描边大小：
+                                                <a-slider :min="0" :max="10" v-model="strokeWidth" :step="1" @change="changestrokeWidth"/>
+                                          </p>
+                                          <ul class="stroke-control">
+                                                <li>
+                                                      阴影颜色：
+                                                      <colorPicker v-model="shdowcolor" @change="changeShadowColor"/>
+                                                </li>
+                                                <li>
+                                                      阴影大小：
+                                                      <a-slider :min="-10" :max="10" v-model="Shadow1" :step="1" @change="changeShadowWidth1"/>
+                                                      <a-slider :min="-10" :max="10" v-model="Shadow2" :step="1" @change="changeShadowWidth2"/>
+                                                      <a-slider :min="0" :max="10" v-model="Shadow3" :step="1" @change="changeShadowWidth3"/>
+                                                </li>
+                                                
+                                          </ul>
+                                                
+                                          <ul>
+                                                <li>
+                                                      X轴斜切：
+                                                      <a-slider :min="0" :max="80" :step="1" @change='changeSkewX' v-model="skewx"/>
+                                                </li>
+                                                <li>
+                                                      Y轴斜切：
+                                                      <a-slider :min="0" :max="80" :step="1" @change='changeSkewY' v-model="skewy"/>
+                                                </li>
+                                          </ul>
+                                    </div>
+                              </div>
+                        </a-drawer>
+                  </a-col>
+                  <!-- <a-col :span="6">
                         <div class="section3">
                               <h3>选择颜色</h3>
                               <dl class="color-select">
                                     
-                                    <dd v-for="(color,index) in colors" :key="color" :class="{active: selected == index}" @click="selectColor(index)">
+                                    <dd v-for="(color,index) in colors" :key="color" :class="{active: selected == index}" @click="selectColor(index,color)">
                                           <i :style="{backgroundColor: color}"></i>
                                     </dd>
                               </dl>
+                              <h3>选择领型</h3>
+                              <ul style="display: flex;">
+                                    <li v-for="(img,index) in lximgs" :key="img" style="cursor:pointer" @click="selectLx(index)">
+                                          <img :src="img" alt="" width="200" height="50">
+                                    </li>
+                              </ul>
                               <h3>选择尺寸</h3>
                               <dl class="size-select">
                                     <dd v-for="(size,index) in sizes" :key="size">
@@ -83,249 +323,17 @@
                                     </dd>
                               </dl>
                               <div class="btn-box">
-                                    <a-button type="primary" @click="saveImg">保存</a-button>
-                                    <a-button type="primary" @click="handleSetFront">正面</a-button>
-                                    <a-button type="primary" @click="handleSetback">背面</a-button>
+                                    <a-button @click="$router.push({path:'/swiper'})">保存</a-button>
+                                    <a-button @click="saveImg">保存</a-button>
+                                    <a-button @click="handleSetFront">正面</a-button>
+                                    <a-button @click="handleSetback">背面</a-button>
                                     <a-button><a class="downLoad" download="downImg" @click="downLoadImg" :href="dataUrl">下载</a></a-button>
                               </div>
                         </div>
                         
-                  </a-col>
+                  </a-col> -->
             </a-row>
-            <a-drawer placement="right" title="工具箱" :visible="visible" :mask="false" @close="onClose" :width="540">
-                  <div class="tools">
-                        <div v-if="visibletype == 1" class="text-tools">
-                              <dl style="display: flex">
-                                    <dt>选择字体：</dt>
-                                    <dd>
-                                          <a-select placeholder="选择字体" @change="changeFontFamily" :value="fontfamily" style="width: 240px;">
-                                                <a-select-option value="test-font">test-font</a-select-option>
-                                                <a-select-option value="Microsoft YaHei">Microsoft YaHei</a-select-option>
-                                                <a-select-option value="Corbel">Corbel</a-select-option>
-                                                <a-select-option value="Impact">Impact</a-select-option>
-                                                <a-select-option value="Ink Free">Ink Free</a-select-option>
-                                                <a-select-option value="Raleway">Raleway</a-select-option>
-                                                <a-select-option value="Helvetica">Helvetica</a-select-option>
-                                                <a-select-option value="Arial">Arial</a-select-option>
-                                                <a-select-option value="sans-serif">sans-serif</a-select-option>
-                                          </a-select>
-                                    </dd>
-                              </dl>
-                              
-                              <ul class="textcolor-control">
-                                    <li>
-                                          
-                                                字体颜色:
-                                                
-                                                      <span title="字体颜色" style="position: relative">
-                                                            <a-icon type="font-colors" :style="{color:color}"/>
-                                                            <colorPicker v-model="color" @change="changeFillColor"/>
-                                                      </span>
-                                    
-                                          
-                                    </li>
-                                    <li>
-                                          
-                                                字体背景颜色:
-                                          
-                                                      <span title="背景颜色" style="position: relative">
-                                                            <a-icon type="bg-colors" :style="{color:bgcolor}"/>
-                                                            <colorPicker v-model="bgcolor" @change="changeTextBgColor"/>
-                                                      </span>
-                                          
-                                          
-                                          
-                                    </li>
-                                    
-                              </ul>
-                              <dl class="textalign-control">
-                                    <dt>
-                                          对齐方式：
-                                    </dt>
-                                    <dd>
-                                          <span title="左对齐" @click="setTextalignLeft"><a-icon type="align-left" /></span>
-                                          
-                                    </dd>
-                                    <dd>
-                                          <span title="居中" @click="setTextalignCenter"><a-icon type="align-center" /></span>
-                                          
-                                    </dd>
-                                    <dd>
-                                          <span title="右对齐" @click="setTextalignRight"><a-icon type="align-right" /></span>
-                                    </dd>
-                              </dl>
-                              <dl class="fonTstyle-control">
-                                    <dt>
-                                          字体样式：
-                                    </dt>
-                                    <dd>
-                                          <span title="加粗" @click="setFontWeight"><a-icon type="bold" /></span>
-                                          
-                                    </dd>
-                                    <dd>
-                                          <span title="倾斜" @click="setFontStyle"><a-icon type="italic" /></span>
-                                          
-                                    </dd>
-                                    <dd>
-                                          <span title="下划线" @click="setTextDown"><a-icon type="underline" /></span>
-                                          
-                                    </dd>
-                                    <dd>
-                                          <span title="删除线" @click="setTextThrough"><a-icon type="strikethrough" /></span>
-                                    </dd>
-                              </dl>
-                              <ul class="stroke-control">
-                                    <li>
-                                          描边颜色：
-                                          <colorPicker v-model="stroke" @change="changestrokeColor"/>
-                                    </li>
-                                    <li>
-                                          描边大小：
-                                          <a-slider :min="0" :max="10" v-model="strokeWidth" :step="1" @change="changestrokeWidth"/>
-                                    </li>
-                                    
-                              </ul>
-                              <ul class="stroke-control">
-                                    <li>
-                                          阴影颜色：
-                                          <colorPicker v-model="shdowcolor" @change="changeShadowColor"/>
-                                    </li>
-                                    <li>
-                                          阴影大小：
-                                          <a-slider :min="-10" :max="10" v-model="Shadow1" :step="1" @change="changeShadowWidth1"/>
-                                          <a-slider :min="-10" :max="10" v-model="Shadow2" :step="1" @change="changeShadowWidth2"/>
-                                          <a-slider :min="0" :max="10" v-model="Shadow3" :step="1" @change="changeShadowWidth3"/>
-                                    </li>
-                                    
-                              </ul>
-                        </div>
-                        <div v-else-if="visibletype == 2" class="imgs-tools">
-                              <dl>
-                                    <dt>
-                                          透明度：
-                                    </dt>
-                                    <dd>
-                                          <a-slider :min="0" :max="1" v-model="opacity" :step="0.1" @change="changeOpacity"/>
-                                    </dd>
-                              </dl>
-                              <ul style="display: flex;justify-content: space-around;margin:20px 0">
-                                    <li>
-                                          X轴翻转：
-                                          <a-switch @change='changeFilPx' v-model="filpx"/>
-                                    </li>
-                                    <li>
-                                          Y轴翻转：
-                                          <a-switch @change='changeFilPy' v-model="filpy"/>
-                                    </li>
-                              </ul>         
-                              <ul>
-                                    <li>
-                                          X轴斜切：
-                                          <a-slider :min="0" :max="80" :step="1" @change='changeSkewX' v-model="skewx"/>
-                                    </li>
-                                    <li>
-                                          Y轴斜切：
-                                          <a-slider :min="0" :max="80" :step="1" @change='changeSkewY' v-model="skewy"/>
-                                    </li>
-                              </ul>
-                              <dl class="filters-part1">
-                                    <dt>滤镜：</dt>
-                                    <dd><a-checkbox @change="selectGrayscale">灰阶</a-checkbox></dd>
-                                    <dd><a-checkbox @change="selectInvert">倒置</a-checkbox></dd>
-                                    <dd><a-checkbox @change="selectSepia">深棕色</a-checkbox></dd>
-                                    <dd><a-checkbox @change="selectblackwhite">黑白</a-checkbox></dd>
-                                    <dd><a-checkbox @change="selectBrownie">棕色</a-checkbox></dd>
-                                    <dd><a-checkbox @change="selectVintage">复古</a-checkbox></dd>
-                                    <dd><a-checkbox @change="selectKodachrome">Kodachrome</a-checkbox></dd>
-                                    <dd><a-checkbox @change="selectTechnicolor">Technicolor</a-checkbox></dd>
-                                    <dd><a-checkbox @change="selectPolaroid">Polaroid</a-checkbox></dd>
-                              </dl>
-                              <ul>
-                                    <li>
-                                          删除颜色:<br>
-                                          color: <colorPicker v-model="removecolor" @change="changeRemoveColor"/><br>
-                                          distance: <a-slider :min="0" :max="1" :step="0.01" @change='changeDistance' v-model="distance"/>
-                                    </li>
-                                    <li>
-                                          明度：
-                                          <a-slider :min="-1" :max="1" :step="0.01" @change='changeBrightness' v-model="brightness"/>
-                                    </li>
-                                    <li>
-                                          Gamma：
-                                          <a-slider :min="0" :max="2" :step="0.01" @change='changeGammaRed' v-model="red"/>
-                                          <a-slider :min="0" :max="2" :step="0.01" @change='changeGammaGreen' v-model="green"/>
-                                          <a-slider :min="0" :max="2" :step="0.01" @change='changeGammaBlue' v-model="blue"/>
-                                    </li>
-                                    <li>
-                                          对比度：
-                                          <a-slider :min="-1" :max="1" :step="0.01" @change='changeContrast' v-model="contrast"/>
-                                    </li>
-                                    <li>
-                                          饱和度：
-                                          <a-slider :min="-1" :max="1" :step="0.01" @change='changeSaturation' v-model="saturation"/>
-                                    </li>
-                                    <li>
-                                          色调：
-                                          <a-slider :min="-2" :max="2" :step="0.01" @change='changeHue' v-model="hue"/>
-                                    </li>
-                                    <li>
-                                          噪声：
-                                          <a-slider :min="0" :max="1000" :step="50" @change='changeNoise' v-model="noise"/>
-                                    </li>
-                                    <li>
-                                          像素化：
-                                          <a-slider :min="1" :max="20" :step="1" @change='changePixelate' v-model="pixelate"/>
-                                    </li>
-                                    <li>
-                                          模糊：
-                                          <a-slider :min="0" :max="1" :step="0.01" @change='changeBlur' v-model="blur"/>
-                                    </li>
-                                    <li><a-checkbox @change="selectSharpen">锐化</a-checkbox></li>
-                                    <li><a-checkbox @change="selectEmboss">浮雕</a-checkbox></li>
-                              </ul>
-                        </div>
-                        <div v-else-if="visibletype == 3" class="rect-tools">
-                              <ul class="color-control">
-                                    <li>
-                                          描边颜色：
-                                          <colorPicker v-model="stroke" @change="changestrokeColor"/>
-                                    </li>
-                                    <li>
-                                          填充颜色：
-                                          <colorPicker v-model="color" @change="changeFillColor"/>
-                                    </li>
-                              </ul>
-                              <p>
-                                    描边大小：
-                                    <a-slider :min="0" :max="10" v-model="strokeWidth" :step="1" @change="changestrokeWidth"/>
-                              </p>
-                              <ul class="stroke-control">
-                                    <li>
-                                          阴影颜色：
-                                          <colorPicker v-model="shdowcolor" @change="changeShadowColor"/>
-                                    </li>
-                                    <li>
-                                          阴影大小：
-                                          <a-slider :min="-10" :max="10" v-model="Shadow1" :step="1" @change="changeShadowWidth1"/>
-                                          <a-slider :min="-10" :max="10" v-model="Shadow2" :step="1" @change="changeShadowWidth2"/>
-                                          <a-slider :min="0" :max="10" v-model="Shadow3" :step="1" @change="changeShadowWidth3"/>
-                                    </li>
-                                    
-                              </ul>
-                                    
-                              <ul>
-                                    <li>
-                                          X轴斜切：
-                                          <a-slider :min="0" :max="80" :step="1" @change='changeSkewX' v-model="skewx"/>
-                                    </li>
-                                    <li>
-                                          Y轴斜切：
-                                          <a-slider :min="0" :max="80" :step="1" @change='changeSkewY' v-model="skewy"/>
-                                    </li>
-                              </ul>
-                        </div>
-                  </div>
-            </a-drawer>
+            
       </div>
 </template>
 <script>
@@ -339,14 +347,16 @@ import img3 from '@/assets/0003.png'
 import img7 from '@/assets/0007.png'
 import img8 from '@/assets/0008.png'
 import img10 from '@/assets/0010.png'
-import bgimg1 from '@/assets/bg-white.png'
+import bgimg1 from '@/assets/white-2fbe8472bccef1a454b2b5e2ceb1e7293a86b971a0aa7522fe8f91.png'
 import bgimg2 from '@/assets/black.jpg'
 import bgimg3 from '@/assets/jaw.jpg'
-
 import resize from '@/assets/icons/resize.svg'
 import remove from '@/assets/icons/remove.svg'
 import rotate from '@/assets/icons/rotate.svg'
 import diagonal from "@/assets/icons/repair-tools-cross.svg";
+import lximg from '@/assets/lximg.png'
+import lximg2 from '@/assets/lximg2.png'
+import MyTitle from "@/components/MyTitle/MyTitle";
 function getBase64 (img, callback) {
       const reader = new FileReader()
       reader.addEventListener('load', () => callback(reader.result))
@@ -355,6 +365,7 @@ function getBase64 (img, callback) {
 export default {
       data () {
             return {
+                  ele:document.querySelector('#box'),
                   rootSubmenuKeys: ['sub1', 'sub2', 'sub4'],
                   openKeys: ['sub1'],
                   imgs:[
@@ -365,7 +376,7 @@ export default {
                         img8,
                         img10
                   ],
-                  colors:['#fff','#000','#ccc'],
+                  colors:['#ccc','red','#456865'],
                   sizes: ['S', 'M', 'L', 'XL'],
                   resize,
                   remove,
@@ -387,12 +398,28 @@ export default {
                   isDrawingMode:false,
                   dataUrl:'',
                   dataPost:'',
-                  bgimgs:[
-                        bgimg1,
-                        bgimg2,
-                        bgimg3
+                  lximgs:[
+                        lximg,
+                        lximg2,
                   ],
-                  
+                  suits:{
+                        frontimg:{
+                              bgimgs:[
+                                    bgimg1,
+                                    bgimg1,
+                                    bgimg1
+                              ]
+                              
+                        },
+                        backimg:{
+                              bgimgs:[
+                                    bgimg1,
+                                    bgimg2,
+                                    bgimg3
+                              ]
+                              
+                        },
+                  },
                   strokecolor:'#000000',
                   fillcolor:'#000000',
                   drawWidth:2,
@@ -427,23 +454,72 @@ export default {
                   fontfamily:'Microsoft YaHei',
                   model: 'front',
                   myCanvas1: null,
-                  myCanvas2: null
+                  myCanvas2: null,
+                  screenWidth: 600
+                  
             }
       },
+      components:{
+            MyTitle
+      },
+      created(){
+            this.watchScreenWidth();
+      },
       mounted(){
-            
+            console.log(this.$refs.myrow)
             this.$nextTick(function() {
-                  let that = this;
-                  that.myCanvas1 = new fabric.Canvas("canvas");
-                  that.myCanvas2 = new fabric.Canvas("canvas1");
-                  that.myCanvas = that.myCanvas1
-                  console.log(that.myCanvas)
-                  that.bindCanvas(that.selected);
-                  that.setEditIcon();
-                  that.setEditPointer();
-                  initAligningGuidelines(that.myCanvas)
-                  
-                  that.myCanvas1.on("object:moving", function(e) {
+                  //11：当选择画布中的对象时，该对象不出现在顶层。
+                  //canvas.preserveObjectStacking = true;
+                  this.myCanvas1 = new fabric.Canvas("canvas1");
+                  this.myCanvas2 = new fabric.Canvas("canvas2");
+                  this.myCanvas = this.myCanvas1
+                  this.bindCanvas1(this.selected);
+                  this.bindCanvas2(this.selected);
+                  this.setEditIcon();
+                  this.setEditPointer();
+                  initAligningGuidelines(this.myCanvas1);
+                  initAligningGuidelines(this.myCanvas2);
+                  this.handleObjectMove(this.myCanvas1);
+                  this.handleObjectMove(this.myCanvas2);
+                  //this.selectLx(0)
+                  //14: 画布对象居中设置：
+                  //var t = canvas.getActiveObject();
+                  //t.center();    全部居中
+                  //t.centerH();   水平居中
+                  //t.centerV();   垂直居中
+                  //t.setCoords(); 注：必须设coords以上设置才会有效。
+                  //object.set('selectable',false) 单个元素禁止选中
+            })
+            console.log(22);
+      },
+      watch:{
+           
+      },
+      methods: {
+            selectLx(i){
+                  var that = this
+                  that.model = 'front'
+                  that.myCanvas1.setOverlayImage(that.lximgs[i],that.myCanvas1.renderAll.bind(that.myCanvas1),{
+                              opacity: 1,
+                              angle: 0,
+                              left: that.screenWidth / 2,
+                              top: 60,
+                              originX: "center",
+                              originY: "center",
+                              scaleX: that.screenWidth / 600,
+                              scaleY: 1
+                  });
+            },
+            watchScreenWidth(){
+                  if (screen.width >= 1024 && screen.width <= 1366) {
+                        this.screenWidth = 400; 
+                  }else if (screen.width >= 320 && screen.width < 1024) {
+                        this.screenWidth = 240;
+                  }
+            },
+            //设置绘图区域
+            handleObjectMove(object){
+                  object.on("object:moving", function(e) {
                         //console.log(e.target)
                         var obj = e.target;
                         var canvas = obj.canvas;
@@ -473,11 +549,19 @@ export default {
                         }
 
                         // if you need margins set them here
-                        var top_margin = 120;
-                        var bottom_margin = 100;
-                        var left_margin = 200;
-                        var right_margin = 200;
-
+                        
+                        var top_margin,bottom_margin,left_margin,right_margin
+                        if(zoom > 1){
+                              top_margin = 0;
+                              bottom_margin = 40;
+                              left_margin = 70;
+                              right_margin = 140;
+                        }else{
+                              top_margin = 120;
+                              bottom_margin = 100;
+                              left_margin = 200;
+                              right_margin = 200;
+                        }
 
                         var top_bound = top_margin + top_adjust - pan_y;
                         var bottom_bound = c_height - bottom_adjust - bottom_margin - pan_y;
@@ -491,38 +575,27 @@ export default {
                         }
 
                         if( h > c_height ) {
-                        obj.set('top',top_bound);
+                              obj.set('top',top_bound);
+                              console.log(top_bound)
+                              
                         } else {
-                        obj.set('top',Math.min(Math.max(top, top_bound), bottom_bound));          
+                              obj.set('top',Math.min(Math.max(top, top_bound), bottom_bound)); 
+                              console.log(top_bound)       
                         }
                   });
-            })
-            
-      },
-      watch:{
-            // model(val){
-            //       if (val == 'front') {
-                        
-            //       }else if (val == 'back') {
-            //             this.myCanvas = this.myCanvas2;
-            //       }
-            // }
-      },
-      methods: {
+            },
             handleSetFront(){
                   this.myCanvas = this.myCanvas1;
                   this.model = 'front'
             },
             handleSetback(){
                   this.myCanvas = this.myCanvas2;
-                  this.bindCanvas(this.selected);
                   this.model = 'back'
             },
             loadAndUse(font) {
                   let that = this;
                   var myfont = new FontFaceObserver(font)
-                  myfont.load()
-                  .then(function() {
+                  myfont.load().then(function() {
                         // when font is loaded, use it.
                         that.myCanvas.getActiveObject().set("fontFamily", font);
                         that.myCanvas.requestRenderAll();
@@ -534,17 +607,16 @@ export default {
             zoomIn(){
                   var zoom = this.myCanvas.getZoom();
                   console.log(zoom)
-                  zoom = zoom + 0.1;
-                  if (zoom > 20) zoom = 20;
-                  if (zoom < 0.01) zoom = 0.01;
+                  zoom = zoom + 0.4;
+                  if (zoom > 1.4) zoom = 1.4;
                   this.myCanvas.zoomToPoint({ x: 300, y: 300 }, zoom);
+                  console.log(11)
             },
             zoomOut(){
                   var zoom = this.myCanvas.getZoom();
                   console.log(zoom)
-                  zoom = zoom - 0.1;
-                  if (zoom > 20) zoom = 20;
-                  if (zoom < 0.01) zoom = 0.01;
+                  zoom = zoom - 0.4;
+                  if (zoom < 1) zoom = 1;
                   this.myCanvas.zoomToPoint({ x: 300, y: 300 }, zoom);
             },
             changeFontFamily(value){
@@ -740,22 +812,24 @@ export default {
             },
             downLoadImg(){
                   this.dataUrl = this.myCanvas.toDataURL();
-                  
-                  
             },
             saveImg(){
                   let json = this.myCanvas.toJSON();
                   this.dataPost = JSON.stringify(json)
-                  //console.log(this.dataPost)
+                  console.log(json)
             },
             createCircle () {
                   let that = this;
-                  let options = Object.assign({ left: 260, top: 200, radius: 40, shadow:'#000 0 0 0',fillColor: 'rgba(0, 0, 0, 1)', color: '#000', drawWidth: 0 }, options);
+                  let options = Object.assign({ radius: 40, shadow:'#000 0 0 0',fillColor: 'rgba(0, 0, 0, 1)', color: '#000', drawWidth: 0 }, options);
                   let defaultOption = {
                         ...options,
                         fill: options.fillColor,
                         strokeWidth: options.drawWidth,
-                        stroke: options.color
+                        stroke: options.color,
+                        originX:'center',
+                        originY: 'center',
+                        left: that.screenWidth / 2,
+                        top: that.screenWidth / 2,
                   };
                   let Circle = new fabric.Circle(defaultOption);
                   Circle.on("selected", function() {
@@ -779,12 +853,16 @@ export default {
             },
             createRect () {
                   let that = this;
-                  let options = Object.assign({ width: 80, height: 80, shadow:'#000 0 0 0',fillColor: 'rgba(0, 0, 0, 1)', left: 260, top: 200,color: '#000', drawWidth: 0 }, options);
+                  let options = Object.assign({ width: 80, height: 80, shadow:'#000 0 0 0',fillColor: 'rgba(0, 0, 0, 1)',color: '#000', drawWidth: 0 }, options);
                   let rect = new fabric.Rect({
                         ...options,
                         fill: options.fillColor, 
                         strokeWidth: options.drawWidth,
-                        stroke: options.color
+                        stroke: options.color,
+                        originX:'center',
+                        originY: 'center',
+                        left: that.screenWidth / 2,
+                        top: that.screenWidth / 2,
                   });
                   rect.on("selected", function() {
                         that.visibletype = 3;
@@ -807,13 +885,17 @@ export default {
             },
             createEqualTriangle () {
                   let that = this;
-                  let options = Object.assign({ left: 260, top: 200, width: 80, height: 80, shadow:'#000 0 0 0',fillColor: 'rgba(0, 0, 0, 1)', color: '#000', drawWidth: 0 }, options);
+                  let options = Object.assign({ width: 80, height: 80, shadow:'#000 0 0 0',fillColor: 'rgba(0, 0, 0, 1)', color: '#000', drawWidth: 0 }, options);
                   // console.log(defaultOption);
                   let triangle = new fabric.Triangle({
                         ...options,
                         fill: options.fillColor,
                         strokeWidth: options.drawWidth,
-                        stroke: options.color
+                        stroke: options.color,
+                        originX:'center',
+                        originY: 'center',
+                        left: that.screenWidth / 2,
+                        top: that.screenWidth / 2
                   });
                   triangle.on("selected", function() {
                         that.visibletype = 3;
@@ -923,6 +1005,7 @@ export default {
             onClose() {
                   this.visible = false
             },
+            //设置选中框外观
             setEditIcon(){
                   let that = this;
                   fabric.Object.prototype.customiseCornerIcons(
@@ -1014,8 +1097,8 @@ export default {
                                     skewY:0,
                                     originX: "center",
                                     originY: "center",
-                                    left: 300,
-                                    top: 300
+                                    left: that.screenWidth / 2,
+                                    top: that.screenWidth / 2
                               })
                         ).setActiveObject(oImg);
                   });
@@ -1029,15 +1112,40 @@ export default {
                   }
                   return color;
             },
-            bindCanvas(i) {
+            bindCanvas1(i) {
                   var that = this
-                  that.myCanvas.setBackgroundImage(that.bgimgs[i],that.myCanvas.renderAll.bind(that.myCanvas));
+                  that.myCanvas1.setBackgroundImage(that.suits.frontimg.bgimgs[i],that.myCanvas1.renderAll.bind(that.myCanvas1),{
+                              opacity: 1,
+                              angle: 0,
+                              left: that.screenWidth / 2,
+                              top: that.screenWidth / 2,
+                              originX: "center",
+                              originY: "center",
+                              scaleX: that.screenWidth / 600,
+                              scaleY: that.screenWidth / 600
+                  });
                   
             },
-            selectColor(i){
-                  console.log(i)
-                  this.bindCanvas(i)
-                  this.selected = i
+            bindCanvas2(i) {
+                  var that = this
+                  that.myCanvas2.setBackgroundImage(that.suits.backimg.bgimgs[i],that.myCanvas2.renderAll.bind(that.myCanvas2),
+                        {
+                              opacity: 1,
+                              angle: 0,
+                              left: that.screenWidth / 2,
+                              top: that.screenWidth / 2,
+                              originX: "center",
+                              originY: "center",
+                              scaleX: that.screenWidth / 600,
+                              scaleY: that.screenWidth / 600
+                        });
+            },
+            selectColor(i,color){
+                  let that = this
+                  that.bindCanvas1(i)
+                  that.bindCanvas2(i)
+                  that.selected = i
+                  that.myCanvas.setBackgroundColor(color, that.myCanvas.renderAll.bind(that.myCanvas))
             },
             onOpenChange (openKeys) {
                   const latestOpenKey = openKeys.find(key => this.openKeys.indexOf(key) === -1)
@@ -1053,7 +1161,7 @@ export default {
             addItext(text, options) {
                   let that = this;
                   that.visibletype = 1
-                  options = Object.assign({ fontSize: 30, fillColor: '#000000', shadow:'#000 0 0 0',strokeWidth: 0,stroke: '#000',registeObjectEvent: true, left: 280, top: 250,textBackgroundColor:'' }, options);
+                  options = Object.assign({ fontSize: 30, fillColor: '#000000', shadow:'#000 0 0 0',strokeWidth: 0,stroke: '#000',registeObjectEvent: true,textBackgroundColor:'' }, options);
                   var canvasObj = new fabric.Textbox('Text', {
                         ...options,
                         fill: options.fillColor,
@@ -1061,7 +1169,11 @@ export default {
                         strokeWidth:options.strokeWidth,
                         stroke:options.stroke,
                         shadow:options.shadow,
-                        fontFamily: 'Microsoft YaHei'
+                        fontFamily: 'Microsoft YaHei',
+                        originX:'center',
+                        originY:'center',
+                        left: that.screenWidth / 2,
+                        top: that.screenWidth / 2
                   });
                   canvasObj.on("selected", function() {
                         that.visibletype = 1
@@ -1300,10 +1412,13 @@ export default {
                   flex-wrap: wrap;
             }
       }
-      
+      .ant-drawer{
+            color: #000;
+      }
       #main{
-            padding: 100px;
-            background-color: #f8f8f8;
+            padding: 150px 80px 0;
+            height: 100%;
+            background-image: linear-gradient( 45deg, #11bbe8 10%, #4ac37a 100%);
             .section1{
                   padding: 0 10px;
                   .my-upload{
@@ -1355,9 +1470,9 @@ export default {
                   }
             }
             .section2{
-                  background-color: #000;
+                  
                   .canvas-container{
-                        background-image: linear-gradient( 135deg, #E2B0FF 10%, #9F44D3 100%);
+                        
                         display: flex;
                         justify-content: center;
                   }

@@ -16,9 +16,9 @@
 </template>
 <script>
 import Swiper from "swiper"
-import imgurl from '@/assets/bg-white.png'
-import imgurl1 from '@/assets/bg-white.png'
-import imgurl2 from '@/assets/bg-white.png'
+import imgurl from '@/assets/index-banner.jpg'
+import imgurl1 from '@/assets/index-banner.jpg'
+import imgurl2 from '@/assets/index-banner.jpg'
 
 import 'swiper/dist/css/swiper.css'
 //import { fabric } from 'fabric'
@@ -90,7 +90,7 @@ export default {
             cursor: pointer;
             outline: none;
             background-color: rgba(255, 255, 255, 0.5);
-            bottom: 50px;
+            bottom: 100px;
       }
       
 }

@@ -4,16 +4,23 @@
                   <div  class="logo">
                         <img src="@/assets/logo.png" alt="LOGO">
                   </div>
-                  
-                  <nav-bar></nav-bar>
+                  <nav-bar v-if="showNav"></nav-bar>
+                  <User v-else></User>
             </div>
       </div>
 </template>
 <script>
-import navBar from '@/components/header/navBar'
+import NavBar from '@/components/Header/NavBar'
+import User from '@/components/Header/User'
 export default {
       components:{
-            navBar
+            NavBar,
+            User
+      },
+      props:{
+            showNav: {
+                  type: Boolean
+            }
       },
       data(){
             return{
