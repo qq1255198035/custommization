@@ -20,7 +20,9 @@ import {
   DatePicker,
   Modal,
   Radio,
-  Pagination
+  Pagination,
+  Form,
+  Badge
 } from "ant-design-vue";
 Vue.use(Button);
 Vue.use(Row);
@@ -43,3 +45,5 @@ Vue.use(DatePicker);
 Vue.use(Modal);
 Vue.use(Radio);
 Vue.use(Pagination);
+Vue.use(Form);
+Vue.use(Badge);

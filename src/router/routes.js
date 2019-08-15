@@ -82,9 +82,25 @@ const routes = [
                         }
                   },
                   {
-                        path: "/perorder",
-                        name: "perorder",
-                        component: () => import("@/pages/Seller/PerOrder"),
+                        path: "/grouporder",
+                        name: "grouporder",
+                        component: () => import("@/pages/Seller/GroupOrder"),
+                        meta: {
+                              
+                        }
+                  },
+                  {
+                        path: "/commissions",
+                        name: "commissions",
+                        component: () => import("@/pages/Seller/Commissions"),
+                        meta: {
+                              
+                        }
+                  },
+                  {
+                        path: "/commissionsdetails",
+                        name: "commissionsdetails",
+                        component: () => import("@/pages/Seller/CommissionsDeatils"),
                         meta: {
                               
                         }

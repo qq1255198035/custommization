@@ -6,7 +6,7 @@
                     <a-icon type="search" />查看
                 </li>
                 <li>
-                    <a-icon type="branches" />分享
+                    <a-icon type="share-alt" />分享
                 </li>
         </ul>
     </div>

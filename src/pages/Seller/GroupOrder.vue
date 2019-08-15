@@ -1,6 +1,6 @@
 <template>
-    <div id="perorder">
-        <my-title :title="'个人订单'"></my-title>
+    <div id="GroupOrder">
+        <my-title :title="'团体订单'"></my-title>
         <ul class="input-box">
             <li>
                 <a-button icon="plus" @click="$router.push({name: 'neworder'})">新建订单</a-button>
@@ -91,11 +91,14 @@ export default {
 </script>
 <style lang="less">
 @import "./../../components/index.less";
-#perorder{
+#GroupOrder{
     .input-box{
         display: flex;
         justify-content: space-between;
         margin-top: 20px;
+        li{
+            display: flex;
+        }
     }
     
     .content{

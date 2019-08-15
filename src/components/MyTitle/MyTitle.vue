@@ -13,7 +13,7 @@ export default {
             },
             fontsize:{
                   type: Number,
-                  default: 16
+                  default: 18
             }
       }
 }

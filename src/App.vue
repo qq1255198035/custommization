@@ -31,8 +31,11 @@ export default {
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   width: 100%;
-  
-  ul{
+  input::-webkit-input-placeholder{
+    color: #fff;
+  }
+}
+ul{
     margin: 0;
     padding: 0;
     list-style: none;
@@ -41,10 +44,5 @@ export default {
     margin: 0;
     padding: 0;
   }
-  input::-webkit-input-placeholder{
-    color: #fff;
-  }
-}
-
   
 </style>

@@ -101,14 +101,89 @@
             </a-col>
         </a-row>
         <a-modal
-                v-model="modelShow"
-                :footer="null"
+            v-model="modelShow1"
+            :footer="null"
+            :width="700"
+            :centered="true"
         >
-                <template slot="title">
-                    <div>
-                            <img src="@/assets/jaw.jpg" alt="" width="30">
-                    </div>
-                </template>
+            <template slot="title">
+                <div>
+                        <img src="@/assets/jaw.jpg" alt="" width="30">
+                </div>
+            </template>
+            <ul class="adress">
+                <li>
+                    <p>
+                        吉林省长春市南关区卫星路创新花园3号2019-56-56
+                        <span>刘轩瑞</span>
+                        <span>15632653698</span>
+                    </p>
+                    <span>
+                        <a-icon type="edit" style="margin-right: 10px;"/>
+                        <a-icon type="delete" />
+                    </span>
+                </li>
+                <li>
+                    <p>
+                        吉林省长春市南关区卫星路创新花园3号2019-56-56
+                        <span>刘轩瑞</span>
+                        <span>15632653698</span>
+                    </p>
+                    <span>
+                        <a-icon type="edit" style="margin-right: 10px;"/>
+                        <a-icon type="delete" />
+                    </span>
+                </li>
+                <li>
+                    <p>
+                        吉林省长春市南关区卫星路创新花园3号2019-56-56
+                        <span>刘轩瑞</span>
+                        <span>15632653698</span>
+                    </p>
+                    <span>
+                        <a-icon type="edit" style="margin-right: 10px;"/>
+                        <a-icon type="delete" />
+                    </span>
+                </li>
+            </ul>
+            <div class="btn-box">
+                <a-button icon="plus" style="width: 200px;" @click="inputAdress">添加地址</a-button>
+            </div>
+        </a-modal>
+        <a-modal
+            v-model="modelShow2"
+            :footer="null"
+            :centered="true"
+        >
+            <template slot="title">
+                <div>
+                        <img src="@/assets/jaw.jpg" alt="" width="30">
+                </div>
+            </template>
+            <a-form layout="vertical">
+                <a-form-item label="地址：">
+                    <a-input />
+                </a-form-item>
+                <a-form-item label="国家/省/市：">
+                    <a-input />
+                </a-form-item>
+                <a-form-item label="详细地址：">
+                    <a-input />
+                </a-form-item>
+                <a-form-item label="邮编：">
+                    <a-input />
+                </a-form-item>
+                <a-form-item label="联系人：">
+                    <a-input />
+                </a-form-item>
+                <a-form-item label="电话：">
+                    <a-input />
+                </a-form-item>
+            </a-form>
+            <div class="btn-box">
+                <a-button ghost>提 交</a-button>
+                <a-button>取 消</a-button>
+            </div>
         </a-modal>
     </div>
 </template>
@@ -120,7 +195,8 @@ export default {
     },
     data(){
         return{
-            modelShow:false,
+            modelShow1:false,
+            modelShow2:false,
             value: 1,
             number:0,
             startValue: null,
@@ -146,8 +222,12 @@ export default {
         }
     },
     methods:{
+        inputAdress(){
+            this.modelShow1 = false;
+            this.modelShow2 = true;
+        },
         addressManagement(){
-            this.modelShow = true;
+            this.modelShow1 = true;
         },
         clickLeftbtn(){
             this.number > 0 ? this.number -- : 0
@@ -198,6 +278,33 @@ input::-webkit-inner-spin-button {
     -webkit-appearance: none !important;
     margin: 0;
 } 
+.btn-box{
+    margin: 20px 0 30px;
+    text-align: center;
+    button{
+        margin: 0 10px;
+    }
+}
+.adress{
+    li{
+        border-bottom: 1px solid #fff;
+        padding: 8px 0;
+        display: flex;
+        justify-content: space-between;
+        p{
+            font-size: 14px;
+            span{
+                margin: 0 10px;
+            }
+        }
+        > span{
+            i{
+                font-size: 20px;
+                cursor: pointer;
+            }
+        }
+    }
+}
 #OrderDetails{
     .order-info{
         .top{

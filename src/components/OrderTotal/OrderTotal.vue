@@ -7,8 +7,9 @@
                         <a-icon type="dollar" />
                     </span>
                     <div class="desc">
-                        <p>总销售额</p>
-                        <h3>$ 1,500.00</h3>
+                        
+                        <slot name="a"></slot>
+                        <h3>$ {{num1}}</h3>
                     </div>
                 </div>
             </a-col>
@@ -24,8 +25,9 @@
                         <a-icon type="inbox" />
                     </span>
                     <div class="desc">
-                        <p>总订货数</p>
-                        <h3>$ 1,500.00</h3>
+                        
+                        <slot name="b"></slot>
+                        <h3>$ {{num2}}</h3>
                     </div>
                 </div>
             </a-col>
@@ -41,8 +43,9 @@
                         <a-icon type="pay-circle" />
                     </span>
                     <div class="desc">
-                        <p>总佣金</p>
-                        <h3>$ 1,500.00</h3>
+                        
+                        <slot name="c"></slot>
+                        <h3>$ {{num3}}</h3>
                     </div>
                 </div>
             </a-col>
@@ -51,7 +54,17 @@
 </template>
 <script>
 export default {
-    
+    props:{
+        num1:{
+            required: true
+        },
+        num2:{
+            required: true
+        },
+        num3:{
+            required: true
+        }
+    }
 }
 </script>
 <style lang="less" scoped>
