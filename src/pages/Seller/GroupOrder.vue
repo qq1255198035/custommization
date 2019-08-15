@@ -86,7 +86,10 @@ export default {
         onChange(pageNumber) {
             console.log('Page: ', pageNumber);
         }
-    }
+    },
+    mounted(){
+        console.log(this.$route.matched)
+    },
 }
 </script>
 <style lang="less">
