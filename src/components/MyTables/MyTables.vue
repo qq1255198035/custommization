@@ -2,28 +2,36 @@
   <div id="table">
     <a-table
       :columns="columns"
-      :dataSource="data"
+      :dataSource="data1"
       :pagination="false"
       :loading="memberLoading"
       :rowClassName="function(){return 'table-row'}"
     >
-      <template v-for="col in dataLists" :slot="col" slot-scope="text, record">
-        <a-select @change="handleChange(record.key,col,$event)" v-if="col == 'size'" :key="col" style="min-width: 120px;" placeholder="请选择尺码">
-          <a-select-option
-            v-for="(sitem,index) in size"
-            :key="index"
-            :value="sitem"
-            
-          >{{sitem}}
-            
-          </a-select-option>
+      <template v-for="col in dataList1" :slot="col" slot-scope="text, record">
+        <a-select
+          @change="handleChange(record.key,col,$event)"
+          v-if="col == 'size'"
+          :key="col"
+          style="min-width: 120px;"
+          placeholder="请选择尺码"
+        >
+          <a-select-option v-for="(sitem,index) in sizes" :key="index" :value="sitem">{{sitem}}</a-select-option>
         </a-select>
         <!-- <Stepper :num="record.number" @onPropsChange="change(record.key,col,)" v-if="col == 'number'" :key="col"></Stepper> -->
-        <div id="stepper" v-if="col == 'number'" :key="col">
-          <button class="left" @click="clickLeftbtn(record.key,col)">-</button>
-          <input type="number" min="1" max="Infinity" class="stepper-input" :value="record.number" />
-          <button class="right" @click="clickRightbtn(record.key,col)">+</button>
-        </div>
+        <a-input
+          @change="e =>changeName(e.target.value, record.key, col)"
+          v-if="col == 'name'"
+          :key="col"
+          :value="record.name"
+          style="background-color: rgba(255,255,255,0); border:none;"
+        />
+        <a-input
+          @change="e =>changeNum(e.target.value, record.key, col)"
+          v-if="col == 'num'"
+          :key="col"
+          :value="record.num"
+          style="background-color: rgba(255,255,255,0); border:none;"
+        />
         <a-input
           v-if="col == 'price'"
           :key="col"
@@ -49,24 +57,22 @@
 <script>
 export default {
   props: {
-    dataList: "",
-    dataSize: '',
-    dataSizeText:{
-      type:Array
+    dataSizes: "",
+    dataSizeTexts: {
+      type: Array
     },
-    size: {
+    sizes: {
       type: Array
     }
   },
   components: {},
   created() {
-        
-        this._price()
+    this.data1 = this.dataSizes;
   },
   data() {
     return {
+      dataList1: ["size", "name", "num", "price"],
       // table
-      dataLists: ["size", "number", "price"],
       quantity: 1,
       memberLoading: false,
       columns: [
@@ -78,11 +84,18 @@ export default {
           scopedSlots: { customRender: "size" }
         },
         {
-          title: "数量",
-          dataIndex: "number",
-          key: "number",
+          title: "名字",
+          dataIndex: "name",
+          key: "name",
           width: "30%",
-          scopedSlots: { customRender: "number" }
+          scopedSlots: { customRender: "name" }
+        },
+        {
+          title: "号码",
+          dataIndex: "num",
+          key: "num",
+          width: "20%",
+          scopedSlots: { customRender: "num" }
         },
         {
           title: "合计价格",
@@ -91,99 +104,80 @@ export default {
           width: "30%",
           scopedSlots: { customRender: "price" }
         },
+
         {
           title: "操作",
           key: "action",
           scopedSlots: { customRender: "operation" }
         }
       ],
-      data: [],
-      reseList: [],
+      data1: "",
+
       errors: []
     };
   },
   methods: {
-    _price() {
-      this.data = this.dataSize
-    },
-    handleChange(key, column,value) {
-      console.log(key, column,value)
-      let newData = [...this.data];
-      console.log(newData)
+    handleChange(key, column, value) {
+      console.log(key, column, value);
+      let newData = [...this.data1];
+      console.log(newData);
       let target = newData.filter(item => key == item.key)[0];
-      console.log(target)
+      console.log(target);
       if (target) {
-        console.log(target.size.length)
-        target.size = value
-      }
-      this.data = newData
-      this.$emit('getList',this.data)
-    },
-    /** 减**/
-    clickLeftbtn(key, column) {
-      let newData = [...this.data];
-      console.log(newData)
-      let target = newData.filter(item => key == item.key)[0];
-      console.log(target)
-      if (target) {
-        if (target[column] > 1) {
-          target[column]--;
-        } else {
-          target[column] = 1;
-        }
-        target.price = target[column] * this.dataSizeText[0].price;
+        console.log(target.size.length);
+        target.size = value;
       }
       this.data = newData;
-      this.$emit('getList',this.data)
+      this.$emit("getList", this.data1);
     },
-    /** 加**/
-    clickRightbtn(key, column) {
-      console.log(this.dataSize)
-      console.log(this.data)
-      let newData = [...this.data];
+
+    changeName(value, key, column) {
+
+      console.log(value, key, column)
+      let newData = [...this.data1];
+      console.log(newData);
       let target = newData.filter(item => key == item.key)[0];
-       console.log(target)
+      console.log(target);
       if (target) {
-        target[column]++;
-        target.price = target[column] * this.dataSizeText[0].price;
+        target.name = value;
       }
       this.data = newData;
-      console.log(this.data)
-      this.$emit('getList',this.data)
+      this.$emit("getList", this.data1);
     },
-    /** 添加**/
+
+    changeNum(value, key, column) {
+      console.log(value, key, column)
+      let newData = [...this.data1];
+      console.log(newData);
+      let target = newData.filter(item => key == item.key)[0];
+      console.log(target);
+      if (target) {
+        target.num = value;
+      }
+      this.data = newData;
+      this.$emit("getList", this.data1);
+    },
     newMember() {
-      const length = this.data.length;
-      console.log(this.data)
-      console.log(this.dataSize)
-        this.data.push({
+      const length = this.data1.length;
+      this.data1.push({
         key:
           length === 0
             ? "1"
-            : (parseInt(this.data[length - 1].key) + 1).toString(),
-        price: this.dataSizeText[0].price,
-        number: this.dataSizeText[0].number,
-        size: this.size
+            : (parseInt(this.data1[length - 1].key) + 1).toString(),
+        price: this.dataSizeTexts[0].price,
+        name: this.dataSizeTexts[0].name,
+        num: this.dataSizeTexts[0].num,
+        size: this.sizes
       });
     },
 
     remove(key) {
-          console.log(key)
-      const newData = this.data.filter(item => item.key !== key);
-      console.log(newData)
-      this.data = newData;
-      this.$emit('getList',this.data)
+      const newData = this.data1.filter(item => item.key !== key);
+      this.data1 = newData;
+      this.$emit("getList", this.data1);
     }
   },
-  watch: {
-    number(val) {
-      if (val) {
-        return val * this.dataSizeText[0].price;
-      } else {
-        return 0;
-      }
-    }
-  },
+  watch: {},
   computed: {}
 };
 </script>

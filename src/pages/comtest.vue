@@ -47,7 +47,7 @@
                   <p>Bla bla ...</p>
                   <p>Bla bla ...</p>
             </a-modal>
-            
+            <InputSearch></InputSearch>
       </div>
 </template>
 <script>
@@ -61,6 +61,7 @@ import TableItem  from "@/components/TableItem/TableItem";
 import OrderItem  from "@/components/OrderItem/OrderItem";
 import GoodsList  from "@/components/GoodsList/GoodsList";
 import OrderList  from "@/components/OrderList/OrderList";
+import InputSearch  from "@/components/InputSearch/InputSearch";
 export default {
       components:{
             MyTable,
@@ -71,7 +72,8 @@ export default {
             TableItem,
             OrderItem,
             GoodsList,
-            OrderList
+            OrderList,
+            InputSearch
       },
       data(){
             return{
@@ -89,7 +91,7 @@ export default {
 <style lang="less">
 #test{
       width: 100%;
-      height: 100%;
+      //height: 100%;
       padding: 150px 80px;
       background-image: linear-gradient(-45deg, #11bbe8 10%, #4ac37a 100%);
       .hiden-menu{

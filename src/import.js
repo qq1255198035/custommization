@@ -19,7 +19,14 @@ import {
   Divider,
   DatePicker,
   Modal,
-  Radio
+  Radio,
+  Layout,
+  List,
+  Form,
+  Popover,
+  Progress,
+  message,
+  notification
 } from "ant-design-vue";
 Vue.use(Button);
 Vue.use(Row);
@@ -41,3 +48,11 @@ Vue.use(Divider);
 Vue.use(DatePicker);
 Vue.use(Modal);
 Vue.use(Radio);
+Vue.use(Layout);
+Vue.use(List);
+Vue.use(Form);
+Vue.use(Popover);
+Vue.use(Progress);
+Vue.use(message);
+Vue.use(notification);
+
