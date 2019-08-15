@@ -264,7 +264,6 @@ export default {
       const {
         form: { validateFields },
         state,
-        $message,
         $notification
       } = this;
       validateFields(["email"], { force: true }, (err, values) => {
@@ -287,7 +286,7 @@ export default {
             .then(res => {
               console.log(res);
               if (res.status == 200) {
-                setTimeout(hide, 1);
+                //setTimeout(hide, 1);
                 $notification["success"]({
                   message: '登陆成功',
                   description: '成功',
@@ -300,7 +299,7 @@ export default {
               }
             })
             .catch(err => {
-              setTimeout(hide, 1);
+              //setTimeout(hide, 1);
               clearInterval(interval);
               state.time = 60;
               state.smsSendBtn = false;
