@@ -19,15 +19,15 @@
           </a-select-option>
         </a-select>
         <!-- <Stepper :num="record.number" @onPropsChange="change(record.key,col,)" v-if="col == 'number'" :key="col"></Stepper> -->
-        <div id="stepper" v-if="col == 'number'" :key="col">
+        <div id="stepper" v-if="col == 'quantity'" :key="col">
           <button class="left" @click="clickLeftbtn(record.key,col)">-</button>
-          <input type="number" min="1" max="Infinity" class="stepper-input" :value="record.number" />
+          <input type="number" min="1" max="Infinity" class="stepper-input" :value="record.quantity" />
           <button class="right" @click="clickRightbtn(record.key,col)">+</button>
         </div>
         <a-input
-          v-if="col == 'price'"
+          v-if="col == 'total_price'"
           :key="col"
-          :value="record.price"
+          :value="record.total_price"
           style="background-color: rgba(255,255,255,0); border:none;"
         />
       </template>
@@ -66,8 +66,8 @@ export default {
   data() {
     return {
       // table
-      dataLists: ["size", "number", "price"],
-      quantity: 1,
+      dataLists: ["size", "quantity", "total_price"],
+
       memberLoading: false,
       columns: [
         {
@@ -79,17 +79,17 @@ export default {
         },
         {
           title: "数量",
-          dataIndex: "number",
-          key: "number",
+          dataIndex: "quantity",
+          key: "quantity",
           width: "30%",
-          scopedSlots: { customRender: "number" }
+          scopedSlots: { customRender: "quantity" }
         },
         {
           title: "合计价格",
-          dataIndex: "price",
-          key: "price",
+          dataIndex: "total_price",
+          key: "total_price",
           width: "30%",
-          scopedSlots: { customRender: "price" }
+          scopedSlots: { customRender: "total_price" }
         },
         {
           title: "操作",
@@ -105,6 +105,7 @@ export default {
   methods: {
     _price() {
       this.data = this.dataSize
+      console.log(this.dataSize)
     },
     handleChange(key, column,value) {
       console.log(key, column,value)
@@ -131,7 +132,7 @@ export default {
         } else {
           target[column] = 1;
         }
-        target.price = target[column] * this.dataSizeText[0].price;
+        target.total_price = target[column] * this.dataSizeText[0].price;
       }
       this.data = newData;
       this.$emit('getList',this.data)
@@ -145,7 +146,7 @@ export default {
        console.log(target)
       if (target) {
         target[column]++;
-        target.price = target[column] * this.dataSizeText[0].price;
+        target.total_price = target[column] * this.dataSizeText[0].price;
       }
       this.data = newData;
       console.log(this.data)
@@ -154,16 +155,19 @@ export default {
     /** 添加**/
     newMember() {
       const length = this.data.length;
-      console.log(this.data)
+      console.log(this.dataSizeText[0])
       console.log(this.dataSize)
         this.data.push({
         key:
           length === 0
             ? "1"
             : (parseInt(this.data[length - 1].key) + 1).toString(),
-        price: this.dataSizeText[0].price,
-        number: this.dataSizeText[0].number,
-        size: this.size
+            price: this.dataSizeText[0].price,
+        total_price: this.dataSizeText[0].price,
+        quantity: this.dataSizeText[0].number,
+        size: this.size,
+        goods_id: this.dataSizeText[0].goods_id,
+        des_id: this.dataSizeText[0].des_id
       });
     },
 
@@ -188,6 +192,11 @@ export default {
 };
 </script>
 <style lang="less">
+.ant-table-placeholder{
+  background: rgba(255,255,255,0.5) !important;
+  color: #fff;
+}
+
 @import "./../index.less";
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {

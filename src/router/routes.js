@@ -108,34 +108,62 @@ const routes = [
             ]
       },
       {
-            path: "/share",
-            name: "share",
-            component: () => import("@/pages/userSystem/share/share")
-      },
-      {
-            path: "/payment",
-            name: "payment",
-            component: () => import("@/pages/userSystem/payment/payment")
-      },
-      {
-            path: "/paysuccess",
-            name: "paysuccess",
-            component: () => import("@/pages/userSystem/paySuccess/paySuccess")
-      },
-      {
-            path: "/payfailed",
-            name: "payfailed",
-            component: () => import("@/pages/userSystem/payFailed/payFailed")
-      },
-      {
-            path: "/orders",
-            name: "orders",
-            component: () => import("@/pages/userSystem/orders/orders")
-      },
+            path: "/person",
+            name: "person",
+            component: BlankLayout,
+            redirect: '/orders',
+            children: [
+                  {
+                        path: "/share",
+                        name: "share",
+                        component: () => import("@/pages/userSystem/share/share"),
+                        meta: {
+                              requireAuth: true
+                        }
+                  },
+                  {
+                        path: "/payment",
+                        name: "payment",
+                        component: () => import("@/pages/userSystem/payment/payment"),
+                        meta: {
+                              requireAuth: true
+                        }
+                  },
+                  {
+                        path: "/paysuccess",
+                        name: "paysuccess",
+                        component: () => import("@/pages/userSystem/paySuccess/paySuccess"),
+                        meta: {
+                              requireAuth: true
+                        }
+                  },
+                  {
+                        path: "/payfailed",
+                        name: "payfailed",
+                        component: () => import("@/pages/userSystem/payFailed/payFailed"),
+                        meta: {
+                              requireAuth: true
+                        }
+                  },
+                  {
+                        path: "/orders",
+                        name: "orders",
+                        component: () => import("@/pages/userSystem/orders/orders"),
+                        meta: {
+                              requireAuth: true
+                        }
+                  },
+            ]
+      }, 
       {
             path: "/login",
             name: "login",
             component: () => import("@/pages/common/login")
+      },
+      {
+            path: "/paylocal",
+            name: "paylocal",
+            component: () => import("@/pages/userSystem/payLocal/payLocal")
       },
       {
             path: "/register",

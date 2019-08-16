@@ -1,11 +1,7 @@
 <template>
   <div class="share">
     <div class="share-box">
-      <sys-header></sys-header>
       <div class="layout-box">
-        <div class="menu block">
-          <commonHeader></commonHeader>
-        </div>
         <div class="content">
           <my-title :title="itemTitle"></my-title>
           <person-list></person-list>

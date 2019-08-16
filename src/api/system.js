@@ -43,3 +43,24 @@ export function getAction(url,parameter) {
       data: qs.stringify(parameter)
     })
   }
+  export function payPal(parameter) {
+    return axios({
+      url: '/apiPersonOrder/toConfirmPay',
+      method: 'post',
+      data: qs.stringify(parameter)
+    })
+  }
+  export function paymentInfo(parameter) {
+    return axios({
+      url: '/apiPersonOrder/toConfirmPayList',
+      method: 'post',
+      data: qs.stringify(parameter)
+    })
+  }
+  /*export function payMoney(parameter) {
+    return axios({
+      url: '/apiPersonOrder/toConfirmPay',
+      method: 'post',
+      data: qs.stringify(parameter)
+    })
+  }*/

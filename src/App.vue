@@ -31,6 +31,7 @@ export default {
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   width: 100%;
+  height: 100%;
   input::-webkit-input-placeholder{
     color: #fff;
   }

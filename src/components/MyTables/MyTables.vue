@@ -20,22 +20,22 @@
         <!-- <Stepper :num="record.number" @onPropsChange="change(record.key,col,)" v-if="col == 'number'" :key="col"></Stepper> -->
         <a-input
           @change="e =>changeName(e.target.value, record.key, col)"
-          v-if="col == 'name'"
+          v-if="col == 'printName'"
           :key="col"
-          :value="record.name"
+          :value="record.printName"
           style="background-color: rgba(255,255,255,0); border:none;"
         />
         <a-input
           @change="e =>changeNum(e.target.value, record.key, col)"
-          v-if="col == 'num'"
+          v-if="col == 'printNumber'"
           :key="col"
-          :value="record.num"
+          :value="record.printNumber"
           style="background-color: rgba(255,255,255,0); border:none;"
         />
         <a-input
-          v-if="col == 'price'"
+          v-if="col == 'total_price'"
           :key="col"
-          :value="record.price"
+          :value="record.total_price"
           style="background-color: rgba(255,255,255,0); border:none;"
         />
       </template>
@@ -71,7 +71,7 @@ export default {
   },
   data() {
     return {
-      dataList1: ["size", "name", "num", "price"],
+      dataList1: ["size", "printName", "printNumber", "total_price"],
       // table
       quantity: 1,
       memberLoading: false,
@@ -85,24 +85,24 @@ export default {
         },
         {
           title: "名字",
-          dataIndex: "name",
-          key: "name",
+          dataIndex: "printName",
+          key: "printName",
           width: "30%",
-          scopedSlots: { customRender: "name" }
+          scopedSlots: { customRender: "printName" }
         },
         {
           title: "号码",
-          dataIndex: "num",
-          key: "num",
+          dataIndex: "printNumber",
+          key: "printNumber",
           width: "20%",
-          scopedSlots: { customRender: "num" }
+          scopedSlots: { customRender: "printNumber" }
         },
         {
           title: "合计价格",
-          dataIndex: "price",
-          key: "price",
+          dataIndex: "total_price",
+          key: "total_price",
           width: "30%",
-          scopedSlots: { customRender: "price" }
+          scopedSlots: { customRender: "total_price" }
         },
 
         {
@@ -139,9 +139,9 @@ export default {
       let target = newData.filter(item => key == item.key)[0];
       console.log(target);
       if (target) {
-        target.name = value;
+        target.printName = value;
       }
-      this.data = newData;
+      this.data1 = newData;
       this.$emit("getList", this.data1);
     },
 
@@ -152,9 +152,9 @@ export default {
       let target = newData.filter(item => key == item.key)[0];
       console.log(target);
       if (target) {
-        target.num = value;
+        target.printNumber = value;
       }
-      this.data = newData;
+      this.data1 = newData;
       this.$emit("getList", this.data1);
     },
     newMember() {
@@ -164,10 +164,13 @@ export default {
           length === 0
             ? "1"
             : (parseInt(this.data1[length - 1].key) + 1).toString(),
-        price: this.dataSizeTexts[0].price,
-        name: this.dataSizeTexts[0].name,
-        num: this.dataSizeTexts[0].num,
-        size: this.sizes
+            price: this.dataSizeTexts[0].price,
+        total_price: this.dataSizeTexts[0].price,
+        name: this.dataSizeTexts[0].printName,
+        num: this.dataSizeTexts[0].printNumber,
+        size: this.sizes,
+        goods_id: this.dataSizeTexts[0].goods_id,
+        des_id: this.dataSizeTexts[0].des_id
       });
     },
 
