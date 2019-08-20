@@ -3,23 +3,23 @@
             <div  v-for="items in orderArr" :key="items.id">
                   <div class="order-title">
                         <p>
-                              <span>订单Id:{{items.orderId}}</span>
-                              <span>订单时间: {{items.time}}</span>
-                              <span>订单关闭时间： {{items.closeTime}}</span>
+                              <span>订单Id:{{items.orderSn}}</span>
+                              <span>订单时间: {{items.createTime}}</span>
+                              <span>订单关闭时间： {{items.payEndDate}}</span>
                         </p>
                         <slot></slot>
                   </div>
                   <div class="order-content">
-                        <div class="order-item" v-for="item in items.list" :key="item.id">
+                        <div class="order-item" v-for="(item,index) in items.interiorList" :key="index + items.id">
                               <div class="left">
                                     <img src="@/assets/jaw.jpg" alt="" width="100" height="120">
                                     <div class="desc">
                                           <h3>{{item.name}}</h3>
-                                          <p>颜色： {{item.color}}</p>
+                                          <p>颜色： {{item.productColor}}</p>
                                     </div>
                               </div>
                               <div class="right">
-                                    <span>26/56</span>
+                                    <span>{{item.buyNum}}/{{item.quantity}}</span>
                                     <span>状态： {{item.status}}</span>
                                     <a-button>样稿确认</a-button>
                               </div>
@@ -51,6 +51,10 @@ export default {
                   width: 90%;
                   display: flex;
                   justify-content: space-between;
+                  span{
+                        width: 33%;
+                        
+                  }
             }
       }
       .order-content{

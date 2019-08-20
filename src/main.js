@@ -9,7 +9,7 @@ import Share from 'vue-social-share'
 Vue.use(Share)
 var SocialSharing = require('vue-social-sharing');
 import Storage from 'vue-ls';
- 
+import $ from 'jquery';
 const options = {
   namespace: 'vuejs__', // key prefix
   name: 'ls', // name variable Vue.[ls] or this.[$ls],

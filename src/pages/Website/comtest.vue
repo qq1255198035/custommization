@@ -1,6 +1,6 @@
 <template>
       <div id="test">
-            <my-menu></my-menu>
+            
             <order-list></order-list>
             <goods-list></goods-list>
             <order-item>
@@ -50,10 +50,11 @@
                   </template>
             </a-modal>
             <InputSearch></InputSearch>
+            
       </div>
 </template>
 <script>
-import MyMenu from "@/components/MyMenu/MyMenu";
+
 import MyTable from "@/components/MyTable/MyTable";
 import MyStpes from "@/components/MyStpes/MyStpes";
 import MyHeader from "@/components/MyHeader/MyHeader";
@@ -64,6 +65,7 @@ import OrderItem  from "@/components/OrderItem/OrderItem";
 import GoodsList  from "@/components/GoodsList/GoodsList";
 import OrderList  from "@/components/OrderList/OrderList";
 import InputSearch  from "@/components/InputSearch/InputSearch";
+
 export default {
       components:{
             MyTable,
@@ -80,7 +82,7 @@ export default {
       data(){
             return{
                   number:0,
-                  show: true,
+                  show: false,
                   itemTitle: '订单详情',
                   hidemenu:false
             }

@@ -49,8 +49,8 @@
 <script>
 export default {
   props: {
-    dataList: "",
-    dataSize: '',
+    dataList: {},
+    dataSize: {},
     dataSizeText:{
       type:Array
     },

@@ -57,7 +57,7 @@
 <script>
 export default {
   props: {
-    dataSizes: "",
+    dataSizes: {},
     dataSizeTexts: {
       type: Array
     },

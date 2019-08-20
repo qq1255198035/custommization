@@ -5,6 +5,16 @@ const routes = [
       {
             path: "/",
             name: "index",
+            redirect: "/CountdownTime",
+      },
+      {
+            path: "/CountdownTime",
+            name: "CountdownTime",
+            component: () => import("@/pages/Website/CountdownTime")
+      },
+      {
+            path: "/basic",
+            name: "basic",
             component: BasicLayout,
             redirect: "/home",
             children:[

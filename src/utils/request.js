@@ -1,25 +1,4 @@
-/*import axios from 'axios'
 
-const urlMap = {
-  development: 'http://192.168.0.129:8080',
-  production: 'http://192.168.0.129:8080'
-}
-const baseUrl = urlMap[process.env.NODE_ENV]
-const ERR_OK = 0
-
-export function get(url) {
-  return function(params = {}) {
-    return axios.get(baseUrl + url, {
-      params
-    }).then((res) => {
-      const {errno, data} = res.data
-      if (errno === ERR_OK) {
-        return data
-      }
-    }).catch((e) => {
-    })
-  }
-}*/
 import Vue from 'vue'
 import axios from 'axios'
 //import store from '@/store'
@@ -95,7 +74,7 @@ const err = (error) => {
 
 // request interceptor
 service.interceptors.request.use(config => {
-  const token = Vue.ls.get('token')
+  const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1NjYzNTYzODUsInVzZXJuYW1lIjoiamVlY2cifQ.vNjk79S2Ten3Mc3V9ip_XwDTQ6F7tJT_XtUOozY__lo';//Vue.ls.get('token')
   if (token) {
     config.headers[ 'X-Access-Token' ] = token // 让每个请求携带自定义 token 请根据实际情况自行修改
   }

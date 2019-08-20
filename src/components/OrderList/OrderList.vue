@@ -1,73 +1,36 @@
 <template>
       <div id="OrderList">
             <a-row :gutter="60" class="list-row">
-                  <a-col :span="8">
+                  <a-col :span="8" v-for="item in orderList" :key="item.id">
                         <div class="order-item">
-                              <img src="@/assets/jaw.jpg" alt="">
+                              <img :src="item.topic_url" alt="">
                               <div class="desc">
                                     <p>
-                                          <span>校篮球队训练服</span>
-                                          <span>9月26日</span>
+                                          <span>{{item.topic}}</span>
+                                          <span>{{item.pay_end_date}}</span>
                                     </p>
-                                    <p>描述信息描述信息描述信息描述信息描述信息233333333333</p>
+                                    <p>{{item.introduction}}</p>
                                     <p>
-                                          <span>25/50</span>
+                                          <span>{{item.buyNum}}/{{item.reservation}}</span>
                                           <span>
                                                 <a-icon type="edit" />
-                                                <a-icon type="search" />
-                                                <a-icon type="branches" />
+                                                <a-icon type="file-search" />
+                                                <a-icon type="share-alt" />
                                           </span>
                                     </p>
                               </div>
                         </div>
                   </a-col>
-                  <a-col :span="8">
-                        <div class="order-item">
-                              <img src="@/assets/jaw.jpg" alt="">
-                              <div class="desc">
-                                    <p>
-                                          <span>校篮球队训练服</span>
-                                          <span>9月26日</span>
-                                    </p>
-                                    <p>描述信息描述信息描述信息描述信息描述信息233333333333</p>
-                                    <p>
-                                          <span>25/50</span>
-                                          <span>
-                                                <a-icon type="edit" />
-                                                <a-icon type="search" />
-                                                <a-icon type="branches" />
-                                          </span>
-                                    </p>
-                              </div>
-                        </div>
-                  </a-col>
-                  <a-col :span="8">
-                        <div class="order-item">
-                              <img src="@/assets/jaw.jpg" alt="">
-                              <div class="desc">
-                                    <p>
-                                          <span>校篮球队训练服</span>
-                                          <span>9月26日</span>
-                                    </p>
-                                    <p>描述信息描述信息描述信息描述信息描述信息233333333333</p>
-                                    <p>
-                                          <span>25/50</span>
-                                          <span>
-                                                <a-icon type="edit" />
-                                                <a-icon type="search" />
-                                                <a-icon type="branches" />
-                                          </span>
-                                    </p>
-                              </div>
-                        </div>
-                  </a-col>
-                  
             </a-row>
       </div>
 </template>
 <script>
 export default {
-      
+      props:{
+            orderList:{
+                  type: Array
+            }
+      }
 }
 </script>
 

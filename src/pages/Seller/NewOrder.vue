@@ -7,45 +7,24 @@
             <a-col :span="6">
                 <a-menu
                     mode="inline"
-                    :openKeys="openKeys"
-                    @openChange="onOpenChange"
                     style="width: 256px"
+                    :defaultSelectedKeys="['sub00']" 
+                    :defaultOpenKeys="['0']"
+                    @click="handleClick"
                 >
-                    <a-sub-menu key="sub1">
-                        <span slot="title"><a-icon type="mail" /><span>校服</span></span>
-                        <a-menu-item key="1">T-Shirt</a-menu-item>
-                        <a-menu-item key="2">POLO</a-menu-item>
-                        <a-menu-item key="3">POLO</a-menu-item>
-                        <a-menu-item key="4">POLO</a-menu-item>
-                    </a-sub-menu>
-                    <a-sub-menu key="sub2">
-                        <span slot="title"><a-icon type="appstore" /><span>工作服</span></span>
-                        <a-menu-item key="5">Option 5</a-menu-item>
-                        <a-menu-item key="6">Option 6</a-menu-item>
-                    </a-sub-menu>
-                    <a-sub-menu key="sub3">
-                        <span slot="title"><a-icon type="setting" /><span>运动服</span></span>
-                        <a-menu-item key="7">Option 9</a-menu-item>
-                        <a-menu-item key="8">Option 10</a-menu-item>
-                        <a-menu-item key="9">Option 11</a-menu-item>
-                        <a-menu-item key="10">Option 12</a-menu-item>
-                    </a-sub-menu>
-                    <a-sub-menu key="sub4">
-                        <span slot="title"><a-icon type="setting" /><span>政府和组织</span></span>
-                        <a-menu-item key="11">Option 9</a-menu-item>
-                        <a-menu-item key="12">Option 10</a-menu-item>
-                        
+                    <a-sub-menu  v-for="(item, index) in menuList" :key="index.toString()">
+                        <span slot="title" style="display: flex;align-items: center;"><a-avatar :size="20" :src="item.icon" style="margin-right: 5px;"/><span>{{item.title}}</span></span>
+                        <a-menu-item v-for="(sub,sindex) in item.subMenu" :key="'sub'+ index + sindex.toString()" @click="handleGetList(sub.categoryId)">{{sub.title}}</a-menu-item>
                     </a-sub-menu>
                 </a-menu>
             </a-col>
             <a-col :span="17">
                 <goods-list :goodsArr="goodsList"></goods-list>
                 <div  style="text-align: center;margin: 20px 0;">
-                    <a-button :loading="loading">
+                    <a-button :loading="loading" @click="loadMore" :disabled="btnable">
                         加载更多
                     </a-button>
                 </div>
-                
             </a-col>
         </a-row>
     </div>
@@ -53,6 +32,7 @@
 <script>
 import MyTitle from "@/components/MyTitle/MyTitle";
 import GoodsList from "@/components/GoodsList/GoodsList";
+import { listAll,categoryList } from "@/api/seller";
 export default {
     components:{
         MyTitle,
@@ -60,81 +40,66 @@ export default {
     },
     data () {
         return {
-            loading:true,
-            rootSubmenuKeys: ['sub1', 'sub2', 'sub4'],
-            openKeys: ['sub1'],
-            goodsList:[
-                {
-                    id:1,
-                    name: '校篮球队训练服',
-                    minprice: '200',
-                    maxprice: '300',
-                    num: '10',
-                    size: 'S,M,L,XL,2XL'
-                },
-                {
-                    id:2,
-                    name: '校篮球队训练服',
-                    minprice: '200',
-                    maxprice: '300',
-                    num: '10',
-                    size: 'S,M,L,XL,2XL'
-                },
-                {
-                    id:3,
-                    name: '校篮球队训练服',
-                    minprice: '200',
-                    maxprice: '300',
-                    num: '10',
-                    size: 'S,M,L,XL,2XL'
-                },{
-                    id:4,
-                    name: '校篮球队训练服',
-                    minprice: '200',
-                    maxprice: '300',
-                    num: '10',
-                    size: 'S,M,L,XL,2XL'
-                },{
-                    id:5,
-                    name: '校篮球队训练服',
-                    minprice: '200',
-                    maxprice: '300',
-                    num: '10',
-                    size: 'S,M,L,XL,2XL'
-                },{
-                    id:6,
-                    name: '校篮球队训练服',
-                    minprice: '200',
-                    maxprice: '300',
-                    num: '10',
-                    size: 'S,M,L,XL,2XL'
-                },{
-                    id:7,
-                    name: '校篮球队训练服',
-                    minprice: '200',
-                    maxprice: '300',
-                    num: '10',
-                    size: 'S,M,L,XL,2XL'
-                },{
-                    id:8,
-                    name: '校篮球队训练服',
-                    minprice: '200',
-                    maxprice: '300',
-                    num: '10',
-                    size: 'S,M,L,XL,2XL'
-                }
-            ]
+            loading:false,
+            goodsList:[],
+            menuList:[],
+            defaultSelectedKeys:'',
+            defaultOpenKeys:'',
+            pageNum: 1,
+            id:'',
+            btnable:false
         }
     },
+    created(){
+        this.getAllList();
+    },
+    mounted(){
+        
+    },
     methods: {
-        onOpenChange (openKeys) {
-        const latestOpenKey = openKeys.find(key => this.openKeys.indexOf(key) === -1)
-        if (this.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
-            this.openKeys = openKeys
-        } else {
-            this.openKeys = latestOpenKey ? [latestOpenKey] : []
-        }
+        loadMore(){
+            let that = this;
+            that.pageNum ++;
+            that.loading = true;
+            categoryList(this.id,this.pageNum).then(res => {
+                that.loading = false;
+                console.log(res)
+                if(res.current <= res.total){
+                    that.goodsList = that.goodsList.concat(res.records);
+                }else{
+                    that.btnable = true;
+                    that.$message.error('无更多数据！');
+                }
+            })
+
         },
+        handleClick (e) {
+            console.log('click', e.key)
+        },
+        getAllList(){
+            listAll().then(res => {
+                console.log(res)
+                if(res.code == 0){
+                    this.menuList = res.result;
+                    this.defaultSelectedKeys = res.result[0].subMenu[0].categoryId.toString();
+                    this.id = res.result[0].subMenu[0].categoryId.toString();
+                    this.defaultOpenKeys = res.result[0].categoryId.toString();
+                    this.getcategoryList(this.defaultSelectedKeys,1)
+                    console.log(this.defaultSelectedKeys)
+                    console.log(this.defaultOpenKeys)
+                }
+            })
+        },
+        getcategoryList(id,num){
+            categoryList(id,num).then(res => {
+                console.log(res)
+                this.goodsList = res.records;
+            })
+        },
+        handleGetList(id){
+            this.id = id;
+            this.getcategoryList(id,1)
+        }
     },
 }
 </script>

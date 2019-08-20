@@ -4,14 +4,19 @@
         <ul class="input-box">
             <li>
                 <a-button icon="plus" @click="$router.push({name: 'neworder'})">新建订单</a-button>
-                <a-radio-group defaultValue="a" style="margin-left: 10px;">
-                    <a-radio-button value="a">全部订单</a-radio-button>
-                    <a-radio-button value="b">已支付</a-radio-button>
-                    <a-radio-button value="c">未支付</a-radio-button>
+                <a-radio-group defaultValue="9" style="margin-left: 10px;" @change="changeStatus">
+                    <a-radio-button value="9">全部订单</a-radio-button>
+                    <a-radio-button value="2">已支付</a-radio-button>
+                    <a-radio-button value="0">未支付</a-radio-button>
                 </a-radio-group>
             </li>
             <li>
-                <input-search></input-search>
+                <div id="input-box">
+                    <input type="text" v-model="key">
+                    <span @click="search">
+                        <img src="./../../assets/btn_search.png" alt="">
+                    </span>
+                </div>
             </li>
         </ul>
         <div class="content">
@@ -19,77 +24,66 @@
                 <order-item :orderArr="orderList">
                     <hide-menu></hide-menu>
                 </order-item>
+                <div class="pagination-box">
+                    <a-pagination showQuickJumper :defaultCurrent="1" :total="totalnum" @change="onChange($event)" :pageSize="4"/>
+                </div>
             </template>
             <p v-else>暂无数据</p>
-            <div class="pagination-box">
-                <a-pagination showQuickJumper :defaultCurrent="2" :total="500" @change="onChange" />
-            </div>
+           
             
         </div>
     </div>
 </template>
 <script>
 import MyTitle from "@/components/MyTitle/MyTitle";
-import InputSearch from "@/components/InputSearch/InputSearch";
 import OrderItem from "@/components/OrderItem/OrderItem";
 import HideMenu from "@/components/HideMenu/HideMenu";
+import { groupOrderList } from "@/api/seller";
 export default {
     components:{
-            MyTitle,
-            InputSearch,
-            OrderItem,
-            HideMenu
+        MyTitle,
+        OrderItem,
+        HideMenu
     },
     data(){
         return{
-            orderList:[
-                {
-                    id: 1,
-                    orderId: 164456,
-                    time: '2019-03-05 19:00:00',
-                    closeTime: '2019-03-05 19:00:00',
-                    list:[
-                        {
-                            id: 2,
-                            name: '篮球训练服',
-                            color: '蓝色',
-                            status: '团购中'
-                        },
-                        {
-                            id: 3,
-                            name: '篮球训练服',
-                            color: '蓝色',
-                            status: '团购中'
-                        }
-                        
-                    ]
-                },
-                {
-                    id: 2,
-                    orderId: 164456,
-                    time: '2019-03-05 19:00:00',
-                    closeTime: '2019-03-05 19:00:00',
-                    list:[
-                        {
-                            id: 2,
-                            name: '篮球训练服',
-                            color: '蓝色',
-                            status: '团购中'
-                        }
-                        
-                    ]
-                }
-            ]
+            orderList:[],
+            num:1,
+            status: 9,
+            content: '',
+            totalnum: 0,
+            key:''
         } 
     },
     methods:{
+        search(){
+            this.getGroupOrderList(1,this.status,this.key)
+        },
+        changeStatus(e){
+            console.log(e.target.value)
+            this.status = e.target.value;
+            this.getGroupOrderList(1,this.status,'')
+        },
         onChange(pageNumber) {
             console.log('Page: ', pageNumber);
+            this.num = pageNumber
+            this.getGroupOrderList(this.num,this.status,this.content)
+        },
+        getGroupOrderList(num,status,orderid){
+            groupOrderList(num,status,orderid).then(res => {
+                console.log(res)
+                this.orderList = res.records;
+                this.totalnum = parseInt(res.total);
+            })
         }
     },
     mounted(){
-        console.log(this.$route.matched)
+        console.log(this.totalnum)
+        
     },
+    created(){
+        this.getGroupOrderList(this.num,this.status,this.content)
+    }
 }
 </script>
 <style lang="less">
@@ -101,6 +95,29 @@ export default {
         margin-top: 20px;
         li{
             display: flex;
+            #input-box{
+                display: flex;
+                justify-content: space-between;
+                border-radius: 4px;
+                padding: 5px 10px;
+                width: 250px !important;
+                border: 1px solid #fff !important;
+                input{
+                        border: none;
+                        outline: none;
+                        background-color: rgba(255, 255, 255, 0);
+                        padding:0;
+                        width: calc(100% - 35px)
+                }
+                span{
+                        cursor: pointer;
+                        img{
+                            width: 25px;
+                            height: 25px;
+                        }
+                }
+                
+            }
         }
     }
     
