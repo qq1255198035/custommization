@@ -15,6 +15,21 @@ const options = {
   name: 'ls', // name variable Vue.[ls] or this.[$ls],
   storage: 'session', // storage name session, local, memory
 };
+router.beforeEach((to, from, next) => {
+  if (to.meta.requireAuth) {
+    const token = Vue.ls.get("token")
+    if (token) {
+      next()
+    }else{
+      next({
+        path: '/login',
+        query: {redirect: to.fullPath}
+      })
+    }
+  } else {
+    next()
+  }
+});
 Vue.use(Storage, options);
 Vue.use(SocialSharing);
 import vcolorpicker from "vcolorpicker";

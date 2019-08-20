@@ -128,6 +128,9 @@ export default {
           login(loginParams).then(res => {
             console.log(res)
             this.$ls.set('token',res.result.token)
+            this.$router.push({
+              path: '/person'
+            })
           });
         }
       });
