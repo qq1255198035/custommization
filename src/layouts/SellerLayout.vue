@@ -2,10 +2,10 @@
     <div id="SellerLayout">
         <My-Header :showNav="false"></My-Header>
         <a-row type="flex" justify="space-between" align="top">
-            <a-col :span="6">
+            <a-col :span="4">
                 <My-Menu></My-Menu>
             </a-col>
-            <a-col :span="17">
+            <a-col :span="20">
                 <router-view></router-view>
             </a-col>
         </a-row>

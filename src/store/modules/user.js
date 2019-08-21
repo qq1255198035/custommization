@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { login, logout, phoneLogin } from "@/api/login"
+import { login, logout, } from "@/api/system"
 import { ACCESS_TOKEN, USER_NAME,USER_INFO,USER_AUTH,SYS_BUTTON_AUTH } from "@/store/mutation-types"
 import { welcome } from "@/utils/util"
 import { queryPermissionsByUser } from '@/api/api'

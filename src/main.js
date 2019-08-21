@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from "./router";
+import i18n from './lang'
+import store from './store/'
+import './permission'
 import { VueAxios } from './utils/request'
 import "fullpage.js/vendors/scrolloverflow";
 import VueFullPage from "vue-fullpage.js";
@@ -40,5 +43,7 @@ import './import'
 Vue.config.productionTip = false;
 new Vue({
   router,
+  store,
+  i18n,
   render: h => h(App),
 }).$mount('#app')

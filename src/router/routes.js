@@ -108,8 +108,8 @@ const routes = [
             ]
       },
       {
-            path: "/person",
-            name: "person",
+            path: "/payorder",
+            name: "payorder",
             component: BlankLayout,
             redirect: '/orders',
             children: [
@@ -145,6 +145,15 @@ const routes = [
                               requireAuth: true
                         }
                   },
+                  
+            ]
+      },
+      {
+            path: "/person",
+            name: "person",
+            component: SellerLayout,
+            redirect: '/orders',
+            children: [
                   {
                         path: "/orders",
                         name: "orders",
@@ -153,6 +162,15 @@ const routes = [
                               requireAuth: true
                         }
                   },
+                  {
+                        path: "/personSet",
+                        name: "personSet",
+                        component: () => import("@/pages/person/person"),
+                        meta: {
+                              requireAuth: true
+                        }
+                  },
+                  
             ]
       }, 
       {
@@ -170,6 +188,7 @@ const routes = [
             name: "register",
             component: () => import("@/pages/common/register")
       },
+      
       {
             path: "/order",
             name: "order",

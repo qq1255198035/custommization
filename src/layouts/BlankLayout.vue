@@ -19,6 +19,7 @@ export default {
     width: 100%;
     min-width: 100%;
     padding: 150px 80px 0;
+    min-height: 100%;
     background-image: linear-gradient(-45deg, #11bbe8 10%, #4ac37a 100%);
 }
 </style>

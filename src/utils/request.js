@@ -25,6 +25,7 @@ import axios from 'axios'
 //import store from '@/store'
 import { VueAxios } from './axios'
 import {Modal, notification} from 'ant-design-vue'
+import router from '../router';
 //import { ACCESS_TOKEN } from "@/store/mutation-types"
 
 // 创建 axios 实例
@@ -36,6 +37,7 @@ const err = (error) => {
   if (error.response) {
     let data = error.response.data
     const token = Vue.ls.get('token')
+    console.log(token)
     console.log("------异常响应------",token)
     console.log("------异常响应------",error.response.status)
     switch (error.response.status) {
@@ -55,7 +57,9 @@ const err = (error) => {
             okText: '重新登录',
             mask: false,
             onOk: () => {
-              
+              router.push({
+                path: '/login'
+              })
               /*store.dispatch('Logout').then(() => {
                 Vue.ls.remove(ACCESS_TOKEN)
                 window.location.reload()

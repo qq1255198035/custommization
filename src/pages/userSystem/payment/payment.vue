@@ -1,7 +1,7 @@
 <template>
   <div class="share">
     <div class="step">流程进度</div>
-    <my-stpes :mycurrent="1">
+    <my-stpes :mycurrent="step">
       <p slot="p1">选择尺码</p>
       <p slot="p2">确认支付</p>
       <p slot="p3">等待开团</p>
@@ -72,7 +72,7 @@
 </template>
 
 <script>
-import { payPal, paymentInfo } from "@/api/system";
+import { payPal, paymentInfo, status } from "@/api/system";
 import MyStpes from "@/components/MyStpes/MyStpes";
 import SysHeader from "@/components/SysHeader/SysHeader";
 import MyTitle from "@/components/MyTitle/MyTitle";
@@ -83,6 +83,7 @@ export default {
   props: {},
   data() {
     return {
+      step: 1,
       listLeft: {},
       listRight: {},
       value: 1,
@@ -152,13 +153,26 @@ export default {
   computed: {},
   created() {
     this._paymentInfo();
+    this._status();
   },
   mounted() {},
   watch: {},
   methods: {
+    _status() {
+      const param = {
+        token: this.$ls.get('token'),
+        user_order_id: this.$route.query.user_order_id
+      }
+      console.log(param)
+      status(param).then(res => {
+        console.log(res)
+        this.step = parseInt(res.result.schedule)
+      })
+    },
     _paymentInfo() {
       const param = {
-        token: this.$ls.get("token")
+        token: this.$ls.get("token"),
+        user_order_id: this.$route.query.user_order_id
       };
       paymentInfo(param).then(res => {
         console.log(res);
@@ -166,27 +180,33 @@ export default {
         this.data1 = res.result.confirmPrintPayList;
         this.listLeft = res.result.confirmNoPrintPayList[0];
         this.listRight = res.result.confirmPrintPayList[0];
-        this.allPrice = res.result.orderPrice;
+        this.allPrice = res.result.userOrderId ? res.result.userOrderId : 0;
+        this.userId = res.result.userOrderId.user_order_id
       });
     },
     payBtn() {
       console.log(this.value);
       const param = {
-        token: this.$ls.get("token")
+        token: this.$ls.get("token"),
+        order_id: this.$route.query.user_order_id,
+        user_order_id: this.userId,
+        price: this.allPrice.order_price
       };
       if (this.value == 1) {
         console.log(param);
         payPal(param).then(res => {
-          console.log(res);
-          let first = res.indexOf("href");
-          let last = res.lastIndexOf('"');
-          console.log(first,last)
-          let url = res.slice(first, last);
+          console.log(res)
+          let first = res.toPayHtml.indexOf("href") + 6;
+          let last = res.toPayHtml.lastIndexOf('"');
+          let url = res.toPayHtml.slice(first, last);
+          this.$ls.set('userOrderId', res.user_order_id)
+          this.$ls.set('orderId', res.order_id)
+          this.$ls.set('price', res.price)
           let routeData = this.$router.resolve({
-            path: "paypals",
+            path: "paylocal",
             query: { url: url }
           });
-          window.location.replace(routeData.href, "_blank");
+          //window.location.replace(routeData.href, "_blank");
         });
       }
     },

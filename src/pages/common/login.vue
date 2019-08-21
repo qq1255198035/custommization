@@ -127,10 +127,13 @@ export default {
           loginParams.password = values.password
           login(loginParams).then(res => {
             console.log(res)
-            this.$ls.set('token',res.result.token)
+            this.$ls.set('token',res.result.token, 7 * 24 * 60 * 60 * 1000)
+            let redirect = decodeURIComponent(
+              this.$route.query.redirect || "/"
+            );
             this.$router.push({
-              path: '/person'
-            })
+              path: redirect
+            });
           });
         }
       });

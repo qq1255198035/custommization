@@ -21,6 +21,13 @@ export function registerSubmit(url,parameter) {
     data: parameter
   })
 }
+export function Logout(url,parameter) {
+  return axios({
+    url: url,
+    method: 'post',
+    data: parameter
+  })
+}
 export function apiPersonOrder(parameter) {
   return axios({
     url: '/apiPersonOrder/list',
@@ -45,7 +52,7 @@ export function getAction(url,parameter) {
   }
   export function payPal(parameter) {
     return axios({
-      url: '/apiPersonOrder/toConfirmPay',
+      url: '/api1/paypal/toPayTest',
       method: 'post',
       data: qs.stringify(parameter)
     })
@@ -53,6 +60,34 @@ export function getAction(url,parameter) {
   export function paymentInfo(parameter) {
     return axios({
       url: '/apiPersonOrder/toConfirmPayList',
+      method: 'post',
+      data: qs.stringify(parameter)
+    })
+  }
+  export function orders(parameter) {
+    return axios({
+      url: '/apiPersonOrder/getPersonalOrders',
+      method: 'post',
+      data: qs.stringify(parameter)
+    })
+  }
+  export function status(parameter) {
+    return axios({
+      url: '/apiPersonOrder/getSchedule',
+      method: 'post',
+      data: qs.stringify(parameter)
+    })
+  }
+  export function payBack(parameter) {
+    return axios({
+      url: '/api1/paypal/payBack',
+      method: 'post',
+      data: qs.stringify(parameter)
+    })
+  }
+  export function personSet(parameter) {
+    return axios({
+      url: '/sys/user/register',
       method: 'post',
       data: qs.stringify(parameter)
     })

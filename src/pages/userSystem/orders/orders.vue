@@ -1,13 +1,11 @@
 <template>
   <div class="share">
-    <div class="share-box">
       <div class="layout-box">
         <div class="content">
-          <my-title :title="itemTitle"></my-title>
-          <person-list></person-list>
+          <my-title :title="itemTitles"></my-title>
+          <person-list @search="getSearch" @page="getPage" @radios="getRadios" :listData="listData" :listFrom="listFrom"></person-list>
         </div>
       </div>
-    </div>
     <div>
       <a-button class="open-btn" type="primary" @click="showDrawer" icon="bars"></a-button>
       <a-drawer
@@ -24,36 +22,29 @@
 </template>
 
 <script>
+import {orders} from '@/api/system'
 import MyTitle from "@/components/MyTitle/MyTitle";
 import PersonList from "@/components/PersonList/PersonList";
 import commonHeader from "@/components/commonHeader/commonHeader";
 import SysHeader from "@/components/SysHeader/SysHeader";
-const listData = [];
-for (let i = 0; i < 23; i++) {
-  listData.push({
-    href: "https://vue.ant.design/",
-    title: `ant design vue part ${i}`,
-    avatar: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
-    description:
-      "Ant Design, a design language for background applications, is refined by Ant UED Team.",
-    content:
-      "We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently."
-  });
-}
 
 export default {
   props: {},
   data() {
     return {
-      itemTitle: "个人订单",
+      pageNo: 1,
+      pageSize: 10,
+      itemTitles: "个人订单",
       visible: false,
-      listData,
+      listData: [],
+      listFrom: [],
       pagination: {
         onChange: page => {
           console.log(page);
         },
         pageSize: 3
       },
+      status: '',
       actions: [
         { type: "star-o", text: "156" },
         { type: "like-o", text: "156" },
@@ -62,10 +53,40 @@ export default {
     };
   },
   computed: {},
-  created() {},
+  created() {
+    this._orders()
+  },
   mounted() {},
   watch: {},
   methods: {
+    getRadios(data) {
+      this.status = data;
+      this._orders()
+    },
+    getPage(data, data1) {
+      this.pageNo = data
+      this.pageSize = data1
+      this._orders()
+    },
+    getSearch(dataSear) {
+      this.search = dataSear;
+      this._orders()
+    },
+    _orders() {
+      const param = {
+        token: this.$ls.get('token'),
+        pay_status: this.status,
+        condition :this.search,
+        pageNo: this.pageNo,
+        pageSize: this.pageSize
+      }
+      console.log(param)
+      orders(param).then(res => {
+        console.log(res)
+        this.listData = res.result.personalOrdersList
+        this.listFrom = res.result.personalOrdersParentList
+      })
+    },
     showDrawer() {
       this.visible = true;
     },
@@ -87,12 +108,6 @@ export default {
     background-color: #868686 !important;
 }
 .share {
-  width: 100%;
-  height: 100%;
-  background-image: linear-gradient(-45deg, #11bbe8 100%, #4ac37a 100%);
-  .share-box {
-      background-image: linear-gradient(-45deg, #11bbe8 10%, #4ac37a 100%);
-      height: 100%;
     padding: 0px 40px;
     .layout-box {
       display: flex;
@@ -106,7 +121,6 @@ export default {
         flex: 1;
       }
     }
-  }
   .open-btn{
       position: fixed;
       top: 20%;
