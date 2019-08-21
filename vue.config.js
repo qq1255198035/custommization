@@ -1,9 +1,10 @@
 const path = require("path");
-
+const webpack = require('webpack');
 function resolve(dir) {
       return path.join(__dirname, dir)
 }
 module.exports = {
+      publicPath: './',
       productionSourceMap: false,
       css: {
             loaderOptions: {
@@ -42,6 +43,15 @@ module.exports = {
                   .set("@layout", resolve("src/layout"))
                   .set("@static", resolve("src/static"))
       },
+      configureWebpack: {
+            plugins: [
+                  new webpack.ProvidePlugin({
+                        $:"jquery",
+                        jQuery:"jquery",
+                        "windows.jQuery":"jquery"
+                  })
+            ]
+      },
       devServer: {
             port: 3000,
             proxy: {
@@ -54,8 +64,8 @@ module.exports = {
                 }
               },*/
               '/jeecg-boot': {
-                //target: 'http://192.168.0.130:8080', //请求本地 需要jeecg-boot后台项目
-                target: 'http://192.168.0.122:8080',
+                target: 'http://192.168.0.130:8080', //请求本地 需要jeecg-boot后台项目
+                //target: 'http://192.168.0.122:8080',
                 ws: false,
                 changeOrigin: true
               },

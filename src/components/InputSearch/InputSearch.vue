@@ -1,6 +1,6 @@
 <template>
       <div id="input-box">
-            <input type="text">
+            <input type="text" >
             <span>
                   <img src="./../../assets/btn_search.png" alt="">
             </span>

@@ -25,11 +25,12 @@ import {
   Form,
   Popover,
   Progress,
-  message,
+  Message,
   notification,
   Pagination,
   Badge,
   LocaleProvider
+ 
 } from "ant-design-vue";
 Vue.use(Button);
 Vue.use(Row);
@@ -56,10 +57,9 @@ Vue.use(List);
 Vue.use(Form);
 Vue.use(Popover);
 Vue.use(Progress);
-Vue.use(message);
 Vue.use(notification);
-
 Vue.use(Pagination);
 Vue.use(Form);
 Vue.use(Badge);
 Vue.use(LocaleProvider);
+Vue.prototype.$message = Message;

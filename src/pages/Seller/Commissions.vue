@@ -2,9 +2,9 @@
     <div id="Commissions">
         <my-title :title="'佣金管理'"></my-title>
         <order-total :num1="price1 | moneyFormat" :num2="price2 | moneyFormat" :num3="price3 | moneyFormat">
-            <p slot="a">总佣金</p>
-            <p slot="b">余额</p>
-            <p slot="c">未到账金额</p>
+            <p slot="a" style="margin: 0;">总佣金</p>
+            <p slot="b" style="margin: 0;">余额</p>
+            <p slot="c" style="margin: 0;">未到账金额</p>
         </order-total>
         <my-title :title="'提现记录'" :fontsize="14" style="margin: 20px 0 "></my-title>
         <a-table :columns="columns" :dataSource="data" :loading="loading" :pagination="{showQuickJumper: true,pageSize: 7}" @change="handleTableChange">
@@ -20,6 +20,7 @@
 <script>
 import OrderTotal from '@/components/OrderTotal/OrderTotal';
 import MyTitle from "@/components/MyTitle/MyTitle";
+import { commissionsData } from "@/api/seller"
 const statusMap = {
     0: {
         status: 'success',
@@ -45,9 +46,9 @@ export default {
     },
     data(){
         return{
-                price1:13000,
-                price2:13000,
-                price3:13000,
+                price1:0,
+                price2:0,
+                price3:0,
                 loading: false,
                 columns: [
                     {
@@ -184,11 +185,24 @@ export default {
                 ]
             }
     },
+    mounted(){
+        this.getCommissionsData();
+    },
     methods:{
         handleTableChange (pagination) {
                 //this.loading = true;
                 console.log(pagination.current)
         },
+        getCommissionsData(){
+            commissionsData().then(res => {
+                console.log(res)
+                if(res.code == 0){
+                    this.price1 = res.result.amount;
+                    this.price2 = res.result.balance;
+                    this.price2 = res.result.unpaid;
+                }
+            })
+        }
     },
     filters:{
         moneyFormat(number, decimals) {
@@ -224,4 +238,5 @@ export default {
 </script>
 <style lang="less">
 @import "./../../components/index.less";
+
 </style>

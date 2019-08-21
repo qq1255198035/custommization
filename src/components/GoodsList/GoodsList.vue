@@ -4,10 +4,10 @@
                   <a-row :gutter="30">
                         <a-col class="gutter-row" :span="6" v-for="item in goodsArr" :key="item.id">
                               <div class="gutter-box">
-                                    <img src="@/assets/jaw.jpg" alt="">
+                                    <img :src="item.positive_pic_url" alt="">
                                     <div class="desc">
                                           <h3>{{item.name}}</h3>
-                                          <p><span>$ {{item.minprice}} - $ {{item.maxprice}}</span><span>Min QTY: {{item.num}}</span></p>
+                                          <p><span>$ {{item.min_price}} - $ {{item.max_price}}</span><span>Min QTY: {{item.min_order}}</span></p>
                                           <p>尺码： {{item.size}}</p>
                                     </div>
                               </div>

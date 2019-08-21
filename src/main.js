@@ -2,8 +2,8 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from "./router";
 import i18n from './lang'
-import store from './store/'
-import './permission'
+/*import store from './store/'
+import './permission'*/
 import { VueAxios } from './utils/request'
 import "fullpage.js/vendors/scrolloverflow";
 import VueFullPage from "vue-fullpage.js";
@@ -12,7 +12,7 @@ import Share from 'vue-social-share'
 Vue.use(Share)
 var SocialSharing = require('vue-social-sharing');
 import Storage from 'vue-ls';
- 
+import $ from 'jquery';
 const options = {
   namespace: 'vuejs__', // key prefix
   name: 'ls', // name variable Vue.[ls] or this.[$ls],
