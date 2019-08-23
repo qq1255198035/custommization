@@ -15,7 +15,6 @@
     "fabric": "2.6.0",
     "fabric-customise-controls": "^2.0.6-beta",
     "fontfaceobserver": "^2.1.0",
-    "jquery": "^3.4.1",
     "qs": "^6.7.0",
     "vcolorpicker": "^0.1.8",
     "vue": "^2.6.10",

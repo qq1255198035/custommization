@@ -23,12 +23,12 @@ export default {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+      border-bottom: 1px solid #9d9d9d;
       h2{
             
             padding: 10px 0;
             margin:0;
-            color: #fff;
+            color: #5ba997;
       }
 }
 </style>

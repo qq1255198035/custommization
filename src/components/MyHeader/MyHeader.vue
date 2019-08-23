@@ -43,16 +43,17 @@ export default {
       display: flex;
       justify-content: flex-start;
       align-items: center;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+      border-bottom: 1px solid #9d9d9d;
       padding: 10px 0;
       .desc{
             margin-left: 20px;
             h3{
-                  color: #fff;
+                  color: #5ba997;
                   font-size: 24px;
             }
             P{
                   font-size: 20px;
+                  color: #9d9d9d;
             }
       }
 }

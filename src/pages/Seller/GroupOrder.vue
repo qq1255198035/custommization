@@ -14,7 +14,7 @@
                 <div id="input-box">
                     <input type="text" v-model="key">
                     <span @click="search">
-                        <img src="./../../assets/btn_search.png" alt="">
+                        <a-icon type="search" />
                     </span>
                 </div>
             </li>
@@ -25,7 +25,7 @@
                     <hide-menu></hide-menu>
                 </order-item>
                 <div class="pagination-box">
-                    <a-pagination showQuickJumper :defaultCurrent="1" :total="totalnum" @change="onChange($event)" :pageSize="4"/>
+                    <a-pagination showQuickJumper :defaultCurrent="1" :total="10" @change="onChange($event)" :pageSize="4"/>
                 </div>
             </template>
             <p v-else>暂无数据</p>
@@ -101,7 +101,7 @@ export default {
                 border-radius: 4px;
                 padding: 5px 10px;
                 width: 250px !important;
-                border: 1px solid #fff !important;
+                border: 1px solid #5ba997 !important;
                 input{
                         border: none;
                         outline: none;
@@ -111,9 +111,9 @@ export default {
                 }
                 span{
                         cursor: pointer;
-                        img{
-                            width: 25px;
-                            height: 25px;
+                        i{
+                            font-size: 25px;
+                            color: #5ba997;
                         }
                 }
                 

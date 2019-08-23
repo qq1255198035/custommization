@@ -1,42 +1,51 @@
 <template>
     <div id="NewOrder">
-        <my-title :title="'新建订单'">
-            <a-button size="small" icon="rollback">返回</a-button>
-        </my-title>
-        <a-row type="flex" justify="space-between" align="top" style="padding-top: 20px;">
-            <a-col :span="6">
-                <a-menu
-                    mode="inline"
-                    style="width: 256px"
-                    :defaultSelectedKeys="['sub00']" 
-                    :defaultOpenKeys="['0']"
-                    @click="handleClick"
-                >
-                    <a-sub-menu  v-for="(item, index) in menuList" :key="index.toString()">
-                        <span slot="title" style="display: flex;align-items: center;"><a-avatar :size="20" :src="item.icon" style="margin-right: 5px;"/><span>{{item.title}}</span></span>
-                        <a-menu-item v-for="(sub,sindex) in item.subMenu" :key="'sub'+ index + sindex.toString()" @click="handleGetList(sub.categoryId)">{{sub.title}}</a-menu-item>
-                    </a-sub-menu>
-                </a-menu>
-            </a-col>
-            <a-col :span="17">
-                <goods-list :goodsArr="goodsList"></goods-list>
-                <div  style="text-align: center;margin: 20px 0;">
-                    <a-button :loading="loading" @click="loadMore" :disabled="btnable">
-                        加载更多
-                    </a-button>
-                </div>
-            </a-col>
-        </a-row>
+        <div class="content">
+            <a-row type="flex" justify="space-between" align="top" style="min-height: 100%;height: 100%;">
+                <a-col :span="6" style="height: 100%;">
+                    <div class="left">
+                        <My-Header></My-Header>
+                        <a-menu
+                            mode="inline"
+                            :defaultSelectedKeys="['sub00']" 
+                            :defaultOpenKeys="['0']"
+                            @click="handleClick"
+                        >
+                            <a-sub-menu  v-for="(item, index) in menuList" :key="index.toString()">
+                                <span slot="title" style="display: flex;align-items: center;"><a-avatar :size="20" :src="item.icon" style="margin-right: 5px;"/><span>{{item.title}}</span></span>
+                                <a-menu-item v-for="(sub,sindex) in item.subMenu" :key="'sub'+ index + sindex.toString()" @click="handleGetList(sub.categoryId)">{{sub.title}}</a-menu-item>
+                            </a-sub-menu>
+                        </a-menu>
+                    </div>
+                </a-col>
+                <a-col :span="18" style="height: 100%;">
+                    <div class="right">
+                        <User></User>
+                        <my-title :title="'新建订单'"></my-title>
+                        <goods-list :goodsArr="goodsList"></goods-list>
+                        <div class="btn-box">
+                            <a-button :loading="loading" @click="loadMore" :disabled="btnable">
+                                加载更多
+                            </a-button>
+                        </div>
+                    </div>
+                </a-col>
+            </a-row>
+        </div>
     </div>
 </template>
 <script>
 import MyTitle from "@/components/MyTitle/MyTitle";
 import GoodsList from "@/components/GoodsList/GoodsList";
+import User from '@/components/Header/User';
+import MyHeader from '@/components/Header/Header';
 import { listAll,categoryList } from "@/api/seller";
 export default {
     components:{
         MyTitle,
-        GoodsList
+        GoodsList,
+        User,
+        MyHeader
     },
     data () {
         return {
@@ -80,13 +89,14 @@ export default {
             listAll().then(res => {
                 console.log(res)
                 if(res.code == 0){
+                    if(res.total == 1){
+                        this.btnable = true;
+                    }
                     this.menuList = res.result;
                     this.defaultSelectedKeys = res.result[0].subMenu[0].categoryId.toString();
                     this.id = res.result[0].subMenu[0].categoryId.toString();
                     this.defaultOpenKeys = res.result[0].categoryId.toString();
                     this.getcategoryList(this.defaultSelectedKeys,1)
-                    console.log(this.defaultSelectedKeys)
-                    console.log(this.defaultOpenKeys)
                 }
             })
         },
@@ -103,8 +113,36 @@ export default {
     },
 }
 </script>
-<style lang="less" scoped>
+<style lang="less">
+@import url("./../../components/index.less");
 #NewOrder{
+    width: 100%;
+    height: 100%;
+    padding: 50px;
+    .content{
+        height: 100%;
+        .left{
+            background-color: #5ba997;
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+            padding-top: 50px;
+            min-height: 100%;
+        }
+        .right{
+            background-color: #fff;
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
+            padding: 20px;
+            min-height: 100%;
+            position: relative;
+            .btn-box{
+                margin: 20px 0; 
+                position: absolute;
+                bottom: 10px;
+                left: 50%;
+            }
+        }
+    }
     
 }
-</style>style
+</style>

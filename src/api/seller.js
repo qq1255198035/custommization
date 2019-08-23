@@ -51,3 +51,11 @@ export function commissionsData() {
         method: 'post',
     })
 }
+
+export function commissionList(num) {
+    return axios({
+        url: '/ios/jeecgCommissionRecord/commissionList',
+        method: 'post',
+        data:qs.stringify({pageNo:num})
+    })
+}

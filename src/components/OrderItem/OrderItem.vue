@@ -21,7 +21,7 @@
                               <div class="right">
                                     <span>{{item.buyNum}}/{{item.quantity}}</span>
                                     <span>状态： {{item.status}}</span>
-                                    <a-button>样稿确认</a-button>
+                                    <a-button style="color: #5ba997;">样稿确认</a-button>
                               </div>
                         </div>
                   </div>
@@ -44,7 +44,7 @@ export default {
       .order-title{
             display: flex;
             justify-content: space-between;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            border-bottom: 1px solid #757575;
             padding: 10px 0;
             margin-top: 20px;
             p{
@@ -53,14 +53,14 @@ export default {
                   justify-content: space-between;
                   span{
                         width: 33%;
-                        
+                        color: #5ba997;
                   }
             }
       }
       .order-content{
             .order-item{
                   padding: 20px 0;
-                  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+                  border-bottom: 1px solid #757575;
                   display: flex;
                   justify-content: space-between;
                   .left{
@@ -72,11 +72,12 @@ export default {
                               justify-content: space-between;
                               padding-left: 20px;
                               h3{
-                                    color: #fff;
+                                    color: #5ba997;
                                     padding: 10px;
                               }
                               p{
                                     padding: 10px;
+                                    color: #757575;
                               }
                         }
                         
@@ -86,6 +87,9 @@ export default {
                         display: flex;
                         align-items: center;
                         justify-content: space-between;
+                        > span{
+                              color: #757575;
+                        }
                   }
             }
       }
