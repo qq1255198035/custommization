@@ -34,6 +34,10 @@ td {
 .ant-pagination-item{
   background: rgba(255,255,255,0.3) !important
 }
+.ant-table-placeholder{
+  background: rgba(255,255,255,0.3) !important;
+  color: #ffffff;
+}
 .ant-table-pagination.ant-pagination {
   margin-top: 10px !important;
 }

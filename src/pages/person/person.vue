@@ -1,17 +1,14 @@
 <template>
   <div class="share">
-    <div class="share-box">
-      <sys-header></sys-header>
       <div class="layout-box">
-        <div class="menu block">
+        <!--<div class="menu block">
           <commonHeader></commonHeader>
-        </div>
+        </div>-->
         <div class="content">
           <my-title :title="itemTitle"></my-title>
           <accountSet></accountSet>
         </div>
       </div>
-    </div>
     <div>
       <a-button class="open-btn" type="primary" @click="showDrawer" icon="bars"></a-button>
       <a-drawer
@@ -93,12 +90,6 @@ export default {
     background-color: #000 !important;
 }
 .share {
-  width: 100%;
-  height: 100%;
-  
-  .share-box {
-      background-image: linear-gradient(-45deg, #11bbe8 10%, #4ac37a 100%);
-    padding: 0px 40px;
     .layout-box {
       display: flex;
       .menu {
@@ -117,7 +108,6 @@ export default {
       top: 20%;
       left: 0;
       color: #000 !important;
-  }
 }
 
 @media screen and(max-width: 760px) {

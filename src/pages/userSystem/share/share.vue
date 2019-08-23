@@ -83,10 +83,12 @@ export default {
   computed: {},
   created() {
     this._apiPersonOrder();
+    
   },
   mounted() {},
   watch: {},
   methods: {
+    
     _price(datas) {
       let price = 0;
       for (var i = 0; i < datas.length; i++) {
@@ -110,7 +112,7 @@ export default {
     payTo() {
       const param = {
         token: this.$ls.get("token"),
-        orderId: 266,
+        order_id: 266,
         order_price: this.bPrice + this.aPrice,
         personOrderNoPrintList: JSON.stringify(this.listNoPay),
         personOrderPrintList: JSON.stringify(this.listPay)
@@ -118,9 +120,12 @@ export default {
       console.log(param);
       apiPay(param).then(res => {
         console.log(res);
-        if (res.code == 200) {
+        if (res.code == 1) {
           this.$router.push({
-            path: "/payment"
+            path: "/payment",
+            query: {
+              user_order_id: res.result.user_order_id
+            }
           });
         }
       });
@@ -128,7 +133,7 @@ export default {
     _apiPersonOrder() {
       const param = {
         token: this.$ls.get("token"),
-        orderId: 266,
+        order_id: 266,
         pageNo: 1,
         pageSize: 10
       };

@@ -29,6 +29,7 @@ import {
   notification,
   Pagination,
   Badge,
+  LocaleProvider
  
 } from "ant-design-vue";
 Vue.use(Button);
@@ -60,4 +61,5 @@ Vue.use(notification);
 Vue.use(Pagination);
 Vue.use(Form);
 Vue.use(Badge);
+Vue.use(LocaleProvider);
 Vue.prototype.$message = Message;

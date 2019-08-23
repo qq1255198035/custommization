@@ -11,16 +11,16 @@
                 v-decorator="['email',{rules: [{ required: true, message: '邮箱' }]}]"
               />
             </a-form-item>
-            <a-form-item label="邮箱">
+            <a-form-item label="姓名">
               <a-input
-                placeholder="邮箱"
-                v-decorator="['companyName',{rules: [{ required: true, message: '邮箱' }]}]"
+                placeholder="姓名"
+                v-decorator="['companyName',{rules: [{ required: true, message: '姓名' }]}]"
               />
             </a-form-item>
-            <a-form-item label="邮箱">
+            <a-form-item label="个人简介">
               <a-input
-                placeholder="邮箱"
-                v-decorator="['webName',{rules: [{ required: true, message: '邮箱' }]}]"
+                placeholder="个人简介"
+                v-decorator="['webName',{rules: [{ required: true, message: '个人简介' }]}]"
               />
             </a-form-item>
 
@@ -36,42 +36,64 @@
                 >{{item.value}}</a-select-option>
               </a-select>
             </a-form-item>
-            <a-form-item label="邮箱">
-              <div class>
-                <a-select
-                  placeholder="邮箱"
-                  v-decorator="['addressName',{rules: [{ required: true, message: '邮箱' }]}]"
-                >
-                  <a-select-option
-                    v-for="(item, index) in activeityPlace"
-                    :key="index"
-                    :value="item.label"
-                  >{{item.value}}</a-select-option>
-                </a-select>
-              </div>
-            </a-form-item>
-            <a-form-item label="邮箱">
+            <a-row :gutter="32">
+              <a-col :span="12">
+                <a-form-item label="所在省">
+                  <div class>
+                    <a-select
+                      placeholder="请选择"
+                      v-decorator="['addressName',{rules: [{ required: true, message: '邮箱' }]}]"
+                    >
+                      <a-select-option
+                        v-for="(item, index) in activeityPlace"
+                        :key="index"
+                        :value="item.label"
+                      >{{item.value}}</a-select-option>
+                    </a-select>
+                  </div>
+                </a-form-item>
+              </a-col>
+              <a-col :span="12">
+                <a-form-item label="所在市">
+                  <div class>
+                    <a-select
+                      placeholder="请选择"
+                      v-decorator="['addressName',{rules: [{ required: true, message: '邮箱' }]}]"
+                    >
+                      <a-select-option
+                        v-for="(item, index) in activeityPlace"
+                        :key="index"
+                        :value="item.label"
+                      >{{item.value}}</a-select-option>
+                    </a-select>
+                  </div>
+                </a-form-item>
+              </a-col>
+            </a-row>
+
+            <a-form-item label="街道地址">
               <a-input
-                placeholder="邮箱"
+                placeholder="街道地址"
                 :autosize="{ minRows: 6 }"
-                v-decorator="['placeName',{rules: [{ required: true, message: '邮箱'}]}]"
-              />
-            </a-form-item>
-            <a-form-item label="邮箱">
-              <a-input
-                placeholder="邮箱"
-                :autosize="{ minRows: 6 }"
-                v-decorator="['contactName',{rules: [{ required: true, message: '邮箱' }]}]"
+                v-decorator="['contactName',{rules: [{ required: true, message: '街道地址' }]}]"
               />
             </a-form-item>
             <a-input-group compact>
-              <a-form-item label="邮箱">
-                <div class>
-                  <a-input
-                    placeholder="邮箱"
-                    v-decorator="['phoneName',{rules: [{pattern: new RegExp(/((\d{11})|^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$)/), required: true, message: '邮箱'}]}]"
-                  />
-                </div>
+              <a-form-item label="电话">
+                <a-row :gutter="32">
+                  <a-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
+                    <a-input
+                      placeholder="86"
+                      v-decorator="['phoneName',{rules: [{pattern: new RegExp(/((\d{11})|^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$)/), required: true, message: '邮箱'}]}]"
+                    />
+                  </a-col>
+                  <a-col :xs="20" :sm="20" :md="20" :lg="20" :xl="20">
+                    <a-input
+                      placeholder="电话号"
+                      v-decorator="['phoneName',{rules: [{pattern: new RegExp(/((\d{11})|^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$)/), required: true, message: '邮箱'}]}]"
+                    />
+                  </a-col>
+                </a-row>
               </a-form-item>
             </a-input-group>
           </a-form>
@@ -80,7 +102,7 @@
       <a-col :lg="10" style="text-align: center">
         <div class="upload">
           <div class="top">
-            <p>头像</p>
+            <p style="color: #fff">头像</p>
             <img
               v-if="imgurl"
               :src="imgurl"
@@ -92,7 +114,7 @@
             <template>
               <a-upload name="avatar" :showUploadList="false" :beforeUpload="beforeUpload">
                 <a-button>
-                  <a-icon type="upload" />+
+                  <a-icon type="upload" />更换头像
                 </a-button>
               </a-upload>
             </template>
@@ -115,6 +137,7 @@ function getBase64(img, callback) {
   reader.addEventListener("load", () => callback(reader.result));
   reader.readAsDataURL(img);
 }
+import { personSet } from '@/api/system'
 import MyTitle from "@/components/MyTitle/MyTitle";
 export default {
   data() {
@@ -144,9 +167,13 @@ export default {
     MyTitle
   },
   mounted() {
+    this._personSet()
     //this._getUserInformation();
   },
   methods: {
+    personSet() {
+      
+    }
     /*checkedTel(rule, value, callback) {
       console.log(value)
       const reg = /((\d{11})|^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$)/
@@ -306,6 +333,7 @@ export default {
 <style lang="less">
 #accountSet {
   //background-color: #fff;
+  padding-top: 16px;
 
   .ant-form-item {
     width: 100%;
@@ -347,10 +375,10 @@ export default {
 .ant-form-item-label label {
   color: #ffffff !important;
 }
-.ant-select-selection{
+.ant-select-selection {
   background-color: rgba(255, 255, 255, 0.5) !important;
 }
-.ant-select-dropdown-menu-item{
-  color: #333 !important
+.ant-select-dropdown-menu-item {
+  color: #333 !important;
 }
 </style>

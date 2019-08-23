@@ -2,95 +2,159 @@
   <div>
     <div class="search-wrapper">
       <div class="left">
-        <a-radio-group>
-          <a-radio-button value="large">全部订单</a-radio-button>
-          <a-radio-button value="default">已支付</a-radio-button>
-          <a-radio-button value="small">未支付</a-radio-button>
+        <a-radio-group @change="onChange" v-model="value">
+          <a-radio-button value="0">全部订单</a-radio-button>
+          <a-radio-button value="1">已支付</a-radio-button>
+          <a-radio-button value="2">未支付</a-radio-button>
         </a-radio-group>
       </div>
       <div class="right">
-        <a-input-search></a-input-search>
+        <a-input-search @search="onSearch"></a-input-search>
       </div>
     </div>
-    <div class="list">
+    <div class="list" v-for="item in listFrom" :key="item.pid">
       <a-row class="list-title">
         <a-col :xs="24" :sm="6" :md="6">
-          <p>订单ID：xxxxxxx xxx xxx</p>
+          <p>订单ID：{{item.order_sn}}</p>
         </a-col>
         <a-col :xs="24" :sm="6" :md="6">
-          <p>订单时间：2019-07-02 15：00：30</p>
+          <p>订单时间：{{item.confirm_time}}</p>
         </a-col>
         <a-col :xs="24" :sm="6" :md="6">
-          <p>联系商家：xxxxx</p>
+          <p>联系商家：{{item.contact}}</p>
         </a-col>
         <a-col :xs="24" :sm="6" :md="6">
-          <p class="list-last">状态：发货中</p>
+          <p class="list-last">状态：{{item.order_status | status}}</p>
         </a-col>
       </a-row>
       <ul class="list-item">
-        <li>
-          <a-row>
-            <a-col :xs="24" :sm="6" :md="6">
-              <div class="avatar">
-                <img src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" alt />
-                <div class>
-                  <h3>篮球 训练服</h3>
-                  <div class="desc">
-                    <p>颜色：蓝色</p>
-                    <p>尺码：43xl</p>
-                  </div>
+        <li v-for="items in filterItems(listData, item.id)" :key="items.id">
+          <div class="listCol">
+            <div class="avatar">
+              <img :src="items.positive_pic_url" alt />
+              <div class>
+                <h3>{{items.name}}</h3>
+                <div class="desc">
+                  <p>颜色：蓝色</p>
+                  <p>尺码：{{items.size}}</p>
                 </div>
               </div>
-            </a-col>
-            <a-col :xs="24" :sm="6" :md="6">
-              <p class="list-p">订单时间：2019-07-02 15：00：30</p>
-            </a-col>
-            <a-col :xs="24" :sm="6" :md="6">
-              <p class="list-p">联系商家：xxxxx</p>
-            </a-col>
-            <a-col :xs="24" :sm="6" :md="6">
-              <p class="list-p" style="border: none;">状态：发货中</p>
-            </a-col>
-          </a-row>
+            </div>
+          </div>
+          <div class="listCol" v-if="items.print_name">
+            <p class="list-p">名称：{{items.print_name}}</p>
+          </div>
+          <div class="listCol" v-if="items.print_number">
+            <p class="list-p">号码：{{items.print_number}}</p>
+          </div>
+          <div class="listCol">
+            <p class="list-p">数量：{{items.quantity}}</p>
+          </div>
+          <div class="listCol">
+            <p class="list-p" style="border: none;">合计：${{items.total_price}}</p>
+          </div>
         </li>
       </ul>
+    </div>
+    <div class="pages">
+      <a-pagination
+        @showSizeChange="changeSize"
+        @change="changeTotal"
+        size="large"
+        :total="50"
+        showSizeChanger
+        showQuickJumper
+      />
     </div>
   </div>
 </template>
 <script>
-const listData = [];
-for (let i = 0; i < 23; i++) {
-  listData.push({
-    href: "https://vue.ant.design/",
-    title: `ant design vue part ${i}`,
-    avatar: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
-    description:
-      "Ant Design, a design language for background applications, is refined by Ant UED Team.",
-    content:
-      "We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently."
-  });
-}
-
 export default {
+  props: {
+    listData: {
+      type: Array
+    },
+    listFrom: {
+      type: Array
+    }
+  },
   data() {
     return {
-      listData,
+      status: "",
+      seacher: "",
       pagination: {
         onChange: page => {
           console.log(page);
         },
         pageSize: 3
       },
+      value: 0,
       actions: [
         { type: "star-o", text: "156" },
         { type: "like-o", text: "156" },
         { type: "message", text: "2" }
       ]
     };
+  },
+  filters: {
+    status(data) {
+      console.log(data);
+      switch (data) {
+        case 0:
+          return "待付款";
+        case 101:
+          return "订单已取消";
+        case 102:
+          return "订单已删除";
+        case 201:
+          return "订单已付款";
+        case 300:
+          return "订单已发货";
+        case 301:
+          return "用户确认收货";
+        case 401:
+          return "退款";
+        case 402:
+          return "完成";
+      }
+    }
+  },
+  methods: {
+    onSearch(value) {
+      console.log(value);
+      this.seacher = value;
+      this.$emit("search", this.seacher);
+    },
+    onChange(e) {
+      console.log(e.target.value);
+      this.value = e.target.value;
+      this.$emit("radios", this.value);
+    },
+    filterItems(a, b) {
+      return a.filter(item => {
+        return item.pid == b;
+      });
+    },
+    changeSize(current, size) {
+      console.log(current, size);
+      this.$emit('page',current, size)
+    },
+    changeTotal(page, pageSize) {
+      console.log(page, pageSize);
+      this.$emit('page',page, pageSize)
+    }
   }
 };
 </script>
 <style lang="less">
+.ant-select-selection {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.ant-pagination {
+  float: right;
+  padding: 16px;
+}
 .search-wrapper {
   overflow: hidden;
   padding: 14px 0;
@@ -107,32 +171,40 @@ export default {
   .list-title {
     border-bottom: solid 1px rgba(255, 255, 255, 0.5);
     padding: 10px 0;
-    .list-last{
-        text-align: right;
+    .list-last {
+      text-align: right;
     }
   }
   .list-item {
     li {
       border-bottom: solid 1px rgba(255, 255, 255, 0.5);
       padding: 10px 0;
-      .avatar {
-        display: flex;
-        justify-content: center;
-        align-content: center;
-        align-items: center;
-        border-right: solid 1px rgba(255, 255, 255, 0.5);
-        h3 {
-          color: #ffffff;
-        }
-        img {
-          width: 120px;
-          height: 120px;
-        }
-        .desc {
-          vertical-align: bottom;
-          padding-top: 10px;
+      overflow: hidden;
+      .listCol {
+        float: left;
+        width: 20%;
+        .avatar {
+          display: flex;
+
+          justify-content: center;
+          align-content: center;
+          align-items: center;
+          border-right: solid 1px rgba(255, 255, 255, 0.5);
+          h3 {
+            color: #ffffff;
+          }
+          img {
+            width: 120px;
+            height: 120px;
+            padding-right: 10px;
+          }
+          .desc {
+            vertical-align: bottom;
+            padding-top: 10px;
+          }
         }
       }
+
       .list-p {
         text-align: center;
         border-right: solid 1px rgba(255, 255, 255, 0.5);
@@ -151,10 +223,10 @@ export default {
   .list-last {
     text-align: left;
   }
-  .search-wrapper{
-      .right{
-          float: left;
-      }
+  .search-wrapper {
+    .right {
+      float: left;
+    }
   }
 }
 </style>

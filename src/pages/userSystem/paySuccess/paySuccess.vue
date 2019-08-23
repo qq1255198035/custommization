@@ -1,9 +1,8 @@
 <template>
   <div class="share">
     <div class="share-box">
-      <sys-header></sys-header>
       <div class="step">流程进度</div>
-      <my-stpes :mycurrent="1">
+      <my-stpes :mycurrent="step">
         <p slot="p1">选择尺码</p>
         <p slot="p2">确认支付</p>
         <p slot="p3">等待开团</p>
@@ -11,24 +10,38 @@
       </my-stpes>
       <div class="content">
         <div class="title">
-          <span>
+          <span v-if="code === 1">
             <a-icon type="smile" />
           </span>
-          <div>
+          <span v-if="code === 0">
+            <a-icon type="frown" />
+          </span>
+          <div v-if="code === 1">
             <h3>支付成功</h3>
             <p>感谢您的购买</p>
+          </div>
+          <div v-if="code === 0">
+            <h3>支付失败</h3>
+            <p>请重新支付</p>
           </div>
         </div>
         <div class="desc">
           <div class="border"></div>
           <div class="bg">
-            <h1>$1500.00</h1>
-            <div class="pay-detail">
-              <p>付款账户：xxx xxxx xxxxx xxxxx</p>
-              <p>订单编号：xxxx xxxx xxxx xxx</p>
+            <h1 v-if="code === 1">${{price}}</h1>
+            <div class="pay-detail" v-if="code === 1">
+              <p>付款账户：{{payName}}</p>
+              <p>订单编号：{{orderId}}</p>
             </div>
-            <div class="pay-btn">
-              <a-button class="buy-again">再次购买</a-button>
+            <div class="pay-detail" v-if="code === 0">
+              <p>订单编号：{{orderId}}</p>
+            </div>
+            <div class="pay-btn" v-if="code === 1">
+              <a-button class="buy-again" @click="alginBtn">再次购买</a-button>
+              <a-button class="back">返回</a-button>
+            </div>
+            <div class="pay-btn" v-if="code === 0">
+              <a-button class="buy-again" @click="resetBtn">重新支付</a-button>
               <a-button class="back">返回</a-button>
             </div>
           </div>
@@ -39,20 +52,86 @@
 </template>
 
 <script>
+import {payBack,status} from '@/api/system'
 import MyStpes from "@/components/MyStpes/MyStpes";
 import SysHeader from "@/components/SysHeader/SysHeader";
 export default {
   props: {},
   data() {
     return {
-      value: 1
+      step: 1,
+      value: 1,
+      code: '',
+      price: '',
+      payName: '',
+      orderId: '',
+      orderAgain: '',
+      userId: ''
     };
   },
   computed: {},
-  created() {},
+  created() {
+    this._payBack();
+    this._status();
+  },
   mounted() {},
   watch: {},
-  methods: {},
+  methods: {
+    _status() {
+      const param = {
+        token: this.$ls.get('token'),
+        user_order_id: this.$route.query.user_order_id
+      }
+      console.log(param)
+      status(param).then(res => {
+        console.log(res)
+        this.step = parseInt(res.result.schedule)
+      })
+    },
+    _payBack() {
+      const param = {
+        paymentId: this.$route.query.paymentId,
+        token: this.$route.query.token,
+        PayerID: this.$route.query.PayerID,
+        user_order_id: this.$ls.get('userOrderId'),
+        order_id: this.$ls.get('orderId'),
+        price: this.$ls.get('price')
+      }
+      console.log(param)
+      payBack(param).then(res => {
+        console.log(res)
+        if(res.code == 1) {
+          this.code = 1
+          let result = res.payInfoList[0]
+          this.price = result.order_price
+          this.payName = result.pay_name
+          this.orderId = result.order_sn
+          this.orderAgain = result.order_id
+          this.userOrderId = result.user_order_id
+        }
+        if(res.code == 0) {
+          this.code = 0
+          this.orderId = res.payInfoList[0].order_sn
+        }
+      })
+    },
+    alginBtn() {
+      this.$router.push({
+        path: '/share',
+        query: {
+          order_id: this.orderAgain
+        }
+      })
+    },
+    resetBtn() {
+      this.$router.push({
+        path: '/payment',
+        query: {
+          user_order_id: this.userOrderId
+        }
+      })
+    }
+  },
   components: {
     SysHeader,
     MyStpes
@@ -62,11 +141,6 @@ export default {
 
 <style scoped lang="less">
 .share {
-  width: 100%;
-  height: 100%;
-  background-image: linear-gradient(-45deg, #11bbe8 10%, #4ac37a 100%);
-  .share-box {
-    padding: 0px 40px;
     .step {
       padding: 16px 0;
     }
@@ -133,6 +207,5 @@ export default {
         }
       }
     }
-  }
 }
 </style>
