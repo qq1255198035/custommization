@@ -4,6 +4,7 @@
             v-model="show"
             :footer="null"
             width="90%"
+            :centered="true"
         >
             <template slot="title">
                 <div>
@@ -46,7 +47,7 @@
                     </ul>
                 </div>
                 <div class="tools-box">
-                    <div style="width: 100%; height: 100%;max-height: 732px; overflow-y:scroll;">
+                    <div style="width: 100%; height: 100%;max-height: 687px; overflow-y:scroll;">
                         <div class="drawer">
                             
                             <div class="tool-box" v-show="visibletype == -1">
