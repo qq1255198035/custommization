@@ -5,12 +5,12 @@ const routes = [
       {
             path: "/",
             name: "index",
-            redirect: "/CountdownTime",
+            redirect: "/home",
       },
       {
-            path: "/CountdownTime",
-            name: "CountdownTime",
-            component: () => import("@/pages/Website/CountdownTime")
+            path: "/design",
+            name: "design",
+            component: () => import("@/pages/Seller/Design")
       },
       {
             path: "/basic",
@@ -205,22 +205,7 @@ const routes = [
             component: BlankLayout,
             redirect: "/neworder",
             children:[
-                  {
-                        path: "/neworder",
-                        name: "neworder",
-                        component: () => import("@/pages/Seller/NewOrder"),
-                        meta: {
-                              
-                        }
-                  },
-                  {
-                        path: "/orderres",
-                        name: "orderres",
-                        component: () => import("@/pages/Seller/OrderResult"),
-                        meta: {
-                              
-                        }
-                  },
+                  
                   {
                         path: "/orderdetails",
                         name: "orderdetails",
@@ -229,10 +214,24 @@ const routes = [
                               
                         }
                   },
-                  
             ]
-      }
-      
+      },
+      {
+            path: "/neworder",
+            name: "neworder",
+            component: () => import("@/pages/Seller/NewOrder"),
+            meta: {
+                  
+            }
+      },
+      {
+            path: "/orderres",
+            name: "orderres",
+            component: () => import("@/pages/Seller/OrderResult"),
+            meta: {
+                  
+            }
+      },
 
 ];
 export default routes;

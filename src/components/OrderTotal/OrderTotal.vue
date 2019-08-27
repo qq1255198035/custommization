@@ -14,9 +14,7 @@
                 </div>
             </a-col>
             <a-col :span="3">
-                <div class="box">
-                    <a-divider type="vertical" class="my-divider"/>
-                </div>
+                
                 
             </a-col>
             <a-col :span="6">
@@ -32,9 +30,6 @@
                 </div>
             </a-col>
             <a-col :span="3">
-                <div class="box">
-                    <a-divider type="vertical" class="my-divider"/>
-                </div>
                 
             </a-col>
             <a-col :span="6">
@@ -78,22 +73,23 @@ export default {
         justify-content: center;
         .desc{
             h3{
-                color: #fff;
-                font-size: 20px;
+                color: #727272;
+                font-size: 25px;
                 margin: 0;
             }
         }
         > span{
-            width: 56px;
-            height: 56px;
+            width: 60px;
+            height: 60px;
             border-radius: 28px;
-            background-color: rgba(255, 255, 255, 0.3);
+            background-color: #d7f1f0;
             display: flex;
             justify-content: center;
             align-items: center;
             margin-right: 20px;
             i{
-                font-size: 35px
+                font-size: 35px;
+                color: #31b7b1;
             }
         }
     }

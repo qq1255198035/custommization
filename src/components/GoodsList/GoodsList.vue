@@ -28,13 +28,15 @@ export default {
 <style lang="less">
 #GoodsList{
       .gutter-row{
+            margin: 20px 0; 
             .desc{
                   margin-top: 15px;
                   h3{
-                        color: #fff;
+                        color: #5BA997;
                   }
                   p{
                         margin: 10px 0;
+                        color: #757575;
                   }
                   p:nth-child(2){
                         display: flex;

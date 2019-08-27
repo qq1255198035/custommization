@@ -110,7 +110,7 @@ import img3 from '@/assets/0003.png'
 import img7 from '@/assets/0007.png'
 import img8 from '@/assets/0008.png'
 import img10 from '@/assets/0010.png'
-import bgimg1 from '@/assets/white-2fbe8472bccef1a454b2b5e2ceb1e7293a86b971a0aa7522fe8f91.png'
+
 import bgimg2 from '@/assets/black.jpg'
 import bgimg3 from '@/assets/jaw.jpg'
 import overimg1 from '@/assets/bg.png'
@@ -161,7 +161,7 @@ export default {
                   dataUrl:'',
                   dataPost:'',
                   bgimgs:[
-                        bgimg1,
+                        
                         bgimg2,
                         bgimg3
                   ],

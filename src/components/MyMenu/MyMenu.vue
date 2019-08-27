@@ -61,5 +61,14 @@ export default {
       .title-icon{
             font-size: 24px;
       }
+      .ant-menu-item-selected{
+            background-color: #fff !important;
+            i{
+                  color: #5ba997 !important;
+            }
+            a{
+                  color: #5ba997 !important;
+            }
+      }
 }
 </style>

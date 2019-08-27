@@ -23,13 +23,16 @@ export default {
 <style lang="less" scoped>
 .hiden-menu{
     position: relative;
+    > i{
+        color: #5ba997;
+    }
     ul{
             width: 67px;
             padding: 3px 10px;
             position: absolute;
             top: 20px;
             right: 5px;
-            background-color: rgba(255, 255, 255, 0.3);
+            background-color: #5ba997;
             border-radius: 4px;
             li{
                 cursor: pointer;
@@ -38,6 +41,7 @@ export default {
                 align-items: center;
                 i{
                         margin-right: 5px;
+                        color: #fff;
                 }
             }
             

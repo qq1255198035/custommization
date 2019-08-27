@@ -2,12 +2,12 @@
     <div id="dashbored">
         <my-header :name="name" :level="level" :intro="intro" :imgUrl="imgUrl"></my-header>
         <order-total :num1="price1 | moneyFormat" :num2="price2 | moneyFormat" :num3="price3 | moneyFormat">
-            <p slot="a">总销售额</p>
-            <p slot="b">总订单数</p>
-            <p slot="c">总佣金</p>
+            <p slot="a" style="color:#727272;font-size: 16px;margin:0;">总销售额</p>
+            <p slot="b" style="color:#727272;font-size: 16px;margin:0;">总订单数</p>
+            <p slot="c" style="color:#727272;font-size: 16px;margin:0;">总佣金</p>
         </order-total>
         <my-title :title="'进行中的订单'">
-            <a href="" style="text-decoration: underline;">全部订单</a>
+            <a href="" style="text-decoration: underline;color: #5ba997">全部订单</a>
         </my-title>
         <order-list :orderList="orderList"></order-list>
           
