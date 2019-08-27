@@ -1,5 +1,5 @@
 <template>
-  <div class="share">
+  <div>
       <div class="layout-box">
         <div class="content">
           <my-title :title="itemTitles"></my-title>
@@ -108,7 +108,6 @@ export default {
     background-color: #868686 !important;
 }
 .share {
-    padding: 0px 40px;
     .layout-box {
       display: flex;
       .menu {

@@ -1,0 +1,69 @@
+<template>
+  <a-card :bordered="false">
+    <a-steps class="steps" :current="currentTab">
+      <a-step title="确认账号信息" />
+      <a-step title="修改密码" />
+      <a-step title="完成" />
+    </a-steps>
+    <div class="content">
+      <step1 v-if="currentTab === 0" @nextStep="nextStep"/>
+      <step2 :email="email" v-if="currentTab === 1" @nextStep="nextStep" @prevStep="prevStep"/>
+      <step3 v-if="currentTab === 2" @prevStep="prevStep" @finish="finish"/>
+    </div>
+  </a-card>
+</template>
+
+<script>
+  import Step1 from './Step1'
+  import Step2 from './Step2'
+  import Step3 from './Step3'
+
+  export default {
+    name: "passwordForm",
+    data() {
+        return {
+            email: '',
+        }
+    },
+    components: {
+      Step1,
+      Step2,
+      Step3
+    },
+    data () {
+      return {
+        description: '',
+        currentTab: 0,
+
+        // form
+        form: null,
+      }
+    },
+    methods: {
+
+      // handler
+      nextStep (data) {
+          console.log(data)
+          this.email = data
+        if (this.currentTab < 2) {
+          this.currentTab += 1
+        }
+      },
+      prevStep () {
+        if (this.currentTab > 0) {
+          this.currentTab -= 1
+        }
+      },
+      finish () {
+        this.currentTab = 0
+      }
+    }
+  }
+</script>
+
+<style lang="less">
+  .steps {
+    max-width: 750px;
+    margin: 16px auto;
+  }
+</style>
