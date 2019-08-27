@@ -22,10 +22,16 @@ module.exports = {
                               'menu-item-active-bg': 'rgba(255,255,255,1)',
                               'input-bg': 'rgba(255,255,255,0.3)',
                               'input-hover-border-color': '#3BB9B5',
-                              'checkbox-check-color': 'rgba(255,255,255,1)',
-                              'checkbox-color': 'rgba(255,255,255,0.3)',
+                              'checkbox-check-color': '#3BB9B5',
+                              'checkbox-color': '#fff',
                               'outline-color': '#fff',
-                              'primary-color': '#3BB9B5'
+                              'primary-color': '#3BB9B5',
+                              'btn-primary-color': '#fff',
+                              'btn-primary-bg': '#5BA997',
+                              'btn-border-radius-base': '10px',
+                              'btn-disable-color': 'rgba(40,181,177,0.5)',
+                              'btn-disable-border': 'rgba(40,181,177,0.5)',
+                              'btn-disable-bg': '#fff'
                         },
                         javascriptEnabled: true
                   }
