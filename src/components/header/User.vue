@@ -1,12 +1,11 @@
 <template>
     <div id="User">
         <span class="header-notice">
-            <a-icon style="font-size: 35px; padding: 4px" type="bell" />
+            <a-icon type="bell"/>
             <a-badge v-if="count" class="diount" :count="count" showZero></a-badge>
         </span>
         <span>
-            <a-icon type="user" style="font-size: 35px; padding: 4px"/>
-            UserName
+            <a-icon type="user"/>
         </span>
     </div>
 </template>
@@ -21,8 +20,14 @@ export default {
 </script>
 <style lang="less" scope>
     #User{
+        text-align: right;
         > span{
             margin: 0 10px;
+            i{
+                color: #5ba997;
+                font-size: 30px;
+                padding: 4px;
+            }
         }
         .header-notice{
             position: relative;

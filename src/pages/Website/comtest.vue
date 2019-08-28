@@ -82,7 +82,7 @@ export default {
       data(){
             return{
                   number:0,
-                  show: false,
+                  show: true,
                   itemTitle: '订单详情',
                   hidemenu:false
             }

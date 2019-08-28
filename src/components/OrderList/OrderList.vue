@@ -6,7 +6,7 @@
                               <img :src="item.topic_url" alt="">
                               <div class="desc">
                                     <p>
-                                          <span>{{item.topic}}</span>
+                                          <span style="color: #5ba997;font-size: 18px;">{{item.topic}}</span>
                                           <span>{{item.pay_end_date}}</span>
                                     </p>
                                     <p>{{item.introduction}}</p>
@@ -45,6 +45,7 @@ export default {
                   margin-top: 20px;
                   img{
                         width: 100%;
+                        height: 300px;
                   }
                   .desc{
                         margin-top: 15px;
@@ -55,16 +56,22 @@ export default {
                               text-overflow:ellipsis;
                               white-space: nowrap;
                               margin: 5px 0;
+                              span{
+                                    color:#8e8e8e;
+                              }
                         }
                         p:nth-child(2){
                               padding-right: 20px;
                               display: block;
+                              color: #a7a7a7;
                         }
                         p:nth-child(3){
                               font-size: 20px;
                               span{
+                                    color: #757575;
                                     i{
                                           margin: 0 10px;
+                                          color: #757575;
                                     }
                                     
                               }

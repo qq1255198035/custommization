@@ -1,7 +1,7 @@
 <template>
     <div id="CommissionsDeatils">
         <my-title :title="'佣金明细'" style="margin-bottom: 30px;"></my-title>
-        <a-table :columns="columns" :dataSource="data" :loading="loading" :pagination="{showQuickJumper: true,pageSize: 7}" @change="handleTableChange">
+        <a-table :columns="columns" :dataSource="data" :loading="loading" :pagination="{showQuickJumper: true}" @change="handleTableChange" :rowClassName="() => {return 'my-throw'}">
                 <span slot="status" slot-scope="text">
                     <a-badge :status="text | statusTypeFilter" :text="text | statusFilter" />
                 </span>
@@ -13,16 +13,17 @@
 </template>
 <script>
 import MyTitle from "@/components/MyTitle/MyTitle";
+import {commissionList} from "@/api/seller"
 const statusMap = {
-    0: {
+    2: {
         status: 'success',
         text: '已到账'
     },
-    10: {
+    1: {
         status: 'warning',
         text: '未到账'
     },
-    20: {
+    3: {
         status: 'error',
         text: '打款失败'
     },
@@ -38,18 +39,19 @@ export default {
     data(){
         return{
             loading:false,
+            num:1,
             columns: [
                     {
                             title: '订单号',
-                            dataIndex: 'num'
+                            dataIndex: 'orderSn'
                     },
                     {
                             title: '订单时间',
-                            dataIndex: 'time',
+                            dataIndex: 'orderTime',
                     },
                     {
                             title: '金额',
-                            dataIndex: 'price',
+                            dataIndex: 'amount',
                     },
                     {
                             title: '状态',
@@ -62,58 +64,25 @@ export default {
                             scopedSlots: { customRender: 'operation' },
                     }
                 ],
-                data: [
-                    {
-                        key:0,
-                        num: 'AAAAA',
-                        time: '2016-03-05 5:00:15',
-                        price: '300000',
-                        status: 0,
-                    },
-                    {
-                        key:1,
-                        num: 'AAAAA',
-
-                        time: '2016-03-05 5:00:15',
-                        price: '300000',
-                        status: 0,
-
-                    },
-                    {
-                        key:2,
-                        num: 'AAAAA',
-
-                        time: '2016-03-05 5:00:15',
-                        price: '300000',
-                        status: 30,
-
-                    },
-                    {
-                        key:3,
-                        num: 'AAAAA',
-
-                        time: '2016-03-05 5:00:15',
-                        price: '300000',
-                        status: 20,
-
-                    },
-                    {
-                        key:4,
-                        num: 'AAAAA',
-
-                        time: '2016-03-05 5:00:15',
-                        price: '300000',
-                        status: 10,
-
-                    }
-                ]
+                data: []
         }
+    },
+    mounted(){
+        this.getCommissionList(this.num);
     },
     methods:{
         handleTableChange (pagination) {
-            //this.loading = true;
             console.log(pagination.current)
+            this.getCommissionList(pagination.current);
         },
+        getCommissionList(num){
+            this.loading = true;
+            commissionList(num).then(res => {
+                this.loading = false;
+                console.log(res)
+                this.data = res.records
+            })
+        }
     },
     filters:{
         statusFilter (type) {

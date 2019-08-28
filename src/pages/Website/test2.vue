@@ -245,7 +245,6 @@ import img3 from '@/assets/0003.png'
 import img7 from '@/assets/0007.png'
 import img8 from '@/assets/0008.png'
 import img10 from '@/assets/0010.png'
-import bgimg1 from '@/assets/white-2fbe8472bccef1a454b2b5e2ceb1e7293a86b971a0aa7522fe8f91.png'
 import bgimg2 from '@/assets/black.jpg'
 import bgimg3 from '@/assets/jaw.jpg'
 import resize from '@/assets/icons/resize.svg'
@@ -333,16 +332,11 @@ export default {
                   ],
                   suits:{
                         frontimg:{
-                              bgimgs:[
-                                    bgimg1,
-                                    bgimg1,
-                                    bgimg1
-                              ]
+                              
                               
                         },
                         backimg:{
                               bgimgs:[
-                                    bgimg1,
                                     bgimg2,
                                     bgimg3
                               ]
@@ -1012,7 +1006,6 @@ export default {
                               scaleX: that.screenWidth / 600,
                               scaleY: that.screenWidth / 600
                   });
-                  
             },
             bindCanvas2(i) {
                   var that = this
