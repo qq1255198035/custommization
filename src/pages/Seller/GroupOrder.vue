@@ -25,7 +25,7 @@
                     <hide-menu></hide-menu>
                 </order-item>
                 <div class="pagination-box">
-                    <a-pagination showQuickJumper :defaultCurrent="1" :total="10" @change="onChange($event)" :pageSize="4"/>
+                    <a-pagination showQuickJumper :defaultCurrent="1" :total="totalnum" @change="onChange($event)" :pageSize="4"/>
                 </div>
             </template>
             <p v-else>暂无数据</p>
@@ -53,6 +53,7 @@ export default {
             content: '',
             totalnum: 0,
             key:''
+            
         } 
     },
     methods:{
@@ -73,7 +74,7 @@ export default {
             groupOrderList(num,status,orderid).then(res => {
                 console.log(res)
                 this.orderList = res.records;
-                this.totalnum = parseInt(res.total);
+                this.totalnum = res.total;
             })
         }
     },

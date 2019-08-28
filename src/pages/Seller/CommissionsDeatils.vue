@@ -1,7 +1,7 @@
 <template>
     <div id="CommissionsDeatils">
         <my-title :title="'佣金明细'" style="margin-bottom: 30px;"></my-title>
-        <a-table :columns="columns" :dataSource="data" :loading="loading" :pagination="{showQuickJumper: true}" @change="handleTableChange" :rowClassName="() => {return 'my-throw'}">
+        <a-table :columns="columns" :dataSource="data" :loading="loading" :pagination="pagination" @change="handleTableChange" :rowClassName="() => {return 'my-throw'}">
                 <span slot="status" slot-scope="text">
                     <a-badge :status="text | statusTypeFilter" :text="text | statusFilter" />
                 </span>
@@ -39,6 +39,7 @@ export default {
     data(){
         return{
             loading:false,
+            pagination:{showQuickJumper: true, total: 0,pageSize: 12},
             num:1,
             columns: [
                     {
@@ -80,7 +81,8 @@ export default {
             commissionList(num).then(res => {
                 this.loading = false;
                 console.log(res)
-                this.data = res.records
+                this.data = res.records;
+                this.pagination.total = res.total
             })
         }
     },

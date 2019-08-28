@@ -7,7 +7,7 @@
             <p slot="c" style="margin: 0; color: #757575;">未到账金额</p>
         </order-total>
         <my-title :title="'提现记录'" :fontsize="14" style="margin: 20px 0 "></my-title>
-        <a-table :columns="columns" :dataSource="data" :loading="loading" :pagination="{showQuickJumper: true,pageSize: 7}" @change="handleTableChange" :rowClassName="() => {return 'my-throw'}">
+        <a-table :columns="columns" :dataSource="data" :loading="loading" :pagination="pagination" @change="handleTableChange" :rowClassName="() => {return 'my-throw'}">
                 <span slot="status" slot-scope="text">
                     <a-badge :status="text | statusTypeFilter" :text="text | statusFilter" />
                 </span>
@@ -20,21 +20,21 @@
 <script>
 import OrderTotal from '@/components/OrderTotal/OrderTotal';
 import MyTitle from "@/components/MyTitle/MyTitle";
-import { commissionsData } from "@/api/seller"
+import { commissionsData, withdrawalList } from "@/api/seller"
 const statusMap = {
-    0: {
+    4: {
         status: 'success',
         text: '已到账'
     },
-    10: {
+    1: {
         status: 'warning',
         text: '申请中'
     },
-    20: {
+    3: {
         status: 'error',
         text: '打款失败'
     },
-    30: {
+    2: {
         status: 'processing',
         text: '打款中'
     }
@@ -50,10 +50,11 @@ export default {
                 price2:0,
                 price3:0,
                 loading: false,
+                pagination:{showQuickJumper: true,pageSize: 7,total: 0},
                 columns: [
                     {
                             title: '退款单号',
-                            dataIndex: 'num'
+                            dataIndex: 'order_id'
                     },
                     {
                             title: '账号',
@@ -61,11 +62,11 @@ export default {
                     },
                     {
                             title: '提交时间',
-                            dataIndex: 'time',
+                            dataIndex: 'orderTime',
                     },
                     {
                             title: '金额',
-                            dataIndex: 'price',
+                            dataIndex: 'amount',
                     },
                     {
                             title: '状态',
@@ -74,7 +75,7 @@ export default {
                     },
                     {
                             title: '备注',
-                            dataIndex: 'content',
+                            dataIndex: 'remark',
                     },
                     {
                             title: '操作',
@@ -83,115 +84,20 @@ export default {
                     }
                 ],
                 data: [
-                    {
-                        key:0,
-                        num: 'AAAAA',
-                        account: '1564564@qq.com',
-                        time: '2016-03-05 5:00:15',
-                        price: '300000',
-                        status: 0,
-                        content: '1234567'
-                    },
-                    {
-                        key:1,
-                        num: 'AAAAA',
-                        account: '1564564@qq.com',
-                        time: '2016-03-05 5:00:15',
-                        price: '300000',
-                        status: 0,
-                        content: '1234567'
-                    },
-                    {
-                        key:2,
-                        num: 'AAAAA',
-                        account: '1564564@qq.com',
-                        time: '2016-03-05 5:00:15',
-                        price: '300000',
-                        status: 30,
-                        content: '1234567'
-                    },
-                    {
-                        key:3,
-                        num: 'AAAAA',
-                        account: '1564564@qq.com',
-                        time: '2016-03-05 5:00:15',
-                        price: '300000',
-                        status: 20,
-                        content: '1234567'
-                    },
-                    {
-                        key:4,
-                        num: 'AAAAA',
-                        account: '1564564@qq.com',
-                        time: '2016-03-05 5:00:15',
-                        price: '300000',
-                        status: 10,
-                        content: '1234567'
-                    },
-                    {
-                        key:5,
-                        num: 'AAAAA',
-                        account: '1564564@qq.com',
-                        time: '2016-03-05 5:00:15',
-                        price: '300000',
-                        status: 0,
-                        content: '1234567'
-                    },
-                    {
-                        key:6,
-                        num: 'AAAAA',
-                        account: '1564564@qq.com',
-                        time: '2016-03-05 5:00:15',
-                        price: '300000',
-                        status: 0,
-                        content: '1234567'
-                    },
-                    {
-                        key:7,
-                        num: 'AAAAA',
-                        account: '1564564@qq.com',
-                        time: '2016-03-05 5:00:15',
-                        price: '300000',
-                        status: 30,
-                        content: '1234567'
-                    },
-                    {
-                        key:8,
-                        num: 'AAAAA',
-                        account: '1564564@qq.com',
-                        time: '2016-03-05 5:00:15',
-                        price: '300000',
-                        status: 20,
-                        content: '1234567'
-                    },
-                    {
-                        key:9,
-                        num: 'AAAAA',
-                        account: '1564564@qq.com',
-                        time: '2016-03-05 5:00:15',
-                        price: '300000',
-                        status: 10,
-                        content: '1234567'
-                    },
-                    {
-                        key:10,
-                        num: 'AAAAA',
-                        account: '1564564@qq.com',
-                        time: '2016-03-05 5:00:15',
-                        price: '300000',
-                        status: 10,
-                        content: '1234567'
-                    },
+                    
                 ]
             }
     },
     mounted(){
         this.getCommissionsData();
+        this.getWithdrawalList(1);
     },
     methods:{
         handleTableChange (pagination) {
                 //this.loading = true;
-                console.log(pagination.current)
+                console.log(pagination.current);
+                console.log(pagination);
+                this.getWithdrawalList(pagination.current)
         },
         getCommissionsData(){
             commissionsData().then(res => {
@@ -201,6 +107,13 @@ export default {
                     this.price2 = res.result.balance;
                     this.price2 = res.result.unpaid;
                 }
+            })
+        },
+        getWithdrawalList(num){
+            withdrawalList(num).then(res => {
+                this.data = res.records;
+                this.pagination.total = res.total;
+                console.log(res)
             })
         }
     },

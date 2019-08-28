@@ -135,8 +135,9 @@ export default {
             padding: 20px;
             min-height: 100%;
             position: relative;
+            overflow-y: scroll;
             .btn-box{
-                margin: 20px 0; 
+                margin-top: 20px; 
                 position: absolute;
                 bottom: 10px;
                 left: 50%;

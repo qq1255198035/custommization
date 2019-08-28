@@ -56,6 +56,47 @@ export function commissionList(num) {
     return axios({
         url: '/ios/jeecgCommissionRecord/commissionList',
         method: 'post',
-        data:qs.stringify({pageNo:num})
+        data:qs.stringify({pageNo:num,pageSize: 12})
+    })
+}
+
+export function withdrawalList(num) {
+    return axios({
+        url: '/iso/jeecgWithdrawRecord/withdrawalList',
+        method: 'post',
+        data:qs.stringify({pageNo: num, pageSize: 7})
+    })
+}
+
+export function adressList() {
+    return axios({
+        url: '/system/jeecgAddress/list',
+        method: 'post'
+    })
+}
+
+export function addressOne() {
+    return axios({
+        url: '/iso/jeecgArea/addressOne',
+        method: 'post'
+    })
+}
+
+export function addAddress(params) {
+    return axios({
+        url: '/system/jeecgAddress/add',
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json;charset-UTF-8'
+        },
+        data:JSON.stringify(params)
+    })
+}
+
+export function queryById(id) {
+    return axios({
+        url: '/system/jeecgAddress/queryById',
+        method: 'post',
+        data:qs.stringify({id: id,})
     })
 }

@@ -200,21 +200,14 @@ const routes = [
       },
       
       {
-            path: "/order",
-            name: "order",
-            component: BlankLayout,
-            redirect: "/neworder",
-            children:[
+           
+            path: "/orderdetails",
+            name: "orderdetails",
+            component: () => import("@/pages/Seller/OrderDetails"),
+            meta: {
                   
-                  {
-                        path: "/orderdetails",
-                        name: "orderdetails",
-                        component: () => import("@/pages/Seller/OrderDetails"),
-                        meta: {
-                              
-                        }
-                  },
-            ]
+            }
+                 
       },
       {
             path: "/neworder",

@@ -78,7 +78,7 @@ const err = (error) => {
 
 // request interceptor
 service.interceptors.request.use(config => {
-  const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1NjYzNTYzODUsInVzZXJuYW1lIjoiamVlY2cifQ.vNjk79S2Ten3Mc3V9ip_XwDTQ6F7tJT_XtUOozY__lo';//Vue.ls.get('token')
+  const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1NjcxMzc3MDMsInVzZXJuYW1lIjoiamVlY2cifQ.KaWbNlqTXXwJFGtBWgm_OMItnaaS71-_y8LDndYGdbI';//Vue.ls.get('token')
   if (token) {
     config.headers[ 'X-Access-Token' ] = token // 让每个请求携带自定义 token 请根据实际情况自行修改
   }

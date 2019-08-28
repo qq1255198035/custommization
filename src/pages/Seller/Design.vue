@@ -153,14 +153,14 @@
                                     <div  style="padding-bottom: 10px; border-bottom: 1px solid #ccc;">
                                         <a-input-search @search="onSearch"/>
                                     </div>
-                                    <dl :key="img.className" v-for="(img,index) in imgs" @click="addImg(img,index)">
+                                    <dl v-for="img in imgs" :key="img.className">
                                         <dt>
                                             <p @click="moreImgs">
                                                 <span>{{img.className}}</span>
                                                 <a-icon type="right" />
                                             </p>
                                         </dt>
-                                        <dd v-for="(item,index) in img.imgURL" :key="item + index">
+                                        <dd v-for="(item,index) in img.imgURL" :key="item + index" @click="addImg(item,'img'+index)">
                                             <img :src="item" alt="">
                                         </dd>
                                     </dl>
@@ -1690,6 +1690,7 @@ export default {
             }
             button{
                 margin-left: 10px;
+                position: relative;
             }
         }
     }

@@ -193,7 +193,7 @@
                               </div>
                         </transition>
                   </a-col>
-                  <!-- <a-col :span="6">
+                  <a-col :span="6">
                         <div class="section3">
                               <h3>选择颜色</h3>
                               <dl class="color-select">
@@ -229,7 +229,7 @@
                               </div>
                         </div>
                         
-                  </a-col> -->
+                  </a-col>
             </a-row>
             
       </div>
