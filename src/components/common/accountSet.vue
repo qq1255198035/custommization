@@ -1,6 +1,5 @@
 <template>
   <div id="accountSet">
-    <page-header :title="pageTitle"></page-header>
     <a-row type="flex" justify="center">
       <a-col :lg="14">
         <div>
@@ -11,16 +10,29 @@
                 v-decorator="['email',{rules: [{ required: true, message: '邮箱' }]}]"
               />
             </a-form-item>
-            <a-form-item label="姓名">
-              <a-input
-                placeholder="姓名"
-                v-decorator="['companyName',{rules: [{ required: true, message: '姓名' }]}]"
-              />
-            </a-form-item>
+
+            <a-row :gutter="32">
+              <a-col :span="12">
+                <a-form-item label="姓">
+                  <a-input
+                    placeholder="姓"
+                    v-decorator="['surname',{rules: [{ required: true, message: '姓' }]}]"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col :span="12">
+                <a-form-item label="名">
+                  <a-input
+                    placeholder="名"
+                    v-decorator="['monicker',{rules: [{ required: true, message: '名' }]}]"
+                  />
+                </a-form-item>
+              </a-col>
+            </a-row>
             <a-form-item label="个人简介">
               <a-input
                 placeholder="个人简介"
-                v-decorator="['webName',{rules: [{ required: true, message: '个人简介' }]}]"
+                v-decorator="['company',{rules: [{ required: true, message: '个人简介' }]}]"
               />
             </a-form-item>
 
@@ -30,10 +42,10 @@
                 v-decorator="['countryName',{rules: [{ required: true, message: '邮箱' }]}]"
               >
                 <a-select-option
-                  v-for="(item, index) in city"
+                  v-for="(item, index) in country"
                   :key="index"
-                  :value="item.label"
-                >{{item.value}}</a-select-option>
+                  :value="item.id"
+                >{{item.name}}</a-select-option>
               </a-select>
             </a-form-item>
             <a-row :gutter="32">
@@ -41,14 +53,15 @@
                 <a-form-item label="所在省">
                   <div class>
                     <a-select
+                      @change="onProvince"
                       placeholder="请选择"
-                      v-decorator="['addressName',{rules: [{ required: true, message: '邮箱' }]}]"
+                      v-decorator="['province',{rules: [{ required: true, message: '邮箱' }]}]"
                     >
                       <a-select-option
-                        v-for="(item, index) in activeityPlace"
+                        v-for="(item, index) in province"
                         :key="index"
-                        :value="item.label"
-                      >{{item.value}}</a-select-option>
+                        :value="item.id"
+                      >{{item.name}}</a-select-option>
                     </a-select>
                   </div>
                 </a-form-item>
@@ -57,14 +70,15 @@
                 <a-form-item label="所在市">
                   <div class>
                     <a-select
+                      @change="onCity"
                       placeholder="请选择"
-                      v-decorator="['addressName',{rules: [{ required: true, message: '邮箱' }]}]"
+                      v-decorator="['city',{rules: [{ required: true, message: '邮箱' }]}]"
                     >
                       <a-select-option
-                        v-for="(item, index) in activeityPlace"
+                        v-for="(item, index) in city"
                         :key="index"
-                        :value="item.label"
-                      >{{item.value}}</a-select-option>
+                        :value="item.id"
+                      >{{item.name}}</a-select-option>
                     </a-select>
                   </div>
                 </a-form-item>
@@ -75,7 +89,7 @@
               <a-input
                 placeholder="街道地址"
                 :autosize="{ minRows: 6 }"
-                v-decorator="['contactName',{rules: [{ required: true, message: '街道地址' }]}]"
+                v-decorator="['streetName',{rules: [{ required: true, message: '街道地址' }]}]"
               />
             </a-form-item>
             <a-input-group compact>
@@ -83,14 +97,16 @@
                 <a-row :gutter="32">
                   <a-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
                     <a-input
+                      @change="phoneFirstBtn"
                       placeholder="86"
-                      v-decorator="['phoneName',{rules: [{pattern: new RegExp(/((\d{11})|^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$)/), required: true, message: '邮箱'}]}]"
+                      v-decorator="['phoneName1',{rules: [{ required: true, message: '' }]}]"
                     />
                   </a-col>
                   <a-col :xs="20" :sm="20" :md="20" :lg="20" :xl="20">
                     <a-input
+                      @change="phoneLastBtn"
                       placeholder="电话号"
-                      v-decorator="['phoneName',{rules: [{pattern: new RegExp(/((\d{11})|^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$)/), required: true, message: '邮箱'}]}]"
+                      v-decorator="['phoneName2',{rules: [{ required: true, message: '电话' }]}]"
                     />
                   </a-col>
                 </a-row>
@@ -137,13 +153,25 @@ function getBase64(img, callback) {
   reader.addEventListener("load", () => callback(reader.result));
   reader.readAsDataURL(img);
 }
-import { personSet } from '@/api/system'
+import {
+  personSet,
+  personEdit,
+  country,
+  province,
+  city,
+  upLoad
+} from "@/api/system";
 import MyTitle from "@/components/MyTitle/MyTitle";
 export default {
   data() {
     return {
+      countryValue: "",
+      province: "",
+      provinceId: "",
+      cityId: "",
+      city: "",
       itemTitle: "",
-      city: [{ label: "0", value: "中国" }, { label: "1", value: "香港" }],
+      country: "",
       personInfo: {},
       places: "",
       companyName: "",
@@ -153,7 +181,6 @@ export default {
       contact: "",
       phoneFirst: "",
       phoneLast: "",
-      activeityPlace: [],
       areaId: "",
       country: "",
       fileUrl: "",
@@ -167,86 +194,72 @@ export default {
     MyTitle
   },
   mounted() {
-    this._personSet()
-    //this._getUserInformation();
+    this._personSet();
+    this._country();
   },
   methods: {
-    personSet() {
-      
-    }
+    _personSet() {
+      personSet().then(res => {
+        console.log(res);
+        const result = res.result;
+        console.log(result)
+        const phone1 = result.phone ? result.phone.split(",")[0] : '86';
+        const phone2 = result.phone ? result.phone.split(",")[1] : '';
+        this.form.setFieldsValue({
+          surname: result.surname,
+          monicker: result.monicker,
+          company: result.intro,
+          email: result.email,
+          countryName: result.countryName,
+          province: result.provinceName,
+          city: result.cityName,
+          streetName: result.address,
+          phoneName1: phone1,
+          phoneName2: phone2
+        });
+        this.provinceId = result.province;
+        this.cityId = result.city;
+        this.countryValue = result.country;
+      });
+    },
+    _country() {
+      country().then(res => {
+        console.log(res);
+        this.country = res.result;
+      });
+    },
     /*checkedTel(rule, value, callback) {
       console.log(value)
       const reg = /((\d{11})|^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$)/
       if (!reg.test(value)) {
         callback(new Error('请输入正确电话号'))
       }
-    },
-    _getUserInformation() {
-      const token = this.$ls.get("Access-Token");
-      const params = {
-        token: token
-      };
-      getUserInformation(params).then(res => {
-        console.log(res);
-        this.personInfo = res.data;
-        this.form.setFieldsValue({
-          companyName: res.data.name,
-          webName: res.data.web,
-          email: res.data.email,
-          textName: res.data.intro,
-          countryName: res.data.flag,
-          addressName: res.data.area,
-          placeName: res.data.comp_addr,
-          contactName: res.data.contact,
-          phoneName: res.data.phone
-        });
-        this.flag = res.data.flag;
-        console.log(this.flag);
-        this.imgurl = res.data.logo ? res.data.logo : "";
-        this.fileUrl = res.data.logo;
-        console.log(this.imgurl);
-        this.imgurl1 = res.data.business_img ? res.data.business_img : "";
-        this.fileUrl1 = res.data.business_img;
-        console.log(this.imgurl1);
-        const params1 = {
-          flag: res.data.flag,
-          internationalization: localStorage.lang
-        };
-        console.log(params1);
-        getBooleanPlace(params1).then(res => {
-          console.log(res);
-          this.activeityPlace = res.data;
-        });
-      });
-    },
+    },*/
     // 更新
     submitPerson() {
       console.log(111);
-      const token = this.$ls.get("Access-Token");
       this.form.validateFields((err, values) => {
         if (!err) {
           console.log(values.countryName);
           const params = {
-            token: token,
             email: values.email,
-            name: values.companyName,
-            web: values.webName,
-            intro: values.textName,
-            country: values.countryName,
-            area: values.addressName,
-            compAddr: values.placeName,
-            contact: values.contactName,
-            phone: values.phoneName,
-            logo: this.fileUrl,
-            business_img: this.fileUrl1
+            surname: values.surname,
+            monicker: values.monicker,
+            intro: values.company,
+            country: this.countryValue,
+            province: this.provinceId,
+            city: this.cityId,
+            address: values.streetName,
+            img: this.fileUrl,
+            phone: values.phoneName1 + "," + values.phoneName2
           };
           console.log(params);
-          getChangeInformation(params).then(res => {
+          personEdit(params).then(res => {
             console.log(res);
             if (res.code == 1000) {
               this.$notification.success({
-                message: this.$t("issuer.hdgl.successNmae"),
-                description: this.$t("issuer.accountInfo.updateCompleted"),
+                message: this.$t("xx"),
+                description: this.$t("ll"),
                 duration: 4
               });
               this.$router.push({
@@ -257,32 +270,48 @@ export default {
         }
       });
     },
+    commonCity() {},
     countryBtn(value) {
       console.log(value);
-      this.form.setFieldsValue({
-        addressName: ""
-      });
-      this.flag = value;
+      this.countryValue = value;
       const params = {
-        flag: value,
-        internationalization: localStorage.lang
+        areaId: value
       };
-      getBooleanPlace(params).then(res => {
+      province(params).then(res => {
         console.log(res);
-        this.activeityPlace = res.data;
+        this.province = res.result;
       });
-      //this.personInfo.country = value
+    },
+    onProvince(value) {
+      console.log(value);
+      this.provinceId = value;
+      const params = {
+        areaId: value
+      };
+      city(params).then(res => {
+        console.log(res);
+        this.city = res.result;
+      });
+    },
+    onCity(value) {
+      this.cityId = value;
+    },
+    phoneFirstBtn(e) {
+      console.log(e.target.value);
+    },
+    phoneLastBtn(e) {
+      console.log(e.target.value);
     },
     beforeUpload(file) {
       const isJPG = file.type === "image/jpeg";
       const isPNG = file.type === "image/png";
       if (!isJPG && !isPNG) {
-        this.$message.error(this.$t("issuer.accountInfo.onlyImage"));
+        this.$message.error(this.$t("不支持此格式"));
         return isJPG;
       }
       const isLt2M = file.size / 1024 / 1024 < 2;
       if (!isLt2M) {
-        this.$message.error(this.$t("issuer.accountInfo.onlyM"));
+        this.$message.error(this.$t("图片超过2M"));
         return isLt2M;
       }
       getBase64(file, imageUrl => {
@@ -291,37 +320,14 @@ export default {
       const formData = new FormData();
       formData.append("file", file);
       console.log(formData);
-      getUpload(formData).then(res => {
+      upLoad(formData).then(res => {
         console.log(res);
-        this.fileUrl = res.location;
-      });
-    },
-    beforeUpload1(file) {
-      const isJPG = file.type === "image/jpeg";
-      const isPNG = file.type === "image/png";
-      if (!isJPG && !isPNG) {
-        this.$message.error(this.$t("issuer.accountInfo.onlyImage"));
-        return isJPG;
-      }
-      const isLt2M = file.size / 1024 / 1024 < 2;
-      if (!isLt2M) {
-        this.$message.error(this.$t("issuer.accountInfo.onlyM"));
-        return isLt2M;
-      }
-      getBase64(file, imageUrl => {
-        this.imgurl1 = imageUrl;
-      });
-      const formData = new FormData();
-      formData.append("file", file);
-      console.log(formData);
-      getUpload(formData).then(res => {
-        console.log(res);
-        this.fileUrl1 = res.location;
+        this.fileUrl = res;
       });
     },
     onChange(value) {
       console.log(value);
-    }*/
+    }
   },
   computed: {},
   beforeCreate() {

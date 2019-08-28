@@ -14,6 +14,20 @@ export function register(parameter) {
     data: parameter
   })
 }
+export function passwordEmail(parameter) {
+  return axios({
+    url: '/sys/emailForReset',
+    method: 'post',
+    data: parameter
+  })
+}
+export function passwordSet(parameter) {
+  return axios({
+    url: '/sys/user/changPassword',
+    method: 'put',
+    data: parameter
+  })
+}
 export function registerSubmit(url,parameter) {
   return axios({
     url: url,
@@ -42,7 +56,14 @@ export function getAction(url,parameter) {
       params: parameter
     })
   }
- 
+  export function upLoad(parameter) {
+    return axios({
+      url: '/sys/oss/upload',
+      headers: { "Content-Type": "multipart/form-data" },
+      method:'post' ,
+      data: parameter
+    })
+  }
   export function apiPay(parameter) {
     return axios({
       url: '/apiPersonOrder/toPay',
@@ -85,10 +106,44 @@ export function getAction(url,parameter) {
       data: qs.stringify(parameter)
     })
   }
-  export function personSet(parameter) {
+  export function personSet() {
     return axios({
-      url: '/sys/user/register',
+      url: '/system/jeecgUser/getInfo',
       method: 'post',
+      //data: qs.stringify(parameter)
+    })
+  }
+  export function personEdit(parameter) {
+    return axios({
+      url: '/system/jeecgUser/edit',
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json;charset-UTF-8'
+      },
+      data: JSON.stringify(parameter)
+    })
+  }
+  export function country() {
+    return axios({
+      url: '/iso/jeecgArea/country',
+      method: 'post',     
+      //data: qs.stringify(parameter)
+    })
+  }
+  export function province(parameter) {
+    return axios({
+      url: 'iso/jeecgArea/province',
+      method: 'post',
+      data: qs.stringify(parameter)
+    })
+  }
+  export function city(parameter) {
+    return axios({
+      url: '/iso/jeecgArea/city',
+      method: 'post',
+      /*headers: {
+        'X-Access-Token': data
+      },*/
       data: qs.stringify(parameter)
     })
   }
