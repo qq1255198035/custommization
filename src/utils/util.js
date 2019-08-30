@@ -1,4 +1,4 @@
-import i18n from '@lang/index'
+import i18n from '@/lang/index'
 export function timeFix () {
   const time = new Date()
   const hour = time.getHours()
