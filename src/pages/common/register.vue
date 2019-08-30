@@ -2,124 +2,159 @@
   <div class="share">
     <div class="share-box">
       <div class="main">
-        <my-title :title="itemTitle"></my-title>
-        <div class="user-layout-register">
-          <a-form ref="formRegister" :form="form" id="formRegister">
-            <a-form-item label="邮箱">
-              <a-input
-                size="large"
-                type="text"
-                placeholder="邮箱"
-                v-decorator="['email', {rules: [{ required: true, type: 'email', message: '邮箱' }], validateTrigger: ['change', 'blur']}]"
-              ></a-input>
-            </a-form-item>
-            <a-row :gutter="12">
-              <a-col :span="12">
-                <a-form-item label="姓">
-                  <a-input
-                    size="large"
-                    type="text"
-                    placeholder="姓"
-                    v-decorator="['surname', {rules: [{ required: true, message: '姓' }], validateTrigger: ['change', 'blur']}]"
-                  ></a-input>
-                </a-form-item>
-              </a-col>
-              <a-col :span="12">
-                <a-form-item label="名">
-                  <a-input
-                    size="large"
-                    type="text"
-                    placeholder="名"
-                    v-decorator="['monicker', {rules: [{ required: true, message: '名' }], validateTrigger: ['change', 'blur']}]"
-                  ></a-input>
-                </a-form-item>
-              </a-col>
-            </a-row>
-            <a-popover placement="rightTop" trigger="click" :visible="state.passwordLevelChecked">
-              <template slot="content">
-                <div :style="{ width: '240px'}">
-                  <div :class="['user-register', passwordLevelClass]">
-                    22
-                    <span>{{ passwordLevelName }}</span>
-                  </div>
-                  <a-progress
-                    :percent="state.percent"
-                    :showInfo="false"
-                    :strokeColor=" passwordLevelColor "
-                  />
-                  <div style="margin-top: 10px;">
-                    <span>11</span>
-                  </div>
-                </div>
-              </template>
-              <a-form-item label="密码">
-                <a-input
-                  size="large"
-                  type="password"
-                  @keydown="insertDown"
-                  @keyup="insertUp"
-                  autocomplete="false"
-                  placeholder="密码"
-                  v-decorator="['password', {rules: [{ required: true, message: '密码'}, { validator: this.handlePasswordLevel }], validateTrigger: ['change', 'blur']}]"
-                ></a-input>
-              </a-form-item>
-            </a-popover>
-            <a-form-item label="确认密码">
-              <a-input
-                size="large"
-                type="password"
-                @keydown="insertDown"
-                @keyup="insertUp"
-                autocomplete="false"
-                placeholder="确认密码"
-                v-decorator="['password2', {rules: [{ required: true, message: '密码'}, { validator: this.handlePasswordCheck }], validateTrigger: ['change', 'blur']}]"
-              ></a-input>
-            </a-form-item>
-            <a-row :gutter="16">
-              <a-col class="gutter-row" :span="16">
-                <a-form-item label="验证码">
-                  <a-input
-                    size="large"
-                    type="text"
-                    placeholder="验证码"
-                    v-decorator="['captcha', {rules: [{ required: true, message: '验证码' }], validateTrigger: 'blur'}]"
-                  >
-                    <a-icon slot="prefix" type="mail" :style="{ color: 'rgba(0,0,0,.25)' }" />
-                  </a-input>
-                </a-form-item>
-              </a-col>
-              <a-col class="gutter-row" :span="8" style="text-align:right">
-                <a-button
-                  v-if="state.smsSendBtn"
-                  class="getCaptcha"
-                  size="large"
-                  :disabled="state.smsSendBtn"
-                  @click.stop.prevent="getCaptcha"
-                  v-text="(state.time+' s')"
-                >获取验证码</a-button>
-                <a-button
-                  v-if="!state.smsSendBtn"
-                  class="getCaptcha"
-                  size="large"
-                  :disabled="state.smsSendBtn"
-                  @click.stop.prevent="getCaptcha"
-                  v-text="getCode"
-                >获取验证码</a-button>
-              </a-col>
-            </a-row>
+        <header>
+          <p class="icon-logotxt"></p>
+          <p>
+            <User></User>
+          </p>
+        </header>
 
-            <a-form-item>
-              <router-link class="login" :to="{ path: '/login' }">已有账户</router-link>
-              <a-button
+        <div class="user-layout-register">
+          <a-row>
+            <a-col :span="4"></a-col>
+            <a-col :span="16">
+              <my-title :title="itemTitle" :fontsize="24"></my-title>
+              <a-form ref="formRegister" :form="form" id="formRegister">
+                <a-form-item label="邮箱">
+                  <a-input
+                    size="large"
+                    type="text"
+                    placeholder="邮箱"
+                    v-decorator="['email', {rules: [{ required: true, type: 'email', message: '邮箱' }], validateTrigger: ['change', 'blur']}]"
+                  ></a-input>
+                </a-form-item>
+                <a-row :gutter="12">
+                  <a-col :span="12">
+                    <a-form-item label="姓">
+                      <a-input
+                        size="large"
+                        type="text"
+                        placeholder="姓"
+                        v-decorator="['surname', {rules: [{ required: true, message: '姓' }], validateTrigger: ['change', 'blur']}]"
+                      ></a-input>
+                    </a-form-item>
+                  </a-col>
+                  <a-col :span="12">
+                    <a-form-item label="名">
+                      <a-input
+                        size="large"
+                        type="text"
+                        placeholder="名"
+                        v-decorator="['monicker', {rules: [{ required: true, message: '名' }], validateTrigger: ['change', 'blur']}]"
+                      ></a-input>
+                    </a-form-item>
+                  </a-col>
+                </a-row>
+                <a-popover
+                  placement="rightTop"
+                  trigger="click"
+                  :visible="state.passwordLevelChecked"
+                >
+                  <template slot="content">
+                    <div :style="{ width: '240px'}">
+                      <div :class="['user-register', passwordLevelClass]">
+                        22
+                        <span>{{ passwordLevelName }}</span>
+                      </div>
+                      <a-progress
+                        :percent="state.percent"
+                        :showInfo="false"
+                        :strokeColor=" passwordLevelColor "
+                      />
+                      <div style="margin-top: 10px;">
+                        <span>11</span>
+                      </div>
+                    </div>
+                  </template>
+                  <a-form-item label="密码">
+                    <a-input
+                      size="large"
+                      type="password"
+                      @keydown="insertDown"
+                      @keyup="insertUp"
+                      autocomplete="false"
+                      placeholder="密码"
+                      v-decorator="['password', {rules: [{ required: true, message: '密码'}, { validator: this.handlePasswordLevel }], validateTrigger: ['change', 'blur']}]"
+                    ></a-input>
+                  </a-form-item>
+                </a-popover>
+                <a-form-item label="确认密码">
+                  <a-input
+                    size="large"
+                    type="password"
+                    @keydown="insertDown"
+                    @keyup="insertUp"
+                    autocomplete="false"
+                    placeholder="确认密码"
+                    v-decorator="['password2', {rules: [{ required: true, message: '密码'}, { validator: this.handlePasswordCheck }], validateTrigger: ['change', 'blur']}]"
+                  ></a-input>
+                </a-form-item>
+                <a-row :gutter="16" type="flex" align="bottom">
+                  <a-col class="gutter-row" :span="16">
+                    <a-form-item label="验证码">
+                      <a-input
+                        size="large"
+                        type="text"
+                        placeholder="验证码"
+                        v-decorator="['captcha', {rules: [{ required: true, message: '验证码' }], validateTrigger: 'blur'}]"
+                      >
+                        <a-icon slot="prefix" type="mail" :style="{ color: 'rgba(0,0,0,.25)' }" />
+                      </a-input>
+                    </a-form-item>
+                  </a-col>
+                  <a-col class="gutter-row" :span="8" style="text-align:right">
+                    <a-button
+                      v-if="state.smsSendBtn"
+                      class="getCaptcha"
+                      size="large"
+                      :disabled="state.smsSendBtn"
+                      @click.stop.prevent="getCaptcha"
+                      v-text="(state.time+' s')"
+                    >获取验证码</a-button>
+                    <a-button
+                      v-if="!state.smsSendBtn"
+                      class="getCaptcha"
+                      size="large"
+                      :disabled="state.smsSendBtn"
+                      @click.stop.prevent="getCaptcha"
+                      v-text="getCode"
+                    >获取验证码</a-button>
+                  </a-col>
+                </a-row>
+
+                <a-form-item>
+                  <a-row :gutter="16">
+                    <a-col :span="16">
+                      <router-link class="login" :to="{ path: '/login' }">已有账户</router-link>
+                    </a-col>
+                    <a-col :span="8">
+                      <commonBtn
+                        :icon="'plus'"
+                        @register="register"
+                        :width="'100%'"
+                        :title="'注册'"
+                        :height="'45px'"
+                        :padding="'10px'"
+                        :radio="'12px'"
+                        :fontsize="'22px'"
+                        :top="'20px'"
+                      ></commonBtn>
+                    </a-col>
+                  </a-row>
+
+                  <!--<a-button
                 size="large"
                 htmlType="submit"
                 class="register-button"
                 :loading="registerBtn"
                 @click.stop.prevent="handleSubmit"
                 :disabled="registerBtn"
-              >注册</a-button>
-            </a-form-item>
-          </a-form>
+                  >注册</a-button>-->
+                </a-form-item>
+              </a-form>
+            </a-col>
+            <a-col :span="4"></a-col>
+          </a-row>
         </div>
       </div>
     </div>
@@ -132,6 +167,7 @@ import { timeFix } from '@/utils/util'*/
 import { register, registerSubmit } from "@/api/system";
 import SysHeader from "@/components/SysHeader/SysHeader";
 import MyTitle from "@/components/MyTitle/MyTitle";
+import commonBtn from "@/components/commonBtn/commonBtn";
 const levelNames = {
   0: "11",
   1: "22",
@@ -173,7 +209,8 @@ export default {
   },
   components: {
     SysHeader,
-    MyTitle
+    MyTitle,
+    commonBtn
   },
   computed: {
     passwordLevelClass() {
@@ -235,7 +272,7 @@ export default {
         this.state.passwordLevelChecked = false;
       }, 1500);
     },
-    handleSubmit() {
+    register() {
       console.log(111);
       this.registerActor("/sys/user/register");
     },
@@ -339,16 +376,20 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
+@import url("./../../components/index.less");
 .share {
   width: 100%;
   height: 100%;
-  background-image: linear-gradient(-45deg, #11bbe8 10%, #4ac37a 100%);
+  //background-image: linear-gradient(-45deg, #11bbe8 10%, #4ac37a 100%);
 
   .share-box {
     padding: 0px 40px;
     .main {
-      width: 40%;
+      background: #fff;
+      box-shadow: 0 4px 10px #666;
+      border-radius: 10px;
+      width: 50%;
       position: absolute;
       top: 50%;
       left: 50%;

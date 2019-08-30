@@ -27,8 +27,9 @@ const constantRouterComponents = {
   grouporder: () => import("@/pages/Seller/GroupOrder"),
   commissions: () => import("@/pages/Seller/Commissions"),
   commissionsdetails: () => import("@/pages/Seller/CommissionsDeatils"),
+  design: () => import("@/pages/Seller/Design"),
   //
-  share: () => import("@/pages/userSystem/share/share"),
+  //share: () => import("@/pages/userSystem/share/share"),
   payment: () => import("@/pages/userSystem/payment/payment"),
   paysuccess: () => import("@/pages/userSystem/paySuccess/paySuccess"),
   orders: () => import("@/pages/userSystem/orders/orders"),

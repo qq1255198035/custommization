@@ -1,53 +1,45 @@
 <template>
   <div id="TableItem">
-    <h2>
+    <div class="check font-reset">
       {{data.name}}
       <slot></slot>
-    </h2>
-    <ul class="img-show">
-      <li>
-        <img :src="data.back_pic_url" alt />
-      </li>
-      <li>
-        <img :src="data.back_pic_url" alt />
-      </li>
-    </ul>
+    </div>
+    <div class="img-box">
+      <a-row :gutter="24">
+        <a-col :span="12">
+          <img :src="data.back_pic_url" alt />
+        </a-col>
+        <a-col :span="12">
+          <img :src="data.back_pic_url" alt />
+        </a-col>
+      </a-row>
+    </div>
   </div>
 </template>
 <script>
-
 export default {
   props: {
-    data:{}
+    data: {}
   },
   data() {
-    return {
-      
-    };
+    return {};
   },
-  components: {
-    
-  },
+  components: {},
   created() {
-    console.log(this.data)
+    console.log(this.data);
   }
 };
 </script>
 <style lang="less" scoped>
 #TableItem {
-  h2 {
-    color: #fff;
+  .check {
+    padding-bottom: 20px;
   }
-  .img-show {
-    display: flex;
-    li{
-      width: 240px;
-      margin-right: 24px;
-      img {
-      width: 100%;
+  .img-box {
+    img {
+      width: 290px;
+      height: 290px;
     }
-    }
-    
   }
   .paynum {
     overflow: hidden;

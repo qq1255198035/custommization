@@ -1,47 +1,53 @@
 <template>
-  <div>
-    <div id="box">
-      <My-Header :showNav="false"></My-Header>
-      <div class="wrapper">
-        <dir class="lefts">
-          <a-drawer
-            v-if="isMobile()"
-            placement="left"
-            :wrapClassName="`drawer-sider ${navTheme}`"
-            :closable="false"
-            :visible="collapsed"
-            @close="drawerClose"
-          >
+  <div id="SellerLayout">
+    <div class="content">
+      <a-row type="flex" justify="space-between" align="top" style="min-height: 100%;height: 100%;">
+        <a-col :span="6" style="height: 100%;">
+          <div class="left-menu" ref="left">
+            <My-Header :showNav="false"></My-Header>
+            <a-drawer
+              style="margin-top: 50px;"
+              v-if="isMobile()"
+              placement="left"
+              :wrapClassName="`drawer-sider ${navTheme}`"
+              :closable="false"
+              :visible="collapsed"
+              @close="drawerClose"
+            >
+              <side-menu
+                mode="inline"
+                :menus="menus"
+                :theme="navTheme"
+                :collapsed="false"
+                :collapsible="true"
+                @menuSelect="menuSelect"
+              ></side-menu>
+            </a-drawer>
+
             <side-menu
+              v-else-if="isSideMenu()"
               mode="inline"
               :menus="menus"
               :theme="navTheme"
-              :collapsed="false"
+              :collapsed="collapsed"
               :collapsible="true"
-              @menuSelect="menuSelect"
             ></side-menu>
-          </a-drawer>
-
-          <side-menu
-            v-else-if="isSideMenu()"
-            mode="inline"
-            :menus="menus"
-            :theme="navTheme"
-            :collapsed="collapsed"
-            :collapsible="true"
-          ></side-menu>
-        </dir>
-        <div class="rights">
-          <transition name="page-transition">
-            <route-view />
-          </transition>
-        </div>
-      </div>
-      <!-- SideMenu -->
-
-      <!-- Setting Drawer (show in development mode) -->
-      <!-- <setting-drawer v-if="!production"></setting-drawer> -->
+          </div>
+        </a-col>
+        <a-col :span="18" style="height: 100%;">
+          <div class="right-menu" ref="right">
+            <User></User>
+            <transition name="page-transition">
+              <route-view />
+            </transition>
+          </div>
+        </a-col>
+      </a-row>
     </div>
+    <!-- SideMenu -->
+
+    <!-- Setting Drawer (show in development mode) -->
+    <!-- <setting-drawer v-if="!production"></setting-drawer> -->
   </div>
 </template>
 
@@ -51,7 +57,7 @@ import { mapState, mapActions } from "vuex";
 import MyHeader from "@/components/Header/Header";
 import { mixin, mixinDevice } from "@/utils/mixin";
 import config from "@/config/defaultSettings";
-
+import User from "@/components/Header/User";
 import RouteView from "./RouteView";
 import SideMenu from "@/components/Menu/SideMenu";
 
@@ -61,7 +67,8 @@ export default {
   components: {
     RouteView,
     SideMenu,
-    MyHeader
+    MyHeader,
+    User
   },
   data() {
     return {
@@ -137,32 +144,32 @@ export default {
 </script>
 
 <style lang="less">
-.wrapper {
-  display: flex;
-}
-.lefts {
-  flex: 0 0 140px;
-}
-.rights {
-  flex: 1;
-  padding-left: 40px;
-}
-#box {
+#SellerLayout {
   width: 100%;
-  min-width: 100%;
-  padding: 150px 80px 0;
-  min-height: 100%;
-  background-image: linear-gradient(-45deg, #11bbe8 10%, #4ac37a 100%);
-  overflow: hidden;
+  height: 100%;
+  padding: 50px;
+  .content {
+    height: 100%;
+    .left-menu {
+      background-color: #33b8b3;
+      border-top-left-radius: 10px;
+      border-bottom-left-radius: 10px;
+      padding-top: 50px;
+      min-height: 100%;
+    }
+    .right-menu {
+      background-color: #fff;
+      border-top-right-radius: 10px;
+      border-bottom-right-radius: 10px;
+      padding: 20px;
+      min-height: 100%;
+      position: relative;
+    }
+  }
 }
-/*
- * The following styles are auto-applied to elements with
- * transition="page-transition" when their visibility is toggled
- * by Vue.js.
- *
- * You can easily play with the page transition by editing
- * these styles.
- */
+.ant-menu-inline {
+  border-right: none;
+}
 .page-transition-enter {
   opacity: 0;
 }

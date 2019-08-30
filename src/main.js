@@ -14,6 +14,7 @@ import 'intro.js/introjs.css';
 Vue.use(Share);
 Vue.use(VueIntro);
 var SocialSharing = require('vue-social-sharing');
+
 import Storage from 'vue-ls';
 const options = {
   namespace: 'vuejs__', // key prefix
@@ -23,6 +24,7 @@ const options = {
 
 Vue.use(Storage, options);
 Vue.use(SocialSharing);
+import 'vue-social-share/dist/client.css'
 import vcolorpicker from "vcolorpicker";
 Vue.use(vcolorpicker);
 Vue.use(VueFullPage);

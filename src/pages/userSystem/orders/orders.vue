@@ -2,7 +2,7 @@
   <div>
       <div class="layout-box">
         <div class="content">
-          <my-title :title="itemTitles"></my-title>
+          <my-title :title="itemTitles" :fontsize="24"></my-title>
           <person-list @search="getSearch" @page="getPage" @radios="getRadios" :listData="listData" :listFrom="listFrom"></person-list>
         </div>
       </div>

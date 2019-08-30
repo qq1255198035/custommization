@@ -129,9 +129,16 @@
             <a-avatar v-else style="backgroundColor:#23C6C8" :size="130">Sponsor Cube</a-avatar>
             <template>
               <a-upload name="avatar" :showUploadList="false" :beforeUpload="beforeUpload">
-                <a-button>
-                  <a-icon type="upload" />更换头像
-                </a-button>
+                <commonBtn
+                  :icon="'upload'"
+                  :width="'100%'"
+                  :title="'更换头像'"
+                  :height="'40px'"
+                  :padding="'7px'"
+                  :radio="'6px'"
+                  :fontsize="'18px'"
+                  :top="'10px'"
+                ></commonBtn>
               </a-upload>
             </template>
           </div>
@@ -139,12 +146,21 @@
       </a-col>
     </a-row>
     <my-title :title="itemTitle"></my-title>
-    <a-button
-      style="float:right;margin:10px 0;padding:4px 50px"
-      icon="dollar"
-      size="large"
-      @click="submitPerson"
-    >更新</a-button>
+    <a-row>
+      <a-col :span="6" :offset="18">
+        <commonBtn
+          :icon="'upload'"
+          @submitPerson="submitPerson"
+          :width="'100%'"
+          :title="'更新'"
+          :height="'45px'"
+          :padding="'10px'"
+          :radio="'12px'"
+          :fontsize="'22px'"
+          :top="'10px'"
+        ></commonBtn>
+      </a-col>
+    </a-row>
   </div>
 </template>
 <script>
@@ -162,6 +178,7 @@ import {
   upLoad
 } from "@/api/system";
 import MyTitle from "@/components/MyTitle/MyTitle";
+import commonBtn from "@/components/commonBtn/commonBtn";
 export default {
   data() {
     return {
@@ -191,7 +208,8 @@ export default {
     };
   },
   components: {
-    MyTitle
+    MyTitle,
+    commonBtn
   },
   mounted() {
     this._personSet();
@@ -202,9 +220,9 @@ export default {
       personSet().then(res => {
         console.log(res);
         const result = res.result;
-        console.log(result)
-        const phone1 = result.phone ? result.phone.split(",")[0] : '86';
-        const phone2 = result.phone ? result.phone.split(",")[1] : '';
+        console.log(result);
+        const phone1 = result.phone ? result.phone.split(",")[0] : "86";
+        const phone2 = result.phone ? result.phone.split(",")[1] : "";
         this.form.setFieldsValue({
           surname: result.surname,
           monicker: result.monicker,
@@ -337,6 +355,7 @@ export default {
 };
 </script>
 <style lang="less">
+@import url("./../../components/index.less");
 #accountSet {
   //background-color: #fff;
   padding-top: 16px;
@@ -377,9 +396,6 @@ export default {
 }
 .ant-btn-primaryion {
   background-color: rgba(255, 255, 255, 0.5) !important;
-}
-.ant-form-item-label label {
-  color: #ffffff !important;
 }
 .ant-select-selection {
   background-color: rgba(255, 255, 255, 0.5) !important;

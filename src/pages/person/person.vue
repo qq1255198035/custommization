@@ -5,7 +5,7 @@
           <commonHeader></commonHeader>
       </div>-->
       <div class="content">
-        <my-title :title="itemTitle"></my-title>
+        <my-title :title="itemTitle" :fontsize="24"></my-title>
         <accountSet></accountSet>
       </div>
     </div>
@@ -79,7 +79,7 @@ export default {
 };
 </script>
 
-<style scoped lang="less">
+<style lang="less">
 .ant-drawer-content {
   background-color: #000 !important;
 }

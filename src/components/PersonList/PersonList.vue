@@ -150,11 +150,13 @@ export default {
 .ant-select-selection {
   background: rgba(255, 255, 255, 0.5);
 }
-
-.ant-pagination {
+.pages{
+  text-align: right;
+}
+/*.ant-pagination {
   float: right;
   padding: 16px;
-}
+}*/
 .search-wrapper {
   overflow: hidden;
   padding: 14px 0;

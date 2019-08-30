@@ -8,23 +8,29 @@
       :rowClassName="function(){return 'table-row'}"
     >
       <template v-for="col in dataLists" :slot="col" slot-scope="text, record">
-        <a-select @change="handleChange(record.key,col,$event)" v-if="col == 'size'" :key="col" style="min-width: 120px;" placeholder="请选择尺码">
-          <a-select-option
-            v-for="(sitem,index) in size"
-            :key="index"
-            :value="sitem"
-            
-          >{{sitem}}
-            
-          </a-select-option>
+        <a-select
+          class="btn-width"
+          @change="handleChange(record.key,col,$event)"
+          v-if="col == 'size'"
+          :key="col"
+          placeholder="请选择尺码"
+        >
+          <a-select-option v-for="(sitem,index) in size" :key="index" :value="sitem">{{sitem}}</a-select-option>
         </a-select>
         <!-- <Stepper :num="record.number" @onPropsChange="change(record.key,col,)" v-if="col == 'number'" :key="col"></Stepper> -->
-        <div id="stepper" v-if="col == 'quantity'" :key="col">
+        <div id="steppers" v-if="col == 'quantity'" :key="col">
           <button class="left" @click="clickLeftbtn(record.key,col)">-</button>
-          <input type="number" min="1" max="Infinity" class="stepper-input" :value="record.quantity" />
+          <input
+            type="number"
+            min="1"
+            max="Infinity"
+            class="stepper-input"
+            :value="record.quantity"
+          />
           <button class="right" @click="clickRightbtn(record.key,col)">+</button>
         </div>
         <a-input
+          class="text-cen btn-width"
           v-if="col == 'total_price'"
           :key="col"
           :value="record.total_price"
@@ -34,34 +40,50 @@
       <template slot="operation" slot-scope="text, record">
         <span>
           <a @click="remove(record.key)">
-            <a-icon type="delete" style="font-size: 30px;" />
+            <a-icon type="delete" style="font-size: 18px;color: #999" />
           </a>
         </span>
       </template>
     </a-table>
-    <a-button
-      style="width: 100%; margin-top: 16px; margin-bottom: 8px"
+    <commonBtn
+      :icon="'plus'"
+      @newMember="newMember"
+      :width="'100%'"
+      :title="'添加'"
+      :height="'45px'"
+      :padding="'10px'"
+      :radio="'12px'"
+      :fontsize="'22px'"
+      :top="'20px'"
+
+    >
+    
+    </commonBtn>
+    <!--<a-button
+      style="width: 100%; margin-top: 20px;height:45px"
       icon="plus"
       @click="newMember"
-    >添加</a-button>
+    >添加</a-button>-->
   </div>
 </template>
 <script>
+import commonBtn from "@/components/commonBtn/commonBtn";
 export default {
   props: {
     dataList: {},
     dataSize: {},
-    dataSizeText:{
-      type:Array
+    dataSizeText: {
+      type: Array
     },
     size: {
       type: Array
     }
   },
-  components: {},
+  components: {
+    commonBtn
+  },
   created() {
-        
-        this._price()
+    this._price();
   },
   data() {
     return {
@@ -74,25 +96,26 @@ export default {
           title: "尺码",
           dataIndex: "size",
           key: "size",
-          width: "30%",
+          width: "25%",
           scopedSlots: { customRender: "size" }
         },
         {
           title: "数量",
           dataIndex: "quantity",
           key: "quantity",
-          width: "30%",
+          width: "25%",
           scopedSlots: { customRender: "quantity" }
         },
         {
           title: "合计价格",
           dataIndex: "total_price",
           key: "total_price",
-          width: "30%",
+          width: "25%",
           scopedSlots: { customRender: "total_price" }
         },
         {
           title: "操作",
+          width: "25%",
           key: "action",
           scopedSlots: { customRender: "operation" }
         }
@@ -104,28 +127,28 @@ export default {
   },
   methods: {
     _price() {
-      this.data = this.dataSize
-      console.log(this.dataSize)
+      this.data = this.dataSize;
+      console.log(this.dataSize);
     },
-    handleChange(key, column,value) {
-      console.log(key, column,value)
+    handleChange(key, column, value) {
+      console.log(key, column, value);
       let newData = [...this.data];
-      console.log(newData)
+      console.log(newData);
       let target = newData.filter(item => key == item.key)[0];
-      console.log(target)
+      console.log(target);
       if (target) {
-        console.log(target.size.length)
-        target.size = value
+        console.log(target.size.length);
+        target.size = value;
       }
-      this.data = newData
-      this.$emit('getList',this.data)
+      this.data = newData;
+      this.$emit("getList", this.data);
     },
     /** 减**/
     clickLeftbtn(key, column) {
       let newData = [...this.data];
-      console.log(newData)
+      console.log(newData);
       let target = newData.filter(item => key == item.key)[0];
-      console.log(target)
+      console.log(target);
       if (target) {
         if (target[column] > 1) {
           target[column]--;
@@ -135,34 +158,34 @@ export default {
         target.total_price = target[column] * this.dataSizeText[0].price;
       }
       this.data = newData;
-      this.$emit('getList',this.data)
+      this.$emit("getList", this.data);
     },
     /** 加**/
     clickRightbtn(key, column) {
-      console.log(this.dataSize)
-      console.log(this.data)
+      console.log(this.dataSize);
+      console.log(this.data);
       let newData = [...this.data];
       let target = newData.filter(item => key == item.key)[0];
-       console.log(target)
+      console.log(target);
       if (target) {
         target[column]++;
         target.total_price = target[column] * this.dataSizeText[0].price;
       }
       this.data = newData;
-      console.log(this.data)
-      this.$emit('getList',this.data)
+      console.log(this.data);
+      this.$emit("getList", this.data);
     },
     /** 添加**/
     newMember() {
       const length = this.data.length;
-      console.log(this.dataSizeText[0])
-      console.log(this.dataSize)
-        this.data.push({
+      console.log(this.dataSizeText[0]);
+      console.log(this.dataSize);
+      this.data.push({
         key:
           length === 0
             ? "1"
             : (parseInt(this.data[length - 1].key) + 1).toString(),
-            price: this.dataSizeText[0].price,
+        price: this.dataSizeText[0].price,
         total_price: this.dataSizeText[0].price,
         quantity: this.dataSizeText[0].number,
         size: this.size,
@@ -172,11 +195,11 @@ export default {
     },
 
     remove(key) {
-          console.log(key)
+      console.log(key);
       const newData = this.data.filter(item => item.key !== key);
-      console.log(newData)
+      console.log(newData);
       this.data = newData;
-      this.$emit('getList',this.data)
+      this.$emit("getList", this.data);
     }
   },
   watch: {
@@ -192,25 +215,29 @@ export default {
 };
 </script>
 <style lang="less">
-.ant-table-placeholder{
-  background: rgba(255,255,255,0.5) !important;
-  color: #fff;
+.ant-table-placeholder {
+  color: #5ba997;
 }
 
-@import "./../index.less";
+.btn-width {
+  width: 100%;
+}
+.btn-height {
+  height: 56px;
+}
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none !important;
   margin: 0;
 }
-#stepper {
+#steppers {
   .stepper-input {
     box-sizing: border-box;
     width: 32px;
     height: 28px;
 
     padding: 0;
-    color: #fff;
+    color: #999;
     font-size: 14px;
     text-align: center;
     vertical-align: middle;
@@ -220,6 +247,8 @@ input::-webkit-inner-spin-button {
     border-radius: 0;
     -webkit-appearance: none;
     outline: none;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
   }
   .left {
     position: relative;
@@ -228,12 +257,12 @@ input::-webkit-inner-spin-button {
     height: 28px;
     margin: 0;
     padding: 5px;
-    color: #fff;
+    color: #999;
     vertical-align: middle;
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255);
     border: 0;
     border-radius: 4px 0 0 4px;
-    border-right: 1px solid #fff;
+    border: 1px solid #eee;
     outline: none;
     cursor: pointer;
     line-height: 14px;
@@ -245,12 +274,12 @@ input::-webkit-inner-spin-button {
     height: 28px;
     margin: 0;
     padding: 5px;
-    color: #fff;
+    color: #999;
     vertical-align: middle;
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255);
     border: 0;
     border-radius: 0 4px 4px 0;
-    border-left: 1px solid #fff;
+    border: 1px solid #eee;
     outline: none;
     cursor: pointer;
     line-height: 14px;
