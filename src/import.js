@@ -30,7 +30,8 @@ import {
   Pagination,
   Badge,
   LocaleProvider,
-  Cascader
+  Cascader,
+  Tabs
 } from "ant-design-vue";
 Vue.use(Button);
 Vue.use(Row);
@@ -63,4 +64,10 @@ Vue.use(Form);
 Vue.use(Badge);
 Vue.use(LocaleProvider);
 Vue.use(Cascader);
+Vue.use(Tabs);
 Vue.prototype.$message = Message;
+Vue.prototype.$confirm = Modal.confirm
+Vue.prototype.$info = Modal.info
+Vue.prototype.$success = Modal.success
+Vue.prototype.$error = Modal.error
+Vue.prototype.$warning = Modal.warning

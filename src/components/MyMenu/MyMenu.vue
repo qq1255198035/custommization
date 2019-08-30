@@ -64,10 +64,10 @@ export default {
       .ant-menu-item-selected{
             background-color: #fff !important;
             i{
-                  color: #5ba997 !important;
+                  color: #33b8b3 !important;
             }
             a{
-                  color: #5ba997 !important;
+                  color: #33b8b3 !important;
             }
       }
 }

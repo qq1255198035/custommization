@@ -8,7 +8,7 @@
         >
             <template slot="title">
                 <div>
-                        <span class="icon-logotxt" style="font-size: 35px;color: #5BA997"></span>
+                        <span class="icon-logotxt" style="font-size: 35px;color: #33b8b3"></span>
                 </div>
             </template>
             <div id="DesignBox">
@@ -53,7 +53,7 @@
                                 <div class="tool-box" v-show="visibletype == -1">
                                     <h2>你想怎么开始？</h2>
                                     <ul class="btn-box">
-                                        <li @click="startTo(0)">
+                                        <li @click="startTo(0)" v-intro="'The content of tooltip'" v-intro-step="1">
                                             <span class="icon-txt"></span>
                                             添加文字
                                         </li>
@@ -70,7 +70,7 @@
                                 </div>
                                 <div class="tool-box1" v-show="visibletype == 0">
                                     <div v-if="visibletype !== -1">
-                                        <h3 style="color: #5BA997;padding-bottom: 3px; border-bottom: 1px solid #333;">图层</h3>
+                                        <h3 style="color: #33b8b3;padding-bottom: 3px; border-bottom: 1px solid #333;">图层</h3>
                                         <div class="controlers">
                                             <span title="移动到下一层" @click="toNextLayer"><a-icon type="up" /></span>
                                             <span title="移动倒上一层" @click="toPreLayer"><a-icon type="down" /></span>
@@ -141,7 +141,7 @@
                                 </div>
                                 <div class="tool-box6" v-show="visibletype == 1">
                                     <div v-if="visibletype !== -1">
-                                        <h3 style="color: #5BA997;padding-bottom: 3px; border-bottom: 1px solid #333;">图层</h3>
+                                        <h3 style="color: #33b8b3;padding-bottom: 3px; border-bottom: 1px solid #333;">图层</h3>
                                         <div class="controlers">
                                             <span title="移动到下一层" @click="toNextLayer"><a-icon type="up" /></span>
                                             <span title="移动倒上一层" @click="toPreLayer"><a-icon type="down" /></span>
@@ -333,7 +333,7 @@
                                         <a-icon type="arrow-left" style="cursor: pointer;" @click="visibletype = 0"/>
                                     </h2>
                                     <dl>
-                                        <dt style="color: #5ba997">描边大小：</dt>
+                                        <dt style="color: #33b8b3">描边大小：</dt>
                                         <dd>
                                             <a-slider :min="0" :max="10" v-model="strokeWidth" :step="1" @change="changestrokeWidth"/>
                                         </dd>
@@ -397,8 +397,8 @@
                     <li>每件价格 <span>$26.40 To $51.2</span></li>
                     <li>
                         <a-button icon="plus">添加产品</a-button>
-                        <a-button icon="save">保存设计</a-button>
-                        <a-button icon="file-text" type="primary">订单列表</a-button>
+                        <a-button icon="save" v-intro="'The content of tooltip'" v-intro-step="3">保存设计</a-button>
+                        <a-button icon="file-text" type="primary" v-intro="'The content of tooltip'" v-intro-step="2">订单列表</a-button>
                     </li>
                 </ul>
             </div>
@@ -460,8 +460,10 @@ import { fabric } from 'fabric';
 import 'fabric-customise-controls';
 import FontFaceObserver from 'fontfaceobserver';
 import initAligningGuidelines from "@/utils/guidelines";
-import imgUrl from '@/assets/jaw.jpg';
-import imgUrl1 from '@/assets/black.jpg';
+import imgUrl1 from '@/assets/front.png';
+import imgUrl2 from '@/assets/back.png';
+import imgUrl3 from '@/assets/left.png';
+import imgUrl4 from '@/assets/right.png';
 import resize from '@/assets/icons/resize.svg';
 import remove from '@/assets/icons/remove.svg';
 import rotate from '@/assets/icons/rotate.svg';
@@ -527,10 +529,10 @@ export default {
             lineHeight: 1,
             opacity:1,
             bgimgs:[
-                imgUrl,
                 imgUrl1,
-                imgUrl,
-                imgUrl1
+                imgUrl2,
+                imgUrl3,
+                imgUrl4
             ],
             imgs:[
                 {
@@ -616,8 +618,17 @@ export default {
             this.bindCanvas(this.myCanvas1,0);
             this.setEditIcon();
             this.setEditPointer();
-            
         })
+        this.$intro().setOptions({
+            prevLabel: "上一步",
+            nextLabel: "下一步",
+            skipLabel: "跳过",
+            doneLabel: "结束",
+            overlayOpacity: "0",
+            highlightClass: "white",
+            tooltipClass:"tool-tip",
+            disableInteraction: false,
+        }).start();
         
     },
     methods:{
@@ -736,7 +747,7 @@ export default {
         },
         handleObjectMove(object){
             object.on("object:moving", function(e) {
-                //console.log(e.target)
+                
                 var obj = e.target;
                 var canvas = obj.canvas;
                 var top = obj.top;
@@ -1143,7 +1154,18 @@ export default {
     }
 }
 </script>
-<style lang="less" scoped>
+<style lang="less">
+.white{
+    background-color:rgba(255,255,255,.0);
+    border-color: #33b8b3;
+}
+.tool-tip{
+    .introjs-tooltipbuttons{
+        a:hover{
+            color: #33b8b3;
+        }
+    }
+} 
 @import url("./../../assets/style.css");
 @import url("./../../components/index.less");
 @font-face {
@@ -1158,9 +1180,9 @@ export default {
         display: flex;
         .active{
             background-color: #fff;
-            color: #5BA997 !important;
+            color: #33b8b3 !important;
             span{
-                color: #5BA997;
+                color: #33b8b3;
             }
         }
         .side-bar{
@@ -1220,7 +1242,7 @@ export default {
                     margin-top: 15px;
                     cursor: pointer;
                     span{
-                        color: #5BA997;
+                        color: #33b8b3;
                         font-size: 25px;
                     }
                 }
@@ -1244,12 +1266,12 @@ export default {
                             font-size: 24px;
                             margin: 0 10px;
                             cursor: pointer;
-                            color: #5BA997;
+                            color: #33b8b3;
                         }
                 }
                 .tool-box{
                     h2{
-                        color: #5BA997;
+                        color: #33b8b3;
                         text-align: center;
                         padding: 50px 0;
                     }
@@ -1258,7 +1280,7 @@ export default {
                         margin: 50px 0;
                         color: #333;
                         a{
-                            color: #5BA997;
+                            color: #33b8b3;
                         }
                     }
                     .btn-box{
@@ -1285,10 +1307,10 @@ export default {
                                 margin-bottom: 5px;
                             }
                             &:hover{
-                                border-color: #5BA997;
-                                color: #5BA997;
+                                border-color: #33b8b3;
+                                color: #33b8b3;
                                 span{
-                                    color: #5BA997;
+                                    color: #33b8b3;
                                 }
                             }
                         }
@@ -1305,14 +1327,14 @@ export default {
                                     text-align: center;
                                     margin: 0 10px;
                                     span{
-                                            border: 1px solid #5BA997;
+                                            border: 1px solid #33b8b3;
                                             border-radius: 4px;
                                             display: inline-block;
                                             padding: 4px 10px;
                                             margin: 0 2px;
                                             cursor: pointer;
                                             i{
-                                                color: #5BA997;
+                                                color: #33b8b3;
                                                 font-size: 20px;
                                             }
                                     }
@@ -1356,7 +1378,7 @@ export default {
                         .tool-list{
                             margin-top: 10px;
                             padding-top: 10px;
-                            border-top: 1px solid #5BA997;
+                            border-top: 1px solid #33b8b3;
                             .square{
                                     width: 14px;
                                     height: 14px;
@@ -1365,13 +1387,13 @@ export default {
                             }
                             li{
                                     padding: 10px 0;
-                                    border-bottom:1px solid #5BA997; 
+                                    border-bottom:1px solid #33b8b3; 
                                     display: flex;
                                     justify-content: space-between;
                                     align-items: center;
                                     cursor: pointer;
                                     > span{
-                                        color: #5BA997;
+                                        color: #33b8b3;
                                     }
                                     p{
                                         display: flex;
@@ -1407,7 +1429,7 @@ export default {
                                     font-size: 18px;
                                 }
                                 &:hover{
-                                    background-color: #5BA997;
+                                    background-color: #33b8b3;
                                     color: #fff;
                                 }
                             }
@@ -1431,7 +1453,7 @@ export default {
                 .tool-box5{
                         margin-top: 20px;
                         > p{
-                            color: #5BA997;
+                            color: #33b8b3;
                         }
                         .font-color-list{
                             display: flex;
@@ -1451,11 +1473,11 @@ export default {
                     h3{
                         padding: 10px 0;
                         border-bottom: 1px solid #ccc;
-                        color: #5BA997;
+                        color: #33b8b3;
                     }
                     .upload-box{
                         h4{
-                            color: #5BA997;
+                            color: #33b8b3;
                             margin: 10px 0 15px;
                         }
                         p{
@@ -1483,7 +1505,7 @@ export default {
                                 }
                             }
                             span{
-                                color: #5BA997;
+                                color: #33b8b3;
 
                             }
                         }
@@ -1527,7 +1549,7 @@ export default {
                             padding: 10px 0;
                             border-bottom: 1px solid #ccc;
                             font-size: 18px;
-                            color: #5BA997;
+                            color: #33b8b3;
                         }
                         dd{
                             display: flex;
@@ -1535,7 +1557,7 @@ export default {
                             border-bottom: 1px solid #ccc;
                             span{
                                 width: 15%;
-                                color: #5BA997;
+                                color: #33b8b3;
                             }
                             > div{
                                 width: 85%;
@@ -1566,7 +1588,7 @@ export default {
                 .tool-box9{
                     h2{
                         font-size: 18px;
-                        color: #5BA997;
+                        color: #33b8b3;
                         margin-bottom: 20px;
                         border-bottom: 1px solid #ccc;
                         padding: 15px 0;
@@ -1586,7 +1608,7 @@ export default {
                 .tool-box10{
                     h2{
                         font-size: 18px;
-                        color: #5BA997;
+                        color: #33b8b3;
                         margin-bottom: 20px;
                         border-bottom: 1px solid #ccc;
                         padding: 15px 0;
@@ -1622,7 +1644,7 @@ export default {
                 .tool-box11{
                     h2{
                         font-size: 18px;
-                        color: #5BA997;
+                        color: #33b8b3;
                         margin-bottom: 20px;
                         border-bottom: 1px solid #ccc;
                         padding: 15px 0;
@@ -1631,7 +1653,7 @@ export default {
                 .tool-box12{
                     h2{
                         font-size: 18px;
-                        color: #5BA997;
+                        color: #33b8b3;
                         margin-bottom: 0;
                         border-bottom: 1px solid #ccc;
                         padding: 15px 0;
@@ -1665,7 +1687,7 @@ export default {
                                 span{
                                     i{
                                         font-size: 20px;
-                                        color: #5BA997;
+                                        color: #33b8b3;
                                         cursor: pointer;
                                     }
                                 }
@@ -1684,7 +1706,7 @@ export default {
         border-top: 1px solid #ccc;
         li{
             span{
-                color: #5BA997;
+                color: #33b8b3;
                 font-size: 18px;
                 margin-left: 10px;
             }
@@ -1712,4 +1734,5 @@ export default {
         }
     }
 }
+
 </style>

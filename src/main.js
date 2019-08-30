@@ -7,9 +7,12 @@ import './permission'*/
 import { VueAxios } from './utils/request'
 import "fullpage.js/vendors/scrolloverflow";
 import VueFullPage from "vue-fullpage.js";
-import 'vue-social-share/dist/client.css'
-import Share from 'vue-social-share'
-Vue.use(Share)
+import 'vue-social-share/dist/client.css';
+import Share from 'vue-social-share';
+import VueIntro from 'vue-introjs';
+import 'intro.js/introjs.css';
+Vue.use(Share);
+Vue.use(VueIntro);
 var SocialSharing = require('vue-social-sharing');
 import Storage from 'vue-ls';
 const options = {

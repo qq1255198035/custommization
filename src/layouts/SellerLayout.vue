@@ -10,8 +10,10 @@
                 </a-col>
                 <a-col :span="18" style="height: 100%;">
                     <div class="right" ref="right">
-                        <User></User>
-                        <router-view></router-view>
+                        <User style="width: 100%;height: 58px;background-color: #fff;position: absolute;left: 0;right: 0;top:0;z-index: 9999;padding-top: 20px;"></User>
+                        <div class="scroll-box">
+                            <router-view></router-view>
+                        </div>
                     </div>
                 </a-col>
             </a-row>
@@ -41,8 +43,9 @@ export default {
     padding: 50px;
     .content{
         height: 100%;
+
         .left{
-            background-color: #5ba997;
+            background-color: #33b8b3;
             border-top-left-radius: 10px;
             border-bottom-left-radius: 10px;
             padding-top: 50px;
@@ -54,7 +57,23 @@ export default {
             border-bottom-right-radius: 10px;
             padding: 20px;
             min-height: 100%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+            .scroll-box{
+                padding-top: 58px; 
+                overflow-y: scroll;
+                height: 100%;
+                &::-webkit-scrollbar {  /*滚动条整体样式*/
+                    width: 0;  /*宽分别对应竖滚动条的尺寸*/
+                    /*高分别对应横滚动条的尺寸*/
+                }
+            }
+           
+           
+
         }
+        
     }
     
 }

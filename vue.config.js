@@ -1,5 +1,6 @@
 const path = require("path");
 const webpack = require('webpack');
+import 'intro.js/introjs.css';
 function resolve(dir) {
       return path.join(__dirname, dir)
 }
@@ -29,7 +30,7 @@ module.exports = {
                               'outline-color': '#fff',
                               'primary-color': '#3BB9B5',
                               'btn-primary-color': '#fff',
-                              'btn-primary-bg': '#5BA997',
+                              'btn-primary-bg': '#33b8b3',
                               'btn-border-radius-base': '10px',
                               'btn-disable-color': 'rgba(40,181,177,0.5)',
                               'btn-disable-border': 'rgba(40,181,177,0.5)',
@@ -52,9 +53,7 @@ module.exports = {
       configureWebpack: {
             plugins: [
                   new webpack.ProvidePlugin({
-                        $:"jquery",
-                        jQuery:"jquery",
-                        "windows.jQuery":"jquery"
+                        introJs: ['intro.js', 'introJs']
                   })
             ]
       },

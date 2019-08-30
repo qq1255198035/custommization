@@ -24,7 +24,7 @@ export default {
 .hiden-menu{
     position: relative;
     > i{
-        color: #5ba997;
+        color: #33b8b3;
     }
     ul{
             width: 67px;
@@ -32,7 +32,7 @@ export default {
             position: absolute;
             top: 20px;
             right: 5px;
-            background-color: #5ba997;
+            background-color: #33b8b3;
             border-radius: 4px;
             li{
                 cursor: pointer;

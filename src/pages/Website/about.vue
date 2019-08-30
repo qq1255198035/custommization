@@ -57,6 +57,7 @@ export default {
                   p{
                         word-wrap: break-word;
                         margin: 25px 0;
+                        color: #fff;
                         span{
                               
                               width: 35px;

@@ -102,7 +102,7 @@ export default {
                 border-radius: 4px;
                 padding: 5px 10px;
                 width: 250px !important;
-                border: 1px solid #5ba997 !important;
+                border: 1px solid #33b8b3 !important;
                 input{
                         border: none;
                         outline: none;
@@ -114,7 +114,7 @@ export default {
                         cursor: pointer;
                         i{
                             font-size: 25px;
-                            color: #5ba997;
+                            color: #33b8b3;
                         }
                 }
                 

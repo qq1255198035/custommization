@@ -24,7 +24,7 @@ export default {
         > span{
             margin: 0 10px;
             i{
-                color: #5ba997;
+                color: #33b8b3;
                 font-size: 30px;
                 padding: 4px;
             }

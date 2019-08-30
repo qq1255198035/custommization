@@ -100,3 +100,51 @@ export function queryById(id) {
         data:qs.stringify({id: id,})
     })
 }
+
+export function deleteAddress(id) {
+    return axios({
+        url: '/system/jeecgAddress/delete',
+        method: 'post',
+        data:qs.stringify({id: id,})
+    })
+}
+
+export function teamOrderDetails(id) {
+    return axios({
+        url: '/system/jeecgOrder/teamOrderDetails',
+        method: 'post',
+        data:qs.stringify({orderId: id,})
+    })
+}
+
+export function orderDetailUp(id) {
+    return axios({
+        url: '/system/jeecgOrder/orderDetailUp',
+        method: 'post',
+        data:qs.stringify({orderId: id,})
+    })
+}
+
+export function orderStatus(id) {
+    return axios({
+        url: '/system/jeecgOrder/orderStatus',
+        method: 'post',
+        data:qs.stringify({orderId: id,})
+    })
+}
+
+export function orderDetailDown(id) {
+    return axios({
+        url: '/system/jeecgOrder/orderDetailDown',
+        method: 'post',
+        data:qs.stringify({orderId: id,})
+    })
+}
+
+export function delProducts(id) {
+    return axios({
+        url: '/system/jeecgGoodsPic/delete',
+        method: 'post',
+        data:qs.stringify({id: id,})
+    })
+}

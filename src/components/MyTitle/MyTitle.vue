@@ -27,7 +27,7 @@ export default {
       h2{
             padding: 10px 0;
             margin:0;
-            color: #5ba997;
+            color: #33b8b3;
       }
 }
 </style>

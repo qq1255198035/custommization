@@ -6,7 +6,7 @@
                               <img :src="item.topic_url" alt="">
                               <div class="desc">
                                     <p>
-                                          <span style="color: #5ba997;font-size: 18px;">{{item.topic}}</span>
+                                          <span style="color: #33b8b3;font-size: 18px;">{{item.topic}}</span>
                                           <span>{{item.pay_end_date}}</span>
                                     </p>
                                     <p>{{item.introduction}}</p>

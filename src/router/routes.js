@@ -115,6 +115,14 @@ const routes = [
                               
                         }
                   },
+                  {
+                        path: "/myorder",
+                        name: "myorder",
+                        component: () => import("@/pages/Seller/MyOrders"),
+                        meta: {
+                              
+                        }
+                  }
             ]
       },
       {

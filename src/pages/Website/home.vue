@@ -130,6 +130,7 @@ export default {
                               p{
                                     word-wrap: break-word;
                                     margin: 20px 0;
+                                    color: #fff;
                               }
                         }
                   }

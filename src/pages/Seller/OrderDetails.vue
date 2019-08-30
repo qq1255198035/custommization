@@ -11,7 +11,7 @@
                 <a-button size="small" icon="rollback">返回</a-button>
             </my-title>
             <a-row type="flex" justify="space-between" align="top" style="height: calc(100% - 189px);">
-                <a-col :span="5" style="padding: 20px 30px;backgroundColor: #F2F2F2;height: 100%;overflow-y: scroll;">
+                <a-col :span="6" class="scroll-box left-side">
                     <div class="order-info">
                         <dl class="top">
                             <dt>订单ID：</dt>
@@ -21,17 +21,17 @@
                         </dl>
                         <ul class="bottom">
                             <li v-for="item in information.list" :key="item.id">
-                                <img src="@/assets/jaw.jpg" alt="">
+                                <img :src="item.positive_pic_url" alt="">
                                 <div>
                                     <div>
                                         <h3>{{item.name}}</h3>
-                                        <p>颜色：{{item.color}}</p>
-                                        <p>价格：${{item.color}}</p>
-                                        <p>数量：{{item.color}}</p>
+                                        <p>颜色：{{item.product_color}}</p>
+                                        <p>价格：${{item.price}}</p>
+                                        <p>数量：{{item.quantity}}</p>
                                     </div>
                                     <p>
                                         <a-icon type="edit" />
-                                        <a-icon type="delete" />
+                                        <a-icon type="delete" @click="deletePro(item.id)"/>
                                     </p>
                                     
                                 </div>
@@ -39,17 +39,42 @@
                         </ul>
                     </div>
                 </a-col>
-                <a-col :span="17" style="padding-right: 30px;">
+                <a-col :span="17" style="padding-right: 30px;padding-bottom: 20px;" class="scroll-box">
                     <ul class="forms">
                         <li>
                             <h3>
-                                预期订货数量 <span>Tips: 最小订货量： 14</span>
+                                预期订货数量
                             </h3>
-                            <div id="stepper">
-                                    <button class="left" @click="clickLeftbtn">-</button>
-                                    <input type="number" min="0" max="Infinity" class="stepper-input" v-model="number">
-                                    <button class="right" @click="clickRightbtn">+</button>
-                            </div>
+                            <a-form
+                                :form="myform"
+                                style="padding-left: 30px;"
+                            >
+                                <a-form-item
+                                    label="标题"
+                                    :label-col="{ span: 1 }"
+                                    :wrapper-col="{ span: 12 }"
+                                >
+                                <a-input
+                                    v-decorator="[
+                                    'note',
+                                    {rules: [{ required: true, message: 'Please input your note!' }]}
+                                    ]"
+                                />
+                                </a-form-item>
+                                <a-form-item
+                                    label="简介"
+                                    :label-col="{ span: 1 }"
+                                    :wrapper-col="{ span: 12 }"
+                                >
+                                <a-textarea
+                                    :rows="4"
+                                    v-decorator="[
+                                    'desc',
+                                    {rules: [{ required: true, message: 'Please input your note!' }]}
+                                    ]"
+                                />
+                                </a-form-item>
+                            </a-form>
                         </li>
                         <li>
                             <h3>
@@ -126,7 +151,7 @@
                         </p>
                         <span>
                             <a-icon type="edit" style="margin-right: 10px;" @click="editAddress(item.id)"/>
-                            <a-icon type="delete" />
+                            <a-icon type="delete" @click="postDeleteAddress(item.id)"/>
                         </span>
                     </li>
                     
@@ -180,7 +205,7 @@
 <script>
 import MyTitle from "@/components/MyTitle/MyTitle";
 import User from "@/components/Header/User";
-import { adressList,addressOne,addAddress, queryById } from "@/api/seller";
+import { adressList,addressOne,addAddress, queryById, deleteAddress, teamOrderDetails, delProducts } from "@/api/seller";
 export default {
     components:{
         MyTitle,
@@ -191,6 +216,7 @@ export default {
             adress:'',
             id: '',
             form: this.$form.createForm(this),
+            myform: this.$form.createForm(this),
             modelShow1:false,
             modelShow2:false,
             value: 1,
@@ -199,19 +225,10 @@ export default {
             endValue: null,
             endOpen: false,
             information:{
-                orderId:4164546,
-                orderTime: '2019-56-56 15:25:30',
+                orderId:'',
+                orderTime: '',
                 list:[
-                    {
-                        id:1,
-                        name:'校篮球队训练服',
-                        color: '蓝色'
-                    },
-                    {
-                        id:2,
-                        name:'校篮球队训练服',
-                        color: '蓝色'
-                    }
+                    
                 ]
                 
             },
@@ -221,9 +238,53 @@ export default {
     },
     mounted(){
         this.getAdressList();
-        this.getAddressOne()
+        this.getAddressOne();
+        this.getTeamOrderDetails(266);
     },
     methods:{
+        deletePro(id){
+            let that = this;
+            that.$confirm({
+                title: 'Are you sure delete this task?',
+                okText: 'Yes',
+                cancelText: 'No',
+                class:'my-modal',
+                onOk() {
+                    console.log('OK');
+                    that.postDelProducts(id)
+                },
+                onCancel() {
+                    console.log('Cancel');
+                },
+            });
+        },
+        postDelProducts(id){
+            delProducts(id).then(res => {
+                console.log(res)
+                if(res.code == 200){
+                    this.getTeamOrderDetails(266);
+                    this.$message.success(res.message)
+                }
+            })
+        },
+        getTeamOrderDetails(id){
+            teamOrderDetails(id).then(res => {
+                console.log(res)
+                this.information.orderId = res.result.orderSn;
+                this.information.orderTime = res.result.createTime;
+                this.information.list = res.result.list
+            })
+        },
+        postDeleteAddress(id){
+            deleteAddress(id).then(res => {
+                console.log(res)
+                if(res.code == 200){
+                    this.getAdressList();
+                    this.$message.success(res.message);
+                }
+                
+            })
+        },
         editAddress(id){
             this.id = id
             this.modelShow1 = false;
@@ -232,13 +293,15 @@ export default {
         },
         queryAddressById(id){
             queryById(id).then(res => {
+                console.log(res)
+                console.log(res.result.addressCode.split(","))
                 this.form.setFieldsValue(
                     {
                         bm: res.result.name,
-                        country: [1,4552,4553],
+                        country: res.result.addressCode.split(","),
                         adress: res.result.detailInfo,
                         email: res.result.postalCode,
-                        phonesome:　res.result.userName,
+                        phonesome: res.result.userName,
                         tel: res.result.telNumber
                     },
                    
@@ -287,12 +350,7 @@ export default {
         addressManagement(){
             this.modelShow1 = true;
         },
-        clickLeftbtn(){
-            this.number > 0 ? this.number -- : 0
-        },
-        clickRightbtn(){
-            this.number ++;
-        },
+        
         disabledStartDate (startValue) {
             const endValue = this.endValue;
             if (!startValue || !endValue) {
@@ -381,7 +439,7 @@ input::-webkit-inner-spin-button {
             i{
                 font-size: 20px;
                 cursor: pointer;
-                color: #5ba997;
+                color: #33b8b3;
             }
         }
     }
@@ -400,10 +458,10 @@ input::-webkit-inner-spin-button {
             display: flex;
             width: 100%;
             justify-content: space-between;
-            border-bottom: 1px solid #5ba997;
+            border-bottom: 1px solid #33b8b3;
             padding: 30px;
             p:nth-child(1){
-                color: #5ba997;
+                color: #33b8b3;
                 font-size: 60px;
                 margin-bottom: 0;
             }
@@ -413,7 +471,7 @@ input::-webkit-inner-spin-button {
                 padding: 20px 0;
                 border-bottom: 1px solid #fff;
                 dt{
-                    color: #5ba997;
+                    color: #33b8b3;
                 }
                 dd{
                     margin: 10px 0;
@@ -435,22 +493,23 @@ input::-webkit-inner-spin-button {
                         height: 100%;
                         width: calc(100% - 120px);
                         h3{
-                            color: #5ba997;
+                            color: #33b8b3;
                         }
                         div{
-                            width: 80%;
+                            width: 70%;
                             p{
                                 margin: 0;
                             }
                         }
                         > p{
-                            width: 20%;
+                            width: 30%;
                             margin: 0; 
                             text-align: right;
                             i{
                                 font-size: 20px;
                                 margin: 0 2px;
                                 cursor: pointer;
+                                color: #33b8b3;
                             }
                         }
                     }
@@ -464,7 +523,7 @@ input::-webkit-inner-spin-button {
                 position: absolute;
                 left: 7px;
                 top: 10px;
-                background-color: #5ba997;
+                background-color: #33b8b3;
                 width: 1px;
                 height: 97%;
                 
@@ -472,7 +531,7 @@ input::-webkit-inner-spin-button {
             li{
                 h3{
                     position: relative;
-                    color: #5ba997;
+                    color: #33b8b3;
                     margin: 20px 0;
                     padding-left: 30px;
                     span{
@@ -484,19 +543,19 @@ input::-webkit-inner-spin-button {
                         width: 14px;
                         height: 14px;
                         border-radius: 7px;
-                        background-color: #5ba997;
+                        background-color: #33b8b3;
                         position: absolute;
                         left: 0;
                         top: 6px;
                     }
                 }
                 h4{
-                    color: #5ba997;
+                    color: #33b8b3;
                     display: flex;
                     justify-content: space-between;
                     span{
                         cursor: pointer;
-                        color: #5ba997;
+                        color: #33b8b3;
                     }
                 }
                 .select-way{
@@ -560,6 +619,19 @@ input::-webkit-inner-spin-button {
                     outline: none;
                     cursor: pointer;
                     line-height: 14px;
+            }
+        }
+        .left-side{
+            padding: 20px 30px;
+            background-color: #eee;
+            
+        }
+        .scroll-box{
+            height: 100%;
+            overflow-y: scroll;
+            &::-webkit-scrollbar {  /*滚动条整体样式*/
+                width: 0;  /*宽分别对应竖滚动条的尺寸*/
+                /*高分别对应横滚动条的尺寸*/
             }
         }
     }

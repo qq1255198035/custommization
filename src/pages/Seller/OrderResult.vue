@@ -14,18 +14,18 @@
         </div>
         <div class="box1">
             <my-stpes :mycurrent="1" stpesnum="3">
-                    <p slot="p1">设计原稿</p>
-                    <p slot="p2">打样确认</p>
-                    <p slot="p3">分享购买</p>
+                    <p slot="p1" style="color: #fff;">设计原稿</p>
+                    <p slot="p2" style="color: #fff;">打样确认</p>
+                    <p slot="p3" style="color: #fff;">分享购买</p>
             </my-stpes>
         </div>
         <div class="content">
             <div class="success">
                 <div class="title">
-                    <a-icon type="smile" theme="filled"/>
+                    <a-icon type="smile" theme="filled" style="color: #fff;"/>
                     <div>
                         <h3>操作成功！</h3>
-                        <p>感谢您的下单</p>
+                        <p style="color: #fff;">感谢您的下单</p>
                     </div>
                 </div>
                 <div class="desc">
@@ -55,6 +55,9 @@ export default {
         return{
             count:1
         }
+    },
+    methods:{
+        
     }
 }
 </script>
@@ -142,8 +145,8 @@ export default {
                         margin: 0 20px;
                         width: 88px;
                         &:nth-child(1){
-                            color: #5BA997;
-                            border-color: #5BA997;
+                            color: #33b8b3;
+                            border-color: #33b8b3;
                         }
                         &:nth-child(2){
                             color: #333;

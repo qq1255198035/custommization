@@ -32,7 +32,7 @@ export default {
             .desc{
                   margin-top: 15px;
                   h3{
-                        color: #5BA997;
+                        color: #33b8b3;
                   }
                   p{
                         margin: 10px 0;

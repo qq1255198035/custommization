@@ -21,7 +21,7 @@
                               <div class="right">
                                     <span>{{item.buyNum}}/{{item.quantity}}</span>
                                     <span>状态： {{item.status}}</span>
-                                    <a-button style="color: #5ba997;">样稿确认</a-button>
+                                    <a-button style="color: #33b8b3;">样稿确认</a-button>
                               </div>
                         </div>
                   </div>
@@ -53,7 +53,7 @@ export default {
                   justify-content: space-between;
                   span{
                         width: 33%;
-                        color: #5ba997;
+                        color: #33b8b3;
                   }
             }
       }
@@ -72,7 +72,7 @@ export default {
                               justify-content: space-between;
                               padding-left: 20px;
                               h3{
-                                    color: #5ba997;
+                                    color: #33b8b3;
                                     padding: 10px;
                               }
                               p{

@@ -19,8 +19,9 @@
                     </div>
                 </a-col>
                 <a-col :span="18" style="height: 100%;">
+                    <User style="background-color: #fff; padding-top: 20px;border-top-right-radius: 10px;"></User>
                     <div class="right">
-                        <User></User>
+                        
                         <my-title :title="'新建订单'"></my-title>
                         <goods-list :goodsArr="goodsList"></goods-list>
                         <div class="btn-box">
@@ -122,7 +123,7 @@ export default {
     .content{
         height: 100%;
         .left{
-            background-color: #5ba997;
+            background-color: #33b8b3;
             border-top-left-radius: 10px;
             border-bottom-left-radius: 10px;
             padding-top: 50px;
@@ -130,12 +131,16 @@ export default {
         }
         .right{
             background-color: #fff;
-            border-top-right-radius: 10px;
+            
             border-bottom-right-radius: 10px;
             padding: 20px;
-            min-height: 100%;
+            height: calc(100% - 58px);
             position: relative;
             overflow-y: scroll;
+            &::-webkit-scrollbar {  /*滚动条整体样式*/
+                width: 0;  /*宽分别对应竖滚动条的尺寸*/
+                /*高分别对应横滚动条的尺寸*/
+            }
             .btn-box{
                 margin-top: 20px; 
                 position: absolute;

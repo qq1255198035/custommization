@@ -48,7 +48,7 @@ export default {
       .desc{
             margin-left: 20px;
             h3{
-                  color: #5ba997;
+                  color: #33b8b3;
                   font-size: 24px;
             }
             P{
