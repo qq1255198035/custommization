@@ -1,23 +1,17 @@
 <template>
-  <div class="share">
-      <div class="layout-box">
-        <!--<div class="menu block">
+  <div>
+    <div class="layout-box">
+      <!--<div class="menu block">
           <commonHeader></commonHeader>
-        </div>-->
-        <div class="content">
-          <my-title :title="itemTitle"></my-title>
-          <accountSet></accountSet>
-        </div>
+      </div>-->
+      <div class="content">
+        <my-title :title="itemTitle"></my-title>
+        <accountSet></accountSet>
       </div>
+    </div>
     <div>
       <a-button class="open-btn" type="primary" @click="showDrawer" icon="bars"></a-button>
-      <a-drawer
-        title="服装设计"
-        placement="left"
-        :closable="false"
-        @close="onClose"
-        :visible="visible"
-      >
+      <a-drawer title="服装设计" placement="left" :closable="false" @close="onClose" :visible="visible">
         <commonHeader></commonHeader>
       </a-drawer>
     </div>
@@ -25,7 +19,7 @@
 </template>
 
 <script>
-import accountSet from "@/components/common/accountSet"
+import accountSet from "@/components/common/accountSet";
 import MyTitle from "@/components/MyTitle/MyTitle";
 import PersonList from "@/components/PersonList/PersonList";
 import commonHeader from "@/components/commonHeader/commonHeader";
@@ -86,47 +80,46 @@ export default {
 </script>
 
 <style scoped lang="less">
-.ant-drawer-content{
-    background-color: #000 !important;
+.ant-drawer-content {
+  background-color: #000 !important;
 }
-.share {
-    .layout-box {
-      display: flex;
-      .menu {
-        flex: 0 0 200px;
-        max-width: 200px;
-        min-width: 120px;
-        width: 200px;
-      }
-      .content {
-        flex: 1;
-      }
-    }
+.layout-box {
+  display: flex;
+  .menu {
+    flex: 0 0 200px;
+    max-width: 200px;
+    min-width: 120px;
+    width: 200px;
   }
-  .open-btn{
-      position: fixed;
-      top: 20%;
-      left: 0;
-      color: #000 !important;
+  .content {
+    flex: 1;
+  }
+}
+
+.open-btn {
+  position: fixed;
+  top: 20%;
+  left: 0;
+  color: #000 !important;
 }
 
 @media screen and(max-width: 760px) {
   .block {
     display: none;
   }
-  .open-btn{
-      display: block;
+  .open-btn {
+    display: block;
   }
-  .ant-drawer-content{
-      background: #000 !important;
+  .ant-drawer-content {
+    background: #000 !important;
   }
 }
 @media screen and(min-width: 760px) {
   .block {
     display: block;
   }
-  .open-btn{
-      display: none;
+  .open-btn {
+    display: none;
   }
 }
 </style>

@@ -2,9 +2,6 @@
   <div class="share">
     <div class="share-box">
       <div class="main">
-        <div class="login">
-          <img src="@/assets/logo.png" alt />
-        </div>
         <a-form
           id="formLogin"
           class="user-layout-login"
@@ -43,7 +40,7 @@
               <a-checkbox @change="onChange" v-model="formLogin.rememberMe">自动登录</a-checkbox>
             </p>
             <div class="forget">
-              <router-link class="register" :to="{ name: 'register' }">忘记密码</router-link>
+              <router-link class="register" :to="{ name: 'passwordSet' }">忘记密码</router-link>
             </div>
           </a-form-item>
           <a-form-item style="margin-top:24px">
@@ -66,9 +63,9 @@
 </template>
 
 <script>
-/*import { mapActions } from 'vuex'
-import { timeFix } from '@/utils/util'*/
-import { login,getAction } from "@/api/system";
+import { mapActions } from "vuex";
+/*import { timeFix } from '@/utils/util'*/
+import { login, getAction } from "@/api/system";
 //import { encryption } from '@/utils/encryption/aesEncrypt'
 export default {
   data() {
@@ -87,13 +84,14 @@ export default {
         loginType: 0,
         smsSendBtn: false
       },
-      formLogin:{
-        rememberMe:true
+      formLogin: {
+        rememberMe: true
       }
     };
   },
   created() {},
   methods: {
+    ...mapActions(["Login", "Logout"]),
     onChange() {},
     handleTabClick(key) {
       this.customActiveKey = key;
@@ -102,8 +100,8 @@ export default {
     handleSubmit(e) {
       e.preventDefault();
       let loginParams = {
-          remember_me: this.formLogin.rememberMe
-        };
+        remember_me: this.formLogin.rememberMe
+      };
       const {
         form: { validateFields },
         state,
@@ -124,45 +122,39 @@ export default {
           const loginParams = { ...values };
           delete loginParams.username;
           loginParams.username = values.username;
-          loginParams.password = values.password
-          login(loginParams).then(res => {
-            console.log(res)
-            this.$ls.set('token',res.result.token, 7 * 24 * 60 * 60 * 1000)
-            let redirect = decodeURIComponent(
-              this.$route.query.redirect || "/"
-            );
-            this.$router.push({
-              path: redirect
+          loginParams.password = values.password;
+          Login(loginParams)
+            .then(res => this.loginSuccess(res))
+            .catch(err => this.requestFailed(err))
+            .finally(() => {
+              state.loginBtn = false;
             });
-          });
         }
       });
     },
 
     loginSuccess(res) {
       console.log(res);
-      this.$router.push({ name: "index" });
+      console.log(this.$router);
+      this.$router.push({ path: "/" });
       // 延迟 1 秒显示欢迎信息
-      if (res.code != 1000) {
+      if (res.code != 200) {
         this.$notification["error"]({
-          message: this.$t("login.error"),
-          description: this.$t("login.mmyw") || this.$t("login.message"),
+          message: "error",
+          description: "222",
           duration: 4
         });
       } else {
         this.$notification.success({
-          message: this.$t("login.error1"),
-          description: `${timeFix()}，${this.$t("login.message1")}`
+          message: "success"
         });
       }
     },
     requestFailed(err) {
       console.log(err);
       this.$notification["error"]({
-        message: this.$t("login.error"),
-        description:
-          ((err.response || {}).data || {}).message ||
-          this.$t("login.message2"),
+        message: "err",
+        description: ((err.response || {}).data || {}).message || "11",
         duration: 4
       });
     }
@@ -170,7 +162,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 .share {
   width: 100%;
   height: 100%;

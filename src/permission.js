@@ -1,24 +1,28 @@
 import Vue from 'vue'
 import router from './router'
 import store from './store'
+import NProgress from 'nprogress' // progress bar
+import 'nprogress/nprogress.css' // progress bar style
 import notification from 'ant-design-vue/es/notification'
 import { setDocumentTitle, domTitle } from '@/utils/domUtil'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
+NProgress.configure({ showSpinner: false })
 
-
-const whiteList = ['login', 'register', 'registerResult'] // no redirect whitelist
-
+const whiteList = ['login', 'register','CountdownTime', 'home','personSet'] // no redirect whitelist
+console.log(router)
 router.beforeEach((to, from, next) => {
+  NProgress.start()
   to.meta && (typeof to.meta.title !== 'undefined' && setDocumentTitle(`${to.meta.title} - ${domTitle}`))
+  console.log(Vue.ls.get(ACCESS_TOKEN))
   if (Vue.ls.get(ACCESS_TOKEN)) {
     /* has token */
-    if (to.path === '/user/login') {
+    if (to.path === '/user') {
       next()
-     
+      NProgress.done()
     } else {
       
       if (store.getters.roles.length === 0){
-       
+        console.log(store.getters.roles.length)
         store
           .dispatch('GetInfo')
           .then(res => {
@@ -27,9 +31,12 @@ router.beforeEach((to, from, next) => {
             store.dispatch('GenerateRoutes').then(() => {
               // 根据roles权限生成可访问的路由表
               // 动态添加可访问路由表
+              console.log(router)
               router.addRoutes(store.getters.addRouters)
+
+              console.log(store.getters.addRouters)
               const redirect = decodeURIComponent(from.query.redirect || to.path)
-             
+             console.log(redirect)
               if (to.path === redirect) {
                 // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
                 next({ ...to, replace: true })
@@ -45,7 +52,7 @@ router.beforeEach((to, from, next) => {
               description: '请求用户信息失败，请重试'
             })
             store.dispatch('Logout').then(() => {
-              next({ path: '/user/login'})
+              next({ path: '/user'})
             })
           })
       } else {
@@ -57,12 +64,14 @@ router.beforeEach((to, from, next) => {
       // 在免登录白名单，直接进入
       next()
     } else {
-      next({ path: '/user/login'})
+      next({ path: '/user'})
+      NProgress.done()
     }
   }
 })
 
 router.afterEach(() => {
+  NProgress.done() // finish progress bar
 })
 
 /**

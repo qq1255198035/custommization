@@ -1,0 +1,93 @@
+<template>
+  <div>
+    <a-form style="max-width: 500px; margin: 40px auto 0;" :form="form">
+      <a-form-item label="登录的账户" :labelCol="{span: 5}" :wrapperCol="{span: 19}">
+        <a-input
+          placeholder="邮箱"
+          v-decorator="['email',{rules: [{ required: true, message: '邮箱' }]}]"
+        />
+      </a-form-item>
+      <a-form-item label="验证码" :labelCol="{span: 5}" :wrapperCol="{span: 19}">
+        <a-row :gutter="32">
+          <a-col :span="16">
+            <a-input
+              size="large"
+              type="text"
+              placeholder="验证码"
+              v-decorator="['captcha', {rules: [{ required: true, message: '验证码' }], validateTrigger: 'blur'}]"
+            >
+              <a-icon slot="prefix" type="mail" :style="{ color: 'rgba(0,0,0,.25)' }" />
+            </a-input>
+          </a-col>
+          <a-col :span="6">
+            <a-button @click="setCode">获取验证码</a-button>
+          </a-col>
+        </a-row>
+      </a-form-item>
+      <a-form-item :wrapperCol="{span: 19, offset: 5}">
+        <a-button type="primary" @click="nextStep">下一步</a-button>
+      </a-form-item>
+    </a-form>
+  </div>
+</template>
+
+<script>
+import { passwordEmail } from "@/api/system";
+export default {
+  name: "Step1",
+  data() {
+    return {
+      form: this.$form.createForm(this),
+      code: ""
+    };
+  },
+  methods: {
+    setCode() {
+      this.form.validateFields((err, values) => {
+        if (!err) {
+          const params = {
+            email: values.email
+          };
+          passwordEmail(params).then(res => {
+            console.log(res);
+            this.code = res.code;
+            if (res.code == 0) {
+              this.$notification["success"]({
+                message: "成功",
+                description: "操作成功",
+                duration: 4
+              });
+            }
+            if (res.code == 500) {
+              this.$notification["warn"]({
+                message: "邮箱未注册",
+                description: "邮箱未注册，请您先注册！",
+                duration: 4
+              });
+            }
+            if (res.code == 300) {
+              this.$notification["warn"]({
+                message: "验证码仍然有效",
+                description: "验证码10分钟内，仍然有效",
+                duration: 4
+              });
+            }
+          });
+        }
+      });
+    },
+    nextStep() {
+      this.form.validateFields((err, values) => {
+        if (!err) {
+          if (this.code == 0) {
+            this.$emit("nextStep", values.email);
+          }
+        }
+      });
+    }
+  }
+};
+</script>
+
+<style>
+</style>

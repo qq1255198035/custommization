@@ -5,7 +5,7 @@ import axios from 'axios'
 import { VueAxios } from './axios'
 import {Modal, notification} from 'ant-design-vue'
 import router from '../router';
-//import { ACCESS_TOKEN } from "@/store/mutation-types"
+import { ACCESS_TOKEN } from "@/store/mutation-types"
 
 // 创建 axios 实例
 const service = axios.create({
@@ -15,7 +15,7 @@ const service = axios.create({
 const err = (error) => {
   if (error.response) {
     let data = error.response.data
-    const token = Vue.ls.get('token')
+    const token = Vue.ls.get(ACCESS_TOKEN)
     console.log(token)
     console.log("------异常响应------",token)
     console.log("------异常响应------",error.response.status)
@@ -37,7 +37,7 @@ const err = (error) => {
             mask: false,
             onOk: () => {
               router.push({
-                path: '/login'
+                path: '/user'
               })
               /*store.dispatch('Logout').then(() => {
                 Vue.ls.remove(ACCESS_TOKEN)

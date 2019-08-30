@@ -58,7 +58,6 @@ Vue.use(List);
 Vue.use(Form);
 Vue.use(Popover);
 Vue.use(Progress);
-Vue.use(notification);
 Vue.use(Pagination);
 Vue.use(Form);
 Vue.use(Badge);

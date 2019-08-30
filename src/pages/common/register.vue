@@ -1,13 +1,11 @@
 <template>
   <div class="share">
     <div class="share-box">
-      <sys-header></sys-header>
       <div class="main">
         <my-title :title="itemTitle"></my-title>
         <div class="user-layout-register">
           <a-form ref="formRegister" :form="form" id="formRegister">
-            <a-form-item>
-              <p>邮箱</p>
+            <a-form-item label="邮箱">
               <a-input
                 size="large"
                 type="text"
@@ -15,8 +13,30 @@
                 v-decorator="['email', {rules: [{ required: true, type: 'email', message: '邮箱' }], validateTrigger: ['change', 'blur']}]"
               ></a-input>
             </a-form-item>
+            <a-row :gutter="12">
+              <a-col :span="12">
+                <a-form-item label="姓">
+                  <a-input
+                    size="large"
+                    type="text"
+                    placeholder="姓"
+                    v-decorator="['surname', {rules: [{ required: true, message: '姓' }], validateTrigger: ['change', 'blur']}]"
+                  ></a-input>
+                </a-form-item>
+              </a-col>
+              <a-col :span="12">
+                <a-form-item label="名">
+                  <a-input
+                    size="large"
+                    type="text"
+                    placeholder="名"
+                    v-decorator="['monicker', {rules: [{ required: true, message: '名' }], validateTrigger: ['change', 'blur']}]"
+                  ></a-input>
+                </a-form-item>
+              </a-col>
+            </a-row>
             <a-popover placement="rightTop" trigger="click" :visible="state.passwordLevelChecked">
-              <template slot="content" >
+              <template slot="content">
                 <div :style="{ width: '240px'}">
                   <div :class="['user-register', passwordLevelClass]">
                     22
@@ -32,8 +52,7 @@
                   </div>
                 </div>
               </template>
-              <a-form-item>
-                <p>密码</p>
+              <a-form-item label="密码">
                 <a-input
                   size="large"
                   type="password"
@@ -45,8 +64,7 @@
                 ></a-input>
               </a-form-item>
             </a-popover>
-            <a-form-item>
-              <p>确认密码</p>
+            <a-form-item label="确认密码">
               <a-input
                 size="large"
                 type="password"
@@ -58,9 +76,8 @@
               ></a-input>
             </a-form-item>
             <a-row :gutter="16">
-              <p>验证码</p>
               <a-col class="gutter-row" :span="16">
-                <a-form-item>
+                <a-form-item label="验证码">
                   <a-input
                     size="large"
                     type="text"
@@ -116,11 +133,11 @@ import { register, registerSubmit } from "@/api/system";
 import SysHeader from "@/components/SysHeader/SysHeader";
 import MyTitle from "@/components/MyTitle/MyTitle";
 const levelNames = {
-  0: '11',
-  1: '22',
-  2: '33',
-  3: '44'
-}
+  0: "11",
+  1: "22",
+  2: "33",
+  3: "44"
+};
 const levelClass = {
   0: "error",
   1: "error",
@@ -171,7 +188,7 @@ export default {
   },
   methods: {
     handlePasswordLevel(rule, value, callback) {
-      console.log(value)
+      console.log(value);
       let level = 0;
       // 判断这个字符串中有没有数字
       if (/[0-9]/.test(value)) {
@@ -187,7 +204,7 @@ export default {
       }
       this.state.passwordLevel = level;
       this.state.percent = level * 30;
-      console.log(level)
+      console.log(level);
       if (level >= 2) {
         if (level >= 3) {
           this.state.percent = 100;
@@ -197,7 +214,7 @@ export default {
         if (level === 0) {
           this.state.percent = 10;
         }
-        callback(new Error('ll'));
+        callback(new Error("ll"));
       }
     },
     handlePasswordCheck(rule, value, callback) {
@@ -224,7 +241,7 @@ export default {
     },
     goRegister() {
       if (!this.activeIndex) {
-        this.$message.error('ee');
+        this.$message.error("ee");
         console.log(this.current);
       } else {
         this.current = "1";
@@ -243,14 +260,16 @@ export default {
             username: values.email,
             password: values.password,
             smscode: values.captcha,
+            surname: values.surname,
+            monicker: values.monicker
             //internationalization: localStorage.lang
           }).then(res => {
-            console.log(res)
+            console.log(res);
             if (res.status == 200) {
               $router.push({ name: "registerResult", params: { ...values } });
             } else {
               $notification["error"]({
-                message: 'error',
+                message: "error",
                 description: res.info,
                 duration: 8
               });
@@ -288,8 +307,8 @@ export default {
               if (res.status == 200) {
                 //setTimeout(hide, 1);
                 $notification["success"]({
-                  message: '登陆成功',
-                  description: '成功',
+                  message: "登陆成功",
+                  description: "成功",
                   duration: 8
                 });
               } else if (res.status == 201) {
@@ -310,9 +329,8 @@ export default {
     },
     requestFailed(err) {
       this.$notification["error"]({
-        message: '登录失败',
-        description:
-          ((err.response || {}).data || {}).message || '1212',
+        message: "登录失败",
+        description: ((err.response || {}).data || {}).message || "1212",
         duration: 4
       });
       this.registerBtn = false;
