@@ -1,6 +1,6 @@
 <template>
     <div id="BlankLayout">
-        <My-Header :showNav="false"></My-Header>
+        
         <router-view></router-view>
     </div>
 </template>

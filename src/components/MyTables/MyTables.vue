@@ -12,7 +12,7 @@
           @change="handleChange(record.key,col,$event)"
           v-if="col == 'size'"
           :key="col"
-          style="min-width: 120px;"
+          style="text-align: center;width: 100%;background:#fff"
           placeholder="请选择尺码"
         >
           <a-select-option v-for="(sitem,index) in sizes" :key="index" :value="sitem">{{sitem}}</a-select-option>
@@ -23,38 +23,53 @@
           v-if="col == 'printName'"
           :key="col"
           :value="record.printName"
-          style="background-color: rgba(255,255,255,0); border:none;"
+          style="text-align: center;background-color: rgba(255,255,255,0);"
         />
         <a-input
           @change="e =>changeNum(e.target.value, record.key, col)"
           v-if="col == 'printNumber'"
           :key="col"
           :value="record.printNumber"
-          style="background-color: rgba(255,255,255,0); border:none;"
+          style="text-align: center;background-color: rgba(255,255,255,0);"
         />
         <a-input
           v-if="col == 'total_price'"
           :key="col"
           :value="record.total_price"
-          style="background-color: rgba(255,255,255,0); border:none;"
+          style="text-align: center; border:none;"
         />
       </template>
       <template slot="operation" slot-scope="text, record">
         <span>
           <a @click="remove(record.key)">
-            <a-icon type="delete" style="font-size: 30px;" />
+            <a-icon type="delete" style="font-size: 18px;color: #999" />
           </a>
         </span>
       </template>
     </a-table>
-    <a-button
-      style="width: 100%; margin-top: 16px; margin-bottom: 8px"
+    <commonBtn
+      :icon="'plus'"
+      @newMembers="newMembers"
+      :width="'100%'"
+      :title="'添加'"
+      :height="'45px'"
+      :padding="'10px'"
+      :radio="'12px'"
+      :fontsize="'22px'"
+      :top="'20px'"
+
+    >
+    
+    </commonBtn>
+    <!--<a-button
+      style="width: 100%; margin-top: 20px;height:45px"
       icon="plus"
       @click="newMember"
-    >添加</a-button>
+    >添加</a-button>-->
   </div>
 </template>
 <script>
+import commonBtn from "@/components/commonBtn/commonBtn";
 export default {
   props: {
     dataSizes: {},
@@ -65,7 +80,9 @@ export default {
       type: Array
     }
   },
-  components: {},
+  components: {
+    commonBtn
+  },
   created() {
     this.data1 = this.dataSizes;
   },
@@ -80,14 +97,14 @@ export default {
           title: "尺码",
           dataIndex: "size",
           key: "size",
-          width: "30%",
+          width: "20%",
           scopedSlots: { customRender: "size" }
         },
         {
           title: "名字",
           dataIndex: "printName",
           key: "printName",
-          width: "30%",
+          width: "20%",
           scopedSlots: { customRender: "printName" }
         },
         {
@@ -101,12 +118,13 @@ export default {
           title: "合计价格",
           dataIndex: "total_price",
           key: "total_price",
-          width: "30%",
+          width: "20%",
           scopedSlots: { customRender: "total_price" }
         },
 
         {
           title: "操作",
+          width: "20%",
           key: "action",
           scopedSlots: { customRender: "operation" }
         }
@@ -157,7 +175,7 @@ export default {
       this.data1 = newData;
       this.$emit("getList", this.data1);
     },
-    newMember() {
+    newMembers() {
       const length = this.data1.length;
       this.data1.push({
         key:

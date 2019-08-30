@@ -1,37 +1,59 @@
 <template>
-  <div class="share">
-    <card-header :detailList="detailList"></card-header>
-    <my-title :title="itemTitle"></my-title>
-    <a-row :gutter="32">
-      <!--list1-->
-      <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
-        <table-item :data="img1">
-          <a href style="font-size: 14px; text-decoration: underline">查看尺寸表</a>
-        </table-item>
-        <my-table :dataSize="dataSize" :size="size" :dataSizeText="dataSizeText" @getList=" list"></my-table>
-      </a-col>
-      <!--list2-->
-      <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
-        <table-item :data="img2">
-          <a href style="font-size: 14px; text-decoration: underline">查看尺寸表</a>
-        </table-item>
-        <my-tables
-          :dataSizes="dataSizes"
-          :dataSizeTexts="dataSizeTexts"
-          :sizes="sizes"
-          @getList=" lists"
-        ></my-tables>
-      </a-col>
-    </a-row>
-    <my-title :title="itemTitle"></my-title>
-    <!--支付-->
-    <div class="paynum">
-      <div class="left">
-        <p>总价</p>
-        <h2>${{allPrice}}</h2>
-      </div>
-      <div class="right">
-        <a-button icon="dollar" @click="payTo" size="large">立即支付</a-button>
+  <div class="share-box">
+    <div class="wrapper-box">
+      <header>
+        <p class="icon-logotxt"></p>
+        <p>
+          <User></User>
+        </p>
+      </header>
+      <card-header :detailList="detailList"></card-header>
+      <my-title style="margin:40px 0;" :title="itemTitle"></my-title>
+      <a-row :gutter="20">
+        <!--list1-->
+        <a-col :span="2"></a-col>
+        <a-col :span="8">
+          <table-item :data="img1">
+            <a href style="font-size: 18px; color: #999; text-decoration: underline">查看尺寸表</a>
+          </table-item>
+          <my-table :dataSize="dataSize" :size="size" :dataSizeText="dataSizeText" @getList=" list"></my-table>
+        </a-col>
+        <!--list2-->
+        <a-col :span="2"></a-col>
+        <a-col :span="10">
+          <table-item :data="img2">
+            <a href style="font-size: 18px; color: #999; text-decoration: underline">查看尺寸表</a>
+          </table-item>
+          <my-tables
+            :dataSizes="dataSizes"
+            :dataSizeTexts="dataSizeTexts"
+            :sizes="sizes"
+            @getList=" lists"
+          ></my-tables>
+        </a-col>
+        <a-col :span="2"></a-col>
+      </a-row>
+      <my-title :title="itemTitle"></my-title>
+      <!--支付-->
+      <div class="paynum">
+        <a-row :gutter="20">
+          <a-col :span="18"></a-col>
+          <a-col :span="4">
+            <div class="left">
+              <div class="price-title">总价</div>
+              <div class="allprice">${{allPrice}}</div>
+            </div>
+            <div class="right">
+              <!--<a data-hover="立即支付" icon="dollar" class="btns" @click="payTo">立即支付</a>-->
+              <commonBtn @payTo="payTo" :width="'100%'" :title="'立即支付'" :height="'80px'" :padding="'15px'" :radio="'18px'" :fontsize="'24px'">
+                <span class="bg-box">
+                <span class="bg-image"></span>
+              </span>
+              </commonBtn>
+            </div>
+          </a-col>
+          <a-col :span="2"></a-col>
+        </a-row>
       </div>
     </div>
   </div>
@@ -39,6 +61,8 @@
 
 <script>
 import { apiPersonOrder, apiPay } from "@/api/system";
+import commonBtn from "@/components/commonBtn/commonBtn";
+import User from "@/components/Header/User";
 import MyTable from "@/components/MyTable/MyTable";
 import MyTables from "@/components/MyTables/MyTables";
 import SysHeader from "@/components/SysHeader/SysHeader";
@@ -66,29 +90,18 @@ export default {
       dataList: "",
       dataList1: "",
       itemTitle: "",
-      img1: {
-        img: [
-          "https://wxmall-1253858660.cos.ap-beijing.myqcloud.com/wxmall/20190603/1405508244cff9.jpg",
-          "https://wxmall-1253858660.cos.ap-beijing.myqcloud.com/wxmall/20190603/1405508244cff9.jpg"
-        ]
-      },
-      img2: {
-        img: [
-          "https://wxmall-1253858660.cos.ap-beijing.myqcloud.com/wxmall/20190603/1405508244cff9.jpg",
-          "https://wxmall-1253858660.cos.ap-beijing.myqcloud.com/wxmall/20190603/1405508244cff9.jpg"
-        ]
-      }
+      img1: "",
+      img2: "",
+      name: ""
     };
   },
   computed: {},
   created() {
     this._apiPersonOrder();
-    
   },
   mounted() {},
   watch: {},
   methods: {
-    
     _price(datas) {
       let price = 0;
       for (var i = 0; i < datas.length; i++) {
@@ -169,6 +182,7 @@ export default {
         this.size = result.sizes.split(",");
         this.sizes = result1.sizes.split(",");
         this.dataSizeText = res.result.personOrderNoPrintList;
+        console.log(this.dataSizeText);
         this.dataSizeTexts = res.result.personOrderPrintList;
       });
     }
@@ -179,26 +193,86 @@ export default {
     SysHeader,
     TableItem,
     MyTable,
-    MyTables
+    MyTables,
+    User,
+    commonBtn
   }
 };
 </script>
 
-<style scoped lang="less">
-.share {
-  .paynum {
-    border-top: solid 1px #ffffff;
-    overflow: hidden;
-    padding: 20px 0;
-    .left {
-      float: left;
-      h2 {
-        color: #fff;
+<style lang="less">
+@import url("./../../../components/index.less");
+@import url("./../../../assets/style.css");
+.bg-box {
+  width: 20px;
+  height: 30px;
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 26px;
+  margin-top: -15px;
+  z-index: 9;
+}
+.right:hover{
+  .bg-image{
+    background: url("./../../../assets/monry-icon-bar.png") no-repeat transparent;
+    width: 100%;
+  height: 100%;
+  display: block;
+  background-size: 100%;
+  }
+}
+.bg-image {
+  background: url("./../../../assets/monry-icon.png") no-repeat;
+  width: 100%;
+  height: 100%;
+  display: block;
+  background-size: 100%;
+}
+
+.share-box {
+  width: 100%;
+  //height: 100%;
+  padding: 40px;
+  .wrapper-box {
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    border-radius: 10px;
+    //overflow: hidden;
+    header {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+      border-bottom: 1px solid #5ba997;
+      padding: 30px;
+      p:nth-child(1) {
+        color: #5ba997;
+        font-size: 60px;
+        margin-bottom: 0;
       }
     }
-    .right {
-      float: right;
-      .ant-btn {
+    .paynum {
+      border-top: solid 1px #ffffff;
+      overflow: hidden;
+      padding: 20px 0;
+      .left {
+        text-align: right;
+        .price-title {
+          color: #999;
+          font-size: 18px;
+          padding: 20px 0;
+        }
+        .allprice {
+          font-size: 24px;
+          color: #33b8b3;
+          padding-bottom: 20px;
+        }
+      }
+      .right {
+        position: relative;
+        .ant-btn {
+        }
       }
     }
   }

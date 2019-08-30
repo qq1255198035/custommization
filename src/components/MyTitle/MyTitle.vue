@@ -23,7 +23,8 @@ export default {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid #9d9d9d;
+      border-bottom: 1px solid #5ba997;
+      margin: 20px 0;
       h2{
             
             padding: 10px 0;

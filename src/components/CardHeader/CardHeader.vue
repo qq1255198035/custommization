@@ -1,40 +1,61 @@
 <template>
-  <div class="wrapper">
-    <div class="wrapper-box">
-      <a-row>
-        <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+  <div class="wrappers">
+    <div class="wrappers-box">
+      <a-row :gutter="20" type="flex" align="bottom">
+        <a-col :span="2"></a-col>
+        <a-col :span="4">
           <div class="left-box">
             <div class="avatar">
               <img :src="detailList.topic_url" alt />
             </div>
-            <div class="content">
-              <h1 class="title">{{detailList.topic}}</h1>
-              <p class="desc">{{detailList.introduction}}</p>
-              <h3 class="contant">联系商家：{{detailList.contact}}</h3>
-              <div class="contact">
-                <span style="padding-right:16px"><a-icon type="phone" style="padding-right:6px" />{{detailList.mobile}}</span>
-                <span><a-icon type="mail" style="padding-right:6px"/>{{detailList.email}}</span>
-              </div>
+          </div>
+        </a-col>
+        <a-col :span="8">
+          <div class="content">
+            <div class="title font-reset">{{detailList.topic}}</div>
+            <div class="desc">{{detailList.introduction}}</div>
+            <div class="contant">
+              <span class="font-reset">联系商家：</span>
+              {{detailList.contact}}
+            </div>
+            <div class="contact">
+              <a-row :gutter="20">
+                <a-col :span="12">
+                  <span>
+                    <a-icon class="font-color" type="phone" style="padding-right:6px;" />
+                    {{detailList.mobile}}
+                  </span>
+                </a-col>
+                <a-col :span="12">
+                  <span>
+                    <a-icon class="font-color" type="mail" style="padding-right:6px;"/>
+                    {{detailList.email}}
+                  </span>
+                </a-col>
+              </a-row>
             </div>
           </div>
         </a-col>
-        <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+        <a-col :span="4"></a-col>
+        <a-col :span="4">
           <div class="right-desc">
             <div class="top">
-              <share class="share" :config="config"></share>
+              <share class="share" :config="config">
+                <a-icon type="facebook" />
+              </share>
             </div>
             <div class="down">
-              <p>
+              <div class="texts">
                 已支付数量
                 <br />
-                <span>{{detailList.payNum}}</span>
-              </p>
+                <span class="font-reset">{{detailList.payNum}}</span>
+              </div>
               <a-divider type="vertical" class="my-divider" />
-              <p>
+              <div class="texts">
                 订单关闭时间
                 <br />
-                <span>{{detailList.payEndDate}}</span>
-              </p>
+                <span class="font-reset">{{detailList.payEndDate}}</span>
+              </div>
             </div>
           </div>
         </a-col>
@@ -57,7 +78,7 @@ export default {
         description: "222", // 描述, 默认读取head标签：<meta name="description" content="PHP弱类型的实现原理分析" />
         image:
           "https://hlx-1258407851.cos.ap-beijing.myqcloud.com/hlx/20181229/16144720457881.png", // 图片, 默认取网页中第一个img标签
-        sites: ["weibo", "wechat", "facebook"], // 启用的站点
+        sites: ["facebook", "wechat", "weibo"], // 启用的站点
         //disabled: ['google', 'facebook', 'twitter'], // 禁用的站点
         wechatQrcodeTitle: "微信扫一扫：分享", // 微信二维码提示文字
         wechatQrcodeHelper:
@@ -74,69 +95,51 @@ export default {
 };
 </script>
 
-<style scoped lang="less">
-.wrapper {
+<style lang="less">
+.wrappers {
   margin-top: 40px;
-  .wrapper-box {
+  .wrappers-box {
     .left-box {
-      display: flex;
       .avatar {
-        width: 200px;
-        height: 200px;
-        margin-right: 10px;
+        width: 100%;
         img {
           width: 100%;
-          height: auto;
-        }
-      }
-      .content {
-        padding-right: 50px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        .title {
-          font-size: 20px;
-          color: #ffffff;
-          padding-bottom: 24px;
-        }
-        .contant {
-          color: #ffffff;
+          text-align: right;
         }
       }
     }
+    .content {
+      .title {
+        
+        padding: 20px 0;
+      }
+      .contant {
+        padding: 20px 0;
+      }
+    }
     .right-desc {
-      
       float: right;
-      .top{
-            text-align: right;
+      .top {
+        text-align: right;
+        position: relative;
+        top: -40px;
       }
       .down {
-            display: flex;
-      align-items: center;
-      justify-items: center;
-      text-align: center;
-        p {
+        display: flex;
+        align-items: center;
+        justify-items: center;
+        text-align: center;
+        .texts {
           line-height: 36px;
-          span {
-            font-size: 20px;
-          }
         }
       }
 
       .my-divider {
-        margin: 0 50px;
+        margin: 0 30px;
         height: 30px;
       }
     }
   }
 }
-.social-share .icon-weibo {
-  color: #ffffff !important;
-  border: #ffffff !important;
-}
-@media screen and(max-width: 700px) {
-  .content {
-    padding: 0 !important;
-  }
-}
+
 </style>

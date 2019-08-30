@@ -7,10 +7,11 @@ import './permission'
 import { VueAxios } from './utils/request'
 import "fullpage.js/vendors/scrolloverflow";
 import VueFullPage from "vue-fullpage.js";
-import 'vue-social-share/dist/client.css'
+
 import Share from 'vue-social-share'
 Vue.use(Share)
 var SocialSharing = require('vue-social-sharing');
+
 import Storage from 'vue-ls';
 const options = {
   namespace: 'vuejs__', // key prefix
@@ -20,6 +21,7 @@ const options = {
 
 Vue.use(Storage, options);
 Vue.use(SocialSharing);
+import 'vue-social-share/dist/client.css'
 import vcolorpicker from "vcolorpicker";
 Vue.use(vcolorpicker);
 Vue.use(VueFullPage);

@@ -42,6 +42,7 @@ export function Logout(url,parameter) {
     data: parameter
   })
 }
+
 export function apiPersonOrder(parameter) {
   return axios({
     url: '/apiPersonOrder/list',
@@ -71,6 +72,15 @@ export function getAction(url,parameter) {
       data: qs.stringify(parameter)
     })
   }
+  //微信支付
+  export function wxPay(parameter) {
+    return axios({
+      url: '/api/wx/payBack',
+      method: 'post',
+      data: qs.stringify(parameter)
+    })
+  }
+  //payPal
   export function payPal(parameter) {
     return axios({
       url: '/api1/paypal/toPayTest',

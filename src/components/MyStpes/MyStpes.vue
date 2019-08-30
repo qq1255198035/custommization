@@ -93,7 +93,7 @@ export default {
       .line{
             height: 1px;
             width: 45%;
-            background-color: rgba(255, 255, 255, 0.5);
+            background-color: #eee;
             margin-bottom: 25px;
             min-width: 20px;
       }
@@ -103,12 +103,12 @@ export default {
       .doct3{
             width: 18px;
             height: 18px;
-            background-color: rgba(255, 255, 255, 0.5);
+            background-color: #eee;
             border-radius: 9px;
             display: block;
       }
       .line-active{
-            background-color: rgba(255, 255, 255, 1);
+            background-color: #33b8b3;
       }
 }
 </style>
