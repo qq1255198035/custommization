@@ -37,9 +37,12 @@
         <a-col :span="18" style="height: 100%;">
           <div class="right-menu" ref="right">
             <User></User>
-                <transition name="page-transition">
+            <!--<transition name="page-transition">
               <route-view />
-            </transition>
+            </transition>-->
+            <div class="scroll-box">
+                            <router-view></router-view>
+                        </div>
           </div>
         </a-col>
       </a-row>
@@ -163,7 +166,18 @@ export default {
       border-bottom-right-radius: 10px;
       padding: 20px;
       min-height: 100%;
+      overflow: hidden;
+      height: 100%;
       position: relative;
+      .scroll-box{
+                padding-top: 58px; 
+                overflow-y: scroll;
+                height: 100%;
+                &::-webkit-scrollbar {  /*滚动条整体样式*/
+                    width: 0;  /*宽分别对应竖滚动条的尺寸*/
+                    /*高分别对应横滚动条的尺寸*/
+                }
+            }
     }
   }
 }

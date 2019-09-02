@@ -1,6 +1,7 @@
 // eslint-disable-next-line
 import BlankLayout from "@/layouts/BlankLayout.vue";
 import BasicLayout from "@/layouts/BasicLayout.vue";
+import SellerLayout from "@/layouts/SellerLayout.vue";
 /**
  * 基础路由
  * @type { *[] }
@@ -84,11 +85,6 @@ export const constantRouterMap = [{
     ],
   },
   {
-    path: "/design",
-    name: "design",
-    component: () => import("@/pages/Seller/Design")
-  },
-  {
     path: "/share",
     name: "share",
     component: () => import("@/pages/userSystem/share/share")
@@ -125,7 +121,7 @@ export const constantRouterMap = [{
         path: '/passwordSet',
         name: 'passwordSet',
         component: () => import('@/pages/common/passwordForm')
-      },
+      }
     ]
   },
   {
@@ -140,5 +136,52 @@ export const constantRouterMap = [{
 
     }
   },
-
+  {
+    path: "/seller",
+    name: "seller",
+    component: SellerLayout,
+    redirect: "/dashbored",
+    children:[
+          {
+                path: "/dashbored",
+                name: "dashbored",
+                component: () => import("@/pages/Seller/DashBored"),
+                meta: {
+                      
+                }
+          },
+          {
+                path: "/grouporder",
+                name: "grouporder",
+                component: () => import("@/pages/Seller/GroupOrder"),
+                meta: {
+                      
+                }
+          },
+          {
+                path: "/commissions",
+                name: "commissions",
+                component: () => import("@/pages/Seller/Commissions"),
+                meta: {
+                      
+                }
+          },
+          {
+                path: "/commissionsdetails",
+                name: "commissionsdetails",
+                component: () => import("@/pages/Seller/CommissionsDeatils"),
+                meta: {
+                      
+                }
+          },
+          {
+                path: "/myorder",
+                name: "myorder",
+                component: () => import("@/pages/Seller/MyOrders"),
+                meta: {
+                      
+                }
+          }
+    ]
+},
 ]

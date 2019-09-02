@@ -7,6 +7,7 @@ const routes = [
             name: "index",
             redirect: "/home",
       },
+
       {
             path: "/design",
             name: "design",
@@ -216,7 +217,7 @@ const routes = [
                   
             }
                  
-      },
+      }, 
       {
             path: "/neworder",
             name: "neworder",
