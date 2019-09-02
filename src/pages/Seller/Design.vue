@@ -14,9 +14,13 @@
             <div id="DesignBox">
                 <div class="design-box">
                     <ul class="side-bar">
-                        <li v-for="(item,index) in list" :key="item.className" @click="toolsBtnClick(item.key)" :class="{active: index == liClick}">
+                        <li v-for="item in list" :key="item.className" @click="toolsBtnClick(item.key)" :class="{active: item.key == liClick}">
                             <span :class="item.className"></span>
                             {{item.text}}
+                        </li>
+                        <li @click="$router.push({path: '/neworder'})">
+                            <span class="icon-change_product"></span>
+                            更换产品
                         </li>
                     </ul>
                     <div class="container">
@@ -61,7 +65,11 @@
                                             <span class="icon-icon-image"></span>
                                             添加艺术
                                         </li>
-                                        <li>
+                                        <li @click="startTo(6)">
+                                            <span class="icon-upload"></span>
+                                            上传设计
+                                        </li>
+                                        <li @click="$router.push({path: '/neworder'})">
                                             <span class="icon-change_product"></span>
                                             改变产品
                                         </li>
@@ -79,65 +87,10 @@
                                         </div>
                                     </div>
                                     <div class="add-text">
-                                            <p>Add Text</p>
-                                            <a-input v-model="addText"></a-input>
-                                            <a-button @click="addItext">Add To Design</a-button>
+                                        <p>Add Text</p>
+                                        <a-input v-model="addText"></a-input>
+                                        <a-button @click="addItext" :disabled="!addText">添加设计</a-button>
                                     </div>
-                                    <div class="second">
-                                            <div class="text-tool">
-                                                <p>
-                                                        <span @click="setObjCenter">
-                                                            <i class="icon-center "></i>
-                                                        </span>
-                                                        Center
-                                                </p>
-                                                <p>
-                                                        <span @click="setTextalignLeft">
-                                                            <a-icon type="align-left"/>
-                                                        </span>
-                                                        <span @click="setTextalignCenter">
-                                                            <a-icon type="align-center"/>
-                                                        </span>
-                                                        <span @click="setTextalignRight">
-                                                            <a-icon type="align-right"/><br/>
-                                                        </span>
-                                                        Text Align
-                                                </p>
-                                            </div>
-                                            <div>
-                                                <p>Rotation</p>
-                                                <a-slider :min="0" :max="360" :step="10" @change="setTextRotate" v-model="rotateNum"/>
-                                            </div>
-                                    </div>
-                                    <ul class="tool-list">
-                                            <li @click="openFontFamilyBox">
-                                                <span>Change Font</span>
-                                                <p>
-                                                        <span>{{fontfamily}}</span>
-                                                        <a-icon type="right" />
-                                                </p>
-                                            </li>
-                                            <li @click="openFontColorBox">
-                                                <span>Text Color</span>
-                                                <p>
-                                                        <span>{{colorName}} <i class="square" :style="{backgroundColor:color}"></i></span>
-                                                        <a-icon type="right" />
-                                                </p>
-                                            </li>
-                                            <li @click="openFontOutlineBox">
-                                                <span>Text Outline</span>
-                                                <p>
-                                                        <span v-if="strokeWidth > 0">Add Outline</span>
-                                                        <a-icon type="right" />
-                                                </p>
-                                            </li>
-                                            <li>
-                                                <span>Font Height</span>
-                                                <p>
-                                                        <a-input type="number" @change="changeLineHeight" v-model="lineHeight"></a-input>
-                                                </p>
-                                            </li>
-                                    </ul>
                                 </div>
                                 <div class="tool-box6" v-show="visibletype == 1">
                                     <div v-if="visibletype !== -1">
@@ -251,31 +204,149 @@
                                             <span>颜色：</span>
                                             <div class="color-picker">
                                                 <p>
-                                                    黑色<span :style="{backgroundColor: 'black'}" @click="openFontColorBox"></span>
+                                                    黑色<span :style="{backgroundColor: 'black'}" @click="openChangeColorBox"></span>
                                                 </p>
                                                 <p>
-                                                    黑色<span :style="{backgroundColor: 'black'}" @click="openFontColorBox"></span>
+                                                    黑色<span :style="{backgroundColor: 'black'}" @click="openChangeColorBox"></span>
                                                 </p>
                                             </div>
                                         </dd>
                                     </dl>
 
                                 </div>
+
                                 <div class="tool-box9" v-show="visibletype == 3">
-                                    <h2>领型：</h2>
-                                    <div style="padding: 0 10px;">
-                                        <a-row type="flex" justify="start" :gutter="20">
-                                            <a-col :span="8" v-for="(item,index) in new Array(7)" :key="index">
-                                                <p><img src="" alt="" srcset=""></p>
-                                            </a-col>
-                                        </a-row>
+                                    <my-title :title="'添加文字'"></my-title>
+                                    <div class="second">
+                                        <div class="text-tool">
+                                            <!-- <p>
+                                                    <span @click="setObjCenter">
+                                                        <i class="icon-center "></i>
+                                                    </span>
+                                                    Center
+                                            </p> -->
+                                            <div class="text-align">
+                                                    <span @click="setTextalignLeft">
+                                                        <a-icon type="align-left"/>
+                                                    </span>
+                                                    <span @click="setTextalignCenter">
+                                                        <a-icon type="align-center"/>
+                                                    </span>
+                                                    <span @click="setTextalignRight">
+                                                        <a-icon type="align-right"/><br/>
+                                                    </span>
+                                                    <p>对齐方式</p>
+                                            </div>
+                                            <div class="font-style">
+                                                    <span @click="setFontWeight">
+                                                        <a-icon type="bold" />
+                                                    </span>
+                                                    <span @click="setFontStyle">
+                                                        <a-icon type="italic" />
+                                                    </span>
+                                                    <span @click="setTextDown">
+                                                        <a-icon type="underline" />
+                                                    </span>
+                                                    <span @click="setTextThrough">
+                                                        <a-icon type="strikethrough" />
+                                                    </span>
+                                                    <br/>
+                                                    <p>字体样式</p>
+                                            </div>
+                                        </div>
+                                        <!-- <div>
+                                            <p>Rotation</p>
+                                            <a-slider :min="0" :max="360" :step="10" @change="setTextRotate" v-model="rotateNum"/>
+                                        </div> -->
                                     </div>
+                                    <ul class="tool-list">
+                                        <li @click="openFontFamilyBox">
+                                            <span>Change Font</span>
+                                            <p>
+                                                    <span>{{fontfamily}}</span>
+                                                    <a-icon type="right" />
+                                            </p>
+                                        </li>
+                                        <li @click="openChangeColorBox(1,'字体颜色')">
+                                            <span>字体颜色</span>
+                                            <p>
+                                                <span>{{colorName}} <i class="square" :style="{backgroundColor:color}"></i></span>
+                                                <a-icon type="right" />
+                                            </p>
+                                        </li>
+                                        <li @click="openChangeColorBox(2,'字体背景颜色')">
+                                            <span>字体背景颜色</span>
+                                            <p>
+                                                <span>{{fontBgColorName}} <i class="square" :style="{backgroundColor:bgcolor}"></i></span>
+                                                <a-icon type="right" />
+                                            </p>
+                                        </li>
+                                    </ul>
+                                    <dl class="stroke-style">
+                                        <dt class="title">描边</dt>
+                                        <dd @click="openChangeColorBox(3,'描边颜色')">
+                                            <span>颜色：</span>
+                                            <p>
+                                                    <span>{{strokeColorName}} <i class="square" :style="{backgroundColor: strokeColor}"></i></span>
+                                                    <a-icon type="right" />
+                                            </p>
+                                        </dd>
+                                        <dd>
+                                            <span>大小：</span>
+                                            <a-slider :min="0" :max="10" v-model="strokeWidth" :step="1" @change="changestrokeWidth" style="width: 85%;margin:0;"/>
+                                        </dd>
+                                    </dl>
+                                    <dl>
+                                        <dt class="title">阴影</dt>
+                                        <dd @click="openChangeColorBox(4,'阴影颜色')">
+                                            <span>颜色：</span>
+                                            <p>
+                                                <span>{{shadowColorName}} <i class="square" :style="{backgroundColor: shadowColor}"></i></span>
+                                                <a-icon type="right" />
+                                            </p>
+                                        </dd>
+                                        <dd>
+                                            <span>大小：</span>
+                                            <div style="width: 85%;">
+                                                <a-slider :min="-10" :max="10" v-model="Shadow1" :step="1" @change="changeShadowWidth1" style="width: 100%;margin: 10px 0;"/>
+                                                <a-slider :min="-10" :max="10" v-model="Shadow2" :step="1" @change="changeShadowWidth2" style="width: 100%;margin: 10px 0;"/>
+                                                <a-slider :min="0" :max="10" v-model="Shadow3" :step="1" @change="changeShadowWidth3" style="width: 100%;margin: 10px 0;"/>
+                                            </div>
+                                        </dd>
+                                    </dl>
+                                    <p><a>重置</a>或<a>重新开始</a></p>
+                                            <!-- <li>
+                                                <span>描边</span>
+                                                <dl>
+                                                    <dt style="color: #33b8b3">大小：</dt>
+                                                    <dd>
+                                                        <a-slider :min="0" :max="10" v-model="strokeWidth" :step="1" @change="changestrokeWidth"/>
+                                                    </dd>
+                                                </dl>
+                                                <p>描边颜色：</p>
+                                                <dl class="font-color-list">
+                                                    <dd v-for="(item,index) in fontColorArr" :key="item.name" :style="{backgroundColor: item.color}" @click="changestrokeColor(item.color,index)">
+                                                        <a-icon type="check" v-show="colorStrokeIcon == index"></a-icon>
+                                                    </dd>
+                                                </dl>
+                                                <p>
+                                                        <span v-if="strokeWidth > 0">Add Outline</span>
+                                                        <a-icon type="right" />
+                                                </p>
+                                            </li> -->
+                                            <!-- <li>
+                                                <span>Font Height</span>
+                                                <p>
+                                                        <a-input type="number" @change="changeLineHeight" v-model="lineHeight"></a-input>
+                                                </p>
+                                            </li> -->
+                                    
                                 </div>
                                 <div class="tool-box10" v-show="visibletype == 4">
                                     <h2>颜色：</h2>
                                     <p>选择颜色： <span :style="{backgroundColor: '#fff'}"></span> 白色</p>
                                     <ul class="color-list">
-                                        <li v-for="(item,index) in fontColorArr" :key="index" :style="{backgroundColor: item.color}" @click="changeProductColor(index)">
+                                        <li v-for="(item,index) in colorList" :key="index" :style="{backgroundColor: item.color}" @click="changeProductColor(index)">
                                             <a-icon type="check" v-show="colorIcon == index"/>
                                         </li>
                                     </ul>
@@ -309,7 +380,7 @@
                                 </div>
                                 <div class="tool-box3" v-show="visibletype == 7">
                                     <h2 style="color: #333;text-align: left; border-bottom: 1px solid #333; padding-bottom: 5px;">
-                                        <a-icon type="arrow-left" style="cursor: pointer;" @click="visibletype = 0"/>
+                                        <a-icon type="left" style="cursor: pointer;" @click="visibletype = 3"/>
                                     </h2>
                                     <ul class="font-family-list">
                                         <li v-for="item in fontFamilyArr" :key="item.id" @click="changeFontFamily(item.name)">
@@ -320,30 +391,17 @@
                                 </div>
                                 <div class="tool-box4" v-show="visibletype == 8">
                                     <h2 style="color: #333;text-align: left; border-bottom: 1px solid #333; padding-bottom: 5px;">
-                                        <a-icon type="arrow-left" style="cursor: pointer;" @click="goBackPage"/>
+                                        <a-icon type="left" style="cursor: pointer;" @click="goBackPage"/>
                                     </h2>
-                                    <ul class="font-color-list">
-                                            <li v-for="(item,index) in fontColorArr" :key="item.name" :style="{backgroundColor: item.color}" @click="changeFillColor(item.color,item.name,index)">
-                                                <a-icon type="check" v-if="fontColorIcon == index"></a-icon>
-                                            </li>
+                                    <my-title :title="colorTitle"></my-title>
+                                    <ul class="color-list-box">
+                                        <li v-for="(item,index) in colorList" :key="item.name" :style="{backgroundColor: item.color}" @click="changeAllColor(item.color,item.name,index)">
+                                            <a-icon type="check" v-if="fontColorIcon == index &&　colorKey == colorIconShoW"></a-icon>
+                                        </li>
                                     </ul>
-                                </div>
-                                <div class="tool-box5" v-show="visibletype == 9">
-                                    <h2 style="color: #333;text-align: left; border-bottom: 1px solid #333; padding-bottom: 5px;">
-                                        <a-icon type="arrow-left" style="cursor: pointer;" @click="visibletype = 0"/>
-                                    </h2>
-                                    <dl>
-                                        <dt style="color: #33b8b3">描边大小：</dt>
-                                        <dd>
-                                            <a-slider :min="0" :max="10" v-model="strokeWidth" :step="1" @change="changestrokeWidth"/>
-                                        </dd>
-                                    </dl>
-                                    <p>描边颜色：</p>
-                                    <dl class="font-color-list">
-                                        <dd v-for="(item,index) in fontColorArr" :key="item.name" :style="{backgroundColor: item.color}" @click="changestrokeColor(item.color,index)">
-                                            <a-icon type="check" v-show="colorStrokeIcon == index"></a-icon>
-                                        </dd>
-                                    </dl>
+                                    <div>
+                                        <a-button></a-button>
+                                    </div>
                                 </div>
                                 <div class="tool-box2" v-show="visibletype == 10">
                                     <h2 style="color: #333;text-align: left; border-bottom: 1px solid #333; padding-bottom: 5px;">
@@ -396,9 +454,8 @@
                 <ul class="submit-box">
                     <li>每件价格 <span>$26.40 To $51.2</span></li>
                     <li>
-                        <a-button icon="plus">添加产品</a-button>
-                        <a-button icon="save" v-intro="'The content of tooltip'" v-intro-step="3">保存设计</a-button>
-                        <a-button icon="file-text" type="primary" v-intro="'The content of tooltip'" v-intro-step="2">订单列表</a-button>
+                        <a-button icon="plus" v-intro="'The content of tooltip'" v-intro-step="2" @click="$router.push({path: '/neworder'})">添加产品</a-button>
+                        <a-button icon="save" type="primary" v-intro="'The content of tooltip'" v-intro-step="3">保存设计</a-button>
                     </li>
                 </ul>
             </div>
@@ -459,6 +516,7 @@
 import { fabric } from 'fabric';
 import 'fabric-customise-controls';
 import FontFaceObserver from 'fontfaceobserver';
+import MyTitle from '@/components/MyTitle/MyTitle'
 import initAligningGuidelines from "@/utils/guidelines";
 import imgUrl1 from '@/assets/front.png';
 import imgUrl2 from '@/assets/back.png';
@@ -470,17 +528,38 @@ import rotate from '@/assets/icons/rotate.svg';
 import diagonal from "@/assets/icons/repair-tools-cross.svg";
 import img1 from '@/assets/0001.png';
 export default {
+    components:{
+        MyTitle
+    },
     data(){
         return{
+            // 判断改变颜色关键字
+            colorKey:'',
+            //TODO 颜色数组按修改类型，添加key值做区分
+            colorIconShoW:'',
+            // 改变颜色盒子标题
+            colorTitle:'',
+            // 文字阴影样式开始
+            Shadow1:0,
+            Shadow2:0,
+            Shadow3:0,
+            shadowColorName: '黑色',
+            shadowColor: '#000',
+            // 文字阴影样式结束
             previewVisible: false,
             fontColorIcon: -1,
-            colorStrokeIcon: -1,
             previewImage:'',
             example:false,
             uploadId:0,
             colorIcon: -1,
-            color:'#000000',
-            bgcolor:'#000000',
+
+            //字体颜色值 | 颜色名
+            color:'#000',
+            colorName:'黑色',
+            //字体背景颜色值 | 颜色名
+            bgcolor:'#000',
+            fontBgColorName:'黑色',
+
             resize,
             remove,
             rotate,
@@ -496,7 +575,11 @@ export default {
             visibletype:-1,
             transitionName:'vux-pop-in',
             form: this.$form.createForm(this),
-            strokeWidth:0,
+            // 描边样式
+            strokeWidth:1,
+            strokeColor: '#000',
+            strokeColorName: '黑色',
+
             skewx:0,
             skewy:0,
             fontFamilyArr:[
@@ -509,22 +592,31 @@ export default {
                     name: 'testFont'
                 }
             ],
-            fontColorArr:[
+            colorList:[
                 {
-                        name: 'Black',
+                        name: '黑色',
                         color: '#000'
                 },
                 {
-                        name: 'Red',
+                        name: '红色',
                         color: '#ff0000'
+                },
+                {
+                        name: '绿色',
+                        color: '#00ff00'
+                },
+                {
+                        name: '蓝色',
+                        color: '#0000ff'
                 }
             ],
             fileList: [],
             filpx:false,
             filpy:false,
             fontfamily:'',
-            colorName:'Black',
-            rotateNum:0,
+            
+            // 旋转数值
+            // rotateNum:0,
             addText:'',
             lineHeight: 1,
             opacity:1,
@@ -563,11 +655,6 @@ export default {
                     text: '号码'
                 },
                 {
-                    key:3,
-                    className: 'icon-ling',
-                    text: '领型'
-                },
-                {
                     key:4,
                     className: 'icon-color',
                     text: '产品颜色'
@@ -579,8 +666,8 @@ export default {
                 },
                 {
                     key:6,
-                    className: 'icon-cankao',
-                    text: '参考图片'
+                    className: 'icon-upload',
+                    text: '上传设计'
                 }
             ],
             dataList:[
@@ -632,6 +719,130 @@ export default {
         
     },
     methods:{
+        // 设置文字字重
+        setFontWeight(){
+            let obj = this.myCanvas.getActiveObject();
+            if (obj) {
+                if(obj.get("fontWeight") == 'normal'){
+                        obj.set("fontWeight", 'bold');
+                        this.myCanvas.requestRenderAll();
+                }else{
+                        obj.set("fontWeight", 'normal');
+                        this.myCanvas.requestRenderAll();
+                }
+            }
+        },
+        // 设置文字样式
+        setFontStyle(){
+                let obj = this.myCanvas.getActiveObject();
+                if (obj) {
+                    if(obj.get("fontStyle") == 'normal'){
+                            obj.set("fontStyle", 'italic');
+                            this.myCanvas.requestRenderAll();
+                    }else{
+                            obj.set("fontStyle", 'normal');
+                            this.myCanvas.requestRenderAll();
+                    }
+                }
+                
+        },
+        // 设置文字下划线
+        setTextDown(){
+                let obj = this.myCanvas.getActiveObject();
+                if (obj) {
+                    if(obj.get("underline")){
+                            obj.set("underline", false);
+                            this.myCanvas.requestRenderAll();
+                    }else{
+                            obj.set("underline", true);
+                            this.myCanvas.requestRenderAll();
+                    }
+                }
+        },
+        // 设置文字删除线
+        setTextThrough(){
+            let obj = this.myCanvas.getActiveObject();
+            if (obj) {
+                if(obj.get("linethrough")){
+                        obj.set("linethrough", false);
+                        this.myCanvas.requestRenderAll();
+                }else{
+                        obj.set("linethrough", true);
+                        this.myCanvas.requestRenderAll();
+                }
+            }
+        },
+        /** 
+         * 1：改变字体颜色的
+         * 2：改变字体背景颜色
+         * 3：改变描边颜色
+         * 4：改变阴影颜色
+         * 5：改变名字颜色
+         * 6：改变号码颜色
+         * 7：改变产品颜色
+         * 
+        */
+        changeAllColor(val,name,i){
+            if(this.colorKey == 1){
+                this.changeFillColor(val,name,i)
+            }else if(this.colorKey == 2){
+                this.changeTextBgColor(val,name,i)
+            }else if(this.colorKey == 3){
+                this.changestrokeColor(val,name,i)
+            }else if(this.colorKey == 4){
+                this.changeShadowColor(val,name,i)
+            }
+        },
+        // 字体背景色
+        changeTextBgColor(val,name,i){
+            // let obj = this.myCanvas.getActiveObject()
+            // if (obj) {
+            //     obj.set("textBackgroundColor", this.bgcolor);
+            //     this.myCanvas.requestRenderAll();
+            // }
+            let obj = this.myCanvas.getActiveObject();
+            this.bgcolor = val;
+            if (obj) {
+                obj.set("textBackgroundColor", val);
+                this.fontColorIcon = i;
+                this.myCanvas.requestRenderAll();
+            }
+            this.fontBgColorName = name;
+        },
+        // 设置字体阴影开始
+        changeShadowColor(val,name,i){
+                let obj = this.myCanvas.getActiveObject();
+                this.shadowColor = val;
+                if (obj) {
+                    obj.set('shadow', this.shadowColor +' '+ this.Shadow1 +' '+ this.Shadow2 +' '+ this.Shadow3);
+                    this.fontColorIcon = i;
+                    this.myCanvas.requestRenderAll();
+                }
+                this.shadowColorName = name;
+        },
+        changeShadowWidth1(){
+            let obj = this.myCanvas.getActiveObject()
+            if (obj) {
+                obj.set('shadow', this.shadowColor +' '+ this.Shadow1 +' '+ this.Shadow2 +' '+ this.Shadow3);
+                this.myCanvas.requestRenderAll();
+                }
+        },
+        changeShadowWidth2(){
+            let obj = this.myCanvas.getActiveObject()
+            if (obj) {
+                obj.set('shadow', this.shadowColor +' '+ this.Shadow1 +' '+ this.Shadow2 +' '+ this.Shadow3);
+                this.myCanvas.requestRenderAll();
+            }
+        },
+        changeShadowWidth3(){
+            let obj = this.myCanvas.getActiveObject()
+            if (obj) {
+                obj.set('shadow', this.shadowColor +' '+ this.Shadow1 +' '+ this.Shadow2 +' '+ this.Shadow3);
+                this.myCanvas.requestRenderAll();
+            }
+        },
+        // 设置字体阴影结束
+
         handleChange ({ fileList }) {
             if(this.uploadA){
                 this.fileList = fileList
@@ -656,10 +867,13 @@ export default {
         changeProductColor(i){
             this.colorIcon = i;
         },
+        // 选择颜色容器返回上一级
         goBackPage(){
             console.log(this.liClick)
+            // 字体选择颜色返回上一级
             if(this.liClick == 0){
-                this.visibletype = 0
+                this.visibletype = 3
+                // 图片选择颜色返回上一级
             }else if(this.liClick == 2){
                 this.visibletype = 2
             }
@@ -722,6 +936,7 @@ export default {
             fabric.Image.fromURL(imgUrl, function(oImg) {
                 oImg.on("selected", function() {
                     let obj = that.myCanvas.getActiveObject();
+                    that.liClick = 1;
                     that.opacity = obj.opacity;
                     that.filpx = obj.flipX;
                     that.filpy = obj.flipY;
@@ -831,7 +1046,6 @@ export default {
         toolsBtnClick(key){
             this.liClick = key;
             if(this.visibletype !== key){
-                
                 this.visibletype = key;
             }
         },
@@ -916,20 +1130,22 @@ export default {
                         top: that.screenWidth / 2
                 });
                 canvasObj.on("selected", function() {
-                    let obj = that.myCanvas.getActiveObject()
+                    let obj = that.myCanvas.getActiveObject();
+                    that.liClick = 0;
                     console.log(obj.angle)
                     that.color = obj.fill;
-                    that.rotateNum = obj.angle;
+                    //that.rotateNum = obj.angle;
                     that.bgcolor = obj.textBackgroundColor || '#000000';
                     that.stroke = obj.stroke;
                     that.strokeWidth = obj.strokeWidth;
                     that.Shadow1 = obj.shadow.offsetX;
                     that.Shadow2 = obj.shadow.offsetY;
                     that.Shadow3 = obj.shadow.blur;
-                    that.shdowcolor = obj.shadow.color;
+                    that.shadowColor = obj.shadow.color;
                     that.fontfamily = obj.fontFamily
                 });
                 that.myCanvas.add(canvasObj).setActiveObject(canvasObj);
+                that.visibletype = 3;
             }
         },
         loadAndUse(font) {
@@ -944,11 +1160,12 @@ export default {
                 alert('font loading failed ' + font);
             });
         },
-        setObjCenter(){
-            let t = this.myCanvas.getActiveObject();
-            t.center();
-            t.setCoords(); 
-        },
+        // 左右垂直居中
+        // setObjCenter(){
+        //     let t = this.myCanvas.getActiveObject();
+        //     t.center();
+        //     t.setCoords(); 
+        // },
         setTextalignLeft(){
             let obj = this.myCanvas.getActiveObject()
             if (obj) {
@@ -970,22 +1187,27 @@ export default {
                 this.myCanvas.requestRenderAll();
             }
         },
-        setTextRotate(){
-            let obj = this.myCanvas.getActiveObject();
-            if (obj) {
-                obj.rotate(this.rotateNum);
-                this.myCanvas.requestRenderAll();
-            }
-        },
+        // 旋转
+        // setTextRotate(){
+        //     let obj = this.myCanvas.getActiveObject();
+        //     if (obj) {
+        //         obj.rotate(this.rotateNum);
+        //         this.myCanvas.requestRenderAll();
+        //     }
+        // },
         openFontFamilyBox(){
             this.visibletype = 7;
         },
-        openFontColorBox(){
+        openChangeColorBox(key,title){
             this.visibletype = 8;
+            this.colorTitle = title;
+            this.colorKey = key;
+            console.log(key,title)
         },
-        openFontOutlineBox(){
-            this.visibletype = 9;
-        },
+        // 打开改变描边样式盒子
+        // openFontOutlineBox(){
+        //     this.visibletype = 9;
+        // },
         changeLineHeight(){
             let that = this;
             let obj = that.myCanvas.getActiveObject()
@@ -1046,21 +1268,24 @@ export default {
         },
         changeFillColor(val,name,i){
             let obj = this.myCanvas.getActiveObject();
-            this.color = val;
             if (obj) {
                 obj.set("fill", val);
                 this.fontColorIcon = i;
                 this.myCanvas.requestRenderAll();
             }
             this.colorName = name;
+            this.color = val;
         },
-        changestrokeColor(val,i){
+        // 改变描边样式开始
+        changestrokeColor(val,name,i){
             let obj = this.myCanvas.getActiveObject()
             if (obj) {
                 obj.set('stroke', val);
-                this.colorStrokeIcon = i;
+                this.fontColorIcon = i;
                 this.myCanvas.requestRenderAll();
             }
+            this.strokeColorName = name;
+            this.strokeColor = val;
         },
         changestrokeWidth(){
             let obj = this.myCanvas.getActiveObject()
@@ -1069,6 +1294,7 @@ export default {
                 this.myCanvas.requestRenderAll();
             }
         },
+        // 改变描边样式结束
         setEditPointer(){
             let that = this;
             fabric.Canvas.prototype.customiseControls({
@@ -1085,7 +1311,7 @@ export default {
                         action: function(e, target) {
                             console.log(target);
                             if(that.liClick == 0){
-                                that.visibletype = 0
+                                that.visibletype = 3
                             }else if(that.liClick == 1){
                                 that.visibletype = 10
                             }
@@ -1194,9 +1420,9 @@ export default {
             background-color: #F2F2F3;
             margin: 0;
             border-radius: 0 0 0 10px;
+            position: relative;
             li{
                 display: flex;
-            
                 width: 100%;
                 padding: 15px 0 10px;
                 flex-direction: column;
@@ -1204,10 +1430,13 @@ export default {
                 align-items: center;
                 color: #7F7F7F;
                 font-size: 16px;
-                
                 cursor: pointer;
                 span{
                     font-size: 24px;
+                }
+                &:last-child{
+                    position: absolute;
+                    bottom: 0;
                 }
             }
         }
@@ -1317,98 +1546,20 @@ export default {
                     }
                 }
                 .tool-box1{
-                        .second{
-                            padding: 10px;
-                            border-radius: 6px;
-                            .text-tool{
-                                display: flex;
-                                margin: 30px 0;
-                                p{
-                                    text-align: center;
-                                    margin: 0 10px;
-                                    span{
-                                            border: 1px solid #33b8b3;
-                                            border-radius: 4px;
-                                            display: inline-block;
-                                            padding: 4px 10px;
-                                            margin: 0 2px;
-                                            cursor: pointer;
-                                            i{
-                                                color: #33b8b3;
-                                                font-size: 20px;
-                                            }
-                                    }
-                                    &:nth-child(2){
-                                        span{
-                                            margin: 0;
-                                            &:nth-child(1){
-                                                border-top-right-radius: 0;
-                                                border-bottom-right-radius: 0;
-                                            }
-                                            &:nth-child(2){
-                                                border-radius: 0;
-                                                border-left: none;
-                                                border-right: none;
-                                            }
-                                            &:nth-child(3){
-                                                border-top-left-radius: 0;
-                                                border-bottom-left-radius: 0;
-                                            }
-                                        }
-                                    }
-                                }
-                                    
-                            }
-                            
+                    .add-text{
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+                        margin: 20px 0;
+                        p{
+                            color: #333;
                         }
-                        
-                        .add-text{
-                            display: flex;
-                            flex-direction: column;
-                            justify-content: center;
-                            align-items: center;
-                            margin: 20px 0;
-                            p{
-                                color: #333;
-                            }
-                            input{
-                                    margin: 10px 0;
-                            }
+                        input{
+                                margin: 10px 0;
                         }
-                        .tool-list{
-                            margin-top: 10px;
-                            padding-top: 10px;
-                            border-top: 1px solid #33b8b3;
-                            .square{
-                                    width: 14px;
-                                    height: 14px;
-                                    display: inline-block;
-                                    margin-left: 5px;
-                            }
-                            li{
-                                    padding: 10px 0;
-                                    border-bottom:1px solid #33b8b3; 
-                                    display: flex;
-                                    justify-content: space-between;
-                                    align-items: center;
-                                    cursor: pointer;
-                                    > span{
-                                        color: #33b8b3;
-                                    }
-                                    p{
-                                        display: flex;
-                                        align-items: center;
-                                        margin: 0;
-                                        span{
-                                                margin-right: 5px;
-                                                display: flex;
-                                                align-items: center;
-                                                
-                                        }
-                                    }
-                                    
-                            }
-                        }
+                    }
+                    
                 }
                 .tool-box2{
                     dl{
@@ -1437,8 +1588,9 @@ export default {
                 }
                 .tool-box4{
                         margin-top: 20px;
-                        .font-color-list{
+                        .color-list-box{
                             display: flex;
+                            margin-top: 10px;
                             li{
                                     width: 25px;
                                     height: 25px;
@@ -1450,25 +1602,7 @@ export default {
                         }
                         
                 }
-                .tool-box5{
-                        margin-top: 20px;
-                        > p{
-                            color: #33b8b3;
-                        }
-                        .font-color-list{
-                            display: flex;
-                            dd{
-                                display: inline-block;
-                                width: 25px;
-                                height: 25px;
-                                margin: 0 5px;
-                                cursor: pointer;
-                                line-height: 25px;
-                                text-align: center;
-                            }
-                        }
-                        
-                }
+                
                 .tool-box6{
                     h3{
                         padding: 10px 0;
@@ -1556,7 +1690,7 @@ export default {
                             padding: 10px 0;
                             border-bottom: 1px solid #ccc;
                             span{
-                                width: 15%;
+                               
                                 color: #33b8b3;
                             }
                             > div{
@@ -1586,22 +1720,166 @@ export default {
                     }
                 }
                 .tool-box9{
-                    h2{
-                        font-size: 18px;
-                        color: #33b8b3;
-                        margin-bottom: 20px;
-                        border-bottom: 1px solid #ccc;
-                        padding: 15px 0;
+                    > p{
+                        text-align: center;
+                        a{
+                            color: #33b8b3;
+                            text-decoration: underline;
+                            margin: 0 4px;
+                        }
                     }
-                    p{
-                        border:1px solid #666;
-                        border-radius: 10px;
-                        overflow: hidden;
-                        cursor: pointer;
-                        img{
-                            display: block;
-                            width: 100%;
-                            height: 100px;
+                    .second{
+                        padding: 10px;
+                        border-radius: 6px;
+                        .text-tool{
+                            display: flex;
+                            margin-bottom: 10px;
+                            justify-content: space-between;
+                            .text-align{
+                                p{
+                                    color: #33b8b3;
+                                }
+                                span{
+                                    border: 1px solid #33b8b3;
+                                    border-radius: 4px;
+                                    display: inline-block;
+                                    padding: 4px 10px;
+                                    margin: 0 2px;
+                                    cursor: pointer;
+                                    i{
+                                        color: #33b8b3;
+                                        font-size: 20px;
+                                    }
+                                }
+                                span{
+                                    margin: 0;
+                                    &:nth-child(1){
+                                        border-top-right-radius: 0;
+                                        border-bottom-right-radius: 0;
+                                    }
+                                    &:nth-child(2){
+                                        border-radius: 0;
+                                        border-left: none;
+                                        border-right: none;
+                                    }
+                                    &:nth-child(3){
+                                        border-top-left-radius: 0;
+                                        border-bottom-left-radius: 0;
+                                    }
+                                }
+                            }
+                            .font-style{
+                                span{
+                                    border: 1px solid #33b8b3;
+                                    border-radius: 4px;
+                                    display: inline-block;
+                                    padding: 4px 10px;
+                                    margin: 0;
+                                    cursor: pointer;
+                                    &:nth-child(1){
+                                        border-top-right-radius: 0;
+                                        border-bottom-right-radius: 0;
+                                    }
+                                    &:nth-child(2){
+                                        border-radius: 0;
+                                        border-left: none;
+                                        border-right: none;
+                                    }
+                                    &:nth-child(3){
+                                        border-radius: 0;
+                                       
+                                        border-right: none;
+                                    }
+                                    &:nth-child(4){
+                                        border-top-left-radius: 0;
+                                        border-bottom-left-radius: 0;
+                                    }
+                                    i{
+                                        color: #33b8b3;
+                                        font-size: 20px;
+                                    }
+                                }
+                                > p{
+                                    color: #33b8b3;
+                                }
+                            }
+                            p{
+                                text-align: center;
+                                margin: 0 10px;
+                            }
+                                
+                        }
+                    }
+                    .stroke-style{
+                        dd{
+                            align-items: center;
+                        }
+                    }
+                    > dl{
+                       
+                        padding-bottom: 10px;
+                        border-bottom: 1px solid #ccc;
+                        .title{
+                            color: #33b8b3;
+                        }
+                        dd{
+                            display: flex;
+                            justify-content: space-between;
+                            padding-left: 20px;
+                            .square{
+                                width: 14px;
+                                height: 14px;
+                                display: inline-block;
+                                margin-left: 5px;
+                            }
+                            p{
+                                display: flex;
+                                align-items: center;
+                                margin: 0;
+                                span{
+                                        margin-right: 5px;
+                                        display: flex;
+                                        align-items: center;
+                                        
+                                }
+                            }
+                            &:nth-child(2){
+                                cursor: pointer;
+                            }
+                        }
+                    }
+                    
+                    .tool-list{
+                        margin-top: 10px;
+                        padding-top: 10px;
+                        border-top: 1px solid #ccc;
+                        .square{
+                                width: 14px;
+                                height: 14px;
+                                display: inline-block;
+                                margin-left: 5px;
+                        }
+                        li{
+                            padding: 10px 0;
+                            border-bottom:1px solid #ccc; 
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            cursor: pointer;
+                            > span{
+                                color: #33b8b3;
+                            }
+                            p{
+                                display: flex;
+                                align-items: center;
+                                margin: 0;
+                                span{
+                                        margin-right: 5px;
+                                        display: flex;
+                                        align-items: center;
+                                        
+                                }
+                            }
                         }
                     }
                 }
@@ -1706,7 +1984,7 @@ export default {
         border-top: 1px solid #ccc;
         li{
             span{
-                color: #33b8b3;
+                
                 font-size: 18px;
                 margin-left: 10px;
             }

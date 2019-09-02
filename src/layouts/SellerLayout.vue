@@ -20,7 +20,7 @@
                 :theme="navTheme"
                 :collapsed="false"
                 :collapsible="true"
-                @menuSelect="menuSelect"
+                
               ></side-menu>
             </a-drawer>
 
@@ -77,7 +77,8 @@ export default {
     return {
       //production: config.production,
       collapsed: false,
-      menus: []
+      menus: [],
+      navTheme: 'light'
     };
   },
   computed: {

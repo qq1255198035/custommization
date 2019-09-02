@@ -133,7 +133,7 @@ export default {
     }
   },
   components: {
-    SysHeader,
+   
     MyStpes
   }
 };

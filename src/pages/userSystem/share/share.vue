@@ -190,7 +190,6 @@ export default {
   components: {
     MyTitle,
     CardHeader,
-    SysHeader,
     TableItem,
     MyTable,
     MyTables,

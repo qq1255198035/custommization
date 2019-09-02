@@ -23,7 +23,7 @@
                     <div class="right">
                         
                         <my-title :title="'新建订单'"></my-title>
-                        <goods-list :goodsArr="goodsList"></goods-list>
+                        <goods-list :goodsArr="goodsList" @on-click="openDesignModal($event)"></goods-list>
                         <div class="btn-box">
                             <a-button :loading="loading" @click="loadMore" :disabled="btnable">
                                 加载更多
@@ -67,6 +67,9 @@ export default {
         
     },
     methods: {
+        openDesignModal(id){
+            console.log(id)
+        },
         loadMore(){
             let that = this;
             that.pageNum ++;
