@@ -1,8 +1,14 @@
 import Vue from 'vue'
-import { ACCESS_TOKEN } from '@/store/mutation-types'
-import { axios } from '@/utils/request'
+import {
+  ACCESS_TOKEN
+} from '@/store/mutation-types'
+import {
+  axios
+} from '@/utils/request'
 import qs from 'qs'
-import { resolve } from 'q';
+import {
+  resolve
+} from 'q';
 
 
 // 前端路由表
@@ -28,6 +34,7 @@ const constantRouterComponents = {
   commissions: () => import("@/pages/Seller/Commissions"),
   commissionsdetails: () => import("@/pages/Seller/CommissionsDeatils"),
   design: () => import("@/pages/Seller/Design"),
+  myorder: () => import("@/pages/Seller/MyOrders"),
   //
   //share: () => import("@/pages/userSystem/share/share"),
   payment: () => import("@/pages/userSystem/payment/payment"),
@@ -43,7 +50,9 @@ const constantRouterComponents = {
 console.log(constantRouterComponents)
 // 前端未找到页面路由（固定不用改）
 const notFoundRouter = {
-  path: '*', redirect: '/404', hidden: true
+  path: '*',
+  redirect: '/404',
+  hidden: true
 }
 /**
  * 获取后端路由信息的 axios API
@@ -55,7 +64,10 @@ export const getRouterByUser = () => {
   return axios({
     url: '/sys/permission/getUserPermissionByToken',
     method: 'get',
-    data: qs.stringify({ token: Vue.ls.get(ACCESS_TOKEN) ,internationalization:localStorage.lang})
+    data: qs.stringify({
+      token: Vue.ls.get(ACCESS_TOKEN),
+      internationalization: localStorage.lang
+    })
     /* headers: {
       'Access-Token': 'xxx'
     }
@@ -81,13 +93,15 @@ export const generatorDynamicRouter = () => {
       console.log(res.result.menu)
       const resultList = [{
         component: "SellerLayout",
-meta: {title: "订单管理"},
-name: '',
-key: '',
-redirect: "person/orders",
-children: [
-  ...result
-]
+        meta: {
+          title: ""
+        },
+        name: '',
+        key: '',
+        redirect: "index",
+        children: [
+          ...result
+        ]
       }]
       console.log(resultList)
       const routers = generator(resultList)
@@ -111,27 +125,30 @@ children: [
 export const generator = (routerMap, parent) => {
   console.log(parent)
   console.log(routerMap)
-  
+
   console.log(routerMap)
   return routerMap.map(item => {
     console.log(item)
     console.log(constantRouterComponents)
     const currentRouter = {
       // 路由地址 动态拼接生成如 /dashboard/workplace
-      path:`${parent && parent.path || ''}/${item.name}`,
+      path: `${parent && parent.path || ''}/${item.name}`,
       // 路由名称，建议唯一
       name: item.name || item.key || '',
       hidden: item.hidden || false,
       component: constantRouterComponents[item.component || item.name],
       // meta: 页面标题, 菜单图标, 页面权限(供指令权限用，可去掉)
-      meta: { title: item.meta.title, icon: item.meta.icon || undefined }
+      meta: {
+        title: item.meta.title,
+        icon: item.meta.icon || undefined
+      }
     }
     console.log(item.hidden)
     console.log(currentRouter.path)
     console.log(currentRouter.meta)
     // 为了防止出现后端返回结果不规范，处理有可能出现拼接出两个 反斜杠
     currentRouter.path = currentRouter.path.replace('//', '/')
-    
+
     // 重定向
     item.redirect && (currentRouter.redirect = item.redirect)
     // 是否有子菜单，并递归处理
