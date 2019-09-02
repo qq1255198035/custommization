@@ -37,7 +37,7 @@
         <a-col :span="18" style="height: 100%;">
           <div class="right-menu" ref="right">
             <User></User>
-            <transition name="page-transition">
+                <transition name="page-transition">
               <route-view />
             </transition>
           </div>
