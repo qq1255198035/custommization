@@ -24,6 +24,7 @@
                         </li>
                     </ul>
                     <div class="container">
+                        <h2>CUSTOM KING T-Shirt<span>查看尺寸表</span></h2>
                         <div class="canvas-container"  v-show="designModel == 0">
                             <canvas id="canvas1" :width="screenWidth" :height="screenWidth"></canvas>
                         </div>
@@ -52,7 +53,7 @@
                         </ul>
                     </div>
                     <div class="tools-box">
-                        <div style="width: 100%; height: 100%;max-height: 687px; overflow-y:scroll;">
+                        <div style="" class="scroll-box">
                             <div class="drawer">
                                 <div class="tool-box" v-show="visibletype == -1">
                                     <h2>你想怎么开始？</h2>
@@ -93,7 +94,7 @@
                                     </div>
                                 </div>
                                 <div class="tool-box6" v-show="visibletype == 1">
-                                    <div v-if="visibletype !== -1">
+                                    <!-- <div v-if="visibletype !== -1">
                                         <h3 style="color: #33b8b3;padding-bottom: 3px; border-bottom: 1px solid #333;">图层</h3>
                                         <div class="controlers">
                                             <span title="移动到下一层" @click="toNextLayer"><a-icon type="up" /></span>
@@ -101,7 +102,7 @@
                                             <span title="移动到顶层" @click="toTopLayer"><i class="icon-top_layer "></i></span>
                                             <span title="移动倒底层" @click="toBottomLayer"><i class="icon-last_layer"></i></span>
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <h3>艺术插图：</h3>
                                     <div  style="padding-bottom: 10px; border-bottom: 1px solid #ccc;">
                                         <a-input-search @search="onSearch"/>
@@ -145,7 +146,7 @@
                                                     <a-checkbox @change="addName">添加名称</a-checkbox>
                                                 </p>
                                                 <p>
-                                                    <a-checkbox @change="addNumber">添加名称</a-checkbox>
+                                                    <a-checkbox @change="addNumber">添加号码</a-checkbox>
                                                 </p>
                                             </div>
                                         </dd>
@@ -204,27 +205,26 @@
                                             <span>颜色：</span>
                                             <div class="color-picker">
                                                 <p>
-                                                    黑色<span :style="{backgroundColor: 'black'}" @click="openChangeColorBox"></span>
+                                                    黑色<span :style="{backgroundColor: 'black'}" @click="openChangeColorBox(5,'名称颜色')"></span>
                                                 </p>
                                                 <p>
-                                                    黑色<span :style="{backgroundColor: 'black'}" @click="openChangeColorBox"></span>
+                                                    黑色<span :style="{backgroundColor: 'black'}" @click="openChangeColorBox(6,'号码颜色')"></span>
                                                 </p>
                                             </div>
                                         </dd>
                                     </dl>
-
+                                    <div style="text-align: center;">
+                                        <a-button type="primary" :disabled="!addNameData && !addNumberData" @click="visibletype = 9">
+                                            输入号码和名称
+                                        </a-button>
+                                    </div>
                                 </div>
 
                                 <div class="tool-box9" v-show="visibletype == 3">
                                     <my-title :title="'添加文字'"></my-title>
                                     <div class="second">
                                         <div class="text-tool">
-                                            <!-- <p>
-                                                    <span @click="setObjCenter">
-                                                        <i class="icon-center "></i>
-                                                    </span>
-                                                    Center
-                                            </p> -->
+                                            
                                             <div class="text-align">
                                                     <span @click="setTextalignLeft">
                                                         <a-icon type="align-left"/>
@@ -254,10 +254,7 @@
                                                     <p>字体样式</p>
                                             </div>
                                         </div>
-                                        <!-- <div>
-                                            <p>Rotation</p>
-                                            <a-slider :min="0" :max="360" :step="10" @change="setTextRotate" v-model="rotateNum"/>
-                                        </div> -->
+                                        
                                     </div>
                                     <ul class="tool-list">
                                         <li @click="openFontFamilyBox">
@@ -315,45 +312,25 @@
                                         </dd>
                                     </dl>
                                     <p><a>重置</a>或<a>重新开始</a></p>
-                                            <!-- <li>
-                                                <span>描边</span>
-                                                <dl>
-                                                    <dt style="color: #33b8b3">大小：</dt>
-                                                    <dd>
-                                                        <a-slider :min="0" :max="10" v-model="strokeWidth" :step="1" @change="changestrokeWidth"/>
-                                                    </dd>
-                                                </dl>
-                                                <p>描边颜色：</p>
-                                                <dl class="font-color-list">
-                                                    <dd v-for="(item,index) in fontColorArr" :key="item.name" :style="{backgroundColor: item.color}" @click="changestrokeColor(item.color,index)">
-                                                        <a-icon type="check" v-show="colorStrokeIcon == index"></a-icon>
-                                                    </dd>
-                                                </dl>
-                                                <p>
-                                                        <span v-if="strokeWidth > 0">Add Outline</span>
-                                                        <a-icon type="right" />
-                                                </p>
-                                            </li> -->
-                                            <!-- <li>
-                                                <span>Font Height</span>
-                                                <p>
-                                                        <a-input type="number" @change="changeLineHeight" v-model="lineHeight"></a-input>
-                                                </p>
-                                            </li> -->
-                                    
                                 </div>
                                 <div class="tool-box10" v-show="visibletype == 4">
                                     <h2>颜色：</h2>
                                     <p>选择颜色： <span :style="{backgroundColor: '#fff'}"></span> 白色</p>
                                     <ul class="color-list">
                                         <li v-for="(item,index) in colorList" :key="index" :style="{backgroundColor: item.color}" @click="changeProductColor(index)">
-                                            <a-icon type="check" v-show="colorIcon == index"/>
+                                            <a-icon type="check" v-show="productColorIcon == index"/>
                                         </li>
                                     </ul>
+                                    <div style="text-align: center;">
+                                        <a-button type="primary">保存更改</a-button>
+                                    </div>
                                 </div>
                                 <div class="tool-box11" v-show="visibletype == 5">
                                     <h2>设计备注：</h2>
-                                    <a-textarea placeholder="Basic usage" :rows="8"/>
+                                    <a-textarea placeholder="Basic usage" :rows="8" v-model="remark"/>
+                                    <div style="text-align: center;margin-top: 10px;">
+                                        <a-button type="primary" :disabled="!remark">保存更改</a-button>
+                                    </div>
                                 </div>
                                 <div class="tool-box12" v-show="visibletype == 6">
                                     <h2>参考图片：</h2>
@@ -394,38 +371,168 @@
                                         <a-icon type="left" style="cursor: pointer;" @click="goBackPage"/>
                                     </h2>
                                     <my-title :title="colorTitle"></my-title>
+                                    <p style="display:flex;align-items: center;margin-top: 10px;">选择颜色： <span :style="{backgroundColor: '#fff'}" style="width: 20px;height: 20px;display: inline-block;margin:0 10px;border:1px solid #ccc;"></span> 白色</p>
                                     <ul class="color-list-box">
                                         <li v-for="(item,index) in colorList" :key="item.name" :style="{backgroundColor: item.color}" @click="changeAllColor(item.color,item.name,index)">
-                                            <a-icon type="check" v-if="fontColorIcon == index &&　colorKey == colorIconShoW"></a-icon>
+                                            <a-icon type="check" v-show="fontColorIcon == index"></a-icon>
                                         </li>
                                     </ul>
-                                    <div>
-                                        <a-button></a-button>
+                                    <div style="text-align: center;">
+                                        <a-button type="primary">保存更改</a-button>
                                     </div>
+                                </div>
+                                <div class="tool-box5" v-show="visibletype == 9">
+                                    <h2 style="color: #333;text-align: left; border-bottom: 1px solid #333; padding-bottom: 5px;">
+                                        <a-icon type="left" style="cursor: pointer;" @click="goBackPage"/>
+                                    </h2>
+                                    <h3>名字和号码</h3>
+                                    <div>
+                                        <ul style="display:flex;background-color: #ccc;padding: 5px 0;">
+                                            <li style="width: 40%; color:#33b8b3;padding-left: 10px;">名称</li>
+                                            <li style="width: 20%; color:#33b8b3;padding-left: 10px;">号码</li>
+                                            <li style="width: 30%; color:#33b8b3;padding-left: 10px;">尺寸</li>
+                                        </ul>
+                                        <a-form
+                                            :form="form1"
+                                            @submit="handleSubmit"
+                                        >
+                                            <a-form-item v-for="k in form1.getFieldValue('keys')" :key="k" :required="false" style="width: 100%; margin: 0">
+                                                <a-input-group compact style="display: flex; align-items: center;width: 100%;">
+                                                    <a-form-item style="width: 40%; margin: 0;min-height: 58px;">
+                                                        <a-input v-decorator="[
+                                                            `names[${k}]`,
+                                                            {
+                                                                validateTrigger: ['change', 'blur'],
+                                                                rules: [{
+                                                                required: addNameData,
+                                                                whitespace: true,
+                                                                message: '请填写名称',
+                                                                }],
+                                                            }
+                                                            ]"
+                                                            :disabled="!addNameData"
+                                                            placeholder="名称" 
+                                                            style="width: 100%;border-top-right-radius: 0px;border-bottom-right-radius: 0px; border-right: none;"/>
+                                                        </a-form-item>
+                                                    
+                                                        <a-form-item style="width: 20%; margin: 0;min-height: 58px;">
+                                                            <a-input v-decorator="[
+                                                            `number[${k}]`,
+                                                            {
+                                                                validateTrigger: ['change', 'blur'],
+                                                                rules: [{
+                                                                required: addNumberData,
+                                                                whitespace: true,
+                                                                message: '请填写名称',
+                                                                }],
+                                                            }
+                                                            ]"
+                                                            :disabled="!addNumberData"
+                                                            placeholder="名称" style="width: 100%;border-radius: 0;border-right: none"/>
+                                                        </a-form-item>
+                                                        <a-form-item style="width: 30%; margin: 0;min-height: 58px;">
+                                                            <a-select 
+                                                                v-decorator="[
+                                                                    `size[${k}]`,
+                                                                    {
+                                                                        rules: [{
+                                                                        required: true,
+                                                                        message: '请填写尺寸',
+                                                                        }],
+                                                                    }
+                                                                    ]"
+                                                                    style="width: 100%; border-top-left-radius: 0;border-bottom-left-radius: 0;"
+                                                                    placeholder="尺寸"
+                                                            >
+                                                                <a-select-option value="Zhejiang">Zhejiang</a-select-option>
+                                                                <a-select-option value="Jiangsu">Jiangsu</a-select-option>
+                                                            </a-select>
+                                                        </a-form-item>
+                                                        <a-icon
+                                                            v-if="form1.getFieldValue('keys').length > 1"
+                                                            class="dynamic-delete-button"
+                                                            type="minus-circle-o"
+                                                            :disabled="form1.getFieldValue('keys').length === 1"
+                                                            @click="() => removeInput(k)"
+                                                        />
+                                                        
+                                                </a-input-group>
+                                                
+                                            </a-form-item> 
+                                            <a-form-item>
+                                            <a
+                                                type="dashed"
+                                                style="width: 60%;color: #33b8b3"
+                                                @click="add"
+                                            >
+                                                <a-icon type="plus" /> 添加更多
+                                            </a>
+                                            </a-form-item>
+                                            <a-form-item style="text-align: center;">
+                                            <a-button
+                                                type="primary"
+                                                html-type="submit"
+                                            >
+                                                保存
+                                            </a-button>
+                                            </a-form-item>
+                                        </a-form>
+                                    </div>
+                                   
                                 </div>
                                 <div class="tool-box2" v-show="visibletype == 10">
                                     <h2 style="color: #333;text-align: left; border-bottom: 1px solid #333; padding-bottom: 5px;">
-                                        <a-icon type="arrow-left" style="cursor: pointer;" @click="visibletype = 1"/>
+                                        <a-icon type="left" style="cursor: pointer;" @click="visibletype = 1"/>
                                     </h2>
-                                    <dl>
+                                    <ul class="first">
+                                        <li class="set-obj-center">
+                                            <p @click="setObjCenter">
+                                                <i class="icon-center "></i>
+                                            </p>
+                                            Center
+                                        </li>
+                                        <li class="set-layer">
+                                            <span title="移动到顶层" @click="toTopLayer"><i class="icon-top_layer "></i></span>
+                                            
+                                            <span title="移动倒底层" @click="toBottomLayer"><i class="icon-last_layer"></i></span>
+                                            <p>分层</p>
+                                        </li>
+                                        <li class="set-filp">
+                                            <span title="移动到顶层" @click="changeFilPx"><a-icon type="vertical-left" /></span>
+                                            <span title="移动倒底层" @click="changeFilPy"><a-icon type="vertical-left" style="transform:rotate(90deg)"/></span>
+                                            <p>翻转</p>
+                                        </li>
+                                    </ul>
+                                    <div class="set-rotate">
+                                        <p>旋转</p>
+                                        <a-slider :min="0" :max="360" :step="10" @change="setRotate" v-model="rotateNum"/>
+                                    </div>
+                                    <ul class="tool-list">
+                                        <li>
+                                            <span>删除白色</span>
+                                            <a-switch v-model="delWhite"/>
+                                        </li>
+                                    </ul>
+                                    
+                                    <!-- <dl>
                                             <dt>
                                                 透明度：
                                             </dt>
                                             <dd>
                                                 <a-slider :min="0" :max="1" v-model="opacity" :step="0.1" @change="changeOpacity"/>
                                             </dd>
-                                    </dl>
-                                    <ul style="display: flex;justify-content: space-around;margin:20px 0">
-                                            <li>
-                                                X轴翻转：
-                                                <a-switch @change='changeFilPx' v-model="filpx"/>
-                                            </li>
-                                            <li>
-                                                Y轴翻转：
-                                                <a-switch @change='changeFilPy' v-model="filpy"/>
-                                            </li>
-                                    </ul>         
-                                    <ul>
+                                    </dl> -->
+                                    <!-- <ul style="display: flex;justify-content: space-around;margin:20px 0">
+                                        <li>
+                                            X轴翻转：
+                                            <a-switch @change='changeFilPx' v-model="filpx"/>
+                                        </li>
+                                        <li>
+                                            Y轴翻转：
+                                            <a-switch @change='changeFilPy' v-model="filpy"/>
+                                        </li>
+                                    </ul>          -->
+                                    <!-- <ul>
                                             <li>
                                                 X轴斜切：
                                                 <a-slider :min="0" :max="80" :step="1" @change='changeSkewX' v-model="skewx"/>
@@ -434,7 +541,8 @@
                                                 Y轴斜切：
                                                 <a-slider :min="0" :max="80" :step="1" @change='changeSkewY' v-model="skewy"/>
                                             </li>
-                                    </ul>
+                                    </ul> -->
+
                                 </div>
                                 <div class="tool-box7" v-show="visibletype == 11">
                                     <h2 style="color: #333;text-align: left; border-bottom: 1px solid #333; padding-bottom: 5px;">
@@ -455,7 +563,7 @@
                     <li>每件价格 <span>$26.40 To $51.2</span></li>
                     <li>
                         <a-button icon="plus" v-intro="'The content of tooltip'" v-intro-step="2" @click="$router.push({path: '/neworder'})">添加产品</a-button>
-                        <a-button icon="save" type="primary" v-intro="'The content of tooltip'" v-intro-step="3">保存设计</a-button>
+                        <a-button icon="save" type="primary" v-intro="'The content of tooltip'" v-intro-step="3" @click="saveEndDesign">保存设计</a-button>
                     </li>
                 </ul>
             </div>
@@ -465,15 +573,15 @@
             title="参考图片上传："
             :centered="true"
             width="40%"
-            @ok="clickOk"
+            :footer="null"
         >
             <div class="upLoadExampleImg">
-                
-                <a-form :form="form">
+                <a-form :form="form" style="display: flex;justify-content: space-between;">
                     <a-form-item
                         label="附件上传"
-                        :label-col="{ span: 3 }"
-                        :wrapper-col="{ span: 19 }"
+                        :label-col="{ span: 6 }"
+                        :wrapper-col="{ span: 18 }"
+                        style="width: 49;"
                     >   
                         <a-upload
                         listType="picture-card"
@@ -502,17 +610,50 @@
                     </a-form-item>
                     <a-form-item
                         label="图片说明"
-                        :label-col="{ span: 3 }"
-                        :wrapper-col="{ span: 19 }"
+                        :label-col="{ span: 6 }"
+                        :wrapper-col="{ span: 18 }"
+                        style="width: 49%;"
                     >
-                        <a-textarea :rows="2" v-decorator="['bz',{rules: [{ required: true, message: '请填写说明！' }]}]"/>
+                        <a-textarea :rows="4" v-decorator="['bz',{rules: [{ required: true, message: '请填写说明！' }]}]"/>
                     </a-form-item>
                 </a-form>
+                <div class="btn-box">
+                    <a-button @click="clickOk">提交</a-button>
+                    <a-button style="color:#ccc;border-color: #ccc;" @click="closeUploadModal">取消</a-button>
+                </div>
+            </div>
+        </a-modal>
+        <a-modal
+            v-model="endDsign"
+            title="保存设计"
+            :centered="true"
+            width="40%"
+            :footer="null"
+        >
+            <div class="end-design">
+                <div class="content">
+                    <div class="title">
+                        <a-icon type="smile" theme="filled"/>
+                        <div>
+                            <h3>操作成功！</h3>
+                            <p>感谢您的信赖</p>
+                        </div>
+                    </div>
+                    <p>cccccccccccccccccccccccccccccccccccccccccccccc</p>
+                </div>
+                <div class="btn-box">
+                    <a-button icon="file-text">订单列表</a-button>
+                    <a-button type="primary" icon="" style="vertical-align: middle;">
+                        <img src="@/assets/monry-icon-bar.png" alt="" width="12" height="19" style="margin-right: 5px;">
+                        立即下单
+                    </a-button>
+                </div>
             </div>
         </a-modal>
     </div>
 </template>
 <script>
+let id = 0;
 import { fabric } from 'fabric';
 import 'fabric-customise-controls';
 import FontFaceObserver from 'fontfaceobserver';
@@ -533,6 +674,11 @@ export default {
     },
     data(){
         return{
+            endDsign: false,
+            remark: '',
+            addNumberData: false,
+            addNameData: false,
+            delWhite: false,
             // 判断改变颜色关键字
             colorKey:'',
             //TODO 颜色数组按修改类型，添加key值做区分
@@ -552,14 +698,13 @@ export default {
             example:false,
             uploadId:0,
             colorIcon: -1,
-
+            productColorIcon: -1,
             //字体颜色值 | 颜色名
             color:'#000',
             colorName:'黑色',
             //字体背景颜色值 | 颜色名
             bgcolor:'#000',
             fontBgColorName:'黑色',
-
             resize,
             remove,
             rotate,
@@ -573,15 +718,14 @@ export default {
             myCanvas3: null,
             myCanvas4: null,
             visibletype:-1,
-            transitionName:'vux-pop-in',
             form: this.$form.createForm(this),
             // 描边样式
             strokeWidth:1,
             strokeColor: '#000',
             strokeColorName: '黑色',
 
-            skewx:0,
-            skewy:0,
+            // skewx:0,
+            // skewy:0,
             fontFamilyArr:[
                 {
                     id:1,
@@ -616,7 +760,7 @@ export default {
             fontfamily:'',
             
             // 旋转数值
-            // rotateNum:0,
+            rotateNum:0,
             addText:'',
             lineHeight: 1,
             opacity:1,
@@ -705,6 +849,7 @@ export default {
             this.bindCanvas(this.myCanvas1,0);
             this.setEditIcon();
             this.setEditPointer();
+            //console.log(this.form)
         })
         this.$intro().setOptions({
             prevLabel: "上一步",
@@ -717,8 +862,53 @@ export default {
             disableInteraction: false,
         }).start();
         
+        
+    },
+    beforeCreate () {
+        this.form1 = this.$form.createForm(this);
+        this.form1.getFieldDecorator('keys', { initialValue: [0], preserve: true });
+        
     },
     methods:{
+        saveEndDesign(){
+            this.endDsign = true;
+        },
+        removeInput  (k) {
+            const { form1 } = this;
+            // can use data-binding to get
+            const keys = form1.getFieldValue('keys');
+            // We need at least one passenger
+            if (keys.length === 1) {
+                return;
+            }
+
+            // can use data-binding to set
+            form1.setFieldsValue({
+                keys: keys.filter(key => key !== k),
+            });
+        },
+
+        add  () {
+            const { form1 } = this;
+            // can use data-binding to get
+            const keys = form1.getFieldValue('keys');
+            console.log(keys)
+            const nextKeys = keys.concat(++id);
+            // can use data-binding to set
+            // important! notify form to detect changes
+            form1.setFieldsValue({
+                keys: nextKeys,
+            });
+        },
+        handleSubmit  (e) {
+            e.preventDefault();
+            this.form1.validateFields((err, values) => {
+                console.log(this.form1)
+                if (!err) {
+                    console.log('Received values of form: ', values);
+                }
+            });
+        },
         // 设置文字字重
         setFontWeight(){
             let obj = this.myCanvas.getActiveObject();
@@ -853,7 +1043,7 @@ export default {
             this.previewImage = file.url || file.thumbUrl
             this.previewVisible = true
         },
-        handleCancel () {
+        handleCancel() {
             this.previewVisible = false
         },
         clickOk(){
@@ -864,8 +1054,11 @@ export default {
                 }
             },);
         },
+        closeUploadModal(){
+            this.example = false
+        },
         changeProductColor(i){
-            this.colorIcon = i;
+            this.productColorIcon = i;
         },
         // 选择颜色容器返回上一级
         goBackPage(){
@@ -880,9 +1073,11 @@ export default {
         },
         addNumber (e) {
             console.log(`checked = ${e.target.checked}`)
+            this.addNumberData = e.target.checked
         },
         addName (e) {
             console.log(`checked = ${e.target.checked}`)
+            this.addNameData = e.target.checked
         },
         moreImgs(){
             this.visibletype = 11;
@@ -928,6 +1123,8 @@ export default {
             this.visibletype = i;
             this.liClick = i;
         },
+
+        // 添加图片开始
         addImg(imgUrl,id){
             this.selectImg(imgUrl,id);
         },
@@ -938,10 +1135,11 @@ export default {
                     let obj = that.myCanvas.getActiveObject();
                     that.liClick = 1;
                     that.opacity = obj.opacity;
-                    that.filpx = obj.flipX;
-                    that.filpy = obj.flipY;
-                    that.skewx = obj.skewX;
-                    that.skewy = obj.skewY;
+                    // that.filpx = obj.flipX;
+                    // that.filpy = obj.flipY;
+                    // that.skewx = obj.skewX;
+                    // that.skewy = obj.skewY;
+                    that.rotateNum = obj.angle;
                 });
                 
                 that.myCanvas.add(
@@ -956,13 +1154,15 @@ export default {
                             left: that.screenWidth / 2,
                             top: that.screenWidth / 2
                         })
+                        
                 ).setActiveObject(oImg);
+                console.log(oImg)
             });
                 
         },
+        // 添加图片结束
         handleObjectMove(object){
             object.on("object:moving", function(e) {
-                
                 var obj = e.target;
                 var canvas = obj.canvas;
                 var top = obj.top;
@@ -1026,6 +1226,7 @@ export default {
                 }
             });
         },
+        // 切换正反左右面
         changeModelDesign(i){
             console.log(i)
             this.designModel = i;
@@ -1049,6 +1250,7 @@ export default {
                 this.visibletype = key;
             }
         },
+        // 设置设计背景图
         bindCanvas(canvas,i) {
             var that = this
             canvas.setBackgroundImage(that.bgimgs[i],canvas.renderAll.bind(canvas),{
@@ -1112,6 +1314,7 @@ export default {
                 this.myCanvas.requestRenderAll();
             }
         },
+        // 添加文字
         addItext(text, options) {
             let that = this;
             if(that.addText){
@@ -1134,7 +1337,7 @@ export default {
                     that.liClick = 0;
                     console.log(obj.angle)
                     that.color = obj.fill;
-                    //that.rotateNum = obj.angle;
+                    
                     that.bgcolor = obj.textBackgroundColor || '#000000';
                     that.stroke = obj.stroke;
                     that.strokeWidth = obj.strokeWidth;
@@ -1144,10 +1347,12 @@ export default {
                     that.shadowColor = obj.shadow.color;
                     that.fontfamily = obj.fontFamily
                 });
+                console.log(canvasObj)
                 that.myCanvas.add(canvasObj).setActiveObject(canvasObj);
                 that.visibletype = 3;
             }
         },
+        // 加载资源字体
         loadAndUse(font) {
             let that = this;
             var myfont = new FontFaceObserver(font)
@@ -1161,11 +1366,12 @@ export default {
             });
         },
         // 左右垂直居中
-        // setObjCenter(){
-        //     let t = this.myCanvas.getActiveObject();
-        //     t.center();
-        //     t.setCoords(); 
-        // },
+        setObjCenter(){
+            let t = this.myCanvas.getActiveObject();
+            t.center();
+            t.setCoords(); 
+        },
+
         setTextalignLeft(){
             let obj = this.myCanvas.getActiveObject()
             if (obj) {
@@ -1188,13 +1394,13 @@ export default {
             }
         },
         // 旋转
-        // setTextRotate(){
-        //     let obj = this.myCanvas.getActiveObject();
-        //     if (obj) {
-        //         obj.rotate(this.rotateNum);
-        //         this.myCanvas.requestRenderAll();
-        //     }
-        // },
+        setRotate(){
+            let obj = this.myCanvas.getActiveObject();
+            if (obj) {
+                obj.rotate(this.rotateNum);
+                this.myCanvas.requestRenderAll();
+            }
+        },
         openFontFamilyBox(){
             this.visibletype = 7;
         },
@@ -1226,6 +1432,7 @@ export default {
         changeFilPx(){
             let obj = this.myCanvas.getActiveObject()
             if (obj) {
+                this.filpx = !this.filpx;
                 obj.set('flipX',this.filpx);
                 this.myCanvas.requestRenderAll();
             }
@@ -1233,24 +1440,25 @@ export default {
         changeFilPy(){
             let obj = this.myCanvas.getActiveObject()
             if (obj) {
+                this.filpy = !this.filpy;
                 obj.set('flipY',this.filpy);
                 this.myCanvas.requestRenderAll();
             }
         },
-        changeSkewY(){
-            let obj = this.myCanvas.getActiveObject()
-            if (obj) {
-                obj.set('skewY', this.skewy).setCoords();
-                this.myCanvas.requestRenderAll();
-            }
-        },
-        changeSkewX(){
-            let obj = this.myCanvas.getActiveObject()
-            if (obj) {
-                obj.set('skewX', this.skewx).setCoords();
-                this.myCanvas.requestRenderAll();
-            }
-        },
+        // changeSkewY(){
+        //     let obj = this.myCanvas.getActiveObject()
+        //     if (obj) {
+        //         obj.set('skewY', this.skewy).setCoords();
+        //         this.myCanvas.requestRenderAll();
+        //     }
+        // },
+        // changeSkewX(){
+        //     let obj = this.myCanvas.getActiveObject()
+        //     if (obj) {
+        //         obj.set('skewX', this.skewx).setCoords();
+        //         this.myCanvas.requestRenderAll();
+        //     }
+        // },
         changeFontFamily(value){
             console.log(`selected ${value}`);
             this.fontfamily = value;
@@ -1398,9 +1606,6 @@ export default {
     font-family:'testFont';
     src:url('https://cdnjs.loli.net/ajax/libs/MaterialDesign-Webfont/3.8.95/fonts/materialdesignicons-webfont.ttf')
 }
-#Design{
-
-}
 #DesignBox{
     .design-box{
         display: flex;
@@ -1448,6 +1653,19 @@ export default {
             min-width: 640px;
             padding: 20px;
             position: relative;
+            h2{
+                position: absolute;
+                left: 0;
+                top: 0;
+                padding:10px 15px;
+                color: #33b8b3;
+                span{
+                    font-size: 14px;
+                    color: #999;
+                    cursor: pointer;
+                    margin-left: 10px;
+                }
+            }
             .top{
                 position: absolute;
                 right: 20px;
@@ -1483,6 +1701,16 @@ export default {
             background-color: #F6F6F6;
             overflow: hidden;
             border-radius:  0 0 10px 0;
+            .scroll-box{
+                width: 100%; 
+                height: 100%;
+                max-height: 687px; 
+                overflow-y:scroll;
+                &::-webkit-scrollbar {  /*滚动条整体样式*/
+                    width: 0;  /*宽分别对应竖滚动条的尺寸*/
+                    /*高分别对应横滚动条的尺寸*/
+                }
+            }
             .drawer{
                 width: 100%;
                 border-radius: 10px;
@@ -1562,9 +1790,64 @@ export default {
                     
                 }
                 .tool-box2{
+                    .tool-list{
+                        margin-top: 10px;
+                        li{
+                            display: flex;
+                            justify-content: space-between;
+                            padding: 5px 0;
+                            border-bottom: 1px solid #ccc;
+                        }
+                    }
                     dl{
                         margin-top: 30px;
                     }
+                    .first{
+                        display: flex;
+                        .set-obj-center{
+                            color: #33b8b3;
+                            p{
+                                text-align: center;
+                                border: 1px solid #33b8b3;
+                                border-radius: 4px;
+                                padding: 2px 10px;
+                                margin: 0 2px;
+                                color: #33b8b3;
+                                cursor: pointer;
+                            }
+                        }
+                        .set-layer,.set-filp{
+                            margin: 0 20px;
+                            > p{
+                                text-align: center;
+                                color: #33b8b3;
+                            }
+                            span{
+                                border: 1px solid #33b8b3;
+                                border-radius: 4px;
+                                padding: 2px 10px;
+                                color: #33b8b3;
+                                display: inline-block;
+                                cursor: pointer;
+                                &:nth-child(1){
+                                   
+                                    border-top-right-radius: 0;
+                                    border-bottom-right-radius: 0;
+                                }
+                                &:nth-child(2){
+                                    border-left: none;
+                                    border-top-left-radius: 0;
+                                    border-bottom-left-radius: 0;
+                                }
+                            }
+                            
+                        }
+                    }
+                    .set-rotate{
+                        border-bottom: 1px solid #ccc;
+                        padding-bottom: 10px;
+                    }
+                    
                 }
                 .tool-box3{
                         .font-family-list{
@@ -1591,6 +1874,8 @@ export default {
                         .color-list-box{
                             display: flex;
                             margin-top: 10px;
+                            border-bottom: 1px solid #ccc;
+                            padding-bottom: 10px;
                             li{
                                     width: 25px;
                                     height: 25px;
@@ -1602,7 +1887,20 @@ export default {
                         }
                         
                 }
-                
+                .tool-box5{
+                    h3{
+                        color: #33b8b3;
+                    }
+                    .dynamic-delete-button{
+                        color: #ff0000;
+                        font-size: 16px;
+                        margin-left: 10px;
+                    }
+                    .ant-select-selection{
+                        border-top-left-radius: 0px;
+                        border-bottom-left-radius: 0px;
+                    }
+                }
                 .tool-box6{
                     h3{
                         padding: 10px 0;
@@ -1906,9 +2204,11 @@ export default {
                     .color-list{
                         display: flex;
                         flex-wrap: wrap;
+                        padding-bottom: 10px;
+                        border-bottom: 1px solid #ccc;
                         li{
-                            width: 20px;
-                            height: 20px;
+                            width: 25px;
+                            height: 25px;
                             display: flex;
                             justify-content: center;
                             align-items: center;
@@ -1997,7 +2297,15 @@ export default {
 }
 
 .upLoadExampleImg{
-    padding: 20px 0;
+    padding: 20px;
+    .btn-box{
+        text-align: center;
+        padding: 20px 0 0;
+        border-top: 1px solid #ccc;
+        button{
+            margin: 0 10px;
+        }
+    }
     .desc{
         clear: left;
         p{
@@ -2012,5 +2320,44 @@ export default {
         }
     }
 }
-
+.end-design{
+    padding: 0 20px 30px;
+    .content{
+        .title{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 30px; 
+            > i{
+                font-size: 100px;
+                color: #33b8b3;
+            }
+            > div{
+                margin-left: 20px;
+                p{
+                    margin: 0;
+                    color: #999;
+                }
+                h3{
+                    color: #33b8b3;
+                    font-size: 20px;
+                }
+            }
+           
+        }
+        > p{
+            width: 70%;
+            margin: 30px auto;
+            text-align: center;
+        }
+    }
+    .btn-box{
+        text-align: center;
+        padding: 20px 0 0;
+        border-top: 1px solid #ccc;
+        button{
+            margin: 0 10px;
+        }
+    }
+}
 </style>

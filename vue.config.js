@@ -1,6 +1,5 @@
 const path = require("path");
 const webpack = require('webpack');
-//import 'intro.js/introjs.css';
 function resolve(dir) {
       return path.join(__dirname, dir)
 }

@@ -8,7 +8,7 @@ import { setDocumentTitle, domTitle } from '@/utils/domUtil'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 NProgress.configure({ showSpinner: false })
 
-const whiteList = ['login', 'register','CountdownTime', 'home','personSet'] // no redirect whitelist
+const whiteList = ['login', 'register','CountdownTime', 'home','personSet','design'] // no redirect whitelist
 console.log(router)
 router.beforeEach((to, from, next) => {
   NProgress.start()
