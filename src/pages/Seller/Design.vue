@@ -654,6 +654,7 @@
 </template>
 <script>
 let id = 0;
+
 import { fabric } from 'fabric';
 import 'fabric-customise-controls';
 import FontFaceObserver from 'fontfaceobserver';
@@ -846,6 +847,11 @@ export default {
             this.handleObjectMove(this.myCanvas2);
             this.handleObjectMove(this.myCanvas3);
             this.handleObjectMove(this.myCanvas4);
+            this.delSelected(this.myCanvas1);
+            this.delSelected(this.myCanvas2);
+            this.delSelected(this.myCanvas3);
+            this.delSelected(this.myCanvas4);
+            this.handleObjectScale(this.myCanvas1);
             this.bindCanvas(this.myCanvas1,0);
             this.setEditIcon();
             this.setEditPointer();
@@ -870,6 +876,24 @@ export default {
         
     },
     methods:{
+        delSelected(obj) {
+            var that = this;
+            obj.on("mouse:down", function(options) {
+                if (options.target) {
+                    if(options.target.lockScalingX || options.target.lockScalingY){
+                        options.target.lockScalingX = false;
+                        options.target.lockScalingY = false;
+                        options.target.scale(options.target.scaleX);
+                    }
+                
+                document.onkeydown = function(e) {
+                    if (e.keyCode == 8) {
+                    that.myCanvas.remove(options.target);
+                    }
+                };
+                }
+            });
+        },
         saveEndDesign(){
             this.endDsign = true;
         },
@@ -1134,6 +1158,7 @@ export default {
                 oImg.on("selected", function() {
                     let obj = that.myCanvas.getActiveObject();
                     that.liClick = 1;
+                    that.visibletype = 10;
                     that.opacity = obj.opacity;
                     // that.filpx = obj.flipX;
                     // that.filpy = obj.flipY;
@@ -1152,7 +1177,9 @@ export default {
                             originX: "center",
                             originY: "center",
                             left: that.screenWidth / 2,
-                            top: that.screenWidth / 2
+                            top: that.screenWidth / 2,
+                            minScaleLimit: 0.5,
+                            maxScaleLimit: 1
                         })
                         
                 ).setActiveObject(oImg);
@@ -1199,10 +1226,10 @@ export default {
                         left_margin = 70;
                         right_margin = 140;
                 }else{
-                        top_margin = 120;
-                        bottom_margin = 100;
-                        left_margin = 200;
-                        right_margin = 200;
+                        top_margin = 70;
+                        bottom_margin = 50;
+                        left_margin = 170;
+                        right_margin = 170;
                 }
 
                 var top_bound = top_margin + top_adjust - pan_y;
@@ -1226,6 +1253,36 @@ export default {
                 }
             });
         },
+
+        handleObjectScale(object){
+            let that = this;
+            
+            object.on("object:scaling",that.onObjectScaled)
+            
+        },
+        onObjectScaled(e){
+            console.log(e.target.lockScalingX)
+            
+            if (e.target.scaleX * e.target.width >　300) {
+                console.log(e.e.x)
+                e.target.lockScalingX = true;
+                e.target.lockScalingY = true;
+                //e.target.scale(a);
+                
+                
+            }else{
+                e.target.lockScalingX = false;
+                e.target.lockScalingY = false;
+            };
+
+        },
+        handleBeforeScale(object){
+            object.on("object:beforeScaleRotate",function(obj){
+                obj.lockScalingX = obj.lockScalingY = false;
+                return true; 
+            })
+        },
+        
         // 切换正反左右面
         changeModelDesign(i){
             console.log(i)
@@ -1335,6 +1392,7 @@ export default {
                 canvasObj.on("selected", function() {
                     let obj = that.myCanvas.getActiveObject();
                     that.liClick = 0;
+                    that.visibletype = 3
                     console.log(obj.angle)
                     that.color = obj.fill;
                     
@@ -1508,6 +1566,7 @@ export default {
             fabric.Canvas.prototype.customiseControls({
                 tr: {
                         action: "scale"
+                       
                 },
                 br: {
                         action: function(e, target) {
@@ -1698,18 +1757,26 @@ export default {
         }
         .tools-box{
             width: calc(30% - 80px);
-            background-color: #F6F6F6;
+            background-color: #fff;
             overflow: hidden;
             border-radius:  0 0 10px 0;
             .scroll-box{
                 width: 100%; 
                 height: 100%;
-                max-height: 687px; 
+                max-height: 640px; 
                 overflow-y:scroll;
                 &::-webkit-scrollbar {  /*滚动条整体样式*/
-                    width: 0;  /*宽分别对应竖滚动条的尺寸*/
+                    width: 10px;  /*宽分别对应竖滚动条的尺寸*/
                     /*高分别对应横滚动条的尺寸*/
+                    background-color: #fff;
+                    
                 }
+                &::-webkit-scrollbar-thumb {
+                    background-color: #33b8b3;
+                    border-radius:4px;
+                    height: 10%;
+                }
+                
             }
             .drawer{
                 width: 100%;
