@@ -5,15 +5,16 @@
             :footer="null"
             width="90%"
             :centered="true"
+            style="padding: 0;"
         >
             <template slot="title">
                 <div>
-                        <span class="icon-logotxt" style="font-size: 35px;color: #33b8b3"></span>
+                        <img src="@/assets/logo-title.png" alt="" height="80">
                 </div>
             </template>
             <div id="DesignBox">
-                <div class="design-box">
-                    <ul class="side-bar">
+                <a-row class="design-box">
+                    <a-col class="side-bar" :span="2">
                         <li v-for="item in list" :key="item.className" @click="toolsBtnClick(item.key)" :class="{active: item.key == liClick}">
                             <span :class="item.className"></span>
                             {{item.text}}
@@ -22,8 +23,8 @@
                             <span class="icon-change_product"></span>
                             更换产品
                         </li>
-                    </ul>
-                    <div class="container">
+                    </a-col>
+                    <a-col class="container" :span="14">
                         <h2>CUSTOM KING T-Shirt<span>查看尺寸表</span></h2>
                         <div class="canvas-container"  v-show="designModel == 0">
                             <canvas id="canvas1" :width="screenWidth" :height="screenWidth"></canvas>
@@ -38,11 +39,11 @@
                         <div class="canvas-container"  v-show="designModel == 3">
                             <canvas id="canvas4" :width="screenWidth" :height="screenWidth"></canvas>
                         </div>
-                        <ul class="top">
-                            <li v-for="(item,index) in bgimgs" :key="index">
-                                <img :src="item" alt="" @click="changeModelDesign(index)">
-                            </li>
-                        </ul>
+                        <a-row class="top">
+                            <a-col v-for="(item,index) in bgimgs" :key="index" :span="4" class="li" @click="changeModelDesign(index)">
+                                <img :src="item" alt="">
+                            </a-col>
+                        </a-row>
                         <ul class="bottom">
                             <li @click="zoomIn">
                                 <span class="icon-zoomin"></span>
@@ -51,14 +52,14 @@
                                 <span class="icon-zoomout"></span>
                             </li>
                         </ul>
-                    </div>
-                    <div class="tools-box">
+                    </a-col>
+                    <a-col class="tools-box" :span="8">
                         <div style="" class="scroll-box">
                             <div class="drawer">
                                 <div class="tool-box" v-show="visibletype == -1">
                                     <h2>你想怎么开始？</h2>
                                     <ul class="btn-box">
-                                        <li @click="startTo(0)" v-intro="'The content of tooltip'" v-intro-step="1">
+                                        <li @click="startTo(0)" v-intro="'The content of tooltip'" v-intro-step="1" class="active-btn">
                                             <span class="icon-txt"></span>
                                             添加文字
                                         </li>
@@ -66,6 +67,8 @@
                                             <span class="icon-icon-image"></span>
                                             添加艺术
                                         </li>
+                                    </ul>
+                                    <ul class="btn-box">
                                         <li @click="startTo(6)">
                                             <span class="icon-upload"></span>
                                             上传设计
@@ -78,7 +81,7 @@
                                     <p>或<a>重新开始</a></p>
                                 </div>
                                 <div class="tool-box1" v-show="visibletype == 0">
-                                    <div v-if="visibletype !== -1">
+                                    <!-- <div v-if="visibletype !== -1">
                                         <h3 style="color: #33b8b3;padding-bottom: 3px; border-bottom: 1px solid #333;">图层</h3>
                                         <div class="controlers">
                                             <span title="移动到下一层" @click="toNextLayer"><a-icon type="up" /></span>
@@ -86,11 +89,15 @@
                                             <span title="移动到顶层" @click="toTopLayer"><i class="icon-top_layer "></i></span>
                                             <span title="移动倒底层" @click="toBottomLayer"><i class="icon-last_layer"></i></span>
                                         </div>
-                                    </div>
+                                    </div> -->
+                                    <h2 style="color: #33b8b3;text-align: left; border-bottom: 1px solid #999; padding-bottom: 5px; font-size: 18px;">
+                                        <a-icon type="left" style="cursor: pointer;" @click="visibletype = -1"/>
+                                        添加文字
+                                    </h2>
                                     <div class="add-text">
                                         <p>Add Text</p>
                                         <a-input v-model="addText"></a-input>
-                                        <a-button @click="addItext" :disabled="!addText">添加设计</a-button>
+                                        <a-button type="primary" @click="addItext" :disabled="!addText" style="font-size: 18px;height: 45px;padding: 0 30px;border-radius: 12px;">添加设计</a-button>
                                     </div>
                                 </div>
                                 <div class="tool-box6" v-show="visibletype == 1">
@@ -154,13 +161,13 @@
                                             <span>位置：</span>
                                             <div>
                                                 <p>
-                                                    <a-select defaultValue="0" style="width: 95%;">
+                                                    <a-select defaultValue="0" style="width: 95%;" @change="changeNamePosition">
                                                         <a-select-option value="0">胸部</a-select-option>
                                                         <a-select-option value="1">背部</a-select-option>
                                                     </a-select>
                                                 </p>
                                                 <p>
-                                                    <a-select defaultValue="0" style="width: 100%;">
+                                                    <a-select defaultValue="0" style="width: 100%;" @change="changeNumberPosition">
                                                         <a-select-option value="0">胸部</a-select-option>
                                                         <a-select-option value="1">背部</a-select-option>
                                                     </a-select>
@@ -367,18 +374,19 @@
                                     </ul>
                                 </div>
                                 <div class="tool-box4" v-show="visibletype == 8">
-                                    <h2 style="color: #333;text-align: left; border-bottom: 1px solid #333; padding-bottom: 5px;">
+                                    <h2 style="color: #33b8b3;text-align: left; border-bottom: 1px solid #999; padding-bottom: 5px; font-size: 18px;">
                                         <a-icon type="left" style="cursor: pointer;" @click="goBackPage"/>
+                                        {{colorTitle}}
                                     </h2>
-                                    <my-title :title="colorTitle"></my-title>
-                                    <p style="display:flex;align-items: center;margin-top: 10px;">选择颜色： <span :style="{backgroundColor: '#fff'}" style="width: 20px;height: 20px;display: inline-block;margin:0 10px;border:1px solid #ccc;"></span> 白色</p>
+                                    <!-- <my-title :title="colorTitle"></my-title> -->
+                                    <p style="display:flex;align-items: center;margin-top: 20px; font-size: 18px;color: #999;">选择颜色： <span :style="{backgroundColor: '#fff'}" style="width: 20px;height: 20px;display: inline-block;margin:0 10px;border:1px solid #ccc;"></span> 白色</p>
                                     <ul class="color-list-box">
                                         <li v-for="(item,index) in colorList" :key="item.name" :style="{backgroundColor: item.color}" @click="changeAllColor(item.color,item.name,index)">
                                             <a-icon type="check" v-show="fontColorIcon == index"></a-icon>
                                         </li>
                                     </ul>
                                     <div style="text-align: center;">
-                                        <a-button type="primary">保存更改</a-button>
+                                        <a-button type="primary" style="font-size: 18px;height: 45px;padding: 0 30px;border-radius: 12px;">保存更改</a-button>
                                     </div>
                                 </div>
                                 <div class="tool-box5" v-show="visibletype == 9">
@@ -557,8 +565,8 @@
                                 
                             </div>
                         </div>
-                    </div>
-                </div>
+                    </a-col>
+                </a-row>
                 <ul class="submit-box">
                     <li>每件价格 <span>$26.40 To $51.2</span></li>
                     <li>
@@ -675,6 +683,10 @@ export default {
     },
     data(){
         return{
+            namePosition:0,
+            numberPosition:0,
+            exampleName:'',
+            exampleNumber:'',
             endDsign: false,
             remark: '',
             addNumberData: false,
@@ -876,6 +888,44 @@ export default {
         
     },
     methods:{
+        changeNamePosition(value) {
+            console.log(`selected ${value}`);
+            this.namePosition = value;
+            if(this.addNameData){
+                if(this.namePosition == 0){
+                    this.myCanvas = this.myCanvas1;
+                    this.designModel = 0;
+                    this.bindCanvas(this.myCanvas,0)
+                    this.myCanvas2.remove(this.exampleName)
+                    this.addExampleName('testFont');
+                }else{
+                    this.myCanvas = this.myCanvas2;
+                    this.designModel = 1;
+                    this.bindCanvas(this.myCanvas,1);
+                    this.myCanvas1.remove(this.exampleName);
+                    this.addExampleName('testFont')
+                }
+            }
+        },
+        changeNumberPosition(value){
+            console.log(`selected ${value}`);
+            this.numberPosition = value;
+            if(this.addNumberData){
+                if(this.numberPosition == 0){
+                    this.myCanvas = this.myCanvas1;
+                    this.designModel = 0;
+                    this.bindCanvas(this.myCanvas,0)
+                    this.myCanvas2.remove(this.exampleNumber)
+                    this.addExampleNumber('testFont2');
+                }else{
+                    this.myCanvas = this.myCanvas2;
+                    this.designModel = 1;
+                    this.bindCanvas(this.myCanvas,1);
+                    this.myCanvas1.remove(this.exampleNumber);
+                    this.addExampleNumber('testFont2');
+                }
+            }
+        },
         delSelected(obj) {
             var that = this;
             obj.on("mouse:down", function(options) {
@@ -1097,11 +1147,87 @@ export default {
         },
         addNumber (e) {
             console.log(`checked = ${e.target.checked}`)
-            this.addNumberData = e.target.checked
+            let that = this;
+            that.addNumberData = e.target.checked
+            if(that.addNumberData){
+                if(that.numberPosition == 0){
+                    that.myCanvas = that.myCanvas1;
+                    that.bindCanvas(that.myCanvas,0);
+                    that.designModel = 0;
+                }else{
+                    that.myCanvas = that.myCanvas2;
+                    that.bindCanvas(that.myCanvas,1);
+                    that.designModel = 1;
+                }
+                that.addExampleNumber('testFont2')
+            }else{
+                if(that.exampleNumber){
+                    that.myCanvas1.remove(that.exampleNumber);
+                    that.myCanvas2.remove(that.exampleNumber);
+                }
+            }
         },
+        addExampleNumber(font){
+            let that = this;
+            let myfont = new FontFaceObserver(font);
+            myfont.load().then(function() {
+                // when font is loaded, use it.
+                that.exampleNumber = new fabric.Text("00", {
+                    fontFamily: font,
+                    originX:'center',
+                    originY:'center',
+                    left: that.screenWidth / 2,
+                    top: that.screenWidth / 2 - 50
+                });
+                that.myCanvas.add(that.exampleNumber).setActiveObject(that.exampleNumber);
+            }).catch(function(e) {
+                console.log(e)
+                
+            });
+        },
+
+        addExampleName(font){
+            let that = this;
+            let myfont = new FontFaceObserver(font);
+            myfont.load().then(function() {
+                // when font is loaded, use it.
+                that.exampleName = new fabric.Text("EXAMPLE", {
+                    fontFamily: font,
+                    originX:'center',
+                    originY:'center',
+                    left: that.screenWidth / 2,
+                    top: that.screenWidth / 2
+                });
+                that.myCanvas.add(that.exampleName).setActiveObject(that.exampleName);
+            }).catch(function(e) {
+                console.log(e)
+                
+            });
+        },
+        
         addName (e) {
             console.log(`checked = ${e.target.checked}`)
-            this.addNameData = e.target.checked
+            let that = this;
+            that.addNameData = e.target.checked;
+
+            if(that.addNameData){
+                if(that.namePosition == 0){
+                    that.myCanvas = that.myCanvas1;
+                    that.bindCanvas(that.myCanvas,0);
+                    that.designModel = 0;
+                }else{
+                    that.myCanvas = that.myCanvas2;
+                    that.bindCanvas(that.myCanvas,1);
+                    that.designModel = 1;
+                }
+                that.addExampleName('testFont')
+            }else{
+                if(that.exampleName){
+                    that.myCanvas1.remove(that.exampleName);
+                    that.myCanvas2.remove(that.exampleName);
+                }
+            }
+            
         },
         moreImgs(){
             this.visibletype = 11;
@@ -1263,7 +1389,7 @@ export default {
         onObjectScaled(e){
             console.log(e.target.lockScalingX)
             
-            if (e.target.scaleX * e.target.width >　300) {
+            if (e.target.scaleX * e.target.width > 280) {
                 console.log(e.e.x)
                 e.target.lockScalingX = true;
                 e.target.lockScalingY = true;
@@ -1273,7 +1399,7 @@ export default {
             }else{
                 e.target.lockScalingX = false;
                 e.target.lockScalingY = false;
-            };
+            }
 
         },
         handleBeforeScale(object){
@@ -1648,6 +1774,8 @@ export default {
 }
 </script>
 <style lang="less">
+@normal-fontsize: 18px;
+@normal-fontcolor: #999;
 .white{
     background-color:rgba(255,255,255,.0);
     border-color: #33b8b3;
@@ -1665,7 +1793,12 @@ export default {
     font-family:'testFont';
     src:url('https://cdnjs.loli.net/ajax/libs/MaterialDesign-Webfont/3.8.95/fonts/materialdesignicons-webfont.ttf')
 }
+@font-face {
+    font-family:'testFont2';
+    src:url('./../../assets/FZZYJW_0.TTF')
+}
 #DesignBox{
+    width: 100%;
     .design-box{
         display: flex;
         .active{
@@ -1676,27 +1809,29 @@ export default {
             }
         }
         .side-bar{
-            width: 80px;
+            
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
             align-items: center;
-            background-color: #F2F2F3;
+            background-color: #eee;
             margin: 0;
-            border-radius: 0 0 0 10px;
+            padding-bottom: 130px;
             position: relative;
             li{
                 display: flex;
                 width: 100%;
-                padding: 15px 0 10px;
+                padding: 10px 0;
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
-                color: #7F7F7F;
-                font-size: 16px;
+                color: #999;
+                font-size: 18px;
                 cursor: pointer;
                 span{
-                    font-size: 24px;
+                    font-size: 42px;
+                    margin-bottom: 12px;
+                    color: #999;
                 }
                 &:last-child{
                     position: absolute;
@@ -1708,10 +1843,12 @@ export default {
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 70%;
             min-width: 640px;
             padding: 20px;
             position: relative;
+            .canvas-container{
+                z-index: 100;
+            }
             h2{
                 position: absolute;
                 left: 0;
@@ -1729,11 +1866,15 @@ export default {
                 position: absolute;
                 right: 20px;
                 top: 20px;
-                li{
-                    width: 40px;
-                    height: 40px;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-end;
+                align-items: flex-end;
+                z-index: 99;
+                .li{
                     border: 1px solid #ccc;
-                    margin-bottom: 10px;
+                    margin-bottom: 20px;
+                    padding: 10px;
                     cursor: pointer; 
                     img{
                         width: 100%;
@@ -1745,19 +1886,19 @@ export default {
                 right: 20px;
                 bottom: 20px;
                 li{
-                    margin-top: 15px;
+                    margin-top:20px;
                     cursor: pointer;
                     span{
                         color: #33b8b3;
-                        font-size: 25px;
+                        font-size: 30px;
                     }
                 }
                 
             }
         }
         .tools-box{
-            width: calc(30% - 80px);
-            background-color: #fff;
+           
+            background-color: #eee;
             overflow: hidden;
             border-radius:  0 0 10px 0;
             .scroll-box{
@@ -1797,44 +1938,60 @@ export default {
                     h2{
                         color: #33b8b3;
                         text-align: center;
-                        padding: 50px 0;
+                        padding: 40px 0;
+                        font-size: 24px;
+                        margin:0;
                     }
                     p{
                         text-align: center;
-                        margin: 50px 0;
-                        color: #333;
+                        margin: 20px 0;
+                        color: #999;
+                        font-size: 18px;
                         a{
                             color: #33b8b3;
                         }
                     }
                     .btn-box{
                         display: flex;
-                        width: 60%;
+                        
                         flex-wrap: wrap;
-                        justify-content: flex-start;
+                        justify-content: center;
                         margin: 0 auto;
-                        align-items: flex-start;
+                        align-items: center;
+                        .active-btn{
+                            background-color: #33b8b3;
+                            color: #fff;
+                            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.25);
+                            border-color: #33b8b3;
+                            span{
+                                color: #fff;
+                            }
+                        }
                         li{
-                            width: 36%;
+                            width: 135px;
+                            height: 135px;
                             display: flex;
                             flex-direction: column;
                             justify-content: center;
                             align-items: center;
-                            margin: 10px 7%;
+                            margin: 0 20px 20px;
                             border: 1px solid #666;
                             border-radius: 10px;
                             color: #333;
                             padding: 15px 5px;
+                            font-size: 18px;
                             cursor: pointer;
                             span{
-                                font-size: 20px;
-                                margin-bottom: 5px;
+                                font-size: 42px;
+                                margin-bottom: 20px;
                             }
                             &:hover{
+                                background-color: #33b8b3;
+                                color: #fff;
+                                box-shadow: 2px 0 5px rgba(0, 0, 0, 0.25);
                                 border-color: #33b8b3;
-                                color: #33b8b3;
                                 span{
-                                    color: #33b8b3;
+                                    color: #fff;
                                 }
                             }
                         }
@@ -1848,10 +2005,15 @@ export default {
                         align-items: center;
                         margin: 20px 0;
                         p{
-                            color: #333;
+                            color: #999;
+                            font-size: 18px;
                         }
                         input{
-                                margin: 10px 0;
+                                margin: 20px 0;
+                                width: 80%;
+                                height: 45px;
+                                border-color: #33b8b3;
+                                border-radius: 12px;
                         }
                     }
                     
@@ -1940,16 +2102,17 @@ export default {
                         margin-top: 20px;
                         .color-list-box{
                             display: flex;
-                            margin-top: 10px;
                             border-bottom: 1px solid #ccc;
-                            padding-bottom: 10px;
+                            margin-bottom: 20px;
                             li{
-                                    width: 25px;
-                                    height: 25px;
-                                    margin: 0 5px;
+                                    width: 26px;
+                                    height: 26px;
+                                    margin: 20px 10px;
                                     cursor: pointer;
                                     line-height: 25px;
                                     text-align: center;
+                                    border-radius: 3px;
+                                    border: 1px solid #ddd;
                             }
                         }
                         
@@ -2350,15 +2513,44 @@ export default {
         padding: 20px;
         border-top: 1px solid #ccc;
         li{
-            span{
-                
+            &:nth-child(1){
                 font-size: 18px;
-                margin-left: 10px;
+                span{
+                    color: #33b8b3;
+                    font-size: 24px;
+                    margin-left: 10px;
+                }
+                
             }
+            
+        }
+        li{
             button{
-                margin-left: 10px;
-                position: relative;
-            }
+                    margin-left: 20px;
+                    width: 290px;
+                    height: 80px;
+                    border-radius: 12px;
+                    font-size: 18px;
+                    &:nth-child(2){
+                        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.25);
+                    }
+                    
+                    
+                    i{
+                        font-size: 32px;
+                        vertical-align: middle;
+                    }
+                    
+                    &:hover{
+                        background-color: #33b8b3;
+                        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.25);
+                        color: #fff;
+                        span{
+                            color: #fff;
+                        }
+                    }
+                    
+                }
         }
     }
 }
