@@ -96,7 +96,6 @@ export default {
   },
   components: {
     commonHeader,
-    SysHeader,
     PersonList,
     MyTitle
   }

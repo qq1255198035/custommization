@@ -20,7 +20,7 @@
                 :theme="navTheme"
                 :collapsed="false"
                 :collapsible="true"
-                @menuSelect="menuSelect"
+                
               ></side-menu>
             </a-drawer>
 

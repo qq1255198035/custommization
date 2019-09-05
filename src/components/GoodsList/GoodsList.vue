@@ -3,11 +3,12 @@
             <div class="gutter-example">
                   <a-row :gutter="30">
                         <a-col class="gutter-row" :span="6" v-for="item in goodsArr" :key="item.id">
-                              <div class="gutter-box">
+                              <div class="gutter-box" @click="handleClick(item.id)">
                                     <img :src="item.positive_pic_url" alt="">
                                     <div class="desc">
                                           <h3>{{item.name}}</h3>
-                                          <p><span>$ {{item.min_price}} - $ {{item.max_price}}</span><span>Min QTY: {{item.min_order}}</span></p>
+                                          <p><span>$ {{item.min_price}} - $ {{item.max_price}}</span></p>
+                                          <p>Min QTY: {{item.min_order}}</p>
                                           <p>尺码： {{item.size}}</p>
                                     </div>
                               </div>
@@ -22,6 +23,11 @@ export default {
             goodsArr:{
                   type: Array
             }
+      },
+      methods:{
+            handleClick(id){
+                  this.$emit('on-click',id);
+            }
       }
 }
 </script>
@@ -29,23 +35,46 @@ export default {
 #GoodsList{
       .gutter-row{
             margin: 20px 0; 
-            .desc{
-                  margin-top: 15px;
-                  h3{
-                        color: #33b8b3;
+            .gutter-box{
+                  position: relative;
+                  cursor: pointer;
+                  &:hover{
+                        .desc{
+                              display: flex;
+                        }
                   }
-                  p{
-                        margin: 10px 0;
-                        color: #757575;
-                  }
-                  p:nth-child(2){
+                  .desc{
+                        position: absolute;
+                        left: 0;
+                        top: 0;
                         display: flex;
-                        justify-content: space-between;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        padding-top: 15px;
+                        width: 100%;
+                        height: 100%;
+                        display: none;
+                        background-image: linear-gradient(135deg, rgba(17,187,232,0.3) 10%, #4ac37a 100%);
+                        h3{
+                              color: #fff;
+                              text-align: center;
+                        }
+                        p{
+                              margin: 10px 0;
+                              color: #fff;
+                              text-align: center;
+                              font-size: 16px;
+                        }
+                        p:nth-child(3){
+                              margin-bottom: 0;
+                        }
+                  }
+                  img{
+                        width: 100%;
                   }
             }
-            img{
-                  width: 100%;
-            }
+            
       }
 }
 </style>

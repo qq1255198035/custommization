@@ -25,8 +25,7 @@ const options = {
 Vue.use(Storage, options);
 Vue.use(SocialSharing);
 import 'vue-social-share/dist/client.css'
-import vcolorpicker from "vcolorpicker";
-Vue.use(vcolorpicker);
+
 Vue.use(VueFullPage);
 Vue.use(VueAxios)
 import './import'

@@ -20,12 +20,14 @@ import SellerLayout from "@/layouts/SellerLayout.vue";
     ]
   }
 ];*/
-export const constantRouterMap = [{
+export const constantRouterMap = [
+  {
     path: "/basic",
     name: "basic",
     component: BasicLayout,
     redirect: "/home",
-    children: [{
+    children: [
+      {
         path: "/home",
         name: "home",
         component: () => import("@/pages/Website/Home"),
