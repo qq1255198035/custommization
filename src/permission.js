@@ -15,7 +15,7 @@ NProgress.configure({
   showSpinner: false
 })
 
-const whiteList = ['login', 'register', 'home', 'passwordSet', 'share', 'products', 'about'] // no redirect whitelist
+const whiteList = ['login', 'register', 'home', 'passwordSet', 'share', 'products', 'about','design'] // no redirect whitelist
 console.log(router)
 router.beforeEach((to, from, next) => {
   NProgress.start()
@@ -34,7 +34,7 @@ router.beforeEach((to, from, next) => {
           store
             .dispatch('GetInfo')
             .then(res => {
-  
+              console.log(res)
               // 动态菜单与用户信息解耦
               store.dispatch('GenerateRoutes').then(() => {
                 // 根据roles权限生成可访问的路由表

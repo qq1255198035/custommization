@@ -69,12 +69,11 @@
 </template>
 
 <script>
-import { apiPersonOrder, apiPay, apiShareList } from "@/api/system";
+import { apiPersonOrder, apiPay } from "@/api/system";
 import commonBtn from "@/components/commonBtn/commonBtn";
 import User from "@/components/Header/User";
 import MyTable from "@/components/MyTable/MyTable";
 import MyTables from "@/components/MyTables/MyTables";
-import SysHeader from "@/components/SysHeader/SysHeader";
 import MyTitle from "@/components/MyTitle/MyTitle";
 import CardHeader from "@/components/CardHeader/CardHeader";
 import TableItem from "@/components/TableItem/TableItem";

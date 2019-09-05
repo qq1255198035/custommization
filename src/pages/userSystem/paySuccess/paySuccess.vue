@@ -54,7 +54,6 @@
 <script>
 import {payBack,status} from '@/api/system'
 import MyStpes from "@/components/MyStpes/MyStpes";
-import SysHeader from "@/components/SysHeader/SysHeader";
 export default {
   props: {},
   data() {

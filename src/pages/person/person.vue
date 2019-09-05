@@ -21,9 +21,8 @@
 <script>
 import accountSet from "@/components/common/accountSet";
 import MyTitle from "@/components/MyTitle/MyTitle";
-import PersonList from "@/components/PersonList/PersonList";
+//import PersonList from "@/components/PersonList/PersonList";
 import commonHeader from "@/components/commonHeader/commonHeader";
-import SysHeader from "@/components/SysHeader/SysHeader";
 const listData = [];
 for (let i = 0; i < 23; i++) {
   listData.push({
@@ -71,7 +70,6 @@ export default {
   },
   components: {
     commonHeader,
-    SysHeader,
     MyTitle,
     accountSet
   }

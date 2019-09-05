@@ -26,7 +26,6 @@ import {orders} from '@/api/system'
 import MyTitle from "@/components/MyTitle/MyTitle";
 import PersonList from "@/components/PersonList/PersonList";
 import commonHeader from "@/components/commonHeader/commonHeader";
-import SysHeader from "@/components/SysHeader/SysHeader";
 
 export default {
   props: {},
