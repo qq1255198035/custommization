@@ -84,15 +84,16 @@ export const constantRouterMap = [{
       }
     ],
   },
-  {
-    path: "/share",
-    name: "share",
-    component: () => import("@/pages/userSystem/share/share")
-  },
+  
   {
     path: "/payment",
     name: "payment",
     component: () => import("@/pages/userSystem/payment/payment")
+  },
+  {
+    path: "/paylocal",
+    name: "paylocal",
+    component: () => import("@/pages/userSystem/payLocal/payLocal")
   },
   {
     path: "/paysuccess",
@@ -105,83 +106,103 @@ export const constantRouterMap = [{
     path: '/user',
     name: 'user',
     component: BlankLayout,
-    redirect: '/home',
+    redirect: 'login',
     hidden: true,
     children: [{
         path: '/login',
         name: 'login',
-        component: () => import('@/pages/common/login')
+        hidden: true,
+        component: () => import('@/pages/common/login'),
+      },
+      {
+        path: "/share",
+        name: "share",
+        hidden: true,
+        component: () => import("@/pages/userSystem/share/share"),
+        meta: {
+          login:true,
+          keepAlive: true
+        }
       },
       {
         path: '/register',
         name: 'register',
+        hidden: true,
         component: () => import('@/pages/common/register')
       },
       {
         path: '/passwordSet',
         name: 'passwordSet',
+        hidden: true,
         component: () => import('@/pages/common/passwordForm')
-      }
+      },
+      {
+        path: "/neworder",
+        name: "neworder",
+        hidden: true,
+        component: () => import("@/pages/Seller/NewOrder"),
+        meta: {
+
+        }
+      },
+      {
+        path: "/design",
+        name: "design",
+        hidden: true,
+        component: () => import("@/pages/Seller/Design")
+      },
     ]
   },
   {
     path: '/404',
     component: () => import('@/pages/404')
   },
-  {
-    path: "/neworder",
-    name: "neworder",
-    component: () => import("@/pages/Seller/NewOrder"),
-    meta: {
 
-    }
-  },
   {
     path: "/seller",
     name: "seller",
     component: SellerLayout,
     redirect: "/dashbored",
-    children:[
-          {
-                path: "/dashbored",
-                name: "dashbored",
-                component: () => import("@/pages/Seller/DashBored"),
-                meta: {
-                      
-                }
-          },
-          {
-                path: "/grouporder",
-                name: "grouporder",
-                component: () => import("@/pages/Seller/GroupOrder"),
-                meta: {
-                      
-                }
-          },
-          {
-                path: "/commissions",
-                name: "commissions",
-                component: () => import("@/pages/Seller/Commissions"),
-                meta: {
-                      
-                }
-          },
-          {
-                path: "/commissionsdetails",
-                name: "commissionsdetails",
-                component: () => import("@/pages/Seller/CommissionsDeatils"),
-                meta: {
-                      
-                }
-          },
-          {
-                path: "/myorder",
-                name: "myorder",
-                component: () => import("@/pages/Seller/MyOrders"),
-                meta: {
-                      
-                }
-          }
+    children: [{
+        path: "/dashbored",
+        name: "dashbored",
+        component: () => import("@/pages/Seller/DashBored"),
+        meta: {
+
+        }
+      },
+      {
+        path: "/grouporder",
+        name: "grouporder",
+        component: () => import("@/pages/Seller/GroupOrder"),
+        meta: {
+
+        }
+      },
+      {
+        path: "/commissions",
+        name: "commissions",
+        component: () => import("@/pages/Seller/Commissions"),
+        meta: {
+
+        }
+      },
+      {
+        path: "/commissionsdetails",
+        name: "commissionsdetails",
+        component: () => import("@/pages/Seller/CommissionsDeatils"),
+        meta: {
+
+        }
+      },
+      {
+        path: "/myorder",
+        name: "myorder",
+        component: () => import("@/pages/Seller/MyOrders"),
+        meta: {
+
+        }
+      }
     ]
-},
+  },
 ]

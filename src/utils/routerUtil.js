@@ -19,32 +19,24 @@ const constantRouterComponents = {
   SellerLayout: () => import('@/layouts/SellerLayout'),
   RouteView: () => import('@/layouts/RouteView'),
 
-  //
   //CountdownTime: () => import("@/pages/Website/CountdownTime"),
-  //
-  home: () => import("@/pages/Website/Home"),
-  about: () => import("@/pages/Website/About"),
-  test: () => import("@/pages/Website/test"),
-  test2: () => import("@/pages/Website/test2"),
-  swiper: () => import("@/pages/Website/Swiper"),
-  comtest: () => import("@/pages/Website/comtest"),
-  //
+
   dashbored: () => import("@/pages/Seller/DashBored"),
   grouporder: () => import("@/pages/Seller/GroupOrder"),
   commissions: () => import("@/pages/Seller/Commissions"),
   commissionsdetails: () => import("@/pages/Seller/CommissionsDeatils"),
-  design: () => import("@/pages/Seller/Design"),
+  //design: () => import("@/pages/Seller/Design"),
   myorder: () => import("@/pages/Seller/MyOrders"),
   //
   //share: () => import("@/pages/userSystem/share/share"),
-  payment: () => import("@/pages/userSystem/payment/payment"),
-  paysuccess: () => import("@/pages/userSystem/paySuccess/paySuccess"),
+  //payment: () => import("@/pages/userSystem/payment/payment"),
+  //paysuccess: () => import("@/pages/userSystem/paySuccess/paySuccess"),
   orders: () => import("@/pages/userSystem/orders/orders"),
   personSet: () => import("@/pages/person/person"),
   // 
   neworder: () => import("@/pages/Seller/NewOrder"),
-  orderres: () => import("@/pages/Seller/OrderResult"),
-  orderdetails: () => import("@/pages/Seller/OrderDetails"),
+  //orderres: () => import("@/pages/Seller/OrderResult"),
+  //orderdetails: () => import("@/pages/Seller/OrderDetails"),
   // ...more
 }
 console.log(constantRouterComponents)
@@ -103,7 +95,6 @@ export const generatorDynamicRouter = () => {
           ...result
         ]
       }]
-      console.log(resultList)
       const routers = generator(resultList)
       routers.push(notFoundRouter)
       console.log(routers)

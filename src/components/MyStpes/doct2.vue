@@ -7,7 +7,7 @@
 #doct2 {
   width: 26px;
   height: 26px;
-  background-color: #33b8b3;
+  background-color: #fff;
   border-radius: 13px;
   display: flex;
   align-items: center;
@@ -15,7 +15,7 @@
   text-align: center;
   padding-left: 5px;
   i {
-    color: #fff;
+    color: #33b8b3;
   }
 }
 </style>

@@ -59,16 +59,15 @@ import { triggerWindowResizeEvent } from "@/utils/util";
 import { mapState, mapActions } from "vuex";
 import MyHeader from "@/components/Header/Header";
 import { mixin, mixinDevice } from "@/utils/mixin";
-import config from "@/config/defaultSettings";
+//import config from "@/config/defaultSettings";
 import User from "@/components/Header/User";
-import RouteView from "./RouteView";
+//import RouteView from "./RouteView";
 import SideMenu from "@/components/Menu/SideMenu";
 
 export default {
   name: "BasicLayout",
   mixins: [mixin, mixinDevice],
   components: {
-    RouteView,
     SideMenu,
     MyHeader,
     User
@@ -77,7 +76,8 @@ export default {
     return {
       //production: config.production,
       collapsed: false,
-      menus: []
+      menus: [],
+      navTheme: 'light'
     };
   },
   computed: {
@@ -147,6 +147,7 @@ export default {
 </script>
 
 <style lang="less">
+@import url("./../components/index.less");
 #SellerLayout {
   width: 100%;
   height: 100%;
@@ -170,7 +171,8 @@ export default {
       height: 100%;
       position: relative;
       .scroll-box{
-                padding-top: 58px; 
+                padding-top: 58px;
+                padding-bottom: 40px; 
                 overflow-y: scroll;
                 height: 100%;
                 &::-webkit-scrollbar {  /*滚动条整体样式*/

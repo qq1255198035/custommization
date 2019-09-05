@@ -1,7 +1,7 @@
 <template>
   <div>
      <s-menu
-      :collapsed="collapsed"
+      :collapsed="true"
       :menu="menus"
       :theme="theme"
       :mode="mode"
@@ -51,6 +51,7 @@ export default {
   },
   methods: {
     onSelect (obj) {
+      console.log(obj)
       this.$emit('menuSelect', obj)
     }
   }

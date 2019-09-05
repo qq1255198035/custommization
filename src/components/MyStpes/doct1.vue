@@ -12,7 +12,7 @@ export default {
 #doct1{
       width: 20px;
       height: 20px;
-      border: 1px solid #33b8b3;
+      border: 1px solid #fff;
       border-radius: 10px;
       display: flex;
       justify-content: center;
@@ -20,7 +20,7 @@ export default {
       .circle{
             width: 14px;
             height: 14px;
-            background-color: #33b8b3;
+            background-color: #fff;
             border-radius: 7px;
       }
 

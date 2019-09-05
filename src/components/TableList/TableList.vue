@@ -1,5 +1,5 @@
 <template>
-  <a-table  :columns="columns" :dataSource="data" bordered>
+  <a-table  :columns="columns" :dataSource="data" :pagination="false"  bordered>
     
   </a-table>
 </template>

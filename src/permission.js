@@ -4,70 +4,97 @@ import store from './store'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
 import notification from 'ant-design-vue/es/notification'
-import { setDocumentTitle, domTitle } from '@/utils/domUtil'
-import { ACCESS_TOKEN } from '@/store/mutation-types'
-NProgress.configure({ showSpinner: false })
+import {
+  setDocumentTitle,
+  domTitle
+} from '@/utils/domUtil'
+import {
+  ACCESS_TOKEN
+} from '@/store/mutation-types'
+NProgress.configure({
+  showSpinner: false
+})
 
-const whiteList = ['login', 'register','CountdownTime', 'home','personSet'] // no redirect whitelist
+const whiteList = ['login', 'register', 'home', 'passwordSet', 'share', 'products', 'about'] // no redirect whitelist
 console.log(router)
 router.beforeEach((to, from, next) => {
   NProgress.start()
   to.meta && (typeof to.meta.title !== 'undefined' && setDocumentTitle(`${to.meta.title} - ${domTitle}`))
   console.log(Vue.ls.get(ACCESS_TOKEN))
-  if (Vue.ls.get(ACCESS_TOKEN)) {
-    /* has token */
-    if (to.path === '/user') {
-      next()
-      NProgress.done()
-    } else {
-      
-      if (store.getters.roles.length === 0){
-        console.log(store.getters.roles.length)
-        store
-          .dispatch('GetInfo')
-          .then(res => {
-           
-            // 动态菜单与用户信息解耦
-            store.dispatch('GenerateRoutes').then(() => {
-              // 根据roles权限生成可访问的路由表
-              // 动态添加可访问路由表
-              console.log(router)
-              router.addRoutes(store.getters.addRouters)
-
-              console.log(store.getters.addRouters)
-              const redirect = decodeURIComponent(from.query.redirect || to.path)
-             console.log(redirect)
-              if (to.path === redirect) {
-                // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
-                next({ ...to, replace: true })
-              } else {
-                // 跳转到目的路由
-                next({ path: redirect })
-              }
-            })
-          })
-          .catch(() => {
-            notification.error({
-              message: '错误',
-              description: '请求用户信息失败，请重试'
-            })
-            store.dispatch('Logout').then(() => {
-              next({ path: '/user'})
-            })
-          })
-      } else {
+  console.log(to.path)
+    if (Vue.ls.get(ACCESS_TOKEN)) {
+      /* has token */
+      if (to.path === '/login') {
         next()
+        NProgress.done()
+      } else {
+  
+        if (store.getters.roles.length === 0) {
+          console.log(store.getters.roles.length)
+          store
+            .dispatch('GetInfo')
+            .then(res => {
+  
+              // 动态菜单与用户信息解耦
+              store.dispatch('GenerateRoutes').then(() => {
+                // 根据roles权限生成可访问的路由表
+                // 动态添加可访问路由表
+                console.log(router)
+                router.addRoutes(store.getters.addRouters)
+  
+                console.log(store.getters.addRouters)
+                const redirect = decodeURIComponent(from.query.redirect || to.path)
+                console.log(redirect)
+                if (to.path === redirect) {
+                  // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
+                  next({
+                    ...to,
+                    replace: true
+                  })
+                } else {
+                  // 跳转到目的路由
+                  next({
+                    path: redirect
+                  })
+                }
+              })
+            })
+            .catch(() => {
+              notification.error({
+                message: '错误',
+                description: '请求用户信息失败，请重试'
+              })
+              store.dispatch('Logout').then(() => {
+                next({
+                  path: '/login',
+                  query: {
+                    redirect: to.fullPath
+                  }
+                })
+              })
+            })
+        } else {
+          next()
+        }
       }
-    }
-  } else {
-    if (whiteList.includes(to.name)) {
-      // 在免登录白名单，直接进入
-      next()
     } else {
-      next({ path: '/user'})
-      NProgress.done()
-    }
-  }
+  
+      console.log(whiteList.includes(to.name))
+      if (whiteList.includes(to.name)) {
+        // 在免登录白名单，直接进入
+        console.log(whiteList)
+        next()
+      } else {
+        console.log(22)
+        next({
+          path: '/login',
+          query: {
+            redirect: to.fullPath
+          }
+        })
+        NProgress.done()
+      }
+    }  
 })
 
 router.afterEach(() => {

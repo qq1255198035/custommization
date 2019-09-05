@@ -20,11 +20,12 @@
         </a-col>
         <!--list2-->
         <a-col :span="2"></a-col>
-        <a-col :span="10">
+        <a-col :span="10" v-if="showList">
           <table-item :data="img2">
             <a href style="font-size: 18px; color: #999; text-decoration: underline">查看尺寸表</a>
           </table-item>
           <my-tables
+            v-if="showList"
             :dataSizes="dataSizes"
             :dataSizeTexts="dataSizeTexts"
             :sizes="sizes"
@@ -45,10 +46,18 @@
             </div>
             <div class="right">
               <!--<a data-hover="立即支付" icon="dollar" class="btns" @click="payTo">立即支付</a>-->
-              <commonBtn @payTo="payTo" :width="'100%'" :title="'立即支付'" :height="'80px'" :padding="'15px'" :radio="'18px'" :fontsize="'24px'">
+              <commonBtn
+                @payTo="payTo"
+                :width="'100%'"
+                :title="'立即支付'"
+                :height="'80px'"
+                :padding="'15px'"
+                :radio="'18px'"
+                :fontsize="'24px'"
+              >
                 <span class="bg-box">
-                <span class="bg-image"></span>
-              </span>
+                  <span class="bg-image"></span>
+                </span>
               </commonBtn>
             </div>
           </a-col>
@@ -60,7 +69,7 @@
 </template>
 
 <script>
-import { apiPersonOrder, apiPay } from "@/api/system";
+import { apiPersonOrder, apiPay, apiShareList } from "@/api/system";
 import commonBtn from "@/components/commonBtn/commonBtn";
 import User from "@/components/Header/User";
 import MyTable from "@/components/MyTable/MyTable";
@@ -69,11 +78,13 @@ import SysHeader from "@/components/SysHeader/SysHeader";
 import MyTitle from "@/components/MyTitle/MyTitle";
 import CardHeader from "@/components/CardHeader/CardHeader";
 import TableItem from "@/components/TableItem/TableItem";
+import { ACCESS_TOKEN } from "@/store/mutation-types";
 //import MyTable from "@/components/MyTable/MyTable";
 export default {
   props: {},
   data() {
     return {
+      showList: "",
       aPrice: "",
       bPrice: "",
       allPrice: "",
@@ -123,41 +134,60 @@ export default {
       this.allPrice = this.bPrice + this.aPrice;
     },
     payTo() {
-      const param = {
-        token: this.$ls.get("token"),
-        order_id: 266,
-        order_price: this.bPrice + this.aPrice,
-        personOrderNoPrintList: JSON.stringify(this.listNoPay),
-        personOrderPrintList: JSON.stringify(this.listPay)
-      };
-      console.log(param);
-      apiPay(param).then(res => {
-        console.log(res);
-        if (res.code == 1) {
-          this.$router.push({
-            path: "/payment",
-            query: {
-              user_order_id: res.result.user_order_id
-            }
-          });
-        }
-      });
+      const token = this.$ls.get(ACCESS_TOKEN);
+      if (!token) {
+        this.$error({
+          title: "未登录",
+          content: "您还没有登录，请先登录",
+          okText: "去登录",
+          mask: false,
+          onOk: () => {
+            this.$router.push({
+              path: "/login",
+              query: {
+                order_id: this.$route.query.order_id
+              }
+            });
+          }
+        });
+      } else {
+        const param = {
+          //token: this.$ls.get("token"),
+          order_id: 266,
+          order_price: this.bPrice + this.aPrice,
+          personOrderNoPrintList: JSON.stringify(this.listNoPay),
+          personOrderPrintList: JSON.stringify(this.listPay)
+        };
+        console.log(param);
+        apiPay(param).then(res => {
+          console.log(res);
+          if (res.code == 1) {
+            this.$router.push({
+              path: "/payment",
+              query: {
+                user_order_id: res.result.user_order_id
+              }
+            });
+          }
+        });
+      }
     },
     _apiPersonOrder() {
-      const param = {
-        token: this.$ls.get("token"),
-        order_id: 266,
+      apiPersonOrder({
+        //token: this.$ls.get("token"),
+        //order_id: 266,
+        order_id: this.$route.query.order_id,
         pageNo: 1,
         pageSize: 10
-      };
-      console.log(param);
-      apiPersonOrder(param).then(res => {
+      }).then(res => {
         console.log(res);
         let result = res.result.personOrderNoPrintList[0];
         let result1 = res.result.personOrderPrintList[0];
+        this.showList = result1;
         this.detailList = res.result.list[0];
         this.img1 = result;
-        this.img2 = result;
+        this.img2 = result1;
+        console.log(result.price);
         const json = {
           key: "0",
           price: result.price,
@@ -167,23 +197,28 @@ export default {
           goods_id: result.goods_id,
           des_id: result.des_id
         };
-        const json1 = {
-          key: "0",
-          price: result1.price,
-          total_price: result1.price,
-          printName: "名字",
-          printNumber: 0,
-          size: result1.sizes.split(","),
-          goods_id: result.goods_id,
-          des_id: result.des_id
-        };
+        if (result1) {
+          const json1 = {
+            key: "0",
+            price: result1.price,
+            total_price: result1.price,
+            printName: "名字",
+            printNumber: 0,
+            size: result1.sizes.split(","),
+            goods_id: result1.goods_id,
+            des_id: result1.des_id
+          };
+          this.dataSizes.push(json1);
+          this.dataSizeTexts = res.result.personOrderPrintList;
+          this.sizes = result1.sizes.split(",");
+        }
+
         this.dataSize.push(json);
-        this.dataSizes.push(json1);
+
         this.size = result.sizes.split(",");
-        this.sizes = result1.sizes.split(",");
+
         this.dataSizeText = res.result.personOrderNoPrintList;
         console.log(this.dataSizeText);
-        this.dataSizeTexts = res.result.personOrderPrintList;
       });
     }
   },
@@ -204,22 +239,23 @@ export default {
 @import url("./../../../components/index.less");
 @import url("./../../../assets/style.css");
 .bg-box {
-  width: 20px;
-  height: 30px;
+  width: 24px;
+  height: 38px;
   display: block;
   position: absolute;
   top: 50%;
   left: 26px;
-  margin-top: -15px;
+  margin-top: -19px;
   z-index: 9;
 }
-.right:hover{
-  .bg-image{
-    background: url("./../../../assets/monry-icon-bar.png") no-repeat transparent;
+.right:hover {
+  .bg-image {
+    background: url("./../../../assets/monry-icon-bar.png") no-repeat
+      transparent;
     width: 100%;
-  height: 100%;
-  display: block;
-  background-size: 100%;
+    height: 100%;
+    display: block;
+    background-size: 100%;
   }
 }
 .bg-image {

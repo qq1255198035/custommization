@@ -11,18 +11,18 @@
         <a-col :span="2"></a-col>
         <a-col :span="20">
           <div class="step font-reset">流程进度</div>
-          <my-stpes :mycurrent="step">
+          <MyPrimaryStpes :mycurrent="step">
             <p slot="p1">选择尺码</p>
             <p slot="p2">确认支付</p>
             <p slot="p3">等待开团</p>
             <p slot="p4">完成</p>
-          </my-stpes>
-          <my-title :title="itemTitle"></my-title>
+          </MyPrimaryStpes>
+          <my-title :title="itemTitle" :fontsize="24" :paddingtop="'40px'" :paddingbottom="'20px'"></my-title>
         </a-col>
         <a-col :span="2"></a-col>
       </a-row>
 
-      <a-row :gutter="20">
+      <a-row :gutter="20" style="padding-top:20px">
         <a-col :span="2"></a-col>
         <!--list1-->
         <a-col :span="8">
@@ -31,29 +31,37 @@
         </a-col>
         <!--list2-->
         <a-col :span="2"></a-col>
-        <a-col :span="10">
+        <a-col :span="10" v-if="data1.length = 0">
           <table-item :data="listRight"></table-item>
           <table-list :columns="columns1" :data="data1"></table-list>
         </a-col>
         <a-col :span="2"></a-col>
       </a-row>
-      <my-title :title="payTitle"></my-title>
+      <a-row>
+        <a-col :span="2"></a-col>
+        <a-col :span="20">
+          <my-title :title="payTitle" :fontsize="24" :paddingtop="'40px'" :paddingbottom="'20px'"></my-title>
+        </a-col>
+        <a-col :span="2"></a-col>
+      </a-row>
       <div class="payment">
-        <a-row>
-          <!--list1-->
-          <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
-            <span class="pay-title">支付方式:</span>
-            <a-radio-group @change="onChange" v-model="value">
-              <a-radio :value="1">
-                <img src="@assets/paypal.png" alt />
-              </a-radio>
-              <a-radio :value="2">
-                <img src="@assets/weixin.png" alt />
-              </a-radio>
-            </a-radio-group>
+        <a-row :gutter="20">
+          <a-col :span="2"></a-col>
+          <a-col :span="8" style="display:flex">
+            <div class="pay-title font-18">支付方式:</div>
+            <div>
+              <a-radio-group @change="onChange" v-model="value">
+                <a-radio :value="1">
+                  <img src="@assets/paypal.png" alt />
+                </a-radio>
+                <a-radio :value="2">
+                  <img src="@assets/weixin.png" alt />
+                </a-radio>
+              </a-radio-group>
+            </div>
           </a-col>
-          <!--list2-->
-          <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+          <a-col :span="2"></a-col>
+          <a-col :span="10">
             <ul class="pay-list">
               <li>
                 <a-row>
@@ -61,7 +69,7 @@
                     <h3 class="font-18">商品金额：</h3>
                   </a-col>
                   <a-col :span="12">
-                    <p class="textRight font-reset">$2000</p>
+                    <p class="textRight font-color">$2000</p>
                   </a-col>
                 </a-row>
               </li>
@@ -71,7 +79,7 @@
                     <h3 class="font-18">手续费：</h3>
                   </a-col>
                   <a-col :span="12">
-                    <p class="textRight font-reset">$2000</p>
+                    <p class="textRight font-color">$2000</p>
                   </a-col>
                 </a-row>
               </li>
@@ -81,52 +89,60 @@
                     <h3 class="font-18">运费：</h3>
                   </a-col>
                   <a-col :span="12">
-                    <p class="textRight font-reset">$2000</p>
+                    <p class="textRight font-color">$2000</p>
                   </a-col>
                 </a-row>
               </li>
-              <li style="padding-top:10px">
+              <li style="padding-top:20px">
                 <a-row>
                   <a-col :span="12">
-                    <h3 class="font-reset">合计总额：</h3>
+                    <h3 class="font-color">合计总额：</h3>
                   </a-col>
                   <a-col :span="12">
-                    <p class="textRight font-reset">${{allPrice.order_price}}</p>
+                    <p class="textRight font-color">${{allPrice.order_price}}</p>
                   </a-col>
                 </a-row>
               </li>
             </ul>
           </a-col>
+          <a-col :span="2"></a-col>
         </a-row>
       </div>
+      <a-row>
+        <a-col :span="2"></a-col>
+        <a-col :span="20">
+          <my-title></my-title>
+        </a-col>
+        <a-col :span="2"></a-col>
+      </a-row>
       <!--支付-->
-      <div class="paynum">
-        <div class="left textRight">
-          <a-row>
-            <a-col :span="6" :offset="18">
-              <p>总价</p>
-              <h2>${{allPrice.order_price}}</h2>
-            </a-col>
-          </a-row>
-        </div>
-        <div class="right">
-          <a-row>
-            <a-col :span="6" :offset="18">
+      <a-row :gutter="20">
+        <a-col :span="4" :offset="18">
+          <div class="paynum">
+            <div class="left textRight">
+              <div class="font-18" style="padding-bottom:20px">总价</div>
+              <div class="font-reset">${{allPrice.order_price}}</div>
+            </div>
+            <div class="right">
               <commonBtn
-                :icon="'dollar'"
                 @payBtn="payBtn"
                 :width="'100%'"
                 :title="'立即支付'"
-                :height="'45px'"
+                :height="'80px'"
                 :padding="'10px'"
                 :radio="'12px'"
                 :fontsize="'22px'"
                 :top="'20px'"
-              ></commonBtn>
-            </a-col>
-          </a-row>
-        </div>
-      </div>
+              >
+                <span class="bg-box">
+                  <span class="bg-image"></span>
+                </span>
+              </commonBtn>
+            </div>
+          </div>
+        </a-col>
+      </a-row>
+
       <!--展示码-->
       <div>
         <transition name="fade">
@@ -143,9 +159,8 @@
 </template>
 
 <script>
-import { payPal, paymentInfo, status, wxPay } from "@/api/system";
-import MyStpes from "@/components/MyStpes/MyStpes";
-import SysHeader from "@/components/SysHeader/SysHeader";
+import { payPal, paymentInfo, status, wxPay, wxOrderQuery } from "@/api/system";
+import MyPrimaryStpes from "@/components/MyPrimaryStpes/MyPrimaryStpes";
 import MyTitle from "@/components/MyTitle/MyTitle";
 import TableItem from "@/components/TableItem/TableItem";
 import TableList from "@/components/TableList/TableList";
@@ -157,6 +172,8 @@ export default {
   props: {},
   data() {
     return {
+      websocket: null,
+      prepayId: "",
       show: false,
       step: 1,
       listLeft: {},
@@ -245,7 +262,6 @@ export default {
     },
     _status() {
       const param = {
-        token: this.$ls.get("token"),
         user_order_id: this.$route.query.user_order_id
       };
       console.log(param);
@@ -256,7 +272,6 @@ export default {
     },
     _paymentInfo() {
       const param = {
-        token: this.$ls.get("token"),
         user_order_id: this.$route.query.user_order_id
       };
       paymentInfo(param).then(res => {
@@ -265,16 +280,32 @@ export default {
         this.data1 = res.result.confirmPrintPayList;
         this.listLeft = res.result.confirmNoPrintPayList[0];
         this.listRight = res.result.confirmPrintPayList[0];
-        this.allPrice = res.result.userOrderId ? res.result.userOrderId : 0;
-        this.userId = res.result.userOrderId.user_order_id;
+        this.allPrice = res.result.userOrderId[0] ? res.result.userOrderId[0] : 0;
+        this.userId = res.result.userOrderId[0].order_id;
+      });
+    },
+    resultPsot(data) {
+      const that = this;
+      console.log(data);
+      wxOrderQuery(data).then(res => {
+        console.log(res);
+        if (res.payStatus == 6) {
+          setTimeout(() => {
+            that.resultPsot(data);
+          }, 2000);
+        }else if (res.payStatus == 0){
+          this.$router.push({
+            path: '/paySuccess'
+          })
+          return
+        }
       });
     },
     payBtn() {
       console.log(this.value);
       const param = {
-        token: this.$ls.get("token"),
-        order_id: this.$route.query.user_order_id,
-        user_order_id: this.userId,
+        order_id: this.userId,
+        user_order_id: this.$route.query.user_order_id,
         price: this.allPrice.order_price
       };
       if (this.value == 1) {
@@ -284,6 +315,7 @@ export default {
           let first = res.toPayHtml.indexOf("href") + 6;
           let last = res.toPayHtml.lastIndexOf('"');
           let url = res.toPayHtml.slice(first, last);
+          console.log(url)
           this.$ls.set("userOrderId", res.user_order_id);
           this.$ls.set("orderId", res.order_id);
           this.$ls.set("price", res.price);
@@ -291,35 +323,41 @@ export default {
             path: "paylocal",
             query: { url: url }
           });
-          //window.location.replace(routeData.href, "_blank");
+          window.location.replace(routeData.href, "_blank");
         });
       }
       if (this.value == 2) {
         wxPay(param).then(res => {
           console.log(res);
-          const url = "hhttps://www.baidu.com/";
+          this.prepayId = res.respData.prepay_id;
+
+          const url = res.respData.code_url;
           this.show = true;
           var canvas = document.getElementById("canvas");
           QRCode.toCanvas(canvas, url, function(error) {
             if (error) {
-              //console.error(error);
+              console.error(error);
             }
           });
+          const datas = {
+            prepay_id: res.respData.prepay_id
+          };
+          this.resultPsot(datas);
         });
       }
     },
+
     onChange(e) {
       console.log("radio checked", e.target.value);
     }
   },
   components: {
     MyTitle,
-    SysHeader,
     TableItem,
-    MyStpes,
     TableList,
     commonBtn,
-    User
+    User,
+    MyPrimaryStpes
   }
 };
 </script>
@@ -327,6 +365,33 @@ export default {
 <style lang="less">
 @import url("./../../../components/index.less");
 @import url("./../../../assets/style.css");
+.bg-box {
+  width: 24px;
+  height: 38px;
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 26px;
+  margin-top: -19px;
+  z-index: 9;
+}
+.right:hover {
+  .bg-image {
+    background: url("./../../../assets/monry-icon-bar.png") no-repeat
+      transparent;
+    width: 100%;
+    height: 100%;
+    display: block;
+    background-size: 100%;
+  }
+}
+.bg-image {
+  background: url("./../../../assets/monry-icon.png") no-repeat;
+  width: 100%;
+  height: 100%;
+  display: block;
+  background-size: 100%;
+}
 .share-box {
   width: 100%;
   //height: 100%;
@@ -350,7 +415,7 @@ export default {
       }
     }
     .step {
-      padding: 16px 0;
+      padding: 40px 0 20px 0;
     }
     .payment {
       margin-top: 26px;
@@ -380,7 +445,7 @@ export default {
         }
       }
       .right {
-        margin-bottom: 40px;
+        position: relative;
         .ant-btn {
         }
       }

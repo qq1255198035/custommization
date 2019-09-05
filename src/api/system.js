@@ -45,7 +45,14 @@ export function Logout(url,parameter) {
 
 export function apiPersonOrder(parameter) {
   return axios({
-    url: '/apiPersonOrder/list',
+    url: 'apiPersonOrder/list',
+    method: 'post',
+    data: qs.stringify(parameter)
+  })
+}
+export function apiShareList(parameter) {
+  return axios({
+    url: 'apiPersonOrder/toPayInfo',
     method: 'post',
     data: qs.stringify(parameter)
   })
@@ -76,6 +83,13 @@ export function getAction(url,parameter) {
   export function wxPay(parameter) {
     return axios({
       url: '/api/wx/payBack',
+      method: 'post',
+      data: qs.stringify(parameter)
+    })
+  }
+  export function wxOrderQuery(parameter) {
+    return axios({
+      url: '/api/wx/wxOrderQuery',
       method: 'post',
       data: qs.stringify(parameter)
     })

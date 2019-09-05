@@ -88,12 +88,13 @@ export default {
                   font-size: 14px;
                   margin-top: 5px;
                   margin-bottom: 0;
+                  color: #fff;
             }
       }
       .line{
             height: 1px;
             width: 45%;
-            background-color: #eee;
+            background-color: #fff;
             margin-bottom: 25px;
             min-width: 20px;
       }
@@ -103,12 +104,12 @@ export default {
       .doct3{
             width: 18px;
             height: 18px;
-            background-color: #eee;
+            background-color: #fff;
             border-radius: 9px;
             display: block;
       }
       .line-active{
-            background-color: #33b8b3;
+            background-color: #fff;
       }
 }
 </style>

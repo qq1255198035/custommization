@@ -1,26 +1,26 @@
 <template>
       <div id="Stpesprimary" :class="{column: vertical == 'mycolumn'}">
-            <div class="section">
+            <div class="section" :class="{'section-active': mycurrent - 0 >= 0}">
                   <doct2 v-if="mycurrent - 0 > 0"></doct2>
                   <doct1 v-else-if="mycurrent - 0 === 0"></doct1>
                   <slot name="p1"></slot>
             </div>
             <div class="line" :class="{'line-active': mycurrent - 1 >= 0}"></div>
-            <div class="section">
+            <div class="section" :class="{'section-active': mycurrent - 1 >= 0}">
                   <doct2 v-if="mycurrent - 1 > 0"></doct2>
                   <doct1 v-else-if="mycurrent - 1 === 0"></doct1>
                   <span class="doct3" v-else-if="mycurrent - 1 < 0"></span>
                   <slot name="p2"></slot>
             </div>
             <div class="line" :class="{'line-active': mycurrent - 2 >= 0}"></div>
-            <div class="section">
+            <div class="section" :class="{'section-active': mycurrent - 2 >= 0}">
                   <doct2 v-if="mycurrent - 2 > 0"></doct2>
                   <doct1 v-else-if="mycurrent - 2 === 0"></doct1>
                   <span class="doct3" v-else-if="mycurrent - 2 < 0"></span>
                   <slot name="p3"></slot>
             </div>
             <div class="line" :class="{'line-active': mycurrent - 3 >= 0}" v-if="stpesnum == 4"></div>
-            <div class="section" v-if="stpesnum == 4">
+            <div class="section" :class="{'section-active': mycurrent - 3 >= 0}" v-if="stpesnum == 4">
                   <doct2 v-if="mycurrent - 3 > 0"></doct2>
                   <doct1 v-else-if="mycurrent - 3 === 0"></doct1>
                   <span class="doct3" v-else-if="mycurrent - 3 < 0"></span>
@@ -83,18 +83,25 @@ export default {
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            min-width: 56px;
+            min-width: 74px;
             p{
-                  font-size: 14px;
-                  margin-top: 5px;
+                  font-size: 18px;
+                  margin-top: 20px;
                   margin-bottom: 0;
+                  color: #999;
             }
+      }
+      .section-active{
+            p{
+                  color: #33b8b3;
+            }
+            
       }
       .line{
             height: 1px;
             width: 45%;
-            background-color: #ccc;
-            margin-bottom: 25px;
+            background-color: #ddd;
+            margin-bottom: 45px;
             min-width: 20px;
       }
       .more-lang{
@@ -103,12 +110,12 @@ export default {
       .doct3{
             width: 18px;
             height: 18px;
-            background-color: #ccc;
+            background-color: #ddd;
             border-radius: 9px;
             display: block;
       }
       .line-active{
-            background-color: #33b8b3;
+            background-color: #33b8b3
       }
 }
 </style>

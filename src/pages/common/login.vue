@@ -8,12 +8,7 @@
         <a-row>
           <a-col :span="4"></a-col>
           <a-col :span="16">
-            <a-form
-              id="formLogin"
-              class="user-layout-login"
-              ref="formLogin"
-              :form="form"
-            >
+            <a-form id="formLogin" class="user-layout-login" ref="formLogin" :form="form">
               <a-form-item label="账户" class="margin-top-20">
                 <a-input
                   size="large"
@@ -40,7 +35,7 @@
               </a-form-item>
               <a-form-item>
                 <p class="auto-login">
-                  <a-checkbox @change="onChange" v-model="formLogin.rememberMe">自动登录</a-checkbox>
+                  <a-checkbox @change="onChange" :checked="formLogin.rememberMe">自动登录</a-checkbox>
                 </p>
                 <div class="forget">
                   <router-link class="register" :to="{ name: 'passwordSet' }">
@@ -57,8 +52,7 @@
                   :radio="'18px'"
                   :fontsize="'24px'"
                   @submitLogin="submitLogin"
-                >
-                </commonBtn>
+                ></commonBtn>
                 <!--<a-button
                   size="large"
                   htmlType="submit"
@@ -85,8 +79,6 @@
 <script>
 import { mapActions } from "vuex";
 /*import { timeFix } from '@/utils/util'*/
-import { login, getAction } from "@/api/system";
-import MyHeader from "@/components/Header/Header";
 import commonBtn from "@/components/commonBtn/commonBtn";
 //import { encryption } from '@/utils/encryption/aesEncrypt'
 export default {
@@ -112,21 +104,23 @@ export default {
     };
   },
   components: {
-    MyHeader,
     commonBtn
   },
   created() {},
+  mounted() {
+    this.getCookie();
+  },
   methods: {
     ...mapActions(["Login", "Logout"]),
-    onChange() {},
+    onChange(e) {
+      this.formLogin.rememberMe = e.target.checked
+      console.log(this.formLogin.rememberMe)
+    },
     handleTabClick(key) {
       this.customActiveKey = key;
       // this.form.resetFields()
     },
-    submitLogin(e) {
-      let loginParams = {
-        remember_me: this.formLogin.rememberMe
-      };
+    submitLogin() {
       const {
         form: { validateFields },
         state,
@@ -143,7 +137,12 @@ export default {
 
       validateFields(validateFieldsKey, { force: true }, (err, values) => {
         if (!err) {
-          console.log("login form", values);
+          if (this.formLogin.rememberMe) {
+            this.setCookie(values.username, values.password, 3);
+          } else {
+            this.clearCookie();
+            this.formLogin.rememberMe = false
+          }
           const loginParams = { ...values };
           delete loginParams.username;
           loginParams.username = values.username;
@@ -160,8 +159,18 @@ export default {
 
     loginSuccess(res) {
       console.log(res);
-      console.log(this.$router);
-      this.$router.push({ path: "/" });
+      if (this.$route.query.order_id) {
+        console.log(this.$route.query.order_id);
+        this.$router.push({
+          path: "/share",
+          query: {
+            order_id: this.$route.query.order_id
+          }
+        });
+      } else {
+        this.$router.push({ path: "/index" });
+      }
+
       // 延迟 1 秒显示欢迎信息
       if (res.code != 200) {
         this.$notification["error"]({
@@ -182,6 +191,37 @@ export default {
         description: ((err.response || {}).data || {}).message || "11",
         duration: 4
       });
+    },
+    //设置cookie
+    setCookie(c_name, c_pwd, exdays) {
+      var exdate = new Date(); //获取时间
+      exdate.setTime(exdate.getTime() + 24 * 60 * 60 * 1000 * exdays); //保存的天数
+      //字符串拼接cookie
+      window.document.cookie =
+        "userName" + "=" + c_name + ";path=/;expires=" + exdate.toGMTString();
+      window.document.cookie =
+        "userPwd" + "=" + c_pwd + ";path=/;expires=" + exdate.toGMTString();
+    },
+    //读取cookie
+    getCookie: function() {
+      if (document.cookie.length > 0) {
+        var arr = document.cookie.split("; "); //这里显示的格式需要切割一下自己可输出看下
+        for (var i = 0; i < arr.length; i++) {
+          var arr2 = arr[i].split("="); //再次切割
+          //判断查找相对应的值
+          if (arr2[0] == "userName") {
+            console.log(arr2[1])
+            this.form.setFieldsValue({['username']:arr2[1]}) //保存到保存数据的地方
+          } else if (arr2[0] == "userPwd") {
+            this.form.setFieldsValue({['password']:arr2[1]})
+            //this.ruleForm.password = arr2[1];
+          }
+        }
+      }
+    },
+    //清除cookie
+    clearCookie: function() {
+      this.setCookie("", "", -1); //修改2值都为空，天数为负1天就好了
     }
   }
 };
@@ -248,7 +288,8 @@ export default {
 
         .user-login-other {
           text-align: left;
-          margin-top: 24px;
+          padding-top: 20px;
+          padding-bottom: 40px;
           line-height: 22px;
 
           .item-icon {

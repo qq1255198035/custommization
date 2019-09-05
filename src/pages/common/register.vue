@@ -20,8 +20,12 @@
                     size="large"
                     type="text"
                     placeholder="邮箱"
-                    v-decorator="['email', {rules: [{ required: true, type: 'email', message: '邮箱' }], validateTrigger: ['change', 'blur']}]"
+                    v-decorator="['email', {rules: [{ required: true, type: 'email', message: '请输入邮箱' }], validateTrigger: ['change', 'blur']}]"
                   ></a-input>
+                  <div v-if="formShow" class="font-splic">
+                    <span><a-icon type="close-circle" /></span>
+                    <span>{{emailText}}</span>
+                  </div>
                 </a-form-item>
                 <a-row :gutter="12">
                   <a-col :span="12">
@@ -30,7 +34,7 @@
                         size="large"
                         type="text"
                         placeholder="姓"
-                        v-decorator="['surname', {rules: [{ required: true, message: '姓' }], validateTrigger: ['change', 'blur']}]"
+                        v-decorator="['surname', {rules: [{ required: true, message: '请填写姓' }], validateTrigger: ['change', 'blur']}]"
                       ></a-input>
                     </a-form-item>
                   </a-col>
@@ -40,7 +44,7 @@
                         size="large"
                         type="text"
                         placeholder="名"
-                        v-decorator="['monicker', {rules: [{ required: true, message: '名' }], validateTrigger: ['change', 'blur']}]"
+                        v-decorator="['monicker', {rules: [{ required: true, message: '请填写名' }], validateTrigger: ['change', 'blur']}]"
                       ></a-input>
                     </a-form-item>
                   </a-col>
@@ -53,7 +57,7 @@
                   <template slot="content">
                     <div :style="{ width: '240px'}">
                       <div :class="['user-register', passwordLevelClass]">
-                        22
+                        密码强度
                         <span>{{ passwordLevelName }}</span>
                       </div>
                       <a-progress
@@ -62,7 +66,7 @@
                         :strokeColor=" passwordLevelColor "
                       />
                       <div style="margin-top: 10px;">
-                        <span>11</span>
+                        <span>请至少输入6位密码，最好包含数字和字母</span>
                       </div>
                     </div>
                   </template>
@@ -74,7 +78,7 @@
                       @keyup="insertUp"
                       autocomplete="false"
                       placeholder="密码"
-                      v-decorator="['password', {rules: [{ required: true, message: '密码'}, { validator: this.handlePasswordLevel }], validateTrigger: ['change', 'blur']}]"
+                      v-decorator="['password', {rules: [{ required: true, message: '请填写密码'}, { validator: this.handlePasswordLevel }], validateTrigger: ['change', 'blur']}]"
                     ></a-input>
                   </a-form-item>
                 </a-popover>
@@ -86,7 +90,7 @@
                     @keyup="insertUp"
                     autocomplete="false"
                     placeholder="确认密码"
-                    v-decorator="['password2', {rules: [{ required: true, message: '密码'}, { validator: this.handlePasswordCheck }], validateTrigger: ['change', 'blur']}]"
+                    v-decorator="['password2', {rules: [{ required: true, message: '请填写密码'}, { validator: this.handlePasswordCheck }], validateTrigger: ['change', 'blur']}]"
                   ></a-input>
                 </a-form-item>
                 <a-row :gutter="16" type="flex" align="bottom">
@@ -165,12 +169,11 @@
 /*import { mapActions } from 'vuex'
 import { timeFix } from '@/utils/util'*/
 import { register, registerSubmit } from "@/api/system";
-import SysHeader from "@/components/SysHeader/SysHeader";
 import MyTitle from "@/components/MyTitle/MyTitle";
 import commonBtn from "@/components/commonBtn/commonBtn";
 const levelNames = {
-  0: "11",
-  1: "22",
+  0: "至少6位密码，区分大小写 密码强度不够",
+  1: "密码强度不够",
   2: "33",
   3: "44"
 };
@@ -189,6 +192,8 @@ const levelColor = {
 export default {
   data() {
     return {
+      formShow: false,
+      emailText: '',
       itemTitle: "注册",
       registerBtn: false,
       customActiveKey: "tab1",
@@ -200,15 +205,15 @@ export default {
       form: this.$form.createForm(this),
       state: {
         time: 60,
-        loginBtn: false,
-        // login type: 0 email, 1 username, 2 telephone
-        loginType: 0,
-        smsSendBtn: false
+        smsSendBtn: false,
+        passwordLevel: 0,
+        passwordLevelChecked: false,
+        percent: 10,
+        progressColor: '#FF0000'
       }
     };
   },
   components: {
-    SysHeader,
     MyTitle,
     commonBtn
   },
@@ -251,16 +256,16 @@ export default {
         if (level === 0) {
           this.state.percent = 10;
         }
-        callback(new Error("ll"));
+        callback(new Error("至少6位密码"));
       }
     },
     handlePasswordCheck(rule, value, callback) {
       const password = this.form.getFieldValue("password");
       if (value === undefined) {
-        callback(new Error("111"));
+        callback(new Error("请再次填写确认密码"));
       }
       if (value && password && value.trim() !== password.trim()) {
-        callback(new Error("222"));
+        callback(new Error("两次密码不相同"));
       }
       callback();
     },
@@ -334,13 +339,16 @@ export default {
             }
           }, 1000);
           //const hide = $message.loading(this.$t("login.yzmfsz"), 1);
-          console.log(555);
           register({
             email: values.email
             //internationalization: localStorage.lang
           })
             .then(res => {
               console.log(res);
+              if(res.code == 500) {
+                this.formShow = true,
+                this.emailText = res.message
+              }
               if (res.status == 200) {
                 //setTimeout(hide, 1);
                 $notification["success"]({
@@ -348,6 +356,9 @@ export default {
                   description: "成功",
                   duration: 8
                 });
+                this.$route.push({
+                  path: '/login'
+                })
               } else if (res.status == 201) {
                 this.$message.error(res.info);
                 state.time = 60;
@@ -458,4 +469,19 @@ export default {
 .register-button {
   float: right;
 }
+.user-register {
+      &.error {
+        color: #ff0000;
+      }
+
+      &.warning {
+        color: #ff7e05;
+      }
+
+      &.success {
+        color: #52c41a;
+      }
+    }
+    
+
 </style>

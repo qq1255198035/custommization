@@ -79,8 +79,7 @@ export default {
   methods: {
     _status() {
       const param = {
-        token: this.$ls.get('token'),
-        user_order_id: this.$route.query.user_order_id
+        user_order_id: this.$ls.get('userOrderId')
       }
       console.log(param)
       status(param).then(res => {

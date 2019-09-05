@@ -65,6 +65,7 @@ Vue.use(LocaleProvider);
 Vue.use(Cascader);
 Vue.use(Tabs);
 Vue.prototype.$message = Message;
+Vue.prototype.$notification = notification;
 Vue.prototype.$confirm = Modal.confirm
 Vue.prototype.$info = Modal.info
 Vue.prototype.$success = Modal.success
