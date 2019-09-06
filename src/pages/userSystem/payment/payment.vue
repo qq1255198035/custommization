@@ -17,7 +17,7 @@
             <p slot="p3">等待开团</p>
             <p slot="p4">完成</p>
           </MyPrimaryStpes>
-          <my-title :title="itemTitle" :fontsize="24" :paddingtop="'40px'" :paddingbottom="'20px'"></my-title>
+          <my-title :title="itemTitle" :fontsize="20" :paddingtop="'40px'" :paddingbottom="'20px'"></my-title>
         </a-col>
         <a-col :span="2"></a-col>
       </a-row>
@@ -25,13 +25,13 @@
       <a-row :gutter="20" style="padding-top:20px">
         <a-col :span="2"></a-col>
         <!--list1-->
-        <a-col :span="8">
+        <a-col :xxl="8" :xl="20">
           <table-item :data="listLeft"></table-item>
           <table-list :columns="columns" :data="data"></table-list>
         </a-col>
         <!--list2-->
         <a-col :span="2"></a-col>
-        <a-col :span="10" v-if="data1.length = 0">
+        <a-col :xxl="10" :xl="20" v-if="data1.length = 0">
           <table-item :data="listRight"></table-item>
           <table-list :columns="columns1" :data="data1"></table-list>
         </a-col>
@@ -40,7 +40,7 @@
       <a-row>
         <a-col :span="2"></a-col>
         <a-col :span="20">
-          <my-title :title="payTitle" :fontsize="24" :paddingtop="'40px'" :paddingbottom="'20px'"></my-title>
+          <my-title :title="payTitle" :fontsize="20" :paddingtop="'40px'" :paddingbottom="'20px'"></my-title>
         </a-col>
         <a-col :span="2"></a-col>
       </a-row>
@@ -128,10 +128,10 @@
                 @payBtn="payBtn"
                 :width="'100%'"
                 :title="'立即支付'"
-                :height="'80px'"
+                :height="'56px'"
                 :padding="'10px'"
                 :radio="'12px'"
-                :fontsize="'22px'"
+                :fontsize="'18px'"
                 :top="'20px'"
               >
                 <span class="bg-box">
@@ -366,13 +366,13 @@ export default {
 @import url("./../../../components/index.less");
 @import url("./../../../assets/style.css");
 .bg-box {
-  width: 24px;
-  height: 38px;
+  width: 20px;
+  height: 34px;
   display: block;
   position: absolute;
   top: 50%;
   left: 26px;
-  margin-top: -19px;
+  margin-top: -17px;
   z-index: 9;
 }
 .right:hover {

@@ -36,8 +36,8 @@
             </div>
           </div>
         </a-col>
-        <a-col :span="4"></a-col>
-        <a-col :span="4">
+        <a-col :xxl="4" :xl="2"></a-col>
+        <a-col :xxl="4" :xl="6">
           <div class="right-desc">
             <div class="top">
               <share class="share" :config="config">

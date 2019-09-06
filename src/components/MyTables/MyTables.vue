@@ -97,12 +97,14 @@ export default {
           title: "尺码",
           dataIndex: "size",
           key: "size",
+          algin:"center",
           width: "20%",
           scopedSlots: { customRender: "size" }
         },
         {
           title: "名字",
           dataIndex: "printName",
+          algin:"center",
           key: "printName",
           width: "20%",
           scopedSlots: { customRender: "printName" }
@@ -111,6 +113,7 @@ export default {
           title: "号码",
           dataIndex: "printNumber",
           key: "printNumber",
+          algin:"center",
           width: "20%",
           scopedSlots: { customRender: "printNumber" }
         },
@@ -118,6 +121,7 @@ export default {
           title: "合计价格",
           dataIndex: "total_price",
           key: "total_price",
+          algin:"center",
           width: "20%",
           scopedSlots: { customRender: "total_price" }
         },
@@ -126,6 +130,7 @@ export default {
           title: "操作",
           width: "20%",
           key: "action",
+          algin:"center",
           scopedSlots: { customRender: "operation" }
         }
       ],

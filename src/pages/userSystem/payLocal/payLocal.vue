@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="text-algin:center">
         加载中...
     </div>
 </template>

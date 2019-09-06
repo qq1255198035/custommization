@@ -14,17 +14,43 @@
     </div>
     <div class="list" v-for="item in listFrom" :key="item.pid">
       <a-row class="list-title">
-        <a-col :xs="24" :sm="6" :md="6">
+        <a-col :xs="24" :sm="6" :md="5">
           <p>订单ID：{{item.order_sn}}</p>
         </a-col>
-        <a-col :xs="24" :sm="6" :md="6">
+        <a-col :xs="24" :sm="6" :md="5">
           <p>订单时间：{{item.confirm_time}}</p>
         </a-col>
-        <a-col :xs="24" :sm="6" :md="6">
+        <a-col :xs="24" :sm="6" :md="5">
           <p>联系商家：{{item.contact}}</p>
         </a-col>
-        <a-col :xs="24" :sm="6" :md="6">
-          <p class="list-last">状态：{{item.order_status | status}}</p>
+        <a-col :xs="24" :sm="6" :md="5">
+          <p>状态：{{item.order_status | status}}</p>
+        </a-col>
+        <a-col :xs="24" :sm="6" :md="4">
+          <p class="list-last" v-if="item.order_status == 0">
+            <commonBtn
+              :float="'right'"
+              :width="'80px'"
+              :title="'去付款'"
+              :height="'34px'"
+              :padding="'15px'"
+              :radio="'6px'"
+              :fontsize="'16px'"
+              @submitLogin="submitLogin"
+            ></commonBtn>
+          </p>
+          <p class="list-last" v-if="item.order_status == 402">
+            <commonBtn
+            :float="'right'"
+              :width="'80px'"
+              :title="'查看'"
+              :height="'34px'"
+              :padding="'15px'"
+              :radio="'6px'"
+              :fontsize="'16px'"
+              @submitLogin="submitLogin"
+            ></commonBtn>
+          </p>
         </a-col>
       </a-row>
       <ul class="list-item">
@@ -69,6 +95,7 @@
   </div>
 </template>
 <script>
+import commonBtn from "@/components/commonBtn/commonBtn";
 export default {
   props: {
     listData: {
@@ -77,6 +104,9 @@ export default {
     listFrom: {
       type: Array
     }
+  },
+  components: {
+    commonBtn
   },
   data() {
     return {
@@ -137,11 +167,11 @@ export default {
     },
     changeSize(current, size) {
       console.log(current, size);
-      this.$emit('page',current, size)
+      this.$emit("page", current, size);
     },
     changeTotal(page, pageSize) {
       console.log(page, pageSize);
-      this.$emit('page',page, pageSize)
+      this.$emit("page", page, pageSize);
     }
   }
 };
@@ -150,7 +180,7 @@ export default {
 .ant-select-selection {
   background: rgba(255, 255, 255, 0.5);
 }
-.pages{
+.pages {
   text-align: right;
 }
 /*.ant-pagination {
@@ -171,7 +201,7 @@ export default {
 }
 .list {
   .list-title {
-    border-bottom: solid 1px rgba(255, 255, 255, 0.5);
+    border-bottom: solid 1px #eee;
     padding: 10px 0;
     .list-last {
       text-align: right;
@@ -179,7 +209,7 @@ export default {
   }
   .list-item {
     li {
-      border-bottom: solid 1px rgba(255, 255, 255, 0.5);
+      border-bottom: solid 1px #eee;
       padding: 10px 0;
       overflow: hidden;
       .listCol {
@@ -191,7 +221,7 @@ export default {
           justify-content: center;
           align-content: center;
           align-items: center;
-          border-right: solid 1px rgba(255, 255, 255, 0.5);
+          border-right: solid 1px #eee;
           h3 {
             color: #ffffff;
           }
@@ -209,11 +239,12 @@ export default {
 
       .list-p {
         text-align: center;
-        border-right: solid 1px rgba(255, 255, 255, 0.5);
+        border-right: solid 1px #eee;
         line-height: 120px;
       }
       .list-last {
         text-align: right;
+        width: 100%;
       }
     }
   }

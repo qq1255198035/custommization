@@ -47,10 +47,10 @@
                 <commonBtn
                   :width="'100%'"
                   :title="'登录'"
-                  :height="'68px'"
+                  :height="'44px'"
                   :padding="'15px'"
                   :radio="'18px'"
-                  :fontsize="'24px'"
+                  :fontsize="'18px'"
                   @submitLogin="submitLogin"
                 ></commonBtn>
                 <!--<a-button

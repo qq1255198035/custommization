@@ -53,7 +53,7 @@
       :height="'45px'"
       :padding="'10px'"
       :radio="'12px'"
-      :fontsize="'22px'"
+      :fontsize="'18px'"
       :top="'20px'"
 
     >
@@ -97,6 +97,7 @@ export default {
           dataIndex: "size",
           key: "size",
           width: "25%",
+          align: 'center',
           scopedSlots: { customRender: "size" }
         },
         {
@@ -104,6 +105,7 @@ export default {
           dataIndex: "quantity",
           key: "quantity",
           width: "25%",
+          align: 'center',
           scopedSlots: { customRender: "quantity" }
         },
         {
@@ -111,12 +113,14 @@ export default {
           dataIndex: "total_price",
           key: "total_price",
           width: "25%",
+          align: 'center',
           scopedSlots: { customRender: "total_price" }
         },
         {
           title: "操作",
           width: "25%",
           key: "action",
+          align: 'center',
           scopedSlots: { customRender: "operation" }
         }
       ],
