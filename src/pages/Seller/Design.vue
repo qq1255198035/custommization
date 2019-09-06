@@ -1,5 +1,6 @@
 <template>
     <div id="Design">
+        
         <a-modal
             v-model="show"
             :footer="null"
@@ -666,7 +667,6 @@
 </template>
 <script>
 let id = 0;
-
 import { fabric } from 'fabric';
 import 'fabric-customise-controls';
 import FontFaceObserver from 'fontfaceobserver';
@@ -687,6 +687,7 @@ export default {
     },
     data(){
         return{
+            show: false,
             nameSize:20,
             numberSize:150,
             namePosition:0,
@@ -728,7 +729,7 @@ export default {
             remove,
             rotate,
             diagonal,
-            show: true,
+            
             liClick: -1,
             designModel: 0,
             screenWidth: 600,
@@ -1811,11 +1812,7 @@ export default {
             return color;
         },
     },
-    filters:{
-        sliceArr(arr){
-            return arr.slice(0,2)
-        }
-    }
+    
 }
 </script>
 <style lang="less">
