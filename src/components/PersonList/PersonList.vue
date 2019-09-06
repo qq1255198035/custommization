@@ -12,7 +12,7 @@
         <a-input-search @search="onSearch"></a-input-search>
       </div>
     </div>
-    <div class="list" v-for="item in listFrom" :key="item.pid">
+    <div class="list" v-for="item in listFrom" :key="item.user_order_id">
       <a-row class="list-title">
         <a-col :xs="24" :sm="6" :md="5">
           <p>订单ID：{{item.order_sn}}</p>
@@ -36,7 +36,7 @@
               :padding="'15px'"
               :radio="'6px'"
               :fontsize="'16px'"
-              @submitLogin="submitLogin"
+              @toAlginPay="toAlginPay(item.user_order_id)"
             ></commonBtn>
           </p>
           <p class="list-last" v-if="item.order_status == 402">
@@ -48,7 +48,7 @@
               :padding="'15px'"
               :radio="'6px'"
               :fontsize="'16px'"
-              @submitLogin="submitLogin"
+              @checkDetail="checkDetail(item.user_order_id)"
             ></commonBtn>
           </p>
         </a-col>
@@ -150,6 +150,16 @@ export default {
     }
   },
   methods: {
+    toAlginPay(id) {
+      console.log(id)
+      this.$router.push({
+        path: '/payment',
+        query: {
+          user_order_id:id
+        }
+      })
+    },
+    checkDetail() {},
     onSearch(value) {
       console.log(value);
       this.seacher = value;
@@ -182,6 +192,7 @@ export default {
 }
 .pages {
   text-align: right;
+  padding: 20px 0;
 }
 /*.ant-pagination {
   float: right;
@@ -250,7 +261,7 @@ export default {
   }
 }
 .ant-input-search-icon {
-  color: #ffffff !important;
+  color: #33b8b3 !important;
 }
 @media screen and(max-width: 760px) {
   .list-last {

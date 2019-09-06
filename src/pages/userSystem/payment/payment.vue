@@ -52,10 +52,11 @@
             <div>
               <a-radio-group @change="onChange" v-model="value">
                 <a-radio :value="1">
-                  <img src="@assets/paypal.png" alt />
+                  <img src="@assets/paypal_pay.png" alt />
                 </a-radio>
                 <a-radio :value="2">
-                  <img src="@assets/weixin.png" alt />
+                  <img style="width:50px" src="@assets/weixin_pay.png" alt />
+                  <span class="pay-font">微信支付</span>
                 </a-radio>
               </a-radio-group>
             </div>
@@ -365,6 +366,10 @@ export default {
 <style lang="less">
 @import url("./../../../components/index.less");
 @import url("./../../../assets/style.css");
+.pay-font{
+  font-size: 18px;
+  padding-left: 8px
+}
 .bg-box {
   width: 20px;
   height: 34px;

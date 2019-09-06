@@ -31,11 +31,12 @@ const constantRouterComponents = {
   //paysuccess: () => import("@/pages/userSystem/paySuccess/paySuccess"),
   orders: () => import("@/pages/userSystem/orders/orders"),
   personSet: () => import("@/pages/person/person"),
+  dealerInfo: () => import("@/pages/common/dealerInfo/dealerInfo"),
   noticeList: () => import("@/pages/common/noticeList/noticeList"),
   // 
-  neworder: () => import("@/pages/Seller/NewOrder"),
+  //neworder: () => import("@/pages/Seller/NewOrder"),
   //orderres: () => import("@/pages/Seller/OrderResult"),
-  orderdetails: () => import("@/pages/Seller/OrderDetails"),
+  //orderdetails: () => import("@/pages/Seller/OrderDetails"),
   // ...more
 }
 console.log(constantRouterComponents)

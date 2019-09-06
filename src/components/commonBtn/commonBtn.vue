@@ -46,6 +46,8 @@ export default {
             this.$emit('register')
             this.$emit('submitPerson')
             this.$emit('payBtn')
+            this.$emit('toAlginPay')
+            this.$emit('checkDetail')
         }
     }
 };

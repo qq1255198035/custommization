@@ -174,21 +174,21 @@ export default {
       // 延迟 1 秒显示欢迎信息
       if (res.code != 200) {
         this.$notification["error"]({
-          message: "error",
-          description: "222",
+          message: "登录失败",
+          description: "用户名或密码错误",
           duration: 4
         });
       } else {
         this.$notification.success({
-          message: "success"
+          message: "登录成功"
         });
       }
     },
     requestFailed(err) {
       console.log(err);
       this.$notification["error"]({
-        message: "err",
-        description: ((err.response || {}).data || {}).message || "11",
+        message: "错误",
+        description: ((err.response || {}).data || {}).message || "失败",
         duration: 4
       });
     },

@@ -165,7 +165,7 @@ export default {
       background-color: #fff;
       border-top-right-radius: 10px;
       border-bottom-right-radius: 10px;
-      
+      padding-bottom: 78px;
       min-height: 100%;
       overflow: hidden;
       height: 100%;
