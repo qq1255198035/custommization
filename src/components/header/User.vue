@@ -21,6 +21,7 @@ export default {
 <style lang="less" scope>
     #User{
         text-align: right;
+        padding: 20px;
         > span{
             margin: 0 10px;
             i{

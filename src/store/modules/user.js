@@ -63,6 +63,7 @@ const user = {
       })
     },
     // 获取用户信息
+    // eslint-disable-next-line
     GetInfo({ commit, dispatch }) {
       return new Promise((resolve, reject) => {
         getRouterByUser().then(res => {
@@ -79,8 +80,10 @@ const user = {
     // 登出
     Logout({ commit, state }) {
       return new Promise(resolve => {
+        console.log(resolve)
         commit('SET_TOKEN', '')
         commit('SET_ROLES', [])
+        console.log(state)
         Vue.ls.remove(ACCESS_TOKEN)
       })
     },

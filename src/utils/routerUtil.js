@@ -6,9 +6,7 @@ import {
   axios
 } from '@/utils/request'
 import qs from 'qs'
-import {
-  resolve
-} from 'q';
+
 
 
 // 前端路由表
@@ -36,7 +34,7 @@ const constantRouterComponents = {
   // 
   neworder: () => import("@/pages/Seller/NewOrder"),
   //orderres: () => import("@/pages/Seller/OrderResult"),
-  //orderdetails: () => import("@/pages/Seller/OrderDetails"),
+  orderdetails: () => import("@/pages/Seller/OrderDetails"),
   // ...more
 }
 console.log(constantRouterComponents)

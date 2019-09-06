@@ -5,11 +5,10 @@
     </div>
 </template>
 <script>
-import MyHeader from '@/components/Header/Header';
 
 export default {
     components:{
-        MyHeader,
+        
     }
 }
 </script>
@@ -17,9 +16,7 @@ export default {
 <style lang="less" scoped>
 #BlankLayout{
     width: 100%;
-    min-width: 100%;
-    padding: 150px 80px 0;
-    min-height: 100%;
+    height: 100%;
     background-image: linear-gradient(-45deg, #11bbe8 10%, #4ac37a 100%);
 }
 </style>

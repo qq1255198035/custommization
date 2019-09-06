@@ -33,7 +33,8 @@ module.exports = {
                               'btn-border-radius-base': '10px',
                               'btn-disable-color': 'rgba(40,181,177,0.5)',
                               'btn-disable-border': 'rgba(40,181,177,0.5)',
-                              'btn-disable-bg': '#fff'
+                              'btn-disable-bg': '#fff',
+                              'border-radius-base': '12px'
                         },
                         javascriptEnabled: true
                   }
@@ -69,8 +70,8 @@ module.exports = {
                 }
               },*/
               '/jeecg-boot': {
-                  //target: 'http://192.168.0.130:8080', //请求本地 需要jeecg-boot后台项目
-                target: 'http://192.168.0.122:8080',
+                  target: 'http://192.168.0.130:8080', //请求本地 需要jeecg-boot后台项目
+                //target: 'http://192.168.0.122:8080',
                 ws: false,
                 changeOrigin: true
               },

@@ -9,12 +9,12 @@
         >
             <template slot="title">
                 <div>
-                        <img src="@/assets/logo-title.png" alt="" height="80">
+                        <img src="@/assets/logo-title.png" alt="" height="60">
                 </div>
             </template>
             <div id="DesignBox">
-                <a-row class="design-box">
-                    <a-col class="side-bar" :span="2">
+                <div class="design-box">
+                    <ul class="side-bar">
                         <li v-for="item in list" :key="item.className" @click="toolsBtnClick(item.key)" :class="{active: item.key == liClick}">
                             <span :class="item.className"></span>
                             {{item.text}}
@@ -23,8 +23,8 @@
                             <span class="icon-change_product"></span>
                             更换产品
                         </li>
-                    </a-col>
-                    <a-col class="container" :span="14">
+                    </ul>
+                    <div class="container">
                         <h2>CUSTOM KING T-Shirt<span>查看尺寸表</span></h2>
                         <div class="canvas-container"  v-show="designModel == 0">
                             <canvas id="canvas1" :width="screenWidth" :height="screenWidth"></canvas>
@@ -40,7 +40,7 @@
                             <canvas id="canvas4" :width="screenWidth" :height="screenWidth"></canvas>
                         </div>
                         <a-row class="top">
-                            <a-col v-for="(item,index) in bgimgs" :key="index" :span="4" class="li" @click="changeModelDesign(index)">
+                            <a-col v-for="(item,index) in bgimgs" :key="index" :span="3" class="li" @click="changeModelDesign(index)">
                                 <img :src="item" alt="">
                             </a-col>
                         </a-row>
@@ -52,8 +52,8 @@
                                 <span class="icon-zoomout"></span>
                             </li>
                         </ul>
-                    </a-col>
-                    <a-col class="tools-box" :span="8">
+                    </div>
+                    <div class="tools-box">
                         <div style="" class="scroll-box">
                             <div class="drawer">
                                 <div class="tool-box" v-show="visibletype == -1">
@@ -97,7 +97,7 @@
                                     <div class="add-text">
                                         <p>Add Text</p>
                                         <a-input v-model="addText"></a-input>
-                                        <a-button type="primary" @click="addItext" :disabled="!addText" style="font-size: 18px;height: 45px;padding: 0 30px;border-radius: 12px;">添加设计</a-button>
+                                        <a-button type="primary" @click="addItext" :disabled="!addText" style="border-radius: 12px;">添加设计</a-button>
                                     </div>
                                 </div>
                                 <div class="tool-box6" v-show="visibletype == 1">
@@ -147,7 +147,7 @@
                                             名字和号码：
                                         </dt>
                                         <dd>
-                                            <span>步骤1：</span>
+                                            <span style="min-width: 52px;">步骤1：</span>
                                             <div>
                                                 <p>
                                                     <a-checkbox @change="addName">添加名称</a-checkbox>
@@ -178,15 +178,19 @@
                                             <span>高度：</span>
                                             <div>
                                                 <p>
-                                                    <a-select defaultValue="0" style="width: 95%;">
-                                                        <a-select-option value="0">1英寸</a-select-option>
-                                                        <a-select-option value="1">2英寸</a-select-option>
+                                                    <a-select defaultValue="6cm" style="width: 95%;" @change="changeNameSize">
+                                                        <a-select-option value="20">6cm</a-select-option>
+                                                        <a-select-option value="30">7cm</a-select-option>
+                                                        <a-select-option value="40">8cm</a-select-option>
+                                                        <a-select-option value="50">9cm</a-select-option>
                                                     </a-select>
                                                 </p>
                                                 <p>
-                                                    <a-select defaultValue="0" style="width: 100%;">
-                                                        <a-select-option value="0">1英寸</a-select-option>
-                                                        <a-select-option value="1">2英寸</a-select-option>
+                                                    <a-select defaultValue="15cm" style="width: 100%;" @change="changeNumberSize">
+                                                        <a-select-option value="150">15cm</a-select-option>
+                                                        <a-select-option value="170">18cm</a-select-option>
+                                                        <a-select-option value="190">20cm</a-select-option>
+                                                        <a-select-option value="200">25cm</a-select-option>
                                                     </a-select>
                                                 </p>
                                             </div>
@@ -328,7 +332,7 @@
                                             <a-icon type="check" v-show="productColorIcon == index"/>
                                         </li>
                                     </ul>
-                                    <div style="text-align: center;">
+                                    <div style="text-align: center; margin-top: 20px;">
                                         <a-button type="primary">保存更改</a-button>
                                     </div>
                                 </div>
@@ -379,7 +383,7 @@
                                         {{colorTitle}}
                                     </h2>
                                     <!-- <my-title :title="colorTitle"></my-title> -->
-                                    <p style="display:flex;align-items: center;margin-top: 20px; font-size: 18px;color: #999;">选择颜色： <span :style="{backgroundColor: '#fff'}" style="width: 20px;height: 20px;display: inline-block;margin:0 10px;border:1px solid #ccc;"></span> 白色</p>
+                                    <p style="display:flex;align-items: center;margin-top: 20px; font-size: 18px;color: #999;">选择颜色： <span :style="{backgroundColor: color}" style="width: 20px;height: 20px;display: inline-block;margin:0 10px;border:1px solid #ccc;"></span>{{colorName}}</p>
                                     <ul class="color-list-box">
                                         <li v-for="(item,index) in colorList" :key="item.name" :style="{backgroundColor: item.color}" @click="changeAllColor(item.color,item.name,index)">
                                             <a-icon type="check" v-show="fontColorIcon == index"></a-icon>
@@ -565,13 +569,13 @@
                                 
                             </div>
                         </div>
-                    </a-col>
-                </a-row>
+                    </div>
+                </div>
                 <ul class="submit-box">
                     <li>每件价格 <span>$26.40 To $51.2</span></li>
                     <li>
                         <a-button icon="plus" v-intro="'The content of tooltip'" v-intro-step="2" @click="$router.push({path: '/neworder'})">添加产品</a-button>
-                        <a-button icon="save" type="primary" v-intro="'The content of tooltip'" v-intro-step="3" @click="saveEndDesign">保存设计</a-button>
+                        <a-button type="primary" v-intro="'The content of tooltip'" v-intro-step="3" @click="saveEndDesign"><span class="icon-save" style="margin-right: 10px;vertical-align: middle"></span>保存设计</a-button>
                     </li>
                 </ul>
             </div>
@@ -683,6 +687,8 @@ export default {
     },
     data(){
         return{
+            nameSize:20,
+            numberSize:150,
             namePosition:0,
             numberPosition:0,
             exampleName:'',
@@ -808,12 +814,12 @@ export default {
                 },
                 {
                     key:2,
-                    className: 'icon-No',
+                    className: 'icon-icon-04',
                     text: '号码'
                 },
                 {
                     key:4,
-                    className: 'icon-color',
+                    className: 'icon-icon-06',
                     text: '产品颜色'
                 },
                 {
@@ -859,6 +865,10 @@ export default {
             this.handleObjectMove(this.myCanvas2);
             this.handleObjectMove(this.myCanvas3);
             this.handleObjectMove(this.myCanvas4);
+            this.onUnselected(this.myCanvas1);
+            this.onUnselected(this.myCanvas2);
+            this.onUnselected(this.myCanvas3);
+            this.onUnselected(this.myCanvas4);
             this.delSelected(this.myCanvas1);
             this.delSelected(this.myCanvas2);
             this.delSelected(this.myCanvas3);
@@ -867,6 +877,7 @@ export default {
             this.bindCanvas(this.myCanvas1,0);
             this.setEditIcon();
             this.setEditPointer();
+            
             //console.log(this.form)
         })
         this.$intro().setOptions({
@@ -888,6 +899,39 @@ export default {
         
     },
     methods:{
+        changeNameSize(value) {
+            console.log(`selected ${value}`);
+            this.nameSize = value;
+            if(this.addNameData){
+                let obj = this.myCanvas.getActiveObject();
+                console.log(obj)
+                if(obj.id === 'Name'){
+                    obj.set('fontSize',value);
+                    this.myCanvas.requestRenderAll();
+                }
+            }
+        },
+        changeNumberSize(value) {
+            console.log(`selected ${value}`);
+            this.numberSize = value;
+            if(this.addNumberData){
+                let obj = this.myCanvas.getActiveObject();
+                if(obj.id === 'Number'){
+                    obj.set('fontSize',value);
+                    this.myCanvas.requestRenderAll();
+                }
+            }
+        },
+        onUnselected(object){
+            let that = this;
+            object.on('mouse:down',function(obj){
+                console.log(obj)
+                if(!obj.target){
+                    that.visibletype = -1;
+                    that.liClick = -1;
+                }
+            })
+        },
         changeNamePosition(value) {
             console.log(`selected ${value}`);
             this.namePosition = value;
@@ -897,13 +941,13 @@ export default {
                     this.designModel = 0;
                     this.bindCanvas(this.myCanvas,0)
                     this.myCanvas2.remove(this.exampleName)
-                    this.addExampleName('testFont');
+                    this.addExampleName('testFont2');
                 }else{
                     this.myCanvas = this.myCanvas2;
                     this.designModel = 1;
                     this.bindCanvas(this.myCanvas,1);
                     this.myCanvas1.remove(this.exampleName);
-                    this.addExampleName('testFont')
+                    this.addExampleName('testFont2')
                 }
             }
         },
@@ -947,7 +991,7 @@ export default {
         saveEndDesign(){
             this.endDsign = true;
         },
-        removeInput  (k) {
+        removeInput(k) {
             const { form1 } = this;
             // can use data-binding to get
             const keys = form1.getFieldValue('keys');
@@ -961,7 +1005,6 @@ export default {
                 keys: keys.filter(key => key !== k),
             });
         },
-
         add  () {
             const { form1 } = this;
             // can use data-binding to get
@@ -1055,6 +1098,10 @@ export default {
                 this.changestrokeColor(val,name,i)
             }else if(this.colorKey == 4){
                 this.changeShadowColor(val,name,i)
+            }else if(this.colorKey == 5){
+                this.changeFillColor(val,name,i)
+            }else if(this.colorKey == 6){
+                this.changeFillColor(val,name,i)
             }
         },
         // 字体背景色
@@ -1173,13 +1220,20 @@ export default {
             myfont.load().then(function() {
                 // when font is loaded, use it.
                 that.exampleNumber = new fabric.Text("00", {
+                    id: 'Number',
                     fontFamily: font,
                     originX:'center',
                     originY:'center',
                     left: that.screenWidth / 2,
-                    top: that.screenWidth / 2 - 50
+                    top: 200,
+                    fontSize: that.numberSize
                 });
                 that.myCanvas.add(that.exampleNumber).setActiveObject(that.exampleNumber);
+                that.exampleNumber.on("selected", function() {
+                    
+                    that.liClick = 2;
+                    that.visibletype = 2;
+                })
             }).catch(function(e) {
                 console.log(e)
                 
@@ -1192,13 +1246,20 @@ export default {
             myfont.load().then(function() {
                 // when font is loaded, use it.
                 that.exampleName = new fabric.Text("EXAMPLE", {
+                    id: 'Name',
                     fontFamily: font,
                     originX:'center',
                     originY:'center',
                     left: that.screenWidth / 2,
-                    top: that.screenWidth / 2
+                    top: 100,
+                    fontSize: that.nameSize
                 });
                 that.myCanvas.add(that.exampleName).setActiveObject(that.exampleName);
+                that.exampleName.on("selected", function() {
+                    
+                    that.liClick = 2;
+                    that.visibletype = 2;
+                })
             }).catch(function(e) {
                 console.log(e)
                 
@@ -1220,7 +1281,7 @@ export default {
                     that.bindCanvas(that.myCanvas,1);
                     that.designModel = 1;
                 }
-                that.addExampleName('testFont')
+                that.addExampleName('testFont2')
             }else{
                 if(that.exampleName){
                     that.myCanvas1.remove(that.exampleName);
@@ -1664,9 +1725,10 @@ export default {
                 obj.set("fill", val);
                 this.fontColorIcon = i;
                 this.myCanvas.requestRenderAll();
+                this.colorName = name;
+                this.color = val;
             }
-            this.colorName = name;
-            this.color = val;
+            
         },
         // 改变描边样式开始
         changestrokeColor(val,name,i){
@@ -1700,17 +1762,6 @@ export default {
                         },
                         cursor: "pointer"
                 },
-                bl: {
-                        action: function(e, target) {
-                            console.log(target);
-                            if(that.liClick == 0){
-                                that.visibletype = 3
-                            }else if(that.liClick == 1){
-                                that.visibletype = 10
-                            }
-                        },
-                        cursor: "pointer"
-                },
                 mtr: {
                         action: "rotate"
                 }
@@ -1729,12 +1780,6 @@ export default {
 
                     tr: {
                         icon: resize,
-                        settings: {
-                                cornerBackgroundColor: that.randomColor()
-                        }
-                    },
-                    bl: {
-                        icon: diagonal,
                         settings: {
                                 cornerBackgroundColor: that.randomColor()
                         }
@@ -1805,11 +1850,11 @@ export default {
             background-color: #fff;
             color: #33b8b3 !important;
             span{
-                color: #33b8b3;
+                color: #33b8b3 !important;
             }
         }
         .side-bar{
-            
+            width: 90px;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
@@ -1826,11 +1871,11 @@ export default {
                 justify-content: center;
                 align-items: center;
                 color: #999;
-                font-size: 18px;
+                font-size: 16px;
                 cursor: pointer;
                 span{
-                    font-size: 42px;
-                    margin-bottom: 12px;
+                    font-size: 30px;
+                    margin-bottom: 5px;
                     color: #999;
                 }
                 &:last-child{
@@ -1840,6 +1885,7 @@ export default {
             }
         }
         .container{
+            width: 65%;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -1855,6 +1901,7 @@ export default {
                 top: 0;
                 padding:10px 15px;
                 color: #33b8b3;
+                z-index: 101;
                 span{
                     font-size: 14px;
                     color: #999;
@@ -1897,7 +1944,7 @@ export default {
             }
         }
         .tools-box{
-           
+            width: calc(35% - 90px);
             background-color: #eee;
             overflow: hidden;
             border-radius:  0 0 10px 0;
@@ -1939,21 +1986,21 @@ export default {
                         color: #33b8b3;
                         text-align: center;
                         padding: 40px 0;
-                        font-size: 24px;
+                        font-size: 20px;
                         margin:0;
                     }
                     p{
                         text-align: center;
                         margin: 20px 0;
                         color: #999;
-                        font-size: 18px;
+                        font-size: 16px;
                         a{
                             color: #33b8b3;
                         }
                     }
                     .btn-box{
                         display: flex;
-                        
+                        width: 100%;
                         flex-wrap: wrap;
                         justify-content: center;
                         margin: 0 auto;
@@ -1968,22 +2015,24 @@ export default {
                             }
                         }
                         li{
-                            width: 135px;
-                            height: 135px;
+                            width: 35%;
                             display: flex;
                             flex-direction: column;
                             justify-content: center;
                             align-items: center;
-                            margin: 0 20px 20px;
+                            margin: 10px 7%;
                             border: 1px solid #666;
                             border-radius: 10px;
                             color: #333;
                             padding: 15px 5px;
-                            font-size: 18px;
+                            max-width: 95px;
+                            max-height:95px;
+                            min-width: 95px;
+                            min-height: 95px;
                             cursor: pointer;
                             span{
-                                font-size: 42px;
-                                margin-bottom: 20px;
+                                font-size: 30px;
+                                margin-bottom: 10px;
                             }
                             &:hover{
                                 background-color: #33b8b3;
@@ -2011,7 +2060,7 @@ export default {
                         input{
                                 margin: 20px 0;
                                 width: 80%;
-                                height: 45px;
+                                
                                 border-color: #33b8b3;
                                 border-radius: 12px;
                         }
@@ -2180,8 +2229,6 @@ export default {
                             cursor: pointer;
                             img{
                                     width: 100%;
-                                    max-width: 168px;
-                                    max-height: 83px;
                             }
                         }
                     }
@@ -2514,10 +2561,10 @@ export default {
         border-top: 1px solid #ccc;
         li{
             &:nth-child(1){
-                font-size: 18px;
+                font-size: 15px;
                 span{
                     color: #33b8b3;
-                    font-size: 24px;
+                    font-size: 18px;
                     margin-left: 10px;
                 }
                 
@@ -2527,17 +2574,16 @@ export default {
         li{
             button{
                     margin-left: 20px;
-                    width: 290px;
-                    height: 80px;
+                    
                     border-radius: 12px;
-                    font-size: 18px;
+                    font-size: 16px;
                     &:nth-child(2){
                         box-shadow: 2px 0 5px rgba(0, 0, 0, 0.25);
                     }
                     
                     
                     i{
-                        font-size: 32px;
+                        font-size: 16px;
                         vertical-align: middle;
                     }
                     
