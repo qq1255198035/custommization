@@ -35,12 +35,23 @@
 
 <script>
 import { mapActions,mapGetters } from 'vuex'
+import { apiNotice } from "@/api/system";
 //import { unread,headMsg } from '@/api/common'
 
 export default {
- 
-  
-  
+  data() {
+    return {
+
+    }
+  },
+  created() {
+    this._apiNotice()
+  },
+  methods: {
+    _apiNotice() {
+      
+    }
+  }
 }
 </script>
 

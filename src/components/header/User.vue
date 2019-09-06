@@ -1,7 +1,9 @@
 <template>
   <div id="User">
-    
-    <notice></notice>
+    <span @click="noticeBtn" style="padding:10px;cursor: pointer;">
+      <a-icon style="font-size: 30px; padding: 4px" type="bell" />
+    </span>
+    <!--<notice></notice>-->
     <span>
       <a-dropdown>
         <a class="ant-dropdown-link" href="#">
@@ -18,7 +20,7 @@
 </template>
 <script>
 import { mapActions } from "vuex";
-import notice from '@/components/notice/notice'
+//import notice from '@/components/notice/notice'
 export default {
   data() {
     return {
@@ -26,10 +28,15 @@ export default {
     };
   },
   components: {
-      notice
+      //notice
   },
   methods: {
     ...mapActions(["Logout"]),
+    noticeBtn() {
+      this.$router.push({
+        path: '/notice'
+      })
+    },
     onClick({ key }) {
       console.log(key);
       const that = this;
@@ -58,6 +65,7 @@ export default {
                 color: #33b8b3;
                 font-size: 30px;
                 padding: 4px;
+                
             }
         }
         .header-notice{

@@ -39,8 +39,9 @@
         <a-col :xxl="4" :xl="2"></a-col>
         <a-col :xxl="4" :xl="6">
           <div class="right-desc">
-            <div class="top">
-              <share class="share" :config="config">
+            <div class="top" style="overflow:hidden;line-height:40px">
+              <span style="float:left">分享给朋友：</span>
+              <share style="float:right" class="share" :config="config">
                 <a-icon type="facebook" />
               </share>
             </div>

@@ -47,7 +47,7 @@ export function Logout(url, parameter) {
 //消息
 export function apiNotice(parameter) {
   return axios({
-    url: 'iso/jeecgNotice/list',
+    url: '/iso/jeecgNotice/list',
     method: 'post',
     data: qs.stringify(parameter)
   })
@@ -146,6 +146,25 @@ export function payBack(parameter) {
     data: qs.stringify(parameter)
   })
 }
+//
+export function agencyInfo() {
+  return axios({
+    url: '/system/jeecgUser/getDealerInfo',
+    method: 'post',
+    //data: qs.stringify(parameter)
+  })
+}
+export function agencyEdit(parameter) {
+  return axios({
+    url: '/iso/jeecgDealerUser/edit',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json;charset-UTF-8'
+    },
+    data: JSON.stringify(parameter)
+  })
+}
+//
 export function personSet() {
   return axios({
     url: '/system/jeecgUser/getInfo',

@@ -15,6 +15,18 @@
             <a-col :span="16">
               <my-title :title="itemTitle" :fontsize="24"></my-title>
               <a-form ref="formRegister" :form="form" id="formRegister">
+                <a-form-item label="选择角色">
+              <a-select
+                @change="roleChange"
+                v-decorator="['namerole',{rules: [{ required: true, message: '选择角色' }]}]"
+              >
+                <a-select-option
+                  v-for="(item, index) in role"
+                  :key="index"
+                  :value="item.key"
+                >{{item.name}}</a-select-option>
+              </a-select>
+            </a-form-item>
                 <a-form-item label="邮箱">
                   <a-input
                     size="large"
@@ -192,6 +204,15 @@ const levelColor = {
 export default {
   data() {
     return {
+      roleValue: '',
+      role:[{
+        name: '用户',
+        key: 1
+      },
+      {
+        name: '经销商',
+        key: 2
+      }],
       formShow: false,
       emailText: '',
       itemTitle: "注册",
@@ -229,6 +250,10 @@ export default {
     }
   },
   methods: {
+    roleChange(value) {
+      console.log(value)
+      this.roleValue = value
+    },
     handlePasswordLevel(rule, value, callback) {
       console.log(value);
       let level = 0;
@@ -303,16 +328,17 @@ export default {
             password: values.password,
             smscode: values.captcha,
             surname: values.surname,
-            monicker: values.monicker
+            monicker: values.monicker,
+            status: this.roleValue
             //internationalization: localStorage.lang
           }).then(res => {
             console.log(res);
-            if (res.status == 200) {
-              $router.push({ name: "registerResult", params: { ...values } });
+            if (res.code == 200) {
+              $router.push({ path: "/login", params: { ...values } });
             } else {
               $notification["error"]({
                 message: "error",
-                description: res.info,
+                description: res.message,
                 duration: 8
               });
             }

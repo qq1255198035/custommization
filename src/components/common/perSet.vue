@@ -171,8 +171,8 @@ function getBase64(img, callback) {
   reader.readAsDataURL(img);
 }
 import {
-  personSet,
-  personEdit,
+  agencyInfo,
+  agencyEdit,
   country,
   province,
   city,
@@ -213,12 +213,12 @@ export default {
     commonBtn
   },
   mounted() {
-    this._personSet();
+    this._agencyInfo();
     this._country();
   },
   methods: {
-    _personSet() {
-      personSet().then(res => {
+    _agencyInfo() {
+      agencyInfo().then(res => {
         console.log(res);
         const result = res.result;
         console.log(result);
@@ -236,7 +236,7 @@ export default {
           phoneName1: phone1,
           phoneName2: phone2
         });
-        this.imgurl = result.img;
+        this.imgurl = result.img
         this.provinceId = result.province;
         this.cityId = result.city;
         this.countryValue = result.country;
@@ -274,15 +274,15 @@ export default {
             phone: values.phoneName1 + "," + values.phoneName2
           };
           console.log(params);
-          personEdit(params).then(res => {
+          agencyEdit(params).then(res => {
             console.log(res);
             if (res.code == 200) {
               this.$notification.success({
-                message: "更新成功",
-                description: "信息已经更新完成",
+                message: '更新成功',
+                description: '信息已经更新完成',
                 duration: 4
               });
-              window.location.reload();
+              window.location.reload()
             }
           });
         }
@@ -297,7 +297,6 @@ export default {
       };
       province(params).then(res => {
         console.log(res);
-        
         if (res.result.length == 0) {
           this.form.setFieldsValue({
             province: "",

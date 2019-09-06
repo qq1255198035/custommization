@@ -6,16 +6,17 @@
         <a-card style="margin-top: 24px;" :bordered="false">
           <a-list itemLayout="horizontal" :dataSource="data">
             <a-list-item slot="renderItem" slot-scope="item, index">
-              <a-list-item-meta
-                description="Ant Design, a design language for background applications, is refined by Ant UED Team"
-              >
+              <a-list-item-meta :description="item.content">
                 <a slot="title" href="https://vue.ant.design/">{{item.title}}</a>
-                <a-avatar
-                  slot="avatar"
-                  src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                />
               </a-list-item-meta>
             </a-list-item>
+            <div slot="footer" v-if="data.length > 0" style="text-align: center; margin-top: 16px;">
+              <a-button
+                @click="loadMore"
+                :loading="loadingMore"
+                :disabled="btnDsiable"
+              >{{$t('issuer.hdgl.loadMore')}}</a-button>
+            </div>
           </a-list>
         </a-card>
       </a-locale-provider>
@@ -70,7 +71,7 @@ export default {
       ],
       offset: 1,
       btnDsiable: false,
-      pages: 0
+      pages: 10
     };
   },
   created() {
@@ -84,6 +85,9 @@ export default {
       };
       apiNotice(param).then(res => {
         console.log(res);
+        this.data = res.records;
+        this.pages = res.pages
+        this.loading = false
       });
     },
     loadMore() {
@@ -92,21 +96,20 @@ export default {
       this.loading = true;
 
       apiNotice("", this.offset).then(res => {
-        if (res.code == 1000) {
-          let page = parseInt(this.pages);
-          if (res.page.offset > page) {
-            this.btnDsiable = true;
-            this.$message.warning('到底了');
-            this.loadingMore = false;
-            this.loading = false;
-            return;
-          }
-          this.data = this.data.concat(res.page.rows);
-          this.loading = false;
+          console.log(this.pages)
+        let page = parseInt(this.pages);
+        if (res.pages <= page) {
+          this.btnDsiable = true;
+          this.$message.warning("数据全部加载完成");
           this.loadingMore = false;
-          this.pages = res.page.pages;
           this.loading = false;
+          return;
         }
+        this.data = this.data.concat(res.records);
+        this.loading = false;
+        this.loadingMore = false;
+        this.pages = res.pages;
+        this.loading = false;
       });
     },
     onSearch(value) {
