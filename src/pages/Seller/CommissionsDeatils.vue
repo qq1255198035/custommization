@@ -6,7 +6,7 @@
                     <a-badge :status="text | statusTypeFilter" :text="text | statusFilter" />
                 </span>
                 <template slot="operation">
-                    <a href="javascript:;"><a-icon type="file-search" style="font-size: 20px;"/></a>
+                    <a href="javascript:;"><a-icon type="file-search" style="font-size: 24px;"/></a>
                 </template>
         </a-table>
     </div>
@@ -98,4 +98,7 @@ export default {
 </script>
 <style lang="less">
 @import "./../../components/index.less";
+#CommissionsDeatils{
+    padding: 0 20px;
+}
 </style>

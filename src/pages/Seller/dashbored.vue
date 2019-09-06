@@ -7,7 +7,7 @@
             <p slot="c" style="color:#727272;font-size: 16px;margin:0;">总佣金</p>
         </order-total>
         <my-title :title="'进行中的订单'">
-            <a href="" style="text-decoration: underline;color: #33b8b3">全部订单</a>
+            <router-link to="/grouporder" style="text-decoration: underline;color: #33b8b3">全部订单</router-link>
         </my-title>
         <order-list :orderList="orderList"></order-list>
           
@@ -103,5 +103,6 @@ export default {
 <style lang="less" scoped>
 #dashbored{
     width: 100%;
+    padding: 20px;
 }
 </style>

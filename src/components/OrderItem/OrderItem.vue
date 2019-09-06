@@ -7,7 +7,7 @@
                               <span>订单时间: {{items.createTime}}</span>
                               <span>订单关闭时间： {{items.payEndDate}}</span>
                         </p>
-                        <slot></slot>
+                        <hide-menu @myClick="checkOutDetails(items.id)"></hide-menu>
                   </div>
                   <div class="order-content">
                         <div class="order-item" v-for="(item,index) in items.interiorList" :key="index + items.id">
@@ -21,7 +21,7 @@
                               <div class="right">
                                     <span>{{item.buyNum}}/{{item.quantity}}</span>
                                     <span>状态： {{item.status}}</span>
-                                    <a-button style="color: #33b8b3;">样稿确认</a-button>
+                                    <a-button style="color: #33b8b3;" @click="btnClick(item.id)">样稿确认</a-button>
                               </div>
                         </div>
                   </div>
@@ -30,11 +30,24 @@
       </div>
 </template>
 <script>
-
+import HideMenu from "@/components/HideMenu/HideMenu";
 export default {
       props:{
             orderArr:{
                   type: Array
+            }
+      },
+      components:{
+            HideMenu
+      },
+      methods:{
+            checkOutDetails(id){
+                  console.log(id);
+                  this.$router.push({path: '/orderdetails',query: {id: id}})
+            },
+            btnClick(id){
+                  
+                  this.$emit('handleMyClick',id)
             }
       }
 }

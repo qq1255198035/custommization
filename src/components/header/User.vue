@@ -51,7 +51,7 @@ export default {
 <style lang="less" scope>
     #User{
         text-align: right;
-        padding: 20px;
+        padding: 20px 0;
         > span{
             margin: 0 10px;
             i{

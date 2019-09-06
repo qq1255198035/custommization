@@ -8,8 +8,9 @@
                         <a-menu
                             mode="inline"
                             :defaultSelectedKeys="['sub00']" 
-                            :defaultOpenKeys="['0']"
+                            :openKeys="openKeys"
                             @click="handleClick"
+                            @openChange="onOpenChange"
                         >
                             <a-sub-menu  v-for="(item, index) in menuList" :key="index.toString()">
                                 <span slot="title" style="display: flex;align-items: center;"><a-avatar :size="20" :src="item.icon" style="margin-right: 5px;"/><span>{{item.title}}</span></span>
@@ -33,9 +34,10 @@
                 </a-col>
             </a-row>
         </div>
-        <div id="Design">
+        
+        <div id="Design" v-show="show">
             <a-modal
-                :visible="show"
+                :visible="true"
                 :footer="null"
                 width="90%"
                 :centered="true"
@@ -699,6 +701,7 @@
                 </div>
             </a-modal>
         </div>
+        
     </div>
 </template>
 <script>
@@ -708,10 +711,7 @@ import 'fabric-customise-controls';
 import FontFaceObserver from 'fontfaceobserver';
 import MyTitle from '@/components/MyTitle/MyTitle'
 import initAligningGuidelines from "@/utils/guidelines";
-import imgUrl1 from '@/assets/front.png';
-import imgUrl2 from '@/assets/back.png';
-import imgUrl3 from '@/assets/left.png';
-import imgUrl4 from '@/assets/right.png';
+
 import resize from '@/assets/icons/resize.svg';
 import remove from '@/assets/icons/remove.svg';
 import rotate from '@/assets/icons/rotate.svg';
@@ -720,7 +720,7 @@ import img1 from '@/assets/0001.png';
 import GoodsList from "@/components/GoodsList/GoodsList";
 import User from '@/components/Header/User';
 import MyHeader from '@/components/Header/Header';
-import { listAll,categoryList } from "@/api/seller";
+import { listAll,categoryList,selectById } from "@/api/seller";
 export default {
     components:{
         MyTitle,
@@ -837,12 +837,7 @@ export default {
             addText:'',
             lineHeight: 1,
             opacity:1,
-            bgimgs:[
-                imgUrl1,
-                imgUrl2,
-                imgUrl3,
-                imgUrl4
-            ],
+            bgimgs:[],
             imgs:[
                 {
                     className: '图片',
@@ -902,28 +897,26 @@ export default {
                 },
             ],
             uploadA:false,
-            Ele: () => document.querySelector("#Design")
+            Ele: () => document.querySelector("#Design"),
+            rootSubmenuKeys: ['0', '1', '2'],
+            openKeys: ['0'],
         }
     },
     created(){
         this.getAllList();
+        
+    },
+    beforeCreate () {
+        this.form1 = this.$form.createForm(this);
+        this.form1.getFieldDecorator('keys', { initialValue: [0], preserve: true });
+    },
+    mounted(){
         this.$nextTick(function() {
             this.myCanvas1 = new fabric.Canvas("canvas1");
             this.myCanvas2 = new fabric.Canvas("canvas2");
             this.myCanvas3 = new fabric.Canvas("canvas3");
             this.myCanvas4 = new fabric.Canvas("canvas4");
             this.myCanvas = this.myCanvas1
-        })
-        
-    },
-    beforeCreate () {
-        this.form1 = this.$form.createForm(this);
-        this.form1.getFieldDecorator('keys', { initialValue: [0], preserve: true });
-        
-    },
-    mounted(){
-        this.$nextTick(function() {
-            
             initAligningGuidelines(this.myCanvas1);
             initAligningGuidelines(this.myCanvas2);
             initAligningGuidelines(this.myCanvas3);
@@ -941,7 +934,7 @@ export default {
             this.delSelected(this.myCanvas3);
             this.delSelected(this.myCanvas4);
             this.handleObjectScale(this.myCanvas1);
-            this.bindCanvas(this.myCanvas1,0);
+            
             this.setEditIcon();
             this.setEditPointer();
             
@@ -951,6 +944,21 @@ export default {
     },
     
     methods:{
+        onOpenChange (openKeys) {
+            const latestOpenKey = openKeys.find(key => this.openKeys.indexOf(key) === -1)
+            if (this.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
+                this.openKeys = openKeys
+            } else {
+                this.openKeys = latestOpenKey ? [latestOpenKey] : []
+            }
+        },
+        getSelectById(id){
+            selectById(id).then(res => {
+                console.log(res);
+                this.bgimgs = res.result.imgs;
+                this.bindCanvas(this.myCanvas1,0);
+            })
+        },
         closeDesignBox(){
             this.show = false;
             
@@ -958,16 +966,19 @@ export default {
         openDesignModal(id){
             console.log(id)
             this.show = true;
-            this.$intro().setOptions({
-                prevLabel: "上一步",
-                nextLabel: "下一步",
-                skipLabel: "跳过",
-                doneLabel: "结束",
-                overlayOpacity: "0",
-                highlightClass: "white",
-                tooltipClass:"tool-tip",
-                disableInteraction: false,
-            }).start();
+            setTimeout(() => {
+                    this.$intro().setOptions({
+                        prevLabel: "上一步",
+                        nextLabel: "下一步",
+                        skipLabel: "跳过",
+                        doneLabel: "结束",
+                        overlayOpacity: "0",
+                        highlightClass: "white",
+                        tooltipClass:"tool-tip",
+                        disableInteraction: false,
+                    }).start();
+            },10)
+            this.getSelectById(id)
         },
         loadMore(){
             let that = this;
@@ -1013,6 +1024,9 @@ export default {
             this.id = id;
             this.getcategoryList(id,1)
         },
+
+
+        //设计
         changeNameSize(value) {
             console.log(`selected ${value}`);
             this.nameSize = value;
@@ -1951,6 +1965,7 @@ export default {
         }
     }
 } 
+
 #NewOrder{
     width: 100%;
     height: 100%;
@@ -1972,11 +1987,11 @@ export default {
             
             border-bottom-right-radius: 10px;
             padding: 20px;
-            height: calc(100% - 58px);
+            height: calc(100% - 78px);
             position: relative;
             overflow-y: scroll;
             &::-webkit-scrollbar {  /*滚动条整体样式*/
-                    width: 10px;  /*宽分别对应竖滚动条的尺寸*/
+                    width: 6px;  /*宽分别对应竖滚动条的尺寸*/
                     /*高分别对应横滚动条的尺寸*/
                     background-color: #fff;
                     
@@ -2108,7 +2123,7 @@ export default {
                 max-height: 640px; 
                 overflow-y:scroll;
                 &::-webkit-scrollbar {  /*滚动条整体样式*/
-                    width: 10px;  /*宽分别对应竖滚动条的尺寸*/
+                    width: 6px;  /*宽分别对应竖滚动条的尺寸*/
                     /*高分别对应横滚动条的尺寸*/
                     background-color: #fff;
                     
