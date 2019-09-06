@@ -1,12 +1,12 @@
 <template>
     <div id="Commissions">
-        <my-title :title="'佣金管理'"></my-title>
+        <my-title :title="'佣金管理'" :fontsize="20"></my-title>
         <order-total :num1="price1 | moneyFormat" :num2="price2 | moneyFormat" :num3="price3 | moneyFormat">
             <p slot="a" style="margin: 0; color: #757575;">总佣金</p>
             <p slot="b" style="margin: 0; color: #757575;">余额</p>
             <p slot="c" style="margin: 0; color: #757575;">未到账金额</p>
         </order-total>
-        <my-title :title="'提现记录'" :fontsize="14" style="margin: 20px 0 "></my-title>
+        <my-title :title="'提现记录'" :fontsize="20" style="margin: 20px 0 "></my-title>
         <a-table :columns="columns" :dataSource="data" :loading="loading" :pagination="pagination" @change="handleTableChange" :rowClassName="() => {return 'my-throw'}">
                 <span slot="status" slot-scope="text">
                     <a-badge :status="text | statusTypeFilter" :text="text | statusFilter" />

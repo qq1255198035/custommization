@@ -41,8 +41,8 @@
               <route-view />
             </transition>-->
             <div class="scroll-box">
-                            <router-view></router-view>
-                        </div>
+                <router-view></router-view>
+            </div>
           </div>
         </a-col>
       </a-row>
@@ -165,7 +165,7 @@ export default {
       background-color: #fff;
       border-top-right-radius: 10px;
       border-bottom-right-radius: 10px;
-      padding: 20px;
+      
       min-height: 100%;
       overflow: hidden;
       height: 100%;
@@ -175,9 +175,17 @@ export default {
                 padding-bottom: 40px; 
                 overflow-y: scroll;
                 height: 100%;
+                padding: 20px;
                 &::-webkit-scrollbar {  /*滚动条整体样式*/
-                    width: 0;  /*宽分别对应竖滚动条的尺寸*/
+                    width: 10px;  /*宽分别对应竖滚动条的尺寸*/
                     /*高分别对应横滚动条的尺寸*/
+                    background-color: #fff;
+                    
+                }
+                &::-webkit-scrollbar-thumb {
+                    background-color: #33b8b3;
+                    border-radius:4px;
+                    height: 10%;
                 }
             }
     }

@@ -1,6 +1,6 @@
 <template>
     <div id="CommissionsDeatils">
-        <my-title :title="'佣金明细'" style="margin-bottom: 30px;"></my-title>
+        <my-title :title="'佣金明细'" style="margin-bottom: 30px;" :fontsize="20"></my-title>
         <a-table :columns="columns" :dataSource="data" :loading="loading" :pagination="pagination" @change="handleTableChange" :rowClassName="() => {return 'my-throw'}">
                 <span slot="status" slot-scope="text">
                     <a-badge :status="text | statusTypeFilter" :text="text | statusFilter" />

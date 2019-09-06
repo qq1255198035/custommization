@@ -43,8 +43,9 @@ export default {
             .logo{
                   padding: 10px;
                   text-align: center;
+                  margin-bottom: 40px;
                   img{
-                        width: 90%;
+                        width: 80%;
                   }
             }
       }

@@ -6,9 +6,7 @@ import {
   axios
 } from '@/utils/request'
 import qs from 'qs'
-import {
-  resolve
-} from 'q';
+
 
 
 // 前端路由表

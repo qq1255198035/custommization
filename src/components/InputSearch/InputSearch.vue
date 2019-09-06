@@ -20,7 +20,7 @@ export default {
 #input-box{
       display: flex;
       justify-content: space-between;
-      border-radius: 4px;
+      border-radius: 12px;
       padding: 5px 10px;
       width: 250px !important;
       border: 1px solid #fff !important;

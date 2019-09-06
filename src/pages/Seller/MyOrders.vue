@@ -1,7 +1,7 @@
 <template>
     <div id="my-order">
-        <my-title :title="'订单详情'">
-            <a-button size="small" icon="rollback">返回</a-button>
+        <my-title :title="'订单详情'" :fontsize="20">
+            <a-button size="small" icon="rollback" style="font-size: 14px;">返回</a-button>
         </my-title>
         <div class="side">
             <p>
@@ -12,7 +12,7 @@
                 </span>
                 {{orderId}}
             </p>
-            <a-button size="small">主操作</a-button>
+            <a-button size="small" style="font-size: 14px;">主操作</a-button>
         </div>
         <div class="title">
             <ul>
@@ -264,6 +264,9 @@ export default {
             li{
                 width: 50%;
                 color: #999;
+                p{
+                    font-size: 16px;
+                }
                 span{
                     color: #666;
                 }

@@ -56,7 +56,7 @@ export default {
         },
         getUserInfo(){
             userInfo().then(res => {
-                //console.log(res)
+                console.log(res)
                 if(res.code == 0){
                     this.name = res.result.username;
                     this.level = res.result.levelName;

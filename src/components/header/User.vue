@@ -49,25 +49,26 @@ export default {
 };
 </script>
 <style lang="less" scope>
-.drapDown {
-  padding: 10px;
-  box-shadow: 0 2px 3px #eee;
-  li {
-    a {
-      color: #999;
+    #User{
+        text-align: right;
+        padding: 20px;
+        > span{
+            margin: 0 10px;
+            i{
+                color: #33b8b3;
+                font-size: 30px;
+                padding: 4px;
+            }
+        }
+        .header-notice{
+            position: relative;
+            .diount{
+                position: absolute;
+                top: 10px;
+                right: 0px;
+            }
+        }
     }
-  }
-}
-#User {
-  text-align: right;
-  > span {
-    margin: 0 10px;
-    i {
-      color: #33b8b3;
-      font-size: 30px;
-      padding: 4px;
-    }
-  }
   .header-notice {
     position: relative;
     .diount {
@@ -76,5 +77,4 @@ export default {
       right: 0px;
     }
   }
-}
 </style>

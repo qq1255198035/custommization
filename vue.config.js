@@ -33,7 +33,8 @@ module.exports = {
                               'btn-border-radius-base': '10px',
                               'btn-disable-color': 'rgba(40,181,177,0.5)',
                               'btn-disable-border': 'rgba(40,181,177,0.5)',
-                              'btn-disable-bg': '#fff'
+                              'btn-disable-bg': '#fff',
+                              'border-radius-base': '12px'
                         },
                         javascriptEnabled: true
                   }

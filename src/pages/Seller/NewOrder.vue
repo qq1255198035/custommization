@@ -1,7 +1,7 @@
 <template>
     <div id="NewOrder">
         <div class="content">
-            <a-row type="flex" justify="space-between" align="top" style="min-height: 100%;height: 100%;">
+            <a-row style="min-height: 100%;height: 100%;">
                 <a-col :span="6" style="height: 100%;">
                     <div class="left">
                         <My-Header></My-Header>
@@ -20,9 +20,9 @@
                 </a-col>
                 <a-col :span="18" style="height: 100%;">
                     <User style="background-color: #fff; padding-top: 20px;border-top-right-radius: 10px;"></User>
+                    
                     <div class="right">
-                        
-                        <my-title :title="'新建订单'"></my-title>
+                        <my-title :title="'新建订单'" :fontsize="20"></my-title>
                         <goods-list :goodsArr="goodsList" @on-click="openDesignModal($event)"></goods-list>
                         <div class="btn-box">
                             <a-button :loading="loading" @click="loadMore" :disabled="btnable">
@@ -119,6 +119,7 @@ export default {
 </script>
 <style lang="less">
 @import url("./../../components/index.less");
+
 #NewOrder{
     width: 100%;
     height: 100%;
@@ -131,6 +132,9 @@ export default {
             border-bottom-left-radius: 10px;
             padding-top: 50px;
             min-height: 100%;
+            .ant-menu-item{
+                font-size: 18px;
+            }
         }
         .right{
             background-color: #fff;
@@ -141,8 +145,15 @@ export default {
             position: relative;
             overflow-y: scroll;
             &::-webkit-scrollbar {  /*滚动条整体样式*/
-                width: 0;  /*宽分别对应竖滚动条的尺寸*/
-                /*高分别对应横滚动条的尺寸*/
+                    width: 10px;  /*宽分别对应竖滚动条的尺寸*/
+                    /*高分别对应横滚动条的尺寸*/
+                    background-color: #fff;
+                    
+            }
+            &::-webkit-scrollbar-thumb {
+                background-color: #33b8b3;
+                border-radius:4px;
+                height: 10%;
             }
             .btn-box{
                 margin-top: 20px; 
