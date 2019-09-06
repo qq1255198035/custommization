@@ -31,7 +31,8 @@ import {
   Badge,
   LocaleProvider,
   Cascader,
-  Tabs
+  Tabs,
+  Dropdown
 } from "ant-design-vue";
 Vue.use(Button);
 Vue.use(Row);
@@ -64,6 +65,7 @@ Vue.use(Badge);
 Vue.use(LocaleProvider);
 Vue.use(Cascader);
 Vue.use(Tabs);
+Vue.use(Dropdown);
 Vue.prototype.$message = Message;
 Vue.prototype.$notification = notification;
 Vue.prototype.$confirm = Modal.confirm

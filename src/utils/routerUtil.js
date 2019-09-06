@@ -31,6 +31,7 @@ const constantRouterComponents = {
   //paysuccess: () => import("@/pages/userSystem/paySuccess/paySuccess"),
   orders: () => import("@/pages/userSystem/orders/orders"),
   personSet: () => import("@/pages/person/person"),
+  noticeList: () => import("@/pages/common/noticeList/noticeList"),
   // 
   neworder: () => import("@/pages/Seller/NewOrder"),
   //orderres: () => import("@/pages/Seller/OrderResult"),

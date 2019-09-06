@@ -14,7 +14,7 @@ import 'intro.js/introjs.css';
 Vue.use(Share);
 Vue.use(VueIntro);
 var SocialSharing = require('vue-social-sharing');
-
+import '@babel/polyfill'
 import Storage from 'vue-ls';
 const options = {
   namespace: 'vuejs__', // key prefix

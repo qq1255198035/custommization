@@ -137,10 +137,10 @@
                         @register="register"
                         :width="'100%'"
                         :title="'注册'"
-                        :height="'45px'"
+                        :height="'44px'"
                         :padding="'10px'"
                         :radio="'12px'"
-                        :fontsize="'22px'"
+                        :fontsize="'18px'"
                         :top="'20px'"
                       ></commonBtn>
                     </a-col>

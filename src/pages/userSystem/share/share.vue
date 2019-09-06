@@ -8,11 +8,11 @@
         </p>
       </header>
       <card-header :detailList="detailList"></card-header>
-      <my-title style="margin:40px 0;" :title="itemTitle"></my-title>
+      <my-title style="margin:40px 0;" :fontsize="20" :title="itemTitle"></my-title>
       <a-row :gutter="20">
         <!--list1-->
         <a-col :span="2"></a-col>
-        <a-col :span="8">
+        <a-col :xxl="8" :xl="20">
           <table-item :data="img1">
             <a href style="font-size: 18px; color: #999; text-decoration: underline">查看尺寸表</a>
           </table-item>
@@ -20,7 +20,7 @@
         </a-col>
         <!--list2-->
         <a-col :span="2"></a-col>
-        <a-col :span="10" v-if="showList">
+        <a-col :xxl="10" :xl="20" v-if="showList">
           <table-item :data="img2">
             <a href style="font-size: 18px; color: #999; text-decoration: underline">查看尺寸表</a>
           </table-item>
@@ -50,10 +50,10 @@
                 @payTo="payTo"
                 :width="'100%'"
                 :title="'立即支付'"
-                :height="'80px'"
+                :height="'56px'"
                 :padding="'15px'"
                 :radio="'18px'"
-                :fontsize="'24px'"
+                :fontsize="'18px'"
               >
                 <span class="bg-box">
                   <span class="bg-image"></span>
@@ -237,13 +237,13 @@ export default {
 @import url("./../../../components/index.less");
 @import url("./../../../assets/style.css");
 .bg-box {
-  width: 24px;
-  height: 38px;
+  width: 20px;
+  height: 34px;
   display: block;
   position: absolute;
   top: 50%;
   left: 26px;
-  margin-top: -19px;
+  margin-top: -17px;
   z-index: 9;
 }
 .right:hover {
@@ -311,4 +311,5 @@ export default {
     }
   }
 }
+
 </style>

@@ -156,7 +156,7 @@
           :height="'45px'"
           :padding="'10px'"
           :radio="'12px'"
-          :fontsize="'22px'"
+          :fontsize="'18px'"
           :top="'10px'"
         ></commonBtn>
       </a-col>
@@ -235,6 +235,7 @@ export default {
           phoneName1: phone1,
           phoneName2: phone2
         });
+        this.imgurl = result.img
         this.provinceId = result.province;
         this.cityId = result.city;
         this.countryValue = result.country;
@@ -274,15 +275,13 @@ export default {
           console.log(params);
           personEdit(params).then(res => {
             console.log(res);
-            if (res.code == 1000) {
+            if (res.code == 200) {
               this.$notification.success({
-                message: this.$t("xx"),
-                description: this.$t("ll"),
+                message: '更新成功',
+                description: '信息已经更新完成',
                 duration: 4
               });
-              this.$router.push({
-                path: "/zhxx"
-              });
+              window.location.reload()
             }
           });
         }
