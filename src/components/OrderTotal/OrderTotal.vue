@@ -64,7 +64,7 @@ export default {
 </script>
 <style lang="less" scoped>
 #OrderTotal{
-    padding: 40px 0;
+    padding: 30px 0;
     .my-divider{
         height: 50px;
     }

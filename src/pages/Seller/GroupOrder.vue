@@ -83,7 +83,8 @@
 import MyTitle from "@/components/MyTitle/MyTitle";
 import commonBtn from "@/components/commonBtn/commonBtn";
 import OrderItem from "@/components/OrderItem/OrderItem";
-import { groupOrderList, exampleConfirm } from "@/api/seller";
+import { groupOrderList,exampleConfirm } from "@/api/seller";
+
 export default {
   components: {
     MyTitle,
@@ -138,26 +139,18 @@ export default {
         this.totalnum = parseInt(res.total);
       });
     }
-  },
-  mounted() {
-    console.log(this.totalnum);
-  },
-  created() {
-    this.getGroupOrderList(this.num, this.status, this.content);
-  }
-};
+   
+}
+}
 </script>
 <style lang="less">
 @import "./../../components/index.less";
-#GroupOrder {
-  padding: 0 20px;
-  .input-box {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-    li {
-      display: flex;
-      #input-box {
+#GroupOrder{
+    padding: 0 20px;
+    height: 100%;
+    
+    padding-bottom: 70px;
+    .input-box{
         display: flex;
         justify-content: space-between;
         border-radius: 4px;
@@ -171,26 +164,18 @@ export default {
           padding: 0;
           width: calc(100% - 35px);
         }
-        span {
-          cursor: pointer;
-          i {
-            font-size: 25px;
-            color: #33b8b3;
-          }
-        }
-      }
+    }
+    
+    .content{
+        margin-bottom: 30px;
+        height: auto;
+    }
+    .pagination-box{
+        display: flex;
+        margin: 20px 0;
+        justify-content: flex-end;
     }
   }
-
-  .content {
-    margin-top: 30px;
-    .pagination-box {
-      display: flex;
-      margin-top: 20px;
-      justify-content: flex-end;
-    }
-  }
-}
 .example-box {
   padding: 20px;
   max-height: 710px;

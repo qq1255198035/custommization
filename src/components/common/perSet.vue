@@ -200,7 +200,7 @@ export default {
       phoneFirst: "",
       phoneLast: "",
       areaId: "",
-      country: "",
+    
       fileUrl: "",
       fileUrl1: "",
       imgurl: "",

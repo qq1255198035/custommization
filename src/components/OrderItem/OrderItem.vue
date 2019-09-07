@@ -40,6 +40,20 @@
 <script>
 import commonBtn from "@/components/commonBtn/commonBtn";
 import HideMenu from "@/components/HideMenu/HideMenu";
+const statusMap = {
+  1: {
+    status: "warning",
+    text: "团购中"
+  },
+  3: {
+    status: "success",
+    text: "设计中"
+  },
+  2: {
+    status: "processing",
+    text: "发货中"
+  }
+};
 export default {
   props: {
     orderArr: {
@@ -103,15 +117,63 @@ export default {
           }
         }
       }
-      .right {
-        width: 70%;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        > span {
-          color: #757575;
+      .order-content {
+        .order-item {
+          padding: 20px 0;
+          border-bottom: 1px solid #757575;
+          display: flex;
+          justify-content: space-between;
+          .left {
+            display: flex;
+            width: 40%;
+            .desc {
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              padding-left: 20px;
+              h3 {
+                color: #33b8b3;
+                padding: 10px;
+              }
+              p {
+                padding: 10px;
+                color: #757575;
+              }
+            }
+          }
+          .right {
+            width: 60%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            > p {
+              color: #757575;
+              display: flex;
+              .ant-badge-status-dot {
+                width: 8px;
+                height: 8px;
+              }
+            }
+            > span {
+              color: #757575;
+            }
+          }
         }
       }
+    }
+  }
+}
+.share-box {
+  padding: 30px;
+  .share {
+    text-align: center;
+    a {
+      font-size: 30px;
+      margin: 0 20px;
+      border: 1px solid #33b8b3 !important;
+      height: 60px;
+      width: 60px;
+      padding-top: 14px;
     }
   }
 }

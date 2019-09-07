@@ -4,7 +4,7 @@
       <!--<div class="menu block">
           <commonHeader></commonHeader>
       </div>-->
-      <div class="content">
+      <div class="content" style="padding: 0 20px;">
         <my-title :title="itemTitle" :fontsize="24"></my-title>
         <accountSet></accountSet>
       </div>

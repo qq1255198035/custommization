@@ -6,7 +6,7 @@
         <a-card style="margin-top: 24px;" :bordered="false">
           <a-list itemLayout="horizontal" :dataSource="data">
             <a-list-item slot="renderItem" slot-scope="item, index">
-              <a-list-item-meta :description="item.content">
+              <a-list-item-meta :description="item.content" :key="index">
                 <a slot="title" href="https://vue.ant.design/">{{item.title}}</a>
               </a-list-item-meta>
             </a-list-item>

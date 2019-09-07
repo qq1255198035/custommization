@@ -171,7 +171,7 @@ export default {
       position: relative;
       .scroll-box{
                 
-                padding-bottom: 40px; 
+                
                 overflow-y: scroll;
                 height: 100%;
                 

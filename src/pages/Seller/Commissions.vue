@@ -53,7 +53,7 @@ export default {
                 pagination:{showQuickJumper: true,pageSize: 7,total: 0},
                 columns: [
                     {
-                            title: '退款单号',
+                            title: '提现单号',
                             dataIndex: 'order_id'
                     },
                     {
@@ -62,7 +62,7 @@ export default {
                     },
                     {
                             title: '提交时间',
-                            dataIndex: 'orderTime',
+                            dataIndex: 'created_time',
                     },
                     {
                             title: '金额',
@@ -111,6 +111,7 @@ export default {
         },
         getWithdrawalList(num){
             withdrawalList(num).then(res => {
+                console.log(res)
                 this.data = res.records;
                 this.pagination.total = res.total;
                 console.log(res)

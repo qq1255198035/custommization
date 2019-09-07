@@ -1,52 +1,61 @@
 <template>
-  <div id="OrderDetails">
-    <div class="container">
-      <header>
-        <p class="icon-logotxt"></p>
-        <p>
-          <User></User>
-        </p>
-      </header>
-      <my-title :title="'订单详情'" style="padding: 0 30px;margin-top: 20px;">
-        <a-button size="small" icon="rollback" @click="$router.push({path: '/grouporder'})">返回</a-button>
-      </my-title>
-      <a-row type="flex" justify="space-between" align="top" style="height: calc(100% - 167px);">
-        <a-col :span="7" class="scroll-box left-side">
-          <div class="order-info">
-            <dl class="top">
-              <dt>订单ID：</dt>
-              <dd>{{information.orderId}}</dd>
-              <dt>订单时间：</dt>
-              <dd>{{information.orderTime}}</dd>
-            </dl>
-            <ul class="bottom">
-              <li v-for="item in information.list" :key="item.id">
-                <img :src="item.positive_pic_url" alt />
-                <div>
-                  <div>
-                    <h3>{{item.name}}</h3>
-                    <p>颜色：{{item.product_color}}</p>
-                    <p>价格：${{item.price}}</p>
-                    <p>数量：{{item.quantity}}</p>
-                  </div>
-                  <p>
-                    <a-icon type="edit" @click="showEdModal" />
-
-                    <a-icon type="delete" @click="deletePro(item.id)" />
-                  </p>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </a-col>
-        <a-col :span="16" style="padding-right: 30px;padding-bottom: 20px;" class="scroll-box">
-          <ul class="forms">
-            <li>
-              <h3>预期订货数量</h3>
-              <a-form :form="myform" style="padding-left: 30px;">
-                <a-form-item label="标题" :label-col="{ span: 1 }" :wrapper-col="{ span: 12 }">
-                  <a-input
-                    v-decorator="[
+    <div id="OrderDetails">
+        <div class="container">
+            <header>
+                <p class="icon-logotxt"></p>
+                <p>
+                    <User></User>
+                </p>
+            </header>
+            <my-title :title="'分享设置'" style="padding: 0 30px;margin-top: 10px;overflow:hidden;">
+                <a-button size="small" icon="rollback" @click="$router.push({path: '/dashbored'})">返回</a-button>
+            </my-title>
+            <a-row type="flex" justify="space-between" align="top" style="height: calc(100% - 157px);">
+                <a-col :span="7" class="scroll-box left-side">
+                    <div class="order-info">
+                        <dl class="top">
+                            <dt>订单ID：</dt>
+                            <dd>{{information.orderId}}</dd>
+                            <dt>订单时间：</dt>
+                            <dd>{{information.orderTime}}</dd>
+                        </dl>
+                        <ul class="bottom">
+                            <li v-for="item in information.list" :key="item.id">
+                                <img :src="item.positive_pic_url" alt="">
+                                <div>
+                                    <div>
+                                        <h3>{{item.name}}</h3>
+                                        <p>颜色：{{item.product_color}}</p>
+                                        <p>价格：${{item.price}}</p>
+                                        <p>数量：{{item.quantity}}</p>
+                                    </div>
+                                    <p>
+                                        <a-icon type="edit" />
+                                        <a-icon type="delete" @click="deletePro(item.id)"/>
+                                    </p>
+                                    
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </a-col>
+                <a-col :span="16" style="padding-right: 30px;padding-bottom: 20px;" class="scroll-box">
+                    <ul class="forms">
+                        <li>
+                            <h3>
+                                预期订货数量
+                            </h3>
+                            <a-form
+                                :form="myform"
+                                style="padding-left: 30px;"
+                            >
+                                <a-form-item
+                                    label="标题"
+                                    :label-col="{ span: 1 }"
+                                    :wrapper-col="{ span: 12 }"
+                                >
+                                <a-input
+                                    v-decorator="[
                                     'note',
                                     {rules: [{ required: true, message: 'Please input your note!' }]}
                                     ]"

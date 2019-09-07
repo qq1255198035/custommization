@@ -5,8 +5,8 @@
                 <span slot="status" slot-scope="text">
                     <a-badge :status="text | statusTypeFilter" :text="text | statusFilter" />
                 </span>
-                <template slot="operation">
-                    <a href="javascript:;"><a-icon type="file-search" style="font-size: 24px;"/></a>
+                <template slot="operation" slot-scope="text, record">
+                    <a href="javascript:;" @click="$router.push({path: '/myorder',query: {id: record.id}})"><a-icon type="file-search" style="font-size: 24px;"/></a>
                 </template>
         </a-table>
     </div>
@@ -39,7 +39,7 @@ export default {
     data(){
         return{
             loading:false,
-            pagination:{showQuickJumper: true, total: 0,pageSize: 12},
+            pagination:{showQuickJumper: true, total: 0,pageSize: 10},
             num:1,
             columns: [
                     {
