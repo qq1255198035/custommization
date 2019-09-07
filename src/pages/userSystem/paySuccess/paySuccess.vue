@@ -157,7 +157,7 @@ export default {
       display: flex;
       width: 100%;
       justify-content: space-between;
-      border-bottom: 1px solid #5ba997;
+      border-bottom: 1px solid rgba(255,255,255,0.4);
       padding: 30px;
       p:nth-child(1) {
         color: #fff;
@@ -180,6 +180,10 @@ export default {
       span {
         font-size: 40px;
         padding-right: 16px;
+        color: #fff
+      }
+      p{
+        color: #fff
       }
     }
     .desc {

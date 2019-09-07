@@ -41,8 +41,8 @@
           <div class="right-desc">
             <div class="top" style="overflow:hidden;line-height:40px">
               <span style="float:left">分享给朋友：</span>
-              <share style="float:right" class="share" :config="config">
-                <a-icon type="facebook" />
+              <share  class="share" :config="config">
+                
               </share>
             </div>
             <div class="down">

@@ -175,7 +175,7 @@ export default {
       if (res.code != 200) {
         this.$notification["error"]({
           message: "登录失败",
-          description: "用户名或密码错误",
+          description: res.message,
           duration: 4
         });
       } else {
