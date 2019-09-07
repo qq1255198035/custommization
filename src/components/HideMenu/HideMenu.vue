@@ -1,8 +1,8 @@
 <template>
     <div class="hiden-menu">
-        <a-icon type="ellipsis" style="transform: rotate(90deg);font-size: 20px;cursor: pointer" @click="hidemenu = !hidemenu"/>
-        <ul v-show="hidemenu">
-                <li style="border-bottom: 1px solid #fff;">
+        <a-icon type="ellipsis" style="transform: rotate(90deg);font-size: 20px;cursor: pointer" @mouseover="hidemenu = true" @mouseout="hidemenu = false"/>
+        <ul v-show="hidemenu" @mouseover="hidemenu = true" @mouseout="hidemenu = false">
+                <li style="border-bottom: 1px solid #fff;" @click="handleClick">
                     <a-icon type="search" />查看
                 </li>
                 <li>
@@ -16,6 +16,11 @@ export default {
     data(){
         return{
             hidemenu:false,
+        }
+    },
+    methods:{
+        handleClick(){
+            this.$emit('myClick')
         }
     }
 }
@@ -39,6 +44,7 @@ export default {
                 display: flex;
                 justify-content: center;
                 align-items: center;
+                color: #fff;
                 i{
                         margin-right: 5px;
                         color: #fff;

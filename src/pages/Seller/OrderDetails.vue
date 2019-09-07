@@ -8,10 +8,10 @@
                 </p>
             </header>
             <my-title :title="'订单详情'" style="padding: 0 30px;margin-top: 20px;">
-                <a-button size="small" icon="rollback">返回</a-button>
+                <a-button size="small" icon="rollback" @click="$router.push({path: '/grouporder'})">返回</a-button>
             </my-title>
-            <a-row type="flex" justify="space-between" align="top" style="height: calc(100% - 189px);">
-                <a-col :span="6" class="scroll-box left-side">
+            <a-row type="flex" justify="space-between" align="top" style="height: calc(100% - 167px);">
+                <a-col :span="7" class="scroll-box left-side">
                     <div class="order-info">
                         <dl class="top">
                             <dt>订单ID：</dt>
@@ -39,7 +39,7 @@
                         </ul>
                     </div>
                 </a-col>
-                <a-col :span="17" style="padding-right: 30px;padding-bottom: 20px;" class="scroll-box">
+                <a-col :span="16" style="padding-right: 30px;padding-bottom: 20px;" class="scroll-box">
                     <ul class="forms">
                         <li>
                             <h3>
@@ -166,11 +166,6 @@
                 :centered="true"
                 title="添加地址"
             >
-                <!-- <template slot="title">
-                    <div>
-                            <img src="@/assets/jaw.jpg" alt="" width="30">
-                    </div>
-                </template> -->
                 <div class="form-box">
                     <a-form layout="vertical" :form="form">
                         <a-form-item label="地址别名：">
@@ -197,8 +192,9 @@
                         <a-button style="padding: 0 30px;">取 消</a-button>
                     </div>
                 </div>
-                
             </a-modal>
+            
+        
         </div>
     </div>
 </template>
@@ -234,12 +230,15 @@ export default {
             },
             adressList:[],
             options: []
+           
         }
     },
     mounted(){
         this.getAdressList();
         this.getAddressOne();
-        this.getTeamOrderDetails(266);
+        this.id = this.$route.query.id
+        //console.log(this.id)
+        this.getTeamOrderDetails(this.id);
     },
     methods:{
         deletePro(id){
@@ -385,6 +384,8 @@ export default {
         },
         setDefaultAdress(item){
             this.adress = item;
+            this.modelShow1 = false;
+            this.$message.success('地址设置成功！')
         }
     },
     watch: {
@@ -459,11 +460,12 @@ input::-webkit-inner-spin-button {
             width: 100%;
             justify-content: space-between;
             border-bottom: 1px solid #33b8b3;
-            padding: 30px;
+            padding: 10px 30px;
             p:nth-child(1){
                 color: #33b8b3;
                 font-size: 60px;
                 margin-bottom: 0;
+                padding-top: 10px; 
             }
         }
         .order-info{
@@ -472,9 +474,11 @@ input::-webkit-inner-spin-button {
                 border-bottom: 1px solid #fff;
                 dt{
                     color: #33b8b3;
+                    font-size: 18px;
                 }
                 dd{
                     margin: 10px 0;
+                    font-size: 16px;
                 }
             }
             .bottom{
@@ -485,20 +489,23 @@ input::-webkit-inner-spin-button {
                     padding: 10px 0;
                     justify-content: space-between;
                     > img{
-                        width: 100px;
+                        width: 120px;
+                        height: 120px;
                     }
                     > div{
                         display:flex;
                         align-items: flex-end;
                         height: 100%;
-                        width: calc(100% - 120px);
+                        width: calc(100% - 150px);
                         h3{
                             color: #33b8b3;
+                            font-size: 18px;
                         }
                         div{
                             width: 70%;
                             p{
                                 margin: 0;
+                                font-size: 16px;
                             }
                         }
                         > p{
@@ -506,8 +513,8 @@ input::-webkit-inner-spin-button {
                             margin: 0; 
                             text-align: right;
                             i{
-                                font-size: 20px;
-                                margin: 0 2px;
+                                font-size: 24px;
+                                margin: 0 5px;
                                 cursor: pointer;
                                 color: #33b8b3;
                             }
@@ -518,6 +525,12 @@ input::-webkit-inner-spin-button {
         }
         .forms{
             position: relative;
+            .ant-form-item-control-wrapper{
+                margin-left: 10px;
+            }
+            .ant-form-item-label{
+                width: 53px;
+            }
             &:before{
                 content: '';
                 position: absolute;
@@ -630,8 +643,15 @@ input::-webkit-inner-spin-button {
             height: 100%;
             overflow-y: scroll;
             &::-webkit-scrollbar {  /*滚动条整体样式*/
-                width: 0;  /*宽分别对应竖滚动条的尺寸*/
+                width: 6px;  /*宽分别对应竖滚动条的尺寸*/
                 /*高分别对应横滚动条的尺寸*/
+                background-color: #fff;
+                
+            }
+            &::-webkit-scrollbar-thumb {
+                background-color: #33b8b3;
+                border-radius:4px;
+                height: 10%;
             }
         }
     }

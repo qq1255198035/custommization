@@ -171,13 +171,13 @@ export default {
       height: 100%;
       position: relative;
       .scroll-box{
-                padding-top: 58px;
+                
                 padding-bottom: 40px; 
                 overflow-y: scroll;
                 height: 100%;
-                padding: 20px;
+                
                 &::-webkit-scrollbar {  /*滚动条整体样式*/
-                    width: 10px;  /*宽分别对应竖滚动条的尺寸*/
+                    width: 6px;  /*宽分别对应竖滚动条的尺寸*/
                     /*高分别对应横滚动条的尺寸*/
                     background-color: #fff;
                     

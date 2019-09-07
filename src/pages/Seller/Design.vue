@@ -1951,7 +1951,7 @@ export default {
                 max-height: 640px; 
                 overflow-y:scroll;
                 &::-webkit-scrollbar {  /*滚动条整体样式*/
-                    width: 10px;  /*宽分别对应竖滚动条的尺寸*/
+                    width: 6px;  /*宽分别对应竖滚动条的尺寸*/
                     /*高分别对应横滚动条的尺寸*/
                     background-color: #fff;
                     

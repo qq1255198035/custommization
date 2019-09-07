@@ -151,5 +151,7 @@ export default {
 </script>
 <style lang="less">
 @import "./../../components/index.less";
-
+#Commissions{
+    padding: 0 20px;
+}
 </style>

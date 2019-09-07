@@ -41,7 +41,7 @@ export function groupOrderList(num,status,orderid) {
     return axios({
         url: '/system/jeecgOrder/teamOrderList',
         method: 'post',
-        data:qs.stringify({pageSize: 4, pageNo:num, status:status, content:orderid})
+        data:qs.stringify({pageSize: 2, pageNo:num, status:status, content:orderid})
     })
 }
 
@@ -146,5 +146,21 @@ export function delProducts(id) {
         url: '/system/jeecgGoodsPic/delete',
         method: 'post',
         data:qs.stringify({id: id,})
+    })
+}
+
+export function selectById(id) {
+    return axios({
+        url: '/system/jeecgGoods/selectById',
+        method: 'post',
+        data:qs.stringify({goodId: id,})
+    })
+}
+
+export function exampleConfirm(id) {
+    return axios({
+        url: '/system/jeecgOrder/affirm',
+        method: 'post',
+        data:qs.stringify({orderId: id,})
     })
 }

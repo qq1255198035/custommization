@@ -238,6 +238,7 @@ export default {
 <style lang="less" scoped>
 @import url("./../../components/index.less");
 #my-order{
+    padding: 0 20px;
     .side{
         display: flex;
         justify-content: space-between;

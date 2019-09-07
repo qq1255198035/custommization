@@ -21,29 +21,65 @@
         </ul>
         <div class="content">
             <template v-if="orderList">
-                <order-item :orderArr="orderList">
-                    <hide-menu></hide-menu>
-                </order-item>
+                <order-item :orderArr="orderList" @handleMyClick="openConfirmBox"></order-item>
                 <div class="pagination-box">
-                    <a-pagination showQuickJumper :defaultCurrent="1" :total="totalnum" @change="onChange($event)" :pageSize="4"/>
+                    <a-pagination showQuickJumper :defaultCurrent="1" :total="totalnum" @change="onChange($event)" :pageSize="2"/>
                 </div>
             </template>
             <p v-else>暂无数据</p>
            
             
         </div>
+        <a-modal
+            v-model="modelShow"
+            :footer="null"
+            :centered="true"
+            title="样稿确认"
+            width="40%"
+        >
+            <ul class="example-box">
+                <li>
+                    <h2>方案1</h2>
+                    <div style="text-align: center;margin: 10px 0;">
+                        <span>
+                            <img src="./../../assets/jaw.jpg" alt="">
+                            正面
+                        </span>
+                        <span>
+                            <img src="./../../assets/jaw.jpg" alt="">
+                            背面
+                        </span>
+                        <span>
+                            <img src="./../../assets/jaw.jpg" alt="">
+                            左面
+                        </span>
+                        <span>
+                            <img src="./../../assets/jaw.jpg" alt="">
+                            右面
+                        </span>
+                        
+                    </div>
+                    <div v-if="textshow" style="width: 70%;margin:20px auto;">
+                        <a-textarea :autosize="{ minRows: 2, maxRows: 6 }" />
+                    </div>
+                    
+                    <a-button @click="textshow = true">添加描述</a-button>
+                    <a-button>选用此方案</a-button>
+                </li>
+                
+                <a-button type="primary">申请新方案</a-button>
+            </ul>
+        </a-modal>
     </div>
 </template>
 <script>
 import MyTitle from "@/components/MyTitle/MyTitle";
 import OrderItem from "@/components/OrderItem/OrderItem";
-import HideMenu from "@/components/HideMenu/HideMenu";
-import { groupOrderList } from "@/api/seller";
+import { groupOrderList,exampleConfirm } from "@/api/seller";
 export default {
     components:{
         MyTitle,
         OrderItem,
-        HideMenu
     },
     data(){
         return{
@@ -52,11 +88,22 @@ export default {
             status: 9,
             content: '',
             totalnum: 0,
-            key:''
-            
+            key:'',
+            modelShow: false,
+            textshow: false
         } 
     },
     methods:{
+        openConfirmBox(id){
+            this.modelShow = true;
+            console.log(id)
+            this.getExampleConfirm(id)
+        },
+        getExampleConfirm(id){
+            exampleConfirm(id).then(res => {
+                console.log(res)
+            })
+        },
         search(){
             this.getGroupOrderList(1,this.status,this.key)
         },
@@ -74,7 +121,7 @@ export default {
             groupOrderList(num,status,orderid).then(res => {
                 console.log(res)
                 this.orderList = res.records;
-                this.totalnum = res.total;
+                this.totalnum = parseInt(res.total);
             })
         }
     },
@@ -90,6 +137,7 @@ export default {
 <style lang="less">
 @import "./../../components/index.less";
 #GroupOrder{
+    padding: 0 20px;
     .input-box{
         display: flex;
         justify-content: space-between;
@@ -128,6 +176,59 @@ export default {
             display: flex;
             margin-top: 20px;
             justify-content: flex-end;
+        }
+    }
+}
+.example-box{
+    padding: 20px;
+    max-height: 710px;
+    overflow-y: scroll;
+    text-align: center;
+    &::-webkit-scrollbar {  /*滚动条整体样式*/
+        width: 6px;  /*宽分别对应竖滚动条的尺寸*/
+        /*高分别对应横滚动条的尺寸*/
+        background-color: #fff;
+        
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: #33b8b3;
+        border-radius:4px;
+        height: 10%;
+    }
+    > button{
+        margin-top: 20px;
+    }
+    li{
+        padding: 10px;
+        text-align: center;
+        border-bottom: 1px solid #33b8b3; 
+        button{
+            margin: 10px;
+        }
+        h2{
+            font-size: 16px;
+            color: #33b8b3;
+            text-align: left;
+        }
+        > div{
+            span{
+                display: inline-block;
+                margin: 0 10px;
+                width: 20%;
+                text-align: center;
+                border: 1px solid #ccc;
+                color: #33b8b3;
+            }
+            img{
+                width: 100%;
+            }
+           
+        }
+         p{
+            text-align: center;
+            font-size: 14px;
+            color: #999;
+            margin: 20px 0;
         }
     }
 }

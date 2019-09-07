@@ -55,10 +55,11 @@ export default {
                         width: 100%;
                         height: 100%;
                         display: none;
-                        background-image: linear-gradient(135deg, rgba(17,187,232,0.3) 10%, #4ac37a 100%);
+                        background-image: linear-gradient(45deg, rgba(17,187,232,0.5) 10%, #4ac37a 100%);
                         h3{
                               color: #fff;
                               text-align: center;
+                              font-size: 18px;
                         }
                         p{
                               margin: 10px 0;
@@ -68,6 +69,11 @@ export default {
                         }
                         p:nth-child(3){
                               margin-bottom: 0;
+                              font-size: 14px;
+                        }
+                        p:nth-child(4){
+                              margin-top: 0;
+                              font-size: 14px;
                         }
                   }
                   img{
