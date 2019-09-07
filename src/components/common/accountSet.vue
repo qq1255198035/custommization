@@ -237,6 +237,7 @@ export default {
           phoneName2: phone2
         });
         this.imgurl = result.img;
+        this.fileUrl = result.img
         this.provinceId = result.province;
         this.cityId = result.city;
         this.countryValue = result.country;

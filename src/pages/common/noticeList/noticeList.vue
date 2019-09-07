@@ -25,6 +25,7 @@
 </template>
 <style lang="less" scoped>
 #notices {
+  padding: 20px;
   .page-menu-search {
     display: flex;
     justify-content: flex-start;
@@ -56,18 +57,7 @@ export default {
       loading: true,
       loadingMore: false,
       data: [
-        {
-          title: "254",
-          content: "内容"
-        },
-        {
-          title: "254",
-          content: "内容"
-        },
-        {
-          title: "254",
-          content: "内容"
-        }
+        
       ],
       offset: 1,
       btnDsiable: false,
