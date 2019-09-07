@@ -91,6 +91,7 @@ export default {
   background-color: #000 !important;
 }
 .layout-box {
+  padding: 20px;
   display: flex;
   .menu {
     flex: 0 0 200px;
