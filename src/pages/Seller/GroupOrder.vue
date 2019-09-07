@@ -37,32 +37,24 @@
             width="40%"
         >
             <ul class="example-box">
-                <li>
-                    <h2>方案1</h2>
+                <li v-for="(item,index) in exList" :key="item.id">
+                    <h2>方案{{index + 1}}</h2>
                     <div style="text-align: center;margin: 10px 0;">
-                        <span>
-                            <img src="./../../assets/jaw.jpg" alt="">
-                            正面
+                        <span v-for="(img,index) in item.imgList" :key="index">
+                            <img :src="img" alt="">
+                            <i v-if="index == 0" style="font-style: normal;">正面</i>
+                            <i v-if="index == 1" style="font-style: normal;">背面</i>
+                            <i v-if="index == 2" style="font-style: normal;">左面</i>
+                            <i v-if="index == 3" style="font-style: normal;">右面</i>
                         </span>
-                        <span>
-                            <img src="./../../assets/jaw.jpg" alt="">
-                            背面
-                        </span>
-                        <span>
-                            <img src="./../../assets/jaw.jpg" alt="">
-                            左面
-                        </span>
-                        <span>
-                            <img src="./../../assets/jaw.jpg" alt="">
-                            右面
-                        </span>
+                       
                         
                     </div>
                     <div v-if="textshow" style="width: 70%;margin:20px auto;">
                         <a-textarea :autosize="{ minRows: 2, maxRows: 6 }" />
                     </div>
                     
-                    <a-button @click="textshow = true">添加描述</a-button>
+                    <a-button @click="textshow = true">{{textshow ? '添加描述' : '保存'}}</a-button>
                     <a-button>选用此方案</a-button>
                 </li>
                 
@@ -90,7 +82,8 @@ export default {
             totalnum: 0,
             key:'',
             modelShow: false,
-            textshow: false
+            textshow: false,
+            exList:[]
         } 
     },
     methods:{
@@ -102,6 +95,7 @@ export default {
         getExampleConfirm(id){
             exampleConfirm(id).then(res => {
                 console.log(res)
+                this.exList = res.result;
             })
         },
         search(){
@@ -223,6 +217,7 @@ export default {
                 text-align: center;
                 border: 1px solid #ccc;
                 color: #33b8b3;
+                padding: 10px;
             }
             img{
                 width: 100%;

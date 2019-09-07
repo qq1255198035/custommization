@@ -30,7 +30,7 @@
                                         <p>数量：{{item.quantity}}</p>
                                     </div>
                                     <p>
-                                        <a-icon type="edit" />
+                                        <a-icon type="edit" @click="showEdModal(item.id)"/>
                                         <a-icon type="delete" @click="deletePro(item.id)"/>
                                     </p>
                                     
@@ -193,7 +193,62 @@
                     </div>
                 </div>
             </a-modal>
-            
+            <a-modal
+                class="show-details"
+                title="Nike T恤"
+                v-model="showVisible"
+                @ok="handleOk"
+                width="50%"
+            >
+                <a-row :gutter="20" style="padding:20px">
+                <a-col :span="8">
+                    <a-row :gutter="20">
+                    <a-col :span="12">
+                        <img width="290" height="290" src alt />
+                    </a-col>
+                    <a-col :span="12">
+                        <img width="290" height="290" src alt />
+                    </a-col>
+                    </a-row>
+                </a-col>
+                <a-col :span="16">
+                    <div class="title font-18">颜色：蓝色</div>
+                    <div class="number">
+                    <div class="font-18">数量：</div>
+                    <div class="number-box">
+                        <div class="minus common-radio" @click="minus">
+                        <a-icon type="minus" />
+                        </div>
+                        <div class="num">
+                        <a-input v-model="nums" type="number" />
+                        </div>
+                        <div class="plus common-radio" @click="plus">
+                        <a-icon type="plus" />
+                        </div>
+                    </div>
+                    <div class="price-right">
+                        预计代理价格：
+                        <span>￥80</span>
+                    </div>
+                    </div>
+                    <div class="font-color">最小起订量为15</div>
+                    <div class="prices">
+                    <div class="price-box">
+                        <div class="font-18">价格:</div>
+                        <div class="price-input">
+                        <a-input-number size="200px" :min="1" v-model="prices" @change="onChange" />
+                        </div>
+                        <div class="font-18">/件</div>
+                    </div>
+                    <div class="price-right">
+                        预计代理收益：
+                        <span>￥300</span>
+                    </div>
+                    </div>
+                    <div class="font-color">建议售价：￥100/件</div>
+                </a-col>
+                </a-row>
+            </a-modal>
         
         </div>
     </div>
@@ -209,6 +264,9 @@ export default {
     },
     data(){
         return{
+            nums: 1,
+            showVisible: false,
+            prices: 100,
             adress:'',
             id: '',
             form: this.$form.createForm(this),
@@ -241,6 +299,18 @@ export default {
         this.getTeamOrderDetails(this.id);
     },
     methods:{
+        minus() {
+        if (this.nums > 1) {
+            this.nums--;
+        }
+        },
+        plus() {
+            this.nums++;
+        },
+        showEdModal(id) {
+            console.log(id)
+            this.showVisible = true;
+        },
         deletePro(id){
             let that = this;
             that.$confirm({
@@ -656,5 +726,49 @@ input::-webkit-inner-spin-button {
         }
     }
     
+}
+.show-details {
+  .number {
+    display: flex;
+    align-items: center;
+    padding: 20px 0 10px 0;
+    .number-box {
+        display: flex;
+        align-items: center;
+        .common-radio {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #33b8b3;
+            text-align: center;
+            line-height: 24px;
+            color: #fff;
+            margin: 4px 0;
+            cursor: pointer;
+        }
+        .num {
+            margin: 0 10px;
+            text-align: center;
+        }
+    }
+}
+.prices {
+    display: flex;
+    align-items: center;
+    margin: 20px 0 10px 0;
+    .price-box{
+        display: flex;
+        align-items: center;
+        .price-input {
+            padding: 0 10px;
+            width: 100px;
+        }
+    }
+    
+  }
+}
+.price-right {
+    flex: 1;
+    text-align: right;
 }
 </style>
