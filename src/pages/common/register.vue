@@ -186,8 +186,8 @@ import commonBtn from "@/components/commonBtn/commonBtn";
 const levelNames = {
   0: "至少6位密码，区分大小写 密码强度不够",
   1: "密码强度不够",
-  2: "33",
-  3: "44"
+  2: "密码强度中级",
+  3: "密码强度高"
 };
 const levelClass = {
   0: "error",

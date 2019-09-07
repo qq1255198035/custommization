@@ -122,6 +122,7 @@ export default {
           staff: result.employee,
         });
         this.imgurl = result.papers_img
+        this.fileUrl = result.papers_img
       });
     },
     /*checkedTel(rule, value, callback) {
