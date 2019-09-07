@@ -200,7 +200,7 @@ export default {
       phoneFirst: "",
       phoneLast: "",
       areaId: "",
-      country: "",
+     
       fileUrl: "",
       fileUrl1: "",
       imgurl: "",
@@ -368,7 +368,7 @@ export default {
 #accountSet {
   //background-color: #fff;
   padding-top: 16px;
-
+  padding: 16px 20px 0;
   .ant-form-item {
     width: 100%;
   }

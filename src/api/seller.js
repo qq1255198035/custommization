@@ -41,7 +41,7 @@ export function groupOrderList(num,status,orderid) {
     return axios({
         url: '/system/jeecgOrder/teamOrderList',
         method: 'post',
-        data:qs.stringify({pageSize: 2, pageNo:num, status:status, content:orderid})
+        data:qs.stringify({pageSize: 5, pageNo:num, status:status, content:orderid})
     })
 }
 
@@ -56,7 +56,7 @@ export function commissionList(num) {
     return axios({
         url: '/ios/jeecgCommissionRecord/commissionList',
         method: 'post',
-        data:qs.stringify({pageNo:num,pageSize: 12})
+        data:qs.stringify({pageNo:num,pageSize: 10})
     })
 }
 
@@ -164,3 +164,4 @@ export function exampleConfirm(id) {
         data:qs.stringify({orderId: id,})
     })
 }
+

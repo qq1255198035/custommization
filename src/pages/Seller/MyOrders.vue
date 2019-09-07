@@ -1,7 +1,7 @@
 <template>
     <div id="my-order">
         <my-title :title="'订单详情'" :fontsize="20">
-            <a-button size="small" icon="rollback" style="font-size: 14px;">返回</a-button>
+            <a-button size="small" icon="rollback" style="font-size: 14px;" @click="$router.go(-1)">返回</a-button>
         </my-title>
         <div class="side">
             <p>
@@ -21,7 +21,7 @@
                     <p><span>创建时间: </span>{{ createTime }}</p>
                 </li>
                 <li>
-                    <p><span>订购产品：</span>{{topic}}</p>
+                    
                     <p><span>备注：</span>{{ introduction }}</p>
                 </li>
             </ul>
@@ -164,6 +164,7 @@ export default {
     },
     data(){
         return{
+            id:'',
             orderId:'',
             contact:'',
             createTime: '',
@@ -194,9 +195,10 @@ export default {
         }
     },
     mounted(){
-        this.getOrderDetailUp(266);
-        this.getOrderStatus(266);
-        this.getOrderDetailDown(266);
+        this.id = this.$route.query.id;
+        this.getOrderDetailUp(this.id);
+        this.getOrderStatus(this.id);
+        this.getOrderDetailDown(this.id);
     },
     methods:{
         getOrderDetailDown(id){

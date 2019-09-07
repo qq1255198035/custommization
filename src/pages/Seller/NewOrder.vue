@@ -23,7 +23,9 @@
                     <User style="background-color: #fff; padding-top: 20px;border-top-right-radius: 10px;"></User>
                     
                     <div class="right">
-                        <my-title :title="'新建订单'" :fontsize="20"></my-title>
+                        <my-title :title="'新建订单'" :fontsize="20">
+                            <a-button size="small" icon="rollback" style="font-size: 14px;" @click="$router.push({path:'/grouporder'})">返回</a-button>
+                        </my-title>
                         <goods-list :goodsArr="goodsList" @on-click="openDesignModal($event)"></goods-list>
                         <div class="btn-box">
                             <a-button :loading="loading" @click="loadMore" :disabled="btnable">
@@ -66,16 +68,19 @@
                             <h2>CUSTOM KING T-Shirt<span>查看尺寸表</span></h2>
                             <div class="canvas-container"  v-show="designModel == 0">
                                 <canvas id="canvas1" :width="screenWidth" :height="screenWidth"></canvas>
+                                <div class="moving-box" :style="{width: '200px',height: '300px',top: '150px', left: '200px'}" v-show="movingBox"></div>
                             </div>
                             <div class="canvas-container"  v-show="designModel == 1">
                                 <canvas id="canvas2" :width="screenWidth" :height="screenWidth"></canvas>
+                                <div class="moving-box" :style="{width: '200px',height: '300px',top: '150px', left: '200px'}" v-show="movingBox"></div>
                             </div>
                             <div class="canvas-container"  v-show="designModel == 2">
                                 <canvas id="canvas3" :width="screenWidth" :height="screenWidth"></canvas>
-                                
+                                <div class="moving-box" :style="{width: '200px',height: '300px',top: '150px', left: '200px'}" v-show="movingBox"></div>
                             </div>
                             <div class="canvas-container"  v-show="designModel == 3">
                                 <canvas id="canvas4" :width="screenWidth" :height="screenWidth"></canvas>
+                                <div class="moving-box" :style="{width: '200px',height: '300px',top: '150px', left: '200px'}" v-show="movingBox"></div>
                             </div>
                             <a-row class="top">
                                 <a-col v-for="(item,index) in bgimgs" :key="index" :span="3" class="li" @click="changeModelDesign(index)">
@@ -90,6 +95,7 @@
                                     <span class="icon-zoomout"></span>
                                 </li>
                             </ul>
+                            
                         </div>
                         <div class="tools-box">
                             <div style="" class="scroll-box">
@@ -129,7 +135,7 @@
                                             </div>
                                         </div> -->
                                         <h2 style="color: #33b8b3;text-align: left; border-bottom: 1px solid #999; padding-bottom: 5px; font-size: 18px;">
-                                            <a-icon type="left" style="cursor: pointer;" @click="visibletype = -1"/>
+                                            <!-- <a-icon type="left" style="cursor: pointer;" @click="visibletype = -1"/> -->
                                             添加文字
                                         </h2>
                                         <div class="add-text">
@@ -782,7 +788,7 @@ export default {
             remove,
             rotate,
             diagonal,
-            
+            movingBox: false,
             liClick: -1,
             designModel: 0,
             screenWidth: 600,
@@ -929,12 +935,18 @@ export default {
             this.onUnselected(this.myCanvas2);
             this.onUnselected(this.myCanvas3);
             this.onUnselected(this.myCanvas4);
+            this.onMouseUp(this.myCanvas1);
+            this.onMouseUp(this.myCanvas2);
+            this.onMouseUp(this.myCanvas3);
+            this.onMouseUp(this.myCanvas4);
             this.delSelected(this.myCanvas1);
             this.delSelected(this.myCanvas2);
             this.delSelected(this.myCanvas3);
             this.delSelected(this.myCanvas4);
             this.handleObjectScale(this.myCanvas1);
-            
+            this.handleObjectScale(this.myCanvas2);
+            this.handleObjectScale(this.myCanvas3);
+            this.handleObjectScale(this.myCanvas4);
             this.setEditIcon();
             this.setEditPointer();
             
@@ -1058,6 +1070,12 @@ export default {
                     that.visibletype = -1;
                     that.liClick = -1;
                 }
+            })
+        },
+        onMouseUp(object){
+            let that = this;
+            object.on('mouse:up',function(obj){
+                that.movingBox = false;
             })
         },
         changeNamePosition(value) {
@@ -1504,7 +1522,9 @@ export default {
         },
         // 添加图片结束
         handleObjectMove(object){
+            let that = this;
             object.on("object:moving", function(e) {
+                that.movingBox = true;
                 var obj = e.target;
                 var canvas = obj.canvas;
                 var top = obj.top;
@@ -1541,10 +1561,10 @@ export default {
                         left_margin = 70;
                         right_margin = 140;
                 }else{
-                        top_margin = 70;
-                        bottom_margin = 50;
-                        left_margin = 170;
-                        right_margin = 170;
+                        top_margin = 150;
+                        bottom_margin = 150;
+                        left_margin = 200;
+                        right_margin = 200;
                 }
 
                 var top_bound = top_margin + top_adjust - pan_y;
@@ -2063,6 +2083,12 @@ export default {
             position: relative;
             .canvas-container{
                 z-index: 100;
+                position: relative;
+                .moving-box{
+                    position:absolute; 
+                    border: 1px solid #000;
+                    z-index: 200;
+                }
             }
             h2{
                 position: absolute;
@@ -2111,6 +2137,7 @@ export default {
                 }
                 
             }
+            
         }
         .tools-box{
             width: calc(35% - 90px);

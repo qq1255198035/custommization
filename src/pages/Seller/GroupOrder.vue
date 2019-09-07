@@ -21,14 +21,13 @@
         </ul>
         <div class="content">
             <template v-if="orderList">
-                <order-item :orderArr="orderList" @handleMyClick="openConfirmBox"></order-item>
-                <div class="pagination-box">
-                    <a-pagination showQuickJumper :defaultCurrent="1" :total="totalnum" @change="onChange($event)" :pageSize="2"/>
-                </div>
+                <order-item :orderArr="orderList" @handleMyClick="openConfirmBox" style="margin-bottom: "></order-item>
+                
             </template>
             <p v-else>暂无数据</p>
-           
-            
+        </div>
+        <div class="pagination-box">
+            <a-pagination showQuickJumper :defaultCurrent="1" :total="totalnum" @change="onChange($event)" :pageSize="5"/>
         </div>
         <a-modal
             v-model="modelShow"
@@ -76,6 +75,7 @@
 import MyTitle from "@/components/MyTitle/MyTitle";
 import OrderItem from "@/components/OrderItem/OrderItem";
 import { groupOrderList,exampleConfirm } from "@/api/seller";
+
 export default {
     components:{
         MyTitle,
@@ -132,12 +132,16 @@ export default {
     created(){
         this.getGroupOrderList(this.num,this.status,this.content)
     }
+   
 }
 </script>
 <style lang="less">
 @import "./../../components/index.less";
 #GroupOrder{
     padding: 0 20px;
+    height: 100%;
+    
+    padding-bottom: 70px;
     .input-box{
         display: flex;
         justify-content: space-between;
@@ -171,12 +175,13 @@ export default {
     }
     
     .content{
-        margin-top: 30px;
-        .pagination-box{
-            display: flex;
-            margin-top: 20px;
-            justify-content: flex-end;
-        }
+        margin-bottom: 30px;
+        height: auto;
+    }
+    .pagination-box{
+        display: flex;
+        margin: 20px 0;
+        justify-content: flex-end;
     }
 }
 .example-box{

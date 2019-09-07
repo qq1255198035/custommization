@@ -13,9 +13,9 @@
                                     <p>
                                           <span>{{item.buyNum}}/{{item.reservation}}</span>
                                           <span>
-                                                <a-icon type="edit" />
-                                                <a-icon type="file-search" />
-                                                <a-icon type="share-alt" />
+                                                <a-icon type="edit" @click="$router.push({path:'/orderdetails',query:{id: item.id}})"/>
+                                                <a-icon type="file-search" @click="$router.push({path:'/myorder',query:{id: item.id}})"/>
+                                                <a-icon type="share-alt" @click="open(item.id)"/>
                                           </span>
                                     </p>
                               </div>
@@ -30,6 +30,11 @@ export default {
             orderList:{
                   type: Array
             }
+      },
+      methods:{
+            open(id){
+                  this.$emit('openShareBox', id)
+            }
       }
 }
 </script>
@@ -43,9 +48,9 @@ export default {
             flex-wrap: wrap;
             .order-item{
                   margin-top: 20px;
+                  text-align: center;
                   img{
-                        width: 100%;
-                        height: 300px;
+                        width: 80%;
                   }
                   .desc{
                         margin-top: 15px;
@@ -64,6 +69,7 @@ export default {
                               padding-right: 20px;
                               display: block;
                               color: #a7a7a7;
+                              text-align: left;
                         }
                         p:nth-child(3){
                               font-size: 20px;
@@ -72,6 +78,8 @@ export default {
                                     i{
                                           margin: 0 10px;
                                           color: #757575;
+                                          font-size: 24px;
+                                          cursor: pointer;
                                     }
                                     
                               }

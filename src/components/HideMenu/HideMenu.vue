@@ -2,12 +2,16 @@
     <div class="hiden-menu">
         <a-icon type="ellipsis" style="transform: rotate(90deg);font-size: 20px;cursor: pointer" @mouseover="hidemenu = true" @mouseout="hidemenu = false"/>
         <ul v-show="hidemenu" @mouseover="hidemenu = true" @mouseout="hidemenu = false">
+                <li style="border-bottom: 1px solid #fff;" v-if="isEdit <= 2" @click="handleClick2">
+                    <a-icon type="edit" />编辑
+                </li>
                 <li style="border-bottom: 1px solid #fff;" @click="handleClick">
                     <a-icon type="search" />查看
                 </li>
-                <li>
+                <li @click="handleClick1">
                     <a-icon type="share-alt" />分享
                 </li>
+                
         </ul>
     </div>
 </template>
@@ -18,9 +22,22 @@ export default {
             hidemenu:false,
         }
     },
+    props:{
+        isEdit:{
+            type: Number,
+            required:true,
+            default: 1
+        }
+    },
     methods:{
         handleClick(){
             this.$emit('myClick')
+        },
+        handleClick1(){
+            this.$emit('myClick1')
+        },
+        handleClick2(){
+            this.$emit('myClick2')
         }
     }
 }
@@ -45,6 +62,7 @@ export default {
                 justify-content: center;
                 align-items: center;
                 color: #fff;
+                margin: 2px 0;
                 i{
                         margin-right: 5px;
                         color: #fff;

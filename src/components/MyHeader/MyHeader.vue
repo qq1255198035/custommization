@@ -49,10 +49,10 @@ export default {
             margin-left: 20px;
             h3{
                   color: #33b8b3;
-                  font-size: 24px;
+                  font-size: 20px;
             }
             P{
-                  font-size: 20px;
+                  font-size: 16px;
                   color: #9d9d9d;
             }
       }

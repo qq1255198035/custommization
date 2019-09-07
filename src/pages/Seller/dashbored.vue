@@ -9,8 +9,12 @@
         <my-title :title="'进行中的订单'">
             <router-link to="/grouporder" style="text-decoration: underline;color: #33b8b3">全部订单</router-link>
         </my-title>
-        <order-list :orderList="orderList"></order-list>
-          
+        <order-list :orderList="orderList" @openShareBox="openMyshareBox"></order-list>
+        <a-modal :visible="openShare" :footer="null" @cancel="closeShareBox" title="分享给朋友" :centered="true">
+            <div class="share-box">
+                <share class="share" :config="config"></share>
+            </div>
+        </a-modal>
     </div>    
 </template>
 <script>
@@ -24,7 +28,8 @@ export default {
         MyHeader,
         OrderTotal,
         MyTitle,
-        OrderList
+        OrderList,
+
     },
     data(){
         return{
@@ -35,7 +40,21 @@ export default {
             level:'',
             intro:'',
             imgUrl:'',
-            orderList:[]
+            orderList:[],
+            openShare:false,
+            config: {
+                url: '', // 网址，默认使用 window.location.href
+                source: "", // 来源（QQ空间会用到）, 默认读取head标签：<meta name="site" content="http://overtrue" />
+                title: "11", // 标题，默认读取 document.title 或者 <meta name="title" content="share.js" />
+                description: "222", // 描述, 默认读取head标签：<meta name="description" content="PHP弱类型的实现原理分析" />
+                image:
+                    "https://hlx-1258407851.cos.ap-beijing.myqcloud.com/hlx/20181229/16144720457881.png", // 图片, 默认取网页中第一个img标签
+                sites: ["facebook", "wechat", "weibo"], // 启用的站点
+                //disabled: ['google', 'facebook', 'twitter'], // 禁用的站点
+                wechatQrcodeTitle: "微信扫一扫：分享", // 微信二维码提示文字
+                wechatQrcodeHelper:
+                    "<p>微信里点“发现”，扫一下</p><p>二维码便可将本文分享至朋友圈。</p>"
+            }
         }
     },
     mounted(){
@@ -44,6 +63,15 @@ export default {
         this.getOrderingList()
     },
     methods:{
+        closeShareBox(){
+            this.openShare = false;
+        },
+        openMyshareBox(id){
+            console.log(id)
+            this.openShare = true;
+            this.config.url = 'http://localhost:8080/#/share' + '?order_id='+id
+            console.log(this.config.url)
+        },
         getSalesDate(){
             salesDate().then(res => {
                 //console.log(res)
@@ -100,9 +128,24 @@ export default {
     }
 }
 </script>
-<style lang="less" scoped>
+<style lang="less">
 #dashbored{
     width: 100%;
-    padding: 20px;
+    padding: 0 20px;
+    overflow-x: hidden;
+}
+.share-box{
+    padding: 30px;
+    .share{
+        text-align: center;
+        a{
+            font-size: 30px;
+            margin: 0 20px;
+            border: 1px solid #33b8b3 !important;
+            height: 60px;
+            width: 60px;
+            padding-top: 14px;
+        }
+    }
 }
 </style>

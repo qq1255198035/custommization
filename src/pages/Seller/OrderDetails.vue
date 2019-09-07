@@ -7,10 +7,10 @@
                     <User></User>
                 </p>
             </header>
-            <my-title :title="'订单详情'" style="padding: 0 30px;margin-top: 20px;">
-                <a-button size="small" icon="rollback" @click="$router.push({path: '/grouporder'})">返回</a-button>
+            <my-title :title="'分享设置'" style="padding: 0 30px;margin-top: 10px;overflow:hidden;">
+                <a-button size="small" icon="rollback" @click="$router.push({path: '/dashbored'})">返回</a-button>
             </my-title>
-            <a-row type="flex" justify="space-between" align="top" style="height: calc(100% - 167px);">
+            <a-row type="flex" justify="space-between" align="top" style="height: calc(100% - 157px);">
                 <a-col :span="7" class="scroll-box left-side">
                     <div class="order-info">
                         <dl class="top">
@@ -236,7 +236,7 @@ export default {
     mounted(){
         this.getAdressList();
         this.getAddressOne();
-        this.id = this.$route.query.id
+        this.id = this.$route.query.id;
         //console.log(this.id)
         this.getTeamOrderDetails(this.id);
     },
