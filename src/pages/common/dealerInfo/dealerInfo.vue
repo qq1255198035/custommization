@@ -93,6 +93,7 @@ export default {
 .layout-box {
   padding: 20px;
   display: flex;
+  padding: 0 20px;
   .menu {
     flex: 0 0 200px;
     max-width: 200px;

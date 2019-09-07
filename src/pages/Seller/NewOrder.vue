@@ -1074,7 +1074,7 @@ export default {
         },
         onMouseUp(object){
             let that = this;
-            object.on('mouse:up',function(obj){
+            object.on('mouse:up',function(){
                 that.movingBox = false;
             })
         },
