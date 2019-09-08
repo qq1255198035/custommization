@@ -50,11 +50,11 @@
                        
                         
                     </div>
-                    <div v-if="textshow" style="width: 70%;margin:20px auto;">
-                        <a-textarea :autosize="{ minRows: 2, maxRows: 6 }" />
+                    <div v-if="textshow2" style="width: 70%;margin:20px auto;">
+                        <a-textarea :autosize="{ minRows: 2, maxRows: 6 }" v-if="textshow == index"/>
                     </div>
                     
-                    <a-button @click="textshow = true">{{textshow ? '添加描述' : '保存'}}</a-button>
+                    <a-button @click="postNewEx(index)">{{textshow == index ? '保存' : '添加描述'}}</a-button>
                     <a-button>选用此方案</a-button>
                 </li>
                 
@@ -82,11 +82,16 @@ export default {
             totalnum: 0,
             key:'',
             modelShow: false,
-            textshow: false,
-            exList:[]
+            textshow: -1,
+            exList:[],
+            textshow2:false
         } 
     },
     methods:{
+        postNewEx(index){
+            this.textshow = index
+            this.textshow2 = true
+        },
         openConfirmBox(id){
             this.modelShow = true;
             console.log(id)

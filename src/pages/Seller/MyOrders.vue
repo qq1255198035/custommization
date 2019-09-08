@@ -12,7 +12,15 @@
                 </span>
                 {{orderId}}
             </p>
-            <a-button size="small" style="font-size: 14px;">主操作</a-button>
+            <a-button size="small" style="font-size: 14px;" @mouseover="hidemenu = true">主操作</a-button>
+            <ul v-show="hidemenu" @mouseover="hidemenu = true" @mouseout="hidemenu = false">
+                <li style="border-bottom: 1px solid #fff;" @click="$router.push({path:'/orderdetails',query:{id: id}})">
+                    <a-icon type="edit" />编辑
+                </li>
+                <li @click="openMyshareBox(id)">
+                    <a-icon type="share-alt" />分享
+                </li>
+            </ul>
         </div>
         <div class="title">
             <ul>
@@ -133,6 +141,11 @@
                 
             </a-tab-pane>
         </a-tabs>
+        <a-modal :visible="openShare" :footer="null" @cancel="closeShareBox" title="分享给朋友" :centered="true">
+            <div class="share-box">
+                <share class="share" :config="config"></share>
+            </div>
+        </a-modal>
     </div>
 </template>
 <script>
@@ -164,6 +177,7 @@ export default {
     },
     data(){
         return{
+            hidemenu:false,
             id:'',
             orderId:'',
             contact:'',
@@ -191,7 +205,20 @@ export default {
             data:[
                 
             ],
-            infoList:[]
+            infoList:[],
+            openShare:false,
+            config: {
+                url: '', // 网址，默认使用 window.location.href
+                source: "", // 来源（QQ空间会用到）, 默认读取head标签：<meta name="site" content="http://overtrue" />
+                title: "11", // 标题，默认读取 document.title 或者 <meta name="title" content="share.js" />
+                description: "222", // 描述, 默认读取head标签：<meta name="description" content="PHP弱类型的实现原理分析" />
+                image:
+                        "https://hlx-1258407851.cos.ap-beijing.myqcloud.com/hlx/20181229/16144720457881.png", // 图片, 默认取网页中第一个img标签
+                sites: ["facebook", "wechat", "weibo"], // 启用的站点
+                //disabled: ['google', 'facebook', 'twitter'], // 禁用的站点
+                wechatQrcodeTitle: "微信扫一扫：分享", // 微信二维码提示文字
+                wechatQrcodeHelper: "<p>微信里点“发现”，扫一下</p><p>二维码便可将本文分享至朋友圈。</p>"
+            }
         }
     },
     mounted(){
@@ -201,6 +228,15 @@ export default {
         this.getOrderDetailDown(this.id);
     },
     methods:{
+        openMyshareBox(id){
+            console.log(id)
+            this.openShare = true;
+            this.config.url = 'http://localhost:8080/#/share' + '?order_id='+id
+            console.log(this.config.url)
+        },
+        closeShareBox(){
+            this.openShare = false;
+        },
         getOrderDetailDown(id){
             orderDetailDown(id).then(res => {
                 console.log(res)
@@ -237,7 +273,7 @@ export default {
     }
 }
 </script>
-<style lang="less" scoped>
+<style lang="less">
 @import url("./../../components/index.less");
 #my-order{
     padding: 0 20px;
@@ -245,6 +281,29 @@ export default {
         display: flex;
         justify-content: space-between;
         margin: 10px 0;
+        position: relative;
+        ul{
+            width: 67px;
+            padding: 3px 10px;
+            position: absolute;
+            top: 25px;
+            right: 0;
+            background-color: #33b8b3;
+            border-radius: 4px;
+            li{
+                cursor: pointer;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                color: #fff;
+                margin: 2px 0;
+                i{
+                        margin-right: 5px;
+                        color: #fff;
+                }
+            }
+                
+        }
         p{
             font-size: 18px;
             color: #999;
@@ -374,6 +433,20 @@ export default {
     .logistics-info{
         background-color: #eee;
         padding: 20px 20px 100px;
+    }
+}
+.share-box{
+    padding: 30px;
+    .share{
+        text-align: center;
+        a{
+                font-size: 30px;
+                margin: 0 20px;
+                border: 1px solid #33b8b3 !important;
+                height: 60px;
+                width: 60px;
+                padding-top: 14px;
+        }
     }
 }
 </style>

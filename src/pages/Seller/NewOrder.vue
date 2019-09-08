@@ -68,19 +68,43 @@
                             <h2>CUSTOM KING T-Shirt<span>查看尺寸表</span></h2>
                             <div class="canvas-container"  v-show="designModel == 0">
                                 <canvas id="canvas1" :width="screenWidth" :height="screenWidth"></canvas>
-                                <div class="moving-box" :style="{width: '200px',height: '300px',top: '150px', left: '200px'}" v-show="movingBox"></div>
+                                <div class="moving-box" :style="{width: '200px',height: '300px',top: '150px', left: '200px'}" v-show="movingBox">
+                                    成人
+                                    <div>
+                                        儿童
+                                    </div>
+                                    <div>胸章</div>
+                                </div>
                             </div>
                             <div class="canvas-container"  v-show="designModel == 1">
                                 <canvas id="canvas2" :width="screenWidth" :height="screenWidth"></canvas>
-                                <div class="moving-box" :style="{width: '200px',height: '300px',top: '150px', left: '200px'}" v-show="movingBox"></div>
+                                <div class="moving-box" :style="{width: '200px',height: '300px',top: '150px', left: '200px'}" v-show="movingBox">
+                                    成人
+                                    <div>
+                                        儿童
+                                    </div>
+                                    <div>胸章</div>
+                                </div>
                             </div>
                             <div class="canvas-container"  v-show="designModel == 2">
                                 <canvas id="canvas3" :width="screenWidth" :height="screenWidth"></canvas>
-                                <div class="moving-box" :style="{width: '200px',height: '300px',top: '150px', left: '200px'}" v-show="movingBox"></div>
+                                <div class="moving-box" :style="{width: '200px',height: '300px',top: '150px', left: '200px'}" v-show="movingBox">
+                                    成人
+                                    <div>
+                                        儿童
+                                    </div>
+                                    <div>胸章</div>
+                                </div>
                             </div>
                             <div class="canvas-container"  v-show="designModel == 3">
                                 <canvas id="canvas4" :width="screenWidth" :height="screenWidth"></canvas>
-                                <div class="moving-box" :style="{width: '200px',height: '300px',top: '150px', left: '200px'}" v-show="movingBox"></div>
+                                <div class="moving-box" :style="{width: '200px',height: '300px',top: '150px', left: '200px'}" v-show="movingBox">
+                                    成人
+                                    <div>
+                                        儿童
+                                    </div>
+                                    <div>胸章</div>
+                                </div>
                             </div>
                             <a-row class="top">
                                 <a-col v-for="(item,index) in bgimgs" :key="index" :span="3" class="li" @click="changeModelDesign(index)">
@@ -400,7 +424,7 @@
                                         <ul class="info-list">
                                             <li v-for="(item,index) in dataList" :key="index">
 
-                                                <img src="@/assets/0001.png" alt="" width="100" height="80">
+                                                <img src="@/assets/0001.png" alt="" width="100" height="100">
                                                 <div>
                                                     <p>{{item.title}}</p>
                                                     <span>
@@ -619,7 +643,7 @@
                         <li>每件价格 <span>$26.40 To $51.2</span></li>
                         <li>
                             <a-button icon="plus" v-intro="'The content of tooltip'" v-intro-step="2" @click="$router.push({path: '/neworder'})">添加产品</a-button>
-                            <a-button type="primary" v-intro="'The content of tooltip'" v-intro-step="3" @click="saveEndDesign"><span class="icon-save" style="margin-right: 10px;vertical-align: middle"></span>保存设计</a-button>
+                            <a-button type="primary" v-intro="'The content of tooltip'" v-intro-step="3"><span class="icon-save" style="margin-right: 10px;vertical-align: middle"></span><a @click="saveEndDesign">保存设计</a></a-button>
                         </li>
                     </ul>
                 </div>
@@ -628,16 +652,16 @@
                 v-model="example"
                 title="参考图片上传："
                 :centered="true"
-                width="40%"
+                width="45%"
                 :footer="null"
             >
                 <div class="upLoadExampleImg">
                     <a-form :form="form" style="display: flex;justify-content: space-between;">
                         <a-form-item
                             label="附件上传"
-                            :label-col="{ span: 6 }"
-                            :wrapper-col="{ span: 18 }"
-                            style="width: 49;"
+                            :label-col="{ span: 7 }"
+                            :wrapper-col="{ span: 17 }"
+                            style="width: 45%;"
                         >   
                             <a-upload
                             listType="picture-card"
@@ -666,9 +690,9 @@
                         </a-form-item>
                         <a-form-item
                             label="图片说明"
-                            :label-col="{ span: 6 }"
-                            :wrapper-col="{ span: 18 }"
-                            style="width: 49%;"
+                            :label-col="{ span: 7 }"
+                            :wrapper-col="{ span: 17 }"
+                            style="width: 55%;"
                         >
                             <a-textarea :rows="4" v-decorator="['bz',{rules: [{ required: true, message: '请填写说明！' }]}]"/>
                         </a-form-item>
@@ -695,7 +719,7 @@
                                 <p>感谢您的信赖</p>
                             </div>
                         </div>
-                        <p>cccccccccccccccccccccccccccccccccccccccccccccc</p>
+                        <p>附加提示，此成功提示出现一系列任务之后，比如在弹窗操作了分步表单任务，完成最后一步后提示。简单的弹窗任务直接使用Message提示。</p>
                     </div>
                     <div class="btn-box">
                         <a-button icon="file-text">订单列表</a-button>
@@ -726,7 +750,9 @@ import img1 from '@/assets/0001.png';
 import GoodsList from "@/components/GoodsList/GoodsList";
 import User from '@/components/Header/User';
 import MyHeader from '@/components/Header/Header';
-import { listAll,categoryList,selectById } from "@/api/seller";
+import { listAll,categoryList,selectById,saveDesign } from "@/api/seller";
+
+
 export default {
     components:{
         MyTitle,
@@ -906,6 +932,14 @@ export default {
             Ele: () => document.querySelector("#Design"),
             rootSubmenuKeys: ['0', '1', '2'],
             openKeys: ['0'],
+            dataUrl1:'',
+            dataUrl2:'',
+            dataUrl3:'',
+            dataUrl4:'',
+            dataPost1:'',
+            dataPost2:'',
+            dataPost3:'',
+            dataPost4:''
         }
     },
     created(){
@@ -956,6 +990,42 @@ export default {
     },
     
     methods:{
+        saveEndDesign(){
+            
+            this.saveImg();
+            this.downLoadImg();
+            let params = {
+                positivePicUrl: this.dataUrl1,backPicUrl: this.dataUrl2,leftPicUrl: this.dataUrl3,rightPicUrl: this.dataUrl4,
+                positiveDesignArea: this.dataPost1, backDesignArea: this.dataPost2, leftDesignArea: this.dataPost3, rightDesignArea: this.dataPost4
+            }
+            console.log(params)
+            this.postSaveDesign(params)
+        },
+        downLoadImg(){
+            this.dataUrl1 = this.myCanvas1.toDataURL();
+            this.dataUrl2 = this.myCanvas2.toDataURL();
+            this.dataUrl3 = this.myCanvas3.toDataURL();
+            this.dataUrl4 = this.myCanvas4.toDataURL();
+        },
+        saveImg(){
+            let json1 = this.myCanvas1.toJSON();
+            let json2 = this.myCanvas2.toJSON();
+            let json3 = this.myCanvas3.toJSON();
+            let json4 = this.myCanvas4.toJSON();
+            this.dataPost1 = JSON.stringify(json1);
+            this.dataPost2 = JSON.stringify(json2)
+            this.dataPost3 = JSON.stringify(json3)
+            this.dataPost4 = JSON.stringify(json4)
+            console.log(json1)
+        },
+        postSaveDesign(params){
+            saveDesign(params).then(res => {
+                console.log(res)
+                if(res.code == 200){
+                    this.endDsign = true;
+                }
+            })
+        },
         onOpenChange (openKeys) {
             const latestOpenKey = openKeys.find(key => this.openKeys.indexOf(key) === -1)
             if (this.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
@@ -969,11 +1039,13 @@ export default {
                 console.log(res);
                 this.bgimgs = res.result.imgs;
                 this.bindCanvas(this.myCanvas1,0);
+                this.bindCanvas(this.myCanvas2,1);
+                this.bindCanvas(this.myCanvas3,2);
+                this.bindCanvas(this.myCanvas4,3);
             })
         },
         closeDesignBox(){
             this.show = false;
-            
         },
         openDesignModal(id){
             console.log(id)
@@ -1134,9 +1206,7 @@ export default {
                 }
             });
         },
-        saveEndDesign(){
-            this.endDsign = true;
-        },
+        
         removeInput(k) {
             const { form1 } = this;
             // can use data-binding to get
@@ -1499,7 +1569,7 @@ export default {
                     // that.skewy = obj.skewY;
                     that.rotateNum = obj.angle;
                 });
-                
+                oImg.crossOrigin='Anonymous';
                 that.myCanvas.add(
                         oImg.set({
                             id: id,
@@ -1507,12 +1577,12 @@ export default {
                             flipY:false,
                             skewX:0,
                             skewY:0,
-                            originX: "center",
-                            originY: "center",
-                            left: that.screenWidth / 2,
-                            top: that.screenWidth / 2,
-                            minScaleLimit: 0.5,
-                            maxScaleLimit: 1
+                            
+                            left: 200,
+                            top: 150,
+                            scaleX: 0.5,
+                            scaleY:0.5,
+                            maxWidth: 200
                         })
                         
                 ).setActiveObject(oImg);
@@ -1596,27 +1666,29 @@ export default {
             
         },
         onObjectScaled(e){
-            console.log(e.target.lockScalingX)
-            
-            if (e.target.scaleX * e.target.width > 280) {
-                console.log(e.e.x)
-                e.target.lockScalingX = true;
-                e.target.lockScalingY = true;
-                //e.target.scale(a);
-                
-                
-            }else{
-                e.target.lockScalingX = false;
-                e.target.lockScalingY = false;
-            }
+            var scaledObject = e.target;
+            scaledObject.lockScalingFlip = true;
+            var startX =scaledObject.getPointByOrigin("left","top").x.toFixed();
+            var startY =scaledObject.getPointByOrigin("left","top").y.toFixed();
+            var maxWidth = 400 - startX;// scaledObject.aCoords.tl.x; 
+            var maxHeight = 450 -startY;
+            scaledObject.setCoords();
+            // console.log("xy:",startX,startY);
+            // console.log("max:",maxWidth,maxHeight);
+            var isOnScreen = scaledObject.isContainedWithinRect({x:200,y:150},{x:400,y:450},true,true);
+            // console.log("onscreen:",isOnScreen);
+            if(!isOnScreen) {
 
+                if( (maxHeight) <( maxWidth)){
+
+                    var h = scaledObject.scaleToHeight(maxHeight,true);
+
+                } else{
+                    var w = scaledObject.scaleToWidth(maxWidth,true);
+                }
+            }
         },
-        handleBeforeScale(object){
-            object.on("object:beforeScaleRotate",function(obj){
-                obj.lockScalingX = obj.lockScalingY = false;
-                return true; 
-            })
-        },
+        
         
         // 切换正反左右面
         changeModelDesign(i){
@@ -1645,7 +1717,7 @@ export default {
         // 设置设计背景图
         bindCanvas(canvas,i) {
             var that = this
-            canvas.setBackgroundImage(that.bgimgs[i],canvas.renderAll.bind(canvas),{
+            var img = canvas.setBackgroundImage(that.bgimgs[i],canvas.renderAll.bind(canvas),{
                 opacity: 1,
                 angle: 0,
                 left: that.screenWidth / 2,
@@ -1653,8 +1725,11 @@ export default {
                 originX: "center",
                 originY: "center",
                 scaleX: that.screenWidth / 600,
-                scaleY: that.screenWidth / 600
+                scaleY: that.screenWidth / 600,
+                // *圖片跨域
+                crossOrigin: "*"
             });
+            
         },
         zoomIn(){
             var zoom = this.myCanvas.getZoom();
@@ -1900,11 +1975,20 @@ export default {
         setEditPointer(){
             let that = this;
             fabric.Canvas.prototype.customiseControls({
-                tr: {
+                br: {
                         action: "scale"
                        
                 },
-                br: {
+                ml:{
+                    action: "scale"
+                },
+                mr:{
+                    action: "scale"
+                },
+                mb:{
+                    action: "scale"
+                },
+                tl: {
                         action: function(e, target) {
                             that.myCanvas.remove(target);
                         },
@@ -1926,13 +2010,13 @@ export default {
                         cornerPadding: 10
                     },
 
-                    tr: {
+                    br: {
                         icon: resize,
                         settings: {
                                 cornerBackgroundColor: that.randomColor()
                         }
                     },
-                    br: {
+                    tl: {
                         icon: remove,
                         settings: {
                                 cornerBackgroundColor: that.randomColor()
@@ -2088,6 +2172,22 @@ export default {
                     position:absolute; 
                     border: 1px solid #000;
                     z-index: 200;
+                    > div:nth-child(1){
+                        width: 150px;
+                        height: 250px;
+                        position: absolute; 
+                        left: 25px;
+                        top: 25px;
+                        border: 1px solid #000;
+                    }
+                    > div:nth-child(2){
+                        width:80px;
+                        height: 80px;
+                        position: absolute; 
+                        right: 10px;
+                        top: 10px;
+                        border: 1px solid #000;
+                    }
                 }
             }
             h2{
@@ -2711,12 +2811,12 @@ export default {
                     }
                     .upload-box{
                         display: flex;
-                        justify-content: space-between;
                         align-items: center;
                         padding: 10px 0;
                         border-bottom: 1px solid #ccc;
                         p{
                             margin: 0;
+                            margin-left: 5px;
                         }
                     }
                     .info-list{

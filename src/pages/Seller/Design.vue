@@ -687,7 +687,7 @@ export default {
     },
     data(){
         return{
-            show: false,
+            show: true,
             nameSize:20,
             numberSize:150,
             namePosition:0,
@@ -1450,11 +1450,17 @@ export default {
         },
         onObjectScaled(e){
             console.log(e.target.lockScalingX)
-            
+            console.log(e.e.x)
             if (e.target.scaleX * e.target.width > 280) {
                 console.log(e.e.x)
-                e.target.lockScalingX = true;
-                e.target.lockScalingY = true;
+                if(e.e.x > 900){
+                    e.target.lockScalingX = false;
+                    e.target.lockScalingY = false;
+                }else{
+                    e.target.lockScalingX = true;
+                    e.target.lockScalingY = true;
+                }
+                
                 //e.target.scale(a);
                 
                 
@@ -1467,7 +1473,7 @@ export default {
         handleBeforeScale(object){
             object.on("object:beforeScaleRotate",function(obj){
                 obj.lockScalingX = obj.lockScalingY = false;
-                return true; 
+                console.log(obj)
             })
         },
         
@@ -1756,6 +1762,18 @@ export default {
                 tr: {
                         action: "scale"
                        
+                },
+                bm:{
+                    action: "scale"
+                },
+                ml:{
+                    action: "scale"
+                },
+                mr:{
+                    action: "scale"
+                },
+                mb:{
+                    action: "scale"
                 },
                 br: {
                         action: function(e, target) {

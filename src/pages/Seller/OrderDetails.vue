@@ -150,8 +150,8 @@
                             <span>{{item.telNumber}}</span>
                         </p>
                         <span>
-                            <a-icon type="edit" style="margin-right: 10px;" @click="editAddress(item.id)"/>
-                            <a-icon type="delete" @click="postDeleteAddress(item.id)"/>
+                            <a-icon type="edit" style="margin-right: 10px;" @click.stop="editAddress(item.id)"/>
+                            <a-icon type="delete" @click.stop="postDeleteAddress(item.id)"/>
                         </span>
                     </li>
                     
@@ -189,7 +189,7 @@
                     </a-form>
                     <div class="btn-box">
                         <a-button type="primary" style="padding: 0 30px;" @click="postAddAddress">提 交</a-button>
-                        <a-button style="padding: 0 30px;">取 消</a-button>
+                        <a-button style="padding: 0 30px;" @click="closeAddAddress">取 消</a-button>
                     </div>
                 </div>
             </a-modal>
@@ -197,7 +197,6 @@
                 class="show-details"
                 title="Nike T恤"
                 v-model="showVisible"
-                @ok="handleOk"
                 width="50%"
             >
                 <a-row :gutter="20" style="padding:20px">
@@ -269,7 +268,7 @@ export default {
             prices: 100,
             adress:'',
             id: '',
-            form: this.$form.createForm(this),
+            proId:'',            form: this.$form.createForm(this),
             myform: this.$form.createForm(this),
             modelShow1:false,
             modelShow2:false,
@@ -294,11 +293,15 @@ export default {
     mounted(){
         this.getAdressList();
         this.getAddressOne();
-        this.id = this.$route.query.id;
+        this.proId = this.$route.query.id;
         //console.log(this.id)
         this.getTeamOrderDetails(this.id);
     },
     methods:{
+        closeAddAddress(){
+            this.modelShow2 = false;
+            this.modelShow1 = true;
+        },
         minus() {
         if (this.nums > 1) {
             this.nums--;
@@ -320,7 +323,8 @@ export default {
                 class:'my-modal',
                 onOk() {
                     console.log('OK');
-                    that.postDelProducts(id)
+                    that.postDelProducts(id);
+                    
                 },
                 onCancel() {
                     console.log('Cancel');
@@ -331,7 +335,7 @@ export default {
             delProducts(id).then(res => {
                 console.log(res)
                 if(res.code == 200){
-                    this.getTeamOrderDetails(266);
+                    this.getTeamOrderDetails(this.proId);
                     this.$message.success(res.message)
                 }
             })
@@ -350,16 +354,21 @@ export default {
                 if(res.code == 200){
                     this.getAdressList();
                     this.$message.success(res.message);
+                    if(this.adressList.length == 0){
+                        this.adress = '';
+                    }
                 }
                 
             })
         },
+        // 编辑地址
         editAddress(id){
             this.id = id
             this.modelShow1 = false;
             this.modelShow2 = true;
             this.queryAddressById(this.id)
         },
+        // 回显
         queryAddressById(id){
             queryById(id).then(res => {
                 console.log(res)
@@ -378,6 +387,7 @@ export default {
                 
             })
         },
+        // 提交修改
         postAddAddress(){
             this.form.validateFieldsAndScroll((err, values) => {
                 if (!err) {
@@ -405,6 +415,7 @@ export default {
             });
             // 
         },
+        // 获取省市列表
         getAddressOne(){
             addressOne().then(res => {
                 console.log(res);
@@ -412,10 +423,21 @@ export default {
             })
         },
         inputAdress(){
-            this.id = ''
             this.modelShow1 = false;
             this.modelShow2 = true;
+            this.form.setFieldsValue(
+                {
+                    bm: '',
+                    country: '',
+                    adress: '',
+                    email: '',
+                    phonesome: '',
+                    tel: ''
+                },
+                
+            );
         },
+        // 弹起管理地址窗口
         addressManagement(){
             this.modelShow1 = true;
         },
@@ -445,6 +467,7 @@ export default {
         onChange (e) {
             console.log('radio checked', e.target.value)
         },
+        // 获取地址列表
         getAdressList(){
             adressList().then(res => {
                 console.log(res)

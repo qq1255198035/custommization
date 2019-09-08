@@ -225,7 +225,7 @@
                                     <a-button @click="saveImg">保存</a-button>
                                     <a-button @click="handleSetFront">正面</a-button>
                                     <a-button @click="handleSetback">背面</a-button>
-                                    <a-button><a class="downLoad" download="downImg" @click="downLoadImg" :href="dataUrl">下载</a></a-button>
+                                    <a-button><a class="downLoad" @click="downLoadImg">下载</a></a-button>
                               </div>
                         </div>
                         
@@ -781,6 +781,7 @@ export default {
             },
             downLoadImg(){
                   this.dataUrl = this.myCanvas.toDataURL();
+                  console.log(this.dataUrl)
             },
             saveImg(){
                   let json = this.myCanvas.toJSON();

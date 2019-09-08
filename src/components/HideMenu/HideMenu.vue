@@ -49,25 +49,25 @@ export default {
         color: #33b8b3;
     }
     ul{
-            width: 67px;
-            padding: 3px 10px;
-            position: absolute;
-            top: 20px;
-            right: 5px;
-            background-color: #33b8b3;
-            border-radius: 4px;
-            li{
-                cursor: pointer;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                color: #fff;
-                margin: 2px 0;
-                i{
-                        margin-right: 5px;
-                        color: #fff;
-                }
+        width: 67px;
+        padding: 3px 10px;
+        position: absolute;
+        top: 20px;
+        right: 5px;
+        background-color: #33b8b3;
+        border-radius: 4px;
+        li{
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            margin: 2px 0;
+            i{
+                    margin-right: 5px;
+                    color: #fff;
             }
+        }
             
     }
 }
