@@ -491,9 +491,11 @@ export default {
         this.designDetail = res.result
         this.nums = res.result.minOrder
         this.prices = res.result.price
-        console.log(this.discounts)
+        console.log(this.onePrice)
+
         this.onePrice = res.result.maxPrice * this.discounts/100
-        this.twoPrice = (res.result.price-this.onePrice)*res.result.maxPrice
+        console.log(res.result.price-this.onePrice)
+        this.twoPrice = (res.result.price-this.onePrice)*res.result.minOrder
       })
       },1000)
       
