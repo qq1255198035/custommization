@@ -271,10 +271,10 @@
           <a-col :span="8">
             <a-row :gutter="20">
               <a-col :span="12">
-                <img width="290" height="290" src alt />
+                <img width="100%" :src="designDetail.positivePicUrl" alt />
               </a-col>
               <a-col :span="12">
-                <img width="290" height="290" src alt />
+                <img width="100%" :src="designDetail.backPicUrl" alt />
               </a-col>
             </a-row>
           </a-col>
@@ -360,7 +360,8 @@ import {
   delProducts,
   startGroup,
   discount,
-  discountEdit
+  discountEdit,
+  discountSure
 } from "@/api/seller";
 import { upLoad } from "@/api/system";
 export default {
@@ -370,6 +371,7 @@ export default {
   },
   data() {
     return {
+      resPrice: '',
       priceChange: '',
       onePrice: '',
       twoPrice: '',
@@ -426,14 +428,29 @@ export default {
         }
       });
     },
-    handleOk() {},
+    handleOk() {
+      if(this.pid) {
+        const param = {
+        picId: this.pid,
+        quantity: this.nums,
+        price: this.prices
+      }
+      discountSure(param).then(res => {
+        console.log(res)
+        if(res.code == 200) {
+          window.location.reload()
+        }
+      })
+      }
+      
+    },
     onClosingDate(date, dateString) {
       console.log(dateString);
       this.timeover = dateString;
     },
     startGroupBtn() {
       this.myform.validateFields((err, values) => {
-        if (!err) {
+        if (!err && this.adress) {
           console.log(values);
           const param = {
             topic: values.note,
@@ -462,6 +479,7 @@ export default {
       console.log(data)
       if (this.nums && this.nums>data) {
         this.nums--;
+        this.disCounts(this.nums,this.resPrice)
         if(this.prices) {
           this.twoPrice = (this.prices-this.onePrice)*this.nums
         }
@@ -470,6 +488,7 @@ export default {
     },
     plus() {
       this.nums++;
+      this.disCounts(this.nums,this.resPrice)
       if(this.prices) {
           this.twoPrice = (this.prices-this.onePrice)*this.nums
         }
@@ -491,21 +510,37 @@ export default {
         this.designDetail = res.result
         this.nums = res.result.minOrder
         this.prices = res.result.price
+        this.pid = res.result.id
         console.log(this.onePrice)
-
-        this.onePrice = res.result.maxPrice * this.discounts/100
+        const numbers = res.result.minOrder;
+        this.disCounts(numbers,res.result.maxPrice)
         console.log(res.result.price-this.onePrice)
+        this.resPrice = res.result.maxPrice * this.discounts/100
         this.twoPrice = (res.result.price-this.onePrice)*res.result.minOrder
       })
       },1000)
       
     },
+    disCounts(datas,datanum) {
+      if(datas >= 1 && datas <= 20) {
+          this.onePrice = datanum * this.discounts/100 * 1
+        }else if (datas >= 21 && datas <= 50) {
+          this.onePrice =datanum * this.discounts/100 * 0.95
+        }else if(datas >= 51 && datas <= 100) {
+          this.onePrice = datanum * this.discounts/100 * 0.9
+        }
+        else if(datas >= 101 && datas <= 500) {
+          this.onePrice = datanum * this.discounts/100 * 0.85
+        }else {
+          this.onePrice = datanum * this.discounts/100 * 0.8
+        }
+    },
     deletePro(id) {
       let that = this;
       that.$confirm({
-        title: "Are you sure delete this task?",
-        okText: "Yes",
-        cancelText: "No",
+        title: "确定删除此信息?",
+        okText: "确定",
+        cancelText: "取消",
         class: "my-modal",
         onOk() {
           console.log("OK");

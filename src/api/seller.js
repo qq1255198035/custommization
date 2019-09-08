@@ -55,7 +55,14 @@ export function discountEdit(parameter) {
         data:qs.stringify(parameter)
     })
 }
-//
+//确定订单折扣
+export function discountSure(parameter) {
+    return axios({
+        url: '/system/jeecgGoodsPic/updatePrice',
+        method: 'post',
+        data:qs.stringify(parameter)
+    })
+}
 export function userInfo() {
     return axios({
         url: '/system/jeecgUser/userInfo',
