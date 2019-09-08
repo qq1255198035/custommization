@@ -15,7 +15,7 @@
     <div class="list" v-for="item in listFrom" :key="item.user_order_id">
       <a-row class="list-title">
         <a-col :xs="24" :sm="6" :md="5">
-          <p>订单ID：{{item.order_sn}}</p>
+          <p>订单号：{{item.order_sn}}</p>
         </a-col>
         <a-col :xs="24" :sm="6" :md="5">
           <p>订单时间：{{item.confirm_time}}</p>
@@ -39,11 +39,11 @@
               @toAlginPay="toAlginPay(item.user_order_id)"
             ></commonBtn>
           </p>
-          <p class="list-last" v-if="item.order_status == 402">
+          <p class="list-last" v-if="item.order_status == 201">
             <commonBtn
             :float="'right'"
               :width="'80px'"
-              :title="'查看'"
+              :title="'退款'"
               :height="'34px'"
               :padding="'15px'"
               :radio="'6px'"

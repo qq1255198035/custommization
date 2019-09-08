@@ -48,6 +48,8 @@ export default {
             this.$emit('payBtn')
             this.$emit('toAlginPay')
             this.$emit('checkDetail')
+            this.$emit('neworder')
+            this.$emit('btnClick')
         }
     }
 };

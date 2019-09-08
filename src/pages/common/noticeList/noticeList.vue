@@ -7,7 +7,7 @@
           <a-list itemLayout="horizontal" :dataSource="data">
             <a-list-item slot="renderItem" slot-scope="item, index">
               <a-list-item-meta :description="item.content" :key="index">
-                <a slot="title" href="https://vue.ant.design/">{{item.title}}</a>
+                <a slot="title" href="#">{{item.title}}</a>
               </a-list-item-meta>
             </a-list-item>
             <div slot="footer" v-if="data.length > 0" style="text-align: center; margin-top: 16px;">

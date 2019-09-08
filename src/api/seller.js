@@ -7,7 +7,55 @@ export function salesDate() {
         method: 'post'
     })
 }
-
+// 保存留言
+export function texts(parameter) {
+    return axios({
+        url: '/system/jeecgOrder/opinion',
+        method: 'post',
+        data:qs.stringify(parameter)
+    })
+}
+// 修改此方案
+export function programme(parameter) {
+    return axios({
+        url: '/system/jeecgOrder/chooseOne',
+        method: 'post',
+        data:qs.stringify(parameter)
+    })
+}
+// 申请新方案
+export function newScheme(parameter) {
+    return axios({
+        url: '/system/jeecgOrder/applyNew',
+        method: 'post',
+        data:qs.stringify(parameter)
+    })
+}
+//开始团体订单
+export function startGroup(parameter) {
+    return axios({
+        url: '/system/jeecgOrder/startTeamOrder',
+        method: 'post',
+        data:qs.stringify(parameter)
+    })
+}
+// 查询折扣
+export function discount(parameter) {
+    return axios({
+        url: '/iso/jeecgDealerUser/dealerDiscount',
+        method: 'post',
+        data:qs.stringify(parameter)
+    })
+}
+//编辑订单详情折扣
+export function discountEdit(parameter) {
+    return axios({
+        url: '/system/jeecgGoodsPic/queryMainById',
+        method: 'post',
+        data:qs.stringify(parameter)
+    })
+}
+//
 export function userInfo() {
     return axios({
         url: '/system/jeecgUser/userInfo',

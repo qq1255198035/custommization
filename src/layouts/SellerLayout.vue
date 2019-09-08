@@ -20,7 +20,6 @@
                 :theme="navTheme"
                 :collapsed="false"
                 :collapsible="true"
-                
               ></side-menu>
             </a-drawer>
 

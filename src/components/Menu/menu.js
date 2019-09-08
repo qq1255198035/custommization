@@ -23,7 +23,7 @@ export default {
     collapsed: {
       type: Boolean,
       required: false,
-      default: false
+      default: true
     }
   },
   data () {
