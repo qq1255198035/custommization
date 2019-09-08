@@ -17,43 +17,6 @@
             <a-icon type="search" />
           </span>
         </div>
-<<<<<<< HEAD
-        <div class="pagination-box">
-            <a-pagination showQuickJumper :defaultCurrent="1" :total="totalnum" @change="onChange($event)" :pageSize="5"/>
-        </div>
-        <a-modal
-            v-model="modelShow"
-            :footer="null"
-            :centered="true"
-            title="样稿确认"
-            width="40%"
-        >
-            <ul class="example-box">
-                <li v-for="(item,index) in exList" :key="item.id">
-                    <h2>方案{{index + 1}}</h2>
-                    <div style="text-align: center;margin: 10px 0;">
-                        <span v-for="(img,index) in item.imgList" :key="index">
-                            <img :src="img" alt="">
-                            <i v-if="index == 0" style="font-style: normal;">正面</i>
-                            <i v-if="index == 1" style="font-style: normal;">背面</i>
-                            <i v-if="index == 2" style="font-style: normal;">左面</i>
-                            <i v-if="index == 3" style="font-style: normal;">右面</i>
-                        </span>
-                       
-                        
-                    </div>
-                    <div v-if="textshow2" style="width: 70%;margin:20px auto;">
-                        <a-textarea :autosize="{ minRows: 2, maxRows: 6 }" v-if="textshow == index"/>
-                    </div>
-                    
-                    <a-button @click="postNewEx(index)">{{textshow == index ? '保存' : '添加描述'}}</a-button>
-                    <a-button>选用此方案</a-button>
-                </li>
-                
-                <a-button type="primary">申请新方案</a-button>
-            </ul>
-        </a-modal>
-=======
       </li>
     </ul>
     <div class="content">
@@ -70,7 +33,6 @@
         @change="onChange($event)"
         :pageSize="5"
       />
->>>>>>> 51a795ef0f51ad054bfbe315636273e21751212b
     </div>
     <a-modal v-model="modelShow" :footer="null" :centered="true" title="样稿确认" width="40%">
       <ul class="example-box">
@@ -106,61 +68,6 @@ import OrderItem from "@/components/OrderItem/OrderItem";
 import { groupOrderList, exampleConfirm, texts, programme, newScheme } from "@/api/seller";
 
 export default {
-<<<<<<< HEAD
-    components:{
-        MyTitle,
-        OrderItem,
-    },
-    data(){
-        return{
-            orderList:[],
-            num:1,
-            status: 9,
-            content: '',
-            totalnum: 0,
-            key:'',
-            modelShow: false,
-            textshow: -1,
-            exList:[],
-            textshow2:false
-        } 
-    },
-    methods:{
-        postNewEx(index){
-            this.textshow = index
-            this.textshow2 = true
-        },
-        openConfirmBox(id){
-            this.modelShow = true;
-            console.log(id)
-            this.getExampleConfirm(id)
-        },
-        getExampleConfirm(id){
-            exampleConfirm(id).then(res => {
-                console.log(res)
-                this.exList = res.result;
-            })
-        },
-        search(){
-            this.getGroupOrderList(1,this.status,this.key)
-        },
-        changeStatus(e){
-            console.log(e.target.value)
-            this.status = e.target.value;
-            this.getGroupOrderList(1,this.status,'')
-        },
-        onChange(pageNumber) {
-            console.log('Page: ', pageNumber);
-            this.num = pageNumber
-            this.getGroupOrderList(this.num,this.status,this.content)
-        },
-        getGroupOrderList(num,status,orderid){
-            groupOrderList(num,status,orderid).then(res => {
-                console.log(res)
-                this.orderList = res.records;
-                this.totalnum = parseInt(res.total);
-            })
-=======
   components: {
     MyTitle,
     OrderItem
@@ -168,17 +75,17 @@ export default {
   data() {
     return {
         orderId: '',
-      texts: "",
-      orderList: [],
-      inList: [],
-      num: 1,
-      status: 9,
-      content: "",
-      totalnum: 0,
-      key: "",
-      modelShow: false,
-      textshow: true,
-      exList: []
+        texts: "",
+        orderList: [],
+        inList: [],
+        num: 1,
+        status: 9,
+        content: "",
+        totalnum: 0,
+        key: "",
+        modelShow: false,
+        textshow: true,
+        exList: []
     };
   },
   methods: {
@@ -207,7 +114,6 @@ export default {
     textShowOne(id, index) {
       this.textshow = false;
       console.log(id, index);
-      const len = this.exList.length;
       const newList = [...this.exList];
       const target = newList.find(item => item.id == id);
       target.checked = true;
@@ -222,14 +128,12 @@ export default {
       texts(param).then(res => {
         console.log(res);
         if (res.code == 200) {
-          const len = this.exList.length;
           const newList = [...this.exList];
           const target = newList.find(item => item.id == id);
           target.checked = false;
           this.exList = newList;
           this.textshow = true;
           this.openConfirmBox(pid)
->>>>>>> 51a795ef0f51ad054bfbe315636273e21751212b
         }
       });
     },

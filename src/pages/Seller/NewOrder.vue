@@ -1717,7 +1717,7 @@ export default {
         // 设置设计背景图
         bindCanvas(canvas,i) {
             var that = this
-            var img = canvas.setBackgroundImage(that.bgimgs[i],canvas.renderAll.bind(canvas),{
+            canvas.setBackgroundImage(that.bgimgs[i],canvas.renderAll.bind(canvas),{
                 opacity: 1,
                 angle: 0,
                 left: that.screenWidth / 2,

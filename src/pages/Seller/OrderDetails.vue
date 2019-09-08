@@ -277,122 +277,6 @@
                 <img width="290" height="290" src alt />
               </a-col>
             </a-row>
-<<<<<<< HEAD
-            <a-modal
-                v-model="modelShow1"
-                :footer="null"
-                :width="700"
-                :centered="true"
-                title="管理地址"
-            >
-                <ul class="adress">
-                    <li v-for="(item,index) in adressList" :key="index" @click="setDefaultAdress(item.detailInfo)">
-                        <p>
-                            {{item.addressName}}{{item.detailInfo}}
-                            <span>{{item.userName}}</span>
-                            <span>{{item.telNumber}}</span>
-                        </p>
-                        <span>
-                            <a-icon type="edit" style="margin-right: 10px;" @click.stop="editAddress(item.id)"/>
-                            <a-icon type="delete" @click.stop="postDeleteAddress(item.id)"/>
-                        </span>
-                    </li>
-                    
-                </ul>
-                <div class="btn-box">
-                    <a-button icon="plus" style="width: 200px;" @click="inputAdress">添加地址</a-button>
-                </div>
-            </a-modal>
-            <a-modal
-                v-model="modelShow2"
-                :footer="null"
-                :centered="true"
-                title="添加地址"
-            >
-                <div class="form-box">
-                    <a-form layout="vertical" :form="form">
-                        <a-form-item label="地址别名：">
-                            <a-input v-decorator="['bm',{rules: [{ required: true, message: '请填写地址别名（如： 家、公司）！' }]}]"/>
-                        </a-form-item>
-                        <a-form-item label="国家/省/市：">
-                            <a-cascader :options="options" placeholder="Please select" v-decorator="['country',{rules: [{ required: true, message: '请填写国家、省、市！' }]}]"/>
-                        </a-form-item>
-                        <a-form-item label="详细地址：">
-                            <a-input v-decorator="['adress',{rules: [{ required: true, message: '请填写国家、省、市！' }]}]"/>
-                        </a-form-item>
-                        <a-form-item label="邮编：">
-                            <a-input v-decorator="['email',{rules: [{ required: true, message: '请填写邮编！' }]}]"/>
-                        </a-form-item>
-                        <a-form-item label="联系人：">
-                            <a-input v-decorator="['phonesome',{rules: [{ required: true, message: '请填写联系人！' }]}]"/>
-                        </a-form-item>
-                        <a-form-item label="电话：">
-                            <a-input type="tel" v-decorator="['tel',{rules: [{ required: true, message: '请填写电话！' }]}]"/>
-                        </a-form-item>
-                    </a-form>
-                    <div class="btn-box">
-                        <a-button type="primary" style="padding: 0 30px;" @click="postAddAddress">提 交</a-button>
-                        <a-button style="padding: 0 30px;" @click="closeAddAddress">取 消</a-button>
-                    </div>
-                </div>
-            </a-modal>
-            <a-modal
-                class="show-details"
-                title="Nike T恤"
-                v-model="showVisible"
-                width="50%"
-            >
-                <a-row :gutter="20" style="padding:20px">
-                <a-col :span="8">
-                    <a-row :gutter="20">
-                    <a-col :span="12">
-                        <img width="290" height="290" src alt />
-                    </a-col>
-                    <a-col :span="12">
-                        <img width="290" height="290" src alt />
-                    </a-col>
-                    </a-row>
-                </a-col>
-                <a-col :span="16">
-                    <div class="title font-18">颜色：蓝色</div>
-                    <div class="number">
-                    <div class="font-18">数量：</div>
-                    <div class="number-box">
-                        <div class="minus common-radio" @click="minus">
-                        <a-icon type="minus" />
-                        </div>
-                        <div class="num">
-                        <a-input v-model="nums" type="number" />
-                        </div>
-                        <div class="plus common-radio" @click="plus">
-                        <a-icon type="plus" />
-                        </div>
-                    </div>
-                    <div class="price-right">
-                        预计代理价格：
-                        <span>￥80</span>
-                    </div>
-                    </div>
-                    <div class="font-color">最小起订量为15</div>
-                    <div class="prices">
-                    <div class="price-box">
-                        <div class="font-18">价格:</div>
-                        <div class="price-input">
-                        <a-input-number size="200px" :min="1" v-model="prices" @change="onChange" />
-                        </div>
-                        <div class="font-18">/件</div>
-                    </div>
-                    <div class="price-right">
-                        预计代理收益：
-                        <span>￥300</span>
-                    </div>
-                    </div>
-                    <div class="font-color">建议售价：￥100/件</div>
-                </a-col>
-                </a-row>
-            </a-modal>
-        
-=======
           </a-col>
           <a-col :span="16">
             <div class="title font-18">颜色：{{designDetail.productColor}}</div>
@@ -452,7 +336,6 @@
           </div>
           <div class="success">操作成功</div>
           <div>去分享给朋友</div>
->>>>>>> 51a795ef0f51ad054bfbe315636273e21751212b
         </div>
       </a-modal>
     </div>
@@ -532,35 +415,6 @@ export default {
     handImg() {
       this.imgChecked = true
     },
-<<<<<<< HEAD
-    data(){
-        return{
-            nums: 1,
-            showVisible: false,
-            prices: 100,
-            adress:'',
-            id: '',
-            proId:'',            form: this.$form.createForm(this),
-            myform: this.$form.createForm(this),
-            modelShow1:false,
-            modelShow2:false,
-            value: 1,
-            number:0,
-            startValue: null,
-            endValue: null,
-            endOpen: false,
-            information:{
-                orderId:'',
-                orderTime: '',
-                list:[
-                    
-                ]
-                
-            },
-            adressList:[],
-            options: []
-           
-=======
     handColse() {
       this.modelShow2 = false;
     },
@@ -569,201 +423,9 @@ export default {
         path: "/share",
         query: {
           order_id: this.$route.query.id
->>>>>>> 51a795ef0f51ad054bfbe315636273e21751212b
         }
       });
     },
-<<<<<<< HEAD
-    mounted(){
-        this.getAdressList();
-        this.getAddressOne();
-        this.proId = this.$route.query.id;
-        //console.log(this.id)
-        this.getTeamOrderDetails(this.id);
-    },
-    methods:{
-        closeAddAddress(){
-            this.modelShow2 = false;
-            this.modelShow1 = true;
-        },
-        minus() {
-        if (this.nums > 1) {
-            this.nums--;
-        }
-        },
-        plus() {
-            this.nums++;
-        },
-        showEdModal(id) {
-            console.log(id)
-            this.showVisible = true;
-        },
-        deletePro(id){
-            let that = this;
-            that.$confirm({
-                title: 'Are you sure delete this task?',
-                okText: 'Yes',
-                cancelText: 'No',
-                class:'my-modal',
-                onOk() {
-                    console.log('OK');
-                    that.postDelProducts(id);
-                    
-                },
-                onCancel() {
-                    console.log('Cancel');
-                },
-            });
-        },
-        postDelProducts(id){
-            delProducts(id).then(res => {
-                console.log(res)
-                if(res.code == 200){
-                    this.getTeamOrderDetails(this.proId);
-                    this.$message.success(res.message)
-                }
-            })
-        },
-        getTeamOrderDetails(id){
-            teamOrderDetails(id).then(res => {
-                console.log(res)
-                this.information.orderId = res.result.orderSn;
-                this.information.orderTime = res.result.createTime;
-                this.information.list = res.result.list
-            })
-        },
-        postDeleteAddress(id){
-            deleteAddress(id).then(res => {
-                console.log(res)
-                if(res.code == 200){
-                    this.getAdressList();
-                    this.$message.success(res.message);
-                    if(this.adressList.length == 0){
-                        this.adress = '';
-                    }
-                }
-                
-            })
-        },
-        // 编辑地址
-        editAddress(id){
-            this.id = id
-            this.modelShow1 = false;
-            this.modelShow2 = true;
-            this.queryAddressById(this.id)
-        },
-        // 回显
-        queryAddressById(id){
-            queryById(id).then(res => {
-                console.log(res)
-                console.log(res.result.addressCode.split(","))
-                this.form.setFieldsValue(
-                    {
-                        bm: res.result.name,
-                        country: res.result.addressCode.split(","),
-                        adress: res.result.detailInfo,
-                        email: res.result.postalCode,
-                        phonesome: res.result.userName,
-                        tel: res.result.telNumber
-                    },
-                   
-                );
-                
-            })
-        },
-        // 提交修改
-        postAddAddress(){
-            this.form.validateFieldsAndScroll((err, values) => {
-                if (!err) {
-                    console.log(values)
-                    let params = {
-                            id: this.id, 
-                            userName: values.phonesome, 
-                            postalCode: values.email, 
-                            telNumber: values.tel, 
-                            addressName: values.country.join(','), 
-                            detailInfo: values.adress,
-                            name: values.bm
-                        }
-                        console.log(values.country.join(','))
-                        addAddress(params).then(res => {
-                            console.log(res)
-                            if(res.code == 200){
-                                this.$message.success(res.message);
-                                this.modelShow2 = false;
-                                this.getAdressList()
-                            }
-                        })
-                        
-                }
-            });
-            // 
-        },
-        // 获取省市列表
-        getAddressOne(){
-            addressOne().then(res => {
-                console.log(res);
-                this.options = res.result;
-            })
-        },
-        inputAdress(){
-            this.modelShow1 = false;
-            this.modelShow2 = true;
-            this.form.setFieldsValue(
-                {
-                    bm: '',
-                    country: '',
-                    adress: '',
-                    email: '',
-                    phonesome: '',
-                    tel: ''
-                },
-                
-            );
-        },
-        // 弹起管理地址窗口
-        addressManagement(){
-            this.modelShow1 = true;
-        },
-        
-        disabledStartDate (startValue) {
-            const endValue = this.endValue;
-            if (!startValue || !endValue) {
-                return false;
-            }
-            return startValue.valueOf() > endValue.valueOf();
-        },
-        disabledEndDate (endValue) {
-            const startValue = this.startValue;
-            if (!endValue || !startValue) {
-                return false;
-            }
-            return startValue.valueOf() >= endValue.valueOf();
-        },
-        handleStartOpenChange (open) {
-            if (!open) {
-                this.endOpen = true;
-            }
-        },
-        handleEndOpenChange (open) {
-            this.endOpen = open;
-        },
-        onChange (e) {
-            console.log('radio checked', e.target.value)
-        },
-        // 获取地址列表
-        getAdressList(){
-            adressList().then(res => {
-                console.log(res)
-                this.adressList = res.result
-                this.adress = res.result[0].detailInfo;
-            })
-        },
-        setDefaultAdress(item){
-            this.adress = item;
-            this.modelShow1 = false;
-            this.$message.success('地址设置成功！')
-=======
     handleOk() {},
     onClosingDate(date, dateString) {
       console.log(dateString);
@@ -810,7 +472,6 @@ export default {
       this.nums++;
       if(this.prices) {
           this.twoPrice = (this.prices-this.onePrice)*this.nums
->>>>>>> 51a795ef0f51ad054bfbe315636273e21751212b
         }
     },
     showEdModal(id) {
@@ -983,7 +644,9 @@ export default {
       this.endOpen = open;
     },
     onChange() {},
-    onChangeOne(e) {},
+    onChangeOne(e){
+        console.log(e)
+    },
     onChangeValues(e) {
       console.log("radio checked", e.target.value);
       this.prices = e.target.value

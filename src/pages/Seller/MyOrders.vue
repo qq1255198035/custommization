@@ -245,7 +245,7 @@ export default {
         },
         getOrderStatus(id){
             orderStatus(id).then(res => {
-                //console.log(res);
+                console.log(res);
             })
         },
         getOrderDetailUp(id){
