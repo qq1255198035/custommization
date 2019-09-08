@@ -3,7 +3,8 @@
             <a-row :gutter="60" class="list-row">
                   <a-col :span="8" v-for="item in orderList" :key="item.id">
                         <div class="order-item">
-                              <img :src="item.topic_url" alt="">
+                              <div style="width:330px;height:330px"><img :src="item.topic_url" alt=""></div>
+                              
                               <div class="desc">
                                     <p>
                                           <span style="color: #33b8b3;font-size: 18px;">{{item.topic}}</span>

@@ -16,6 +16,7 @@
     "fabric-customise-controls": "^2.0.6-beta",
     "fontfaceobserver": "^2.1.0",
     "intro.js": "^2.9.3",
+    "moment": "^2.24.0",
     "nprogress": "^0.2.0",
     "qrcode": "^1.4.1",
     "qs": "^6.7.0",
