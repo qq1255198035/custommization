@@ -1,5 +1,5 @@
 <template>
-  <a-card :bordered="false">
+<div>
     <a-steps class="steps" :current="currentTab">
       <a-step title="确认账号信息" />
       <a-step title="修改密码" />
@@ -10,7 +10,7 @@
       <step2 :email="email" v-if="currentTab === 1" @nextStep="nextStep" @prevStep="prevStep"/>
       <step3 v-if="currentTab === 2" @prevStep="prevStep" @finish="finish"/>
     </div>
-  </a-card>
+</div>
 </template>
 
 <script>

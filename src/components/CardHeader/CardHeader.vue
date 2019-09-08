@@ -39,7 +39,7 @@
         <a-col :xxl="4" :xl="2"></a-col>
         <a-col :xxl="4" :xl="6">
           <div class="right-desc">
-            <div class="top" style="overflow:hidden;line-height:40px">
+            <div class="top" style="line-height:40px">
               <span style="float:left">分享给朋友：</span>
               <share  class="share" :config="config">
                 
@@ -104,7 +104,8 @@ export default {
       .avatar {
         width: 100%;
         img {
-          width: 100%;
+          width: 200px;
+          height: 200px;
           text-align: right;
         }
       }

@@ -78,13 +78,8 @@
                   <span @click="handImg">
                     <a-icon type="eye" />预览图片
                   </span>
-                  <a-modal
-                    class="show-details"
-                    v-model="imgChecked"
-                    width="50%"
-                    :footer="null"
-                  >
-                    <div style="">
+                  <a-modal class="show-details" v-model="imgChecked" width="50%" :footer="null">
+                    <div style>
                       <img alt="example" style="width: 100%" :src="imgurl" />
                     </div>
                   </a-modal>
@@ -130,6 +125,8 @@
                 >
                   <a-date-picker
                     @change="onClosingDate"
+                    :disabledDate="disabledDate"
+                    :disabledTime="disabledDateTime"
                     format="YYYY-MM-DD"
                     v-decorator="['closingDate',{rules: [{ type: 'object', required: true, message: `${$t('issuer.cjhd.qsrsj')}` }]}]"
                   />
@@ -262,7 +259,7 @@
       </a-modal>
       <a-modal
         class="show-details"
-        title="Nike T恤"
+        :title="designDetail.name"
         v-model="showVisible"
         @ok="handleOk"
         width="50%"
@@ -287,7 +284,7 @@
                   <a-icon type="minus" />
                 </div>
                 <div class="num">
-                  <a-input v-model="nums" type="number" />
+                  <a-input v-model="nums" @blur="onChangeNums" type="number" />
                 </div>
                 <div class="plus common-radio" @click="plus(designDetail.minOrder)">
                   <a-icon type="plus" />
@@ -303,12 +300,7 @@
               <div class="price-box">
                 <div class="font-18">价格:</div>
                 <div class="price-input">
-                  <a-input
-      :value="prices"
-      @change="onChangeValues"
-      style="width: 120px"
-    />
-                
+                  <a-input :value="prices" type="number" @change="onChangeValues" style="width: 120px" />
                 </div>
                 <div class="font-18">/件</div>
               </div>
@@ -371,20 +363,20 @@ export default {
   },
   data() {
     return {
-      resPrice: '',
-      priceChange: '',
-      onePrice: '',
-      twoPrice: '',
-      designDetail: '',
+      resPrice: "",
+      priceChange: "",
+      onePrice: "",
+      twoPrice: "",
+      designDetail: "",
       imgChecked: false,
       shareChecked: false,
       loading: false,
       addressId: "",
       adressValue: 2,
       imgurl: "",
-      nums: '',
+      nums: "",
       showVisible: false,
-      prices: '',
+      prices: "",
       adress: "",
       id: "",
       form: this.$form.createForm(this),
@@ -414,8 +406,29 @@ export default {
     this.getTeamOrderDetails(this.id);
   },
   methods: {
+    range(start, end) {
+      const result = [];
+      for (let i = start; i < end; i++) {
+        result.push(i);
+      }
+      return result;
+    },
+
+    disabledDate(current) {
+      console.log(current)
+      // Can not select days before today and today
+      return current && moment().endOf('days')<current < moment().startOf('days', 7);
+    },
+
+    disabledDateTime() {
+      return {
+        disabledHours: () => this.range(0, 24).splice(4, 20),
+        disabledMinutes: () => this.range(30, 60),
+        disabledSeconds: () => [55, 56],
+      };
+    },
     handImg() {
-      this.imgChecked = true
+      this.imgChecked = true;
     },
     handColse() {
       this.modelShow2 = false;
@@ -429,20 +442,19 @@ export default {
       });
     },
     handleOk() {
-      if(this.pid) {
+      if (this.pid) {
         const param = {
-        picId: this.pid,
-        quantity: this.nums,
-        price: this.prices
+          picId: this.pid,
+          quantity: this.nums,
+          price: this.prices
+        };
+        discountSure(param).then(res => {
+          console.log(res);
+          if (res.code == 200) {
+            window.location.reload();
+          }
+        });
       }
-      discountSure(param).then(res => {
-        console.log(res)
-        if(res.code == 200) {
-          window.location.reload()
-        }
-      })
-      }
-      
     },
     onClosingDate(date, dateString) {
       console.log(dateString);
@@ -450,90 +462,99 @@ export default {
     },
     startGroupBtn() {
       this.myform.validateFields((err, values) => {
-        if (!err && this.adress) {
+        if (!err) {
+          if (this.adress) {
+            const param = {
+              topic: values.note,
+              introduction: values.desc,
+              topicUrl: this.fileUrl,
+              payEndDate: this.timeover,
+              orderId: this.$route.query.id,
+              contact: values.contanct,
+              mobile: values.phone,
+              email: values.email,
+              address: this.adress,
+              addressId: this.addressId,
+              payMode: this.adressValue
+            };
+            console.log(param);
+            startGroup(param).then(res => {
+              console.log(res);
+              if (res.code == 200) {
+                this.shareChecked = true;
+              }
+            });
+          } else {
+            this.$notification["error"]({
+              message: "填写收货地址",
+              description: "请填写收货地址后开始",
+              duration: 4
+            });
+          }
           console.log(values);
-          const param = {
-            topic: values.note,
-            introduction: values.desc,
-            topicUrl: this.fileUrl,
-            payEndDate: this.timeover,
-            orderId: this.$route.query.id,
-            contact: values.contanct,
-            mobile: values.phone,
-            email: values.email,
-            address: this.adress,
-            addressId: this.addressId,
-            payMode: this.adressValue
-          };
-          console.log(param);
-          startGroup(param).then(res => {
-            console.log(res);
-            if (res.code == 200) {
-              this.shareChecked = true;
-            }
-          });
         }
       });
     },
     minus(data) {
-      console.log(data)
-      if (this.nums && this.nums>data) {
+      console.log(data);
+      if (this.nums && this.nums > data) {
         this.nums--;
-        this.disCounts(this.nums,this.resPrice)
-        if(this.prices) {
-          this.twoPrice = (this.prices-this.onePrice)*this.nums
+        this.disCounts(this.nums, this.resPrice);
+        if (this.prices) {
+          this.twoPrice = (this.prices - this.onePrice) * this.nums;
         }
-        
       }
     },
     plus() {
       this.nums++;
-      this.disCounts(this.nums,this.resPrice)
-      if(this.prices) {
-          this.twoPrice = (this.prices-this.onePrice)*this.nums
-        }
+      this.disCounts(this.nums, this.resPrice);
+      if (this.prices) {
+        this.twoPrice = (this.prices - this.onePrice) * this.nums;
+      }
     },
     showEdModal(id) {
       console.log(id);
-      
+
       this.showVisible = true;
       discount().then(res => {
-        console.log(res)
-        this.discounts = res.result
-      })
+        console.log(res);
+        this.discounts = res.result;
+      });
       const param = {
         picId: id
-      }
+      };
       setTimeout(() => {
         discountEdit(param).then(res => {
-        console.log(res)
-        this.designDetail = res.result
-        this.nums = res.result.minOrder
-        this.prices = res.result.price
-        this.pid = res.result.id
-        console.log(this.onePrice)
-        const numbers = res.result.minOrder;
-        this.disCounts(numbers,res.result.maxPrice)
-        console.log(res.result.price-this.onePrice)
-        this.resPrice = res.result.maxPrice * this.discounts/100
-        this.twoPrice = (res.result.price-this.onePrice)*res.result.minOrder
-      })
-      },1000)
-      
+          console.log(res);
+          this.designDetail = res.result;
+          this.nums = res.result.quantity
+            ? res.result.quantity
+            : res.result.minOrder;
+          this.prices = res.result.actualPrice
+            ? res.result.actualPrice
+            : res.result.price;
+          this.pid = res.result.id;
+          const numbers = this.nums;
+          this.minNums = res.result.minOrder
+          this.disCounts(numbers, res.result.maxPrice);
+          console.log(res.result.price - this.onePrice);
+          this.resPrice = (res.result.maxPrice * this.discounts) / 100;
+          this.twoPrice = (this.prices - this.onePrice) * this.nums;
+        });
+      }, 1000);
     },
-    disCounts(datas,datanum) {
-      if(datas >= 1 && datas <= 20) {
-          this.onePrice = datanum * this.discounts/100 * 1
-        }else if (datas >= 21 && datas <= 50) {
-          this.onePrice =datanum * this.discounts/100 * 0.95
-        }else if(datas >= 51 && datas <= 100) {
-          this.onePrice = datanum * this.discounts/100 * 0.9
-        }
-        else if(datas >= 101 && datas <= 500) {
-          this.onePrice = datanum * this.discounts/100 * 0.85
-        }else {
-          this.onePrice = datanum * this.discounts/100 * 0.8
-        }
+    disCounts(datas, datanum) {
+      if (datas >= 1 && datas <= 20) {
+        this.onePrice = ((datanum * this.discounts) / 100) * 1;
+      } else if (datas >= 21 && datas <= 50) {
+        this.onePrice = ((datanum * this.discounts) / 100) * 0.95;
+      } else if (datas >= 51 && datas <= 100) {
+        this.onePrice = ((datanum * this.discounts) / 100) * 0.9;
+      } else if (datas >= 101 && datas <= 500) {
+        this.onePrice = ((datanum * this.discounts) / 100) * 0.85;
+      } else {
+        this.onePrice = ((datanum * this.discounts) / 100) * 0.8;
+      }
     },
     deletePro(id) {
       let that = this;
@@ -680,10 +701,17 @@ export default {
     },
     onChange() {},
     onChangeOne(e) {},
+    onChangeNums() {
+      if(this.nums < this.minNums) {
+        this.nums = this.minNums
+      }
+      this.disCounts(this.nums, this.resPrice);
+      this.twoPrice = (this.prices - this.onePrice) * this.nums;
+    },
     onChangeValues(e) {
       console.log("radio checked", e.target.value);
-      this.prices = e.target.value
-      this.twoPrice = (e.target.value-this.onePrice)*this.nums
+      this.prices = e.target.value;
+      this.twoPrice = (e.target.value - this.onePrice) * this.nums;
     },
     getAdressList() {
       adressList().then(res => {
