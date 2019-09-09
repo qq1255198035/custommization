@@ -716,7 +716,6 @@ export default {
       this.endOpen = open;
     },
     onChange() {},
-<<<<<<< HEAD
     onChangeOne(e) {},
     onChangeNums() {
       if(this.nums < this.minNums) {
@@ -724,10 +723,6 @@ export default {
       }
       this.disCounts(this.nums, this.resPrice);
       this.twoPrice = (this.prices - this.onePrice) * this.nums;
-=======
-    onChangeOne(e){
-        console.log(e)
->>>>>>> b3d0fe5137311f8234057fa360757bc811837ccc
     },
     onChangeValues(e) {
       console.log("radio checked", e.target.value);
