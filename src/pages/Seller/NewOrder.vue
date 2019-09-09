@@ -1681,10 +1681,10 @@ export default {
 
                 if( (maxHeight) <( maxWidth)){
 
-                    var h = scaledObject.scaleToHeight(maxHeight,true);
+                    scaledObject.scaleToHeight(maxHeight,true);
 
                 } else{
-                    var w = scaledObject.scaleToWidth(maxWidth,true);
+                    scaledObject.scaleToWidth(maxWidth,true);
                 }
             }
         },

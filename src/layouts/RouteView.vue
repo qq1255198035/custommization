@@ -11,7 +11,7 @@ export default {
     return {}
   },
   render () {
-    const { $route: { meta }, $store: { getters } } = this
+    const { $route: { meta } } = this
     const inKeep = (
       <keep-alive>
         <router-view />

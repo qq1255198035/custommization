@@ -65,7 +65,6 @@
 
 <script>
 import { payBack, status } from "@/api/system";
-import User from "@/components/Header/User";
 import MyStpes from "@/components/MyStpes/MyStpes";
 export default {
   props: {},
