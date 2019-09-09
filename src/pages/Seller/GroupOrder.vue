@@ -75,17 +75,17 @@ export default {
   data() {
     return {
         orderId: '',
-      texts: "",
-      orderList: [],
-      inList: [],
-      num: 1,
-      status: 9,
-      content: "",
-      totalnum: 0,
-      key: "",
-      modelShow: false,
-      textshow: true,
-      exList: []
+        texts: "",
+        orderList: [],
+        inList: [],
+        num: 1,
+        status: 9,
+        content: "",
+        totalnum: 0,
+        key: "",
+        modelShow: false,
+        textshow: true,
+        exList: []
     };
   },
   methods: {
@@ -114,7 +114,6 @@ export default {
     textShowOne(id, index) {
       this.textshow = false;
       console.log(id, index);
-      const len = this.exList.length;
       const newList = [...this.exList];
       const target = newList.find(item => item.id == id);
       target.checked = true;
@@ -129,7 +128,6 @@ export default {
       texts(param).then(res => {
         console.log(res);
         if (res.code == 200) {
-          const len = this.exList.length;
           const newList = [...this.exList];
           const target = newList.find(item => item.id == id);
           target.checked = false;

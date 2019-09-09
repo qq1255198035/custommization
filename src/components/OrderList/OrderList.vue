@@ -51,7 +51,7 @@ export default {
                   margin-top: 20px;
                   text-align: center;
                   img{
-                        width: 80%;
+                        width: 66%;
                   }
                   .desc{
                         margin-top: 15px;

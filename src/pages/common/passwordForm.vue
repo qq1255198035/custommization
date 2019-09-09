@@ -20,11 +20,7 @@
 
   export default {
     name: "passwordForm",
-    data() {
-        return {
-            email: '',
-        }
-    },
+    
     components: {
       Step1,
       Step2,

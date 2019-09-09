@@ -229,3 +229,14 @@ export function exampleConfirm(id) {
     })
 }
 
+export function saveDesign(params) {
+    return axios({
+        url: '/system/jeecgOrder/addDesign',
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json;charset-UTF-8'
+        },
+        data:JSON.stringify(params)
+       
+    })
+}
