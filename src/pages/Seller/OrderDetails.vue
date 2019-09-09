@@ -128,7 +128,7 @@
                     :disabledDate="disabledDate"
                     :disabledTime="disabledDateTime"
                     format="YYYY-MM-DD"
-                    v-decorator="['closingDate',{rules: [{ type: 'object', required: true, message: `${$t('issuer.cjhd.qsrsj')}` }]}]"
+                    v-decorator="['closingDate',{rules: [{ type: 'object', required: true, message: '请填写时间' }]}]"
                   />
                 </a-form-item>
                 <!--<div style="padding-left: 30px;">
@@ -363,6 +363,7 @@ export default {
   },
   data() {
     return {
+      orderPid: '',
       resPrice: "",
       priceChange: "",
       onePrice: "",
@@ -372,7 +373,7 @@ export default {
       shareChecked: false,
       loading: false,
       addressId: "",
-      adressValue: 2,
+      adressValue: 1,
       imgurl: "",
       nums: "",
       showVisible: false,
@@ -415,9 +416,8 @@ export default {
     },
 
     disabledDate(current) {
-      console.log(current)
       // Can not select days before today and today
-      return current && moment().endOf('days')<current < moment().startOf('days', 7);
+      return current && current < moment(new Date()).add(7,'days');
     },
 
     disabledDateTime() {
@@ -478,12 +478,27 @@ export default {
               payMode: this.adressValue
             };
             console.log(param);
-            startGroup(param).then(res => {
+            if(this.adressValue == 1) {
+              startGroup(param).then(res => {
               console.log(res);
               if (res.code == 200) {
                 this.shareChecked = true;
               }
             });
+            }else{
+              startGroup(param).then(res => {
+              console.log(res);
+              if (res.code == 200) {
+                this.$router.push({
+                  path: '/unifiedpay',
+                  query: {
+                    orderId: this.orderPid
+                  }
+                })
+              }
+            });
+            }
+            
           } else {
             this.$notification["error"]({
               message: "填写收货地址",
@@ -595,6 +610,7 @@ export default {
             ? moment(formList.payEndDate, "YYYY-MM-DD")
             : {}
         });
+        this.orderPid = formList.id
         this.addressId = formList.addressId;
         this.timeover = parseInt(formList.payMode);
         this.fileUrl = formList.topicUrl;

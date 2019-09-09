@@ -1,5 +1,5 @@
 <template>
-  <div class="share-box">
+  <div class="share-boxs">
     <div class="wrapper-box">
       <header>
         <p class="icon-logotxt"></p>
@@ -25,16 +25,13 @@
       <a-row :gutter="20" style="padding-top:20px">
         <a-col :span="2"></a-col>
         <!--list1-->
-        <a-col :xxl="8" :xl="20" v-if="dataList1.length>0">
-          <table-item :data="listLeft"></table-item>
-          <table-list :columns="columns" :data="dataList1"></table-list>
+        <a-col :xxl="20" :xl="20">
+          <!--<table-item :data="listLeft"></table-item>-->
+          <a-table :columns="columns" :dataSource="data">
+            <img slot="positivePicUrl" style="width:120px" slot-scope="text" :src="text" alt="">
+          </a-table>
         </a-col>
         <!--list2-->
-        <a-col :span="2" v-if="dataList1.length>0"></a-col>
-        <a-col :xxl="10" :xl="20" v-if="dataList2.length>0">
-          <table-item :data="listRight"></table-item>
-          <table-list :columns="columns1" :data="dataList2"></table-list>
-        </a-col>
         <a-col :span="2"></a-col>
       </a-row>
       <a-row>
@@ -70,7 +67,7 @@
                     <h3 class="font-18">商品金额：</h3>
                   </a-col>
                   <a-col :span="12">
-                    <p class="textRight font-color">$2000</p>
+                    <p class="textRight font-color">${{goodsPrice}}</p>
                   </a-col>
                 </a-row>
               </li>
@@ -80,7 +77,7 @@
                     <h3 class="font-18">手续费：</h3>
                   </a-col>
                   <a-col :span="12">
-                    <p class="textRight font-color">$2000</p>
+                    <p class="textRight font-color">${{procedureMoney}}</p>
                   </a-col>
                 </a-row>
               </li>
@@ -90,7 +87,7 @@
                     <h3 class="font-18">运费：</h3>
                   </a-col>
                   <a-col :span="12">
-                    <p class="textRight font-color">$2000</p>
+                    <p class="textRight font-color">${{freight}}</p>
                   </a-col>
                 </a-row>
               </li>
@@ -100,7 +97,7 @@
                     <h3 class="font-color">合计总额：</h3>
                   </a-col>
                   <a-col :span="12">
-                    <p class="textRight font-color">${{allPrice.order_price}}</p>
+                    <p class="textRight font-color">${{allPrice}}</p>
                   </a-col>
                 </a-row>
               </li>
@@ -122,7 +119,7 @@
           <div class="paynum">
             <div class="left textRight">
               <div class="font-18" style="padding-bottom:20px">总价</div>
-              <div class="font-reset">${{allPrice.order_price}}</div>
+              <div class="font-reset">${{allPrice}}</div>
             </div>
             <div class="right">
               <commonBtn
@@ -160,7 +157,8 @@
 </template>
 
 <script>
-import { payPal, paymentInfos, status, wxPay, wxOrderQuery } from "@/api/system";
+import { payPal, paymentInfo, status, wxPay, wxOrderQuery } from "@/api/system";
+import { orderFroms } from "@/api/seller"
 import MyPrimaryStpes from "@/components/MyPrimaryStpes/MyPrimaryStpes";
 import MyTitle from "@/components/MyTitle/MyTitle";
 import TableItem from "@/components/TableItem/TableItem";
@@ -168,7 +166,7 @@ import TableList from "@/components/TableList/TableList";
 import commonBtn from "@/components/commonBtn/commonBtn";
 import User from "@/components/Header/User";
 import QRCode from "qrcode";
-//import MyTable from "@/components/MyTable/MyTable";
+import img from '@/assets/black.jpg'
 export default {
   props: {},
   data() {
@@ -177,83 +175,70 @@ export default {
       prepayId: "",
       show: false,
       step: 1,
-      listLeft: {},
-      listRight: {},
+      allPrice: '',
+      goodsPrice: '',
+      procedureMoney: '',
+      freight: '',
       value: 1,
       itemTitle: "订单信息",
       payTitle: "支付信息",
-      allPrice: "",
-      img1: {},
-      img2: {},
-      dataList1: [],
-      dataList2: [],
+      data: [
+        {
+          name: '短袖',
+          imgUrl: img,
+          quantity: 2,
+          price: 150,
+          money: 300
+        },
+        {
+          name: '裤衩',
+          imgUrl: img,
+          quantity: 2,
+          price: 150,
+          money: 300
+        }
+      ],
+      data1: [],
       columns: [
         {
-          title: "尺码",
-          dataIndex: "size",
-          width: "25%",
+          title: "商品名",
+          width: "20%",
           align: "center",
-          scopedSlots: { customRender: "size" }
+          dataIndex: "name"
+        },
+        {
+          title: "图片",
+          width: "20%",
+          align: "center",
+          dataIndex: "positivePicUrl",
+          scopedSlots: { customRender: 'positivePicUrl' },
         },
         {
           title: "数量",
           className: "quantity",
-          width: "25%",
+          width: "20%",
           align: "center",
           dataIndex: "quantity"
         },
         {
           title: "单价",
-          width: "25%",
-          align: "center",
-          dataIndex: "price"
-        },
-        {
-          title: "总价",
-          align: "center",
-          dataIndex: "total_price"
-        }
-      ],
-      columns1: [
-        {
-          title: "尺码",
-          dataIndex: "size",
-          align: "center",
-          width: "20%",
-          scopedSlots: { customRender: "size" }
-        },
-        {
-          title: "名字",
-          className: "printName",
-          align: "center",
-          width: "20%",
-          dataIndex: "printName"
-        },
-        {
-          title: "号码",
-          width: "20%",
-          align: "center",
-          dataIndex: "printNumber"
-        },
-        {
-          title: "单价",
           width: "20%",
           align: "center",
           dataIndex: "price"
         },
         {
-          title: "合计价格",
-          width: "20%",
+          title: "合计",
           align: "center",
-          dataIndex: "total_price"
+          width: "20%",
+          dataIndex: "amount"
         }
       ]
     };
   },
   computed: {},
   created() {
-    this._paymentInfos();
     this._status();
+    this._orderFroms()
   },
   mounted() {},
   watch: {},
@@ -271,19 +256,18 @@ export default {
         this.step = parseInt(res.result.schedule);
       });
     },
-    _paymentInfos() {
+    _orderFroms() {
       const param = {
-        user_order_id: this.$route.query.user_order_id
-      };
-      paymentInfos(param).then(response => {
-        console.log(response);
-        this.dataList1 = response.confirmNoPrintPayList;
-        this.dataList2 = response.confirmPrintPayList;
-        this.listLeft = response.confirmNoPrintPayList[0];
-        this.listRight = response.confirmPrintPayList[0];
-        this.allPrice = response.userOrderId[0] ? response.userOrderId[0] : 0;
-        this.userId = response.userOrderId[0].order_id
-      });
+        orderId: this.$route.query.orderId
+      }
+      orderFroms(param).then(res => {
+        console.log(res)
+        this.data = res.result.list;
+        this.allPrice = res.result.allin;
+        this.goodsPrice = res.result.amountAll;
+        this.procedureMoney = res.result.procedureMoney;
+        this.freight = res.result.freight
+      })
     },
     resultPsot(data) {
       const that = this;
@@ -294,11 +278,11 @@ export default {
           setTimeout(() => {
             that.resultPsot(data);
           }, 2000);
-        }else if (res.payStatus == 0){
+        } else if (res.payStatus == 0) {
           this.$router.push({
-            path: '/paySuccess'
-          })
-          return
+            path: "/paySuccess"
+          });
+          return;
         }
       });
     },
@@ -316,7 +300,7 @@ export default {
           let first = res.toPayHtml.indexOf("href") + 6;
           let last = res.toPayHtml.lastIndexOf('"');
           let url = res.toPayHtml.slice(first, last);
-          console.log(url)
+          console.log(url);
           this.$ls.set("userOrderId", res.user_order_id);
           this.$ls.set("orderId", res.order_id);
           this.$ls.set("price", res.price);
@@ -344,8 +328,8 @@ export default {
             prepay_id: res.respData.prepay_id,
             user_order_id: res.payInfoList[0].user_order_id
           };
-          console.log()
-          //this.resultPsot(datas);
+          console.log();
+          this.resultPsot(datas);
         });
       }
     },
@@ -366,11 +350,11 @@ export default {
 </script>
 
 <style lang="less">
-@import url("./../../../components/index.less");
-@import url("./../../../assets/style.css");
-.pay-font{
+@import url("./../../components/index.less");
+@import url("./../../assets/style.css");
+.pay-font {
   font-size: 18px;
-  padding-left: 8px
+  padding-left: 8px;
 }
 .bg-box {
   width: 20px;
@@ -384,8 +368,7 @@ export default {
 }
 .right:hover {
   .bg-image {
-    background: url("./../../../assets/monry-icon-bar.png") no-repeat
-      transparent;
+    background: url("./../../assets/monry-icon-bar.png") no-repeat transparent;
     width: 100%;
     height: 100%;
     display: block;
@@ -393,13 +376,13 @@ export default {
   }
 }
 .bg-image {
-  background: url("./../../../assets/monry-icon.png") no-repeat;
+  background: url("./../../assets/monry-icon.png") no-repeat;
   width: 100%;
   height: 100%;
   display: block;
   background-size: 100%;
 }
-.share-box {
+.share-boxs {
   width: 100%;
   //height: 100%;
   padding: 40px;

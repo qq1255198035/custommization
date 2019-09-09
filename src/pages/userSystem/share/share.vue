@@ -11,8 +11,8 @@
       <my-title style="margin:40px 0;" :fontsize="20" :title="itemTitle"></my-title>
       <a-row :gutter="20">
         <!--list1-->
-        <a-col :span="2"></a-col>
-        <a-col :xxl="8" :xl="20">
+        <a-col :span="2" v-if="showTable"></a-col>
+        <a-col :xxl="8" :xl="20" v-if="showTable">
           <table-item :data="img1">
             <a href style="font-size: 18px; color: #999; text-decoration: underline">查看尺寸表</a>
           </table-item>
@@ -84,6 +84,7 @@ export default {
   data() {
     return {
       showList: "",
+      showTable: "",
       aPrice: "",
       bPrice: "",
       allPrice: "",
@@ -183,11 +184,12 @@ export default {
         let result = res.result.personOrderNoPrintList[0];
         let result1 = res.result.personOrderPrintList[0];
         this.showList = result1;
+        this.showTable = result;
         this.detailList = res.result.list[0];
         this.img1 = result;
         this.img2 = result1;
-        console.log(result.price);
-        const json = {
+        if(result) {
+          const json = {
           key: "0",
           price: result.price,
           total_price: result.price,
@@ -196,6 +198,11 @@ export default {
           goods_id: result.goods_id,
           des_id: result.des_id
         };
+        this.dataSize.push(json);
+        this.size = result.sizes.split(",");
+        this.dataSizeText = res.result.personOrderNoPrintList;
+        }
+        
         if (result1) {
           const json1 = {
             key: "0",
@@ -211,12 +218,6 @@ export default {
           this.dataSizeTexts = res.result.personOrderPrintList;
           this.sizes = result1.sizes.split(",");
         }
-
-        this.dataSize.push(json);
-
-        this.size = result.sizes.split(",");
-
-        this.dataSizeText = res.result.personOrderNoPrintList;
         console.log(this.dataSizeText);
       });
     }

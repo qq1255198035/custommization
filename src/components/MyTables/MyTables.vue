@@ -52,10 +52,10 @@
       @newMembers="newMembers"
       :width="'100%'"
       :title="'添加'"
-      :height="'45px'"
+      :height="'40px'"
       :padding="'10px'"
       :radio="'12px'"
-      :fontsize="'22px'"
+      :fontsize="'18px'"
       :top="'20px'"
 
     >

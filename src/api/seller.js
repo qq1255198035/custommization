@@ -63,6 +63,15 @@ export function discountSure(parameter) {
         data:qs.stringify(parameter)
     })
 }
+//开始统一订单
+export function orderFroms(parameter) {
+    return axios({
+        url: '/system/jeecgOrder/payOrderDate',
+        method: 'post',
+        data:qs.stringify(parameter)
+    })
+}
+
 export function userInfo() {
     return axios({
         url: '/system/jeecgUser/userInfo',
