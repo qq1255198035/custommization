@@ -3,7 +3,18 @@
     <my-title :title="'团体订单'"></my-title>
     <ul class="input-box">
       <li>
-        <a-button icon="plus" @click="$router.push({name: 'neworder'})">新建订单</a-button>
+        
+        <commonBtn
+            @handleLink="$router.push({name: 'neworder'})"
+            :width="'130px'"
+            :height="'32px'"
+            :padding="'15px'"
+            :radio="'12px'"
+            :fontsize="'16px'"
+            :title="'新建订单'"
+            :icon="'plus'"
+        >
+        </commonBtn>
         <a-radio-group defaultValue="9" style="margin-left: 10px;" @change="changeStatus">
           <a-radio-button value="9">全部订单</a-radio-button>
           <a-radio-button value="2">已支付</a-radio-button>
@@ -65,12 +76,14 @@
 <script>
 import MyTitle from "@/components/MyTitle/MyTitle";
 import OrderItem from "@/components/OrderItem/OrderItem";
+import commonBtn from "@/components/commonBtn/commonBtn"
 import { groupOrderList, exampleConfirm, texts, programme, newScheme } from "@/api/seller";
 
 export default {
   components: {
     MyTitle,
-    OrderItem
+    OrderItem,
+    commonBtn
   },
   data() {
     return {

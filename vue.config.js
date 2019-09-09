@@ -71,7 +71,7 @@ module.exports = {
               },*/
               '/jeecg-boot': {
                   target: process.env.NODE_ENV == 'production' ? 'http://192.168.0.9:8080' : 'http://192.168.0.105:8080',
-                //target: 'http://192.168.0.122:8080',
+                //target: 'http://192.168.0.9:8080',
                 ws: false,
                 changeOrigin: true
               },

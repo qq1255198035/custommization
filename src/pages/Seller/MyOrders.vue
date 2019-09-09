@@ -142,7 +142,7 @@
             </a-tab-pane>
         </a-tabs>
         <a-modal :visible="openShare" :footer="null" @cancel="closeShareBox" title="分享给朋友" :centered="true">
-            <div class="share-box">
+            <div class="share-box1">
                 <share class="share" :config="config"></share>
             </div>
         </a-modal>
@@ -327,7 +327,8 @@ export default {
                 width: 50%;
                 color: #999;
                 p{
-                    font-size: 16px;
+                    font-size: 14px;
+                    margin: 10px 0;
                 }
                 span{
                     color: #666;
@@ -435,18 +436,24 @@ export default {
         padding: 20px 20px 100px;
     }
 }
-.share-box{
-    padding: 30px;
-    .share{
-        text-align: center;
-        a{
-                font-size: 30px;
-                margin: 0 20px;
-                border: 1px solid #33b8b3 !important;
-                height: 60px;
-                width: 60px;
-                padding-top: 14px;
-        }
+.share-box1 {
+  padding: 30px;
+  p{
+    font-size: 12px !important;
+  }
+  .qrcode{
+    margin: 3px auto !important;
+  }
+  .share {
+    text-align: center;
+    a {
+      font-size: 30px;
+      margin: 0 20px;
+      border: 1px solid #33b8b3 !important;
+      height: 60px;
+      width: 60px;
+      padding-top: 14px;
     }
+  }
 }
 </style>

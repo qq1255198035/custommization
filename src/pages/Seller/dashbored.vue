@@ -11,7 +11,7 @@
         </my-title>
         <order-list :orderList="orderList" @openShareBox="openMyshareBox"></order-list>
         <a-modal :visible="openShare" :footer="null" @cancel="closeShareBox" title="分享给朋友" :centered="true">
-            <div class="share-box">
+            <div class="share-box1">
                 <share class="share" :config="config"></share>
             </div>
         </a-modal>
@@ -134,18 +134,24 @@ export default {
     padding: 0 20px;
     overflow-x: hidden;
 }
-.share-box{
-    padding: 30px;
-    .share{
-        text-align: center;
-        a{
-            font-size: 30px;
-            margin: 0 20px;
-            border: 1px solid #33b8b3 !important;
-            height: 60px;
-            width: 60px;
-            padding-top: 14px;
-        }
+.share-box1 {
+  padding: 30px;
+  p{
+    font-size: 12px !important;
+  }
+  .qrcode{
+    margin: 3px auto !important;
+  }
+  .share {
+    text-align: center;
+    a {
+      font-size: 30px;
+      margin: 0 20px;
+      border: 1px solid #33b8b3 !important;
+      height: 60px;
+      width: 60px;
+      padding-top: 14px;
     }
+  }
 }
 </style>

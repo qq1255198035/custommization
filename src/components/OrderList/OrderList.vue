@@ -7,7 +7,7 @@
                               
                               <div class="desc">
                                     <p>
-                                          <span style="color: #33b8b3;font-size: 18px;">{{item.topic}}</span>
+                                          <span style="color: #33b8b3;font-size: 18px; min-height: 27px;">{{item.topic}}</span>
                                           <span>{{item.pay_end_date}}</span>
                                     </p>
                                     <p>{{item.introduction}}</p>
@@ -71,6 +71,7 @@ export default {
                               display: block;
                               color: #a7a7a7;
                               text-align: left;
+                              min-height: 21px;
                         }
                         p:nth-child(3){
                               font-size: 20px;

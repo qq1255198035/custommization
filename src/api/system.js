@@ -213,3 +213,14 @@ export function city(parameter) {
     data: qs.stringify(parameter)
   })
 }*/
+
+export function checkCaptcha(phone,smscode) {
+  return axios({
+    url: '/sys/user/emailVerification',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json;charset-UTF-8'
+    },
+    data: JSON.stringify({phone:phone,smscode:smscode})
+  })
+}

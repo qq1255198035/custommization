@@ -45,6 +45,7 @@ export default {
 <style lang="less" scoped>
 .hiden-menu{
     position: relative;
+    z-index: 300;
     > i{
         color: #33b8b3;
     }

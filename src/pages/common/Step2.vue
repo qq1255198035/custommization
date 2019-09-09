@@ -1,15 +1,40 @@
 <template>
   <div>
     <a-form style="max-width: 500px; margin: 40px auto 0;" :form="form">
-      <a-form-item>
+      
+      <a-form-item
+        label="新密码"
+      >
         <a-input
-          size="large"
-          type="text"
-          placeholder="新密码"
-          v-decorator="['password', {rules: [{ required: true, message: '新密码' }], validateTrigger: 'blur'}]"
-        >
-          <!--<a-icon slot="prefix" type="mail" :style="{ color: 'rgba(0,0,0,.25)' }" />-->
-        </a-input>
+          v-decorator="[
+            'password',
+            {
+              rules: [{
+                required: true, message: '请填写您的密码！',
+              }, {
+                validator: validateToNextPassword,
+              }],
+            }
+          ]"
+          type="password"
+        />
+      </a-form-item>
+      <a-form-item
+        label="确认密码"
+      >
+        <a-input
+          v-decorator="[
+            'confirm',
+            {
+              rules: [{
+                required: true, message: '请确认您的密码！',
+              }, {
+                validator: compareToFirstPassword,
+              }],
+            }
+          ]"
+          type="password"
+        />
       </a-form-item>
       <a-form-item :wrapperCol="{span: 19, offset: 5}">
         <a-button :loading="loading" type="primary" @click="nextStep">提交</a-button>
@@ -31,13 +56,21 @@ export default {
     };
   },
   methods: {
+    compareToFirstPassword  (rule, value, callback) {
+      const form = this.form;
+      if (value && value !== form.getFieldValue('password')) {
+        callback('输入密码不一致！');
+      } else {
+        callback();
+      }
+    },
     nextStep() {
       let that = this;
       that.form.validateFields((err, values) => {
         if (!err) {
           const params = {
             username: that.email,
-            password: values.password
+            password: values.confirm
           };
           console.log(params)
           passwordSet(params).then(res => {

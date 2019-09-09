@@ -406,9 +406,9 @@
                                     </div>
                                     <div class="tool-box11" v-show="visibletype == 5">
                                         <h2>设计备注：</h2>
-                                        <a-textarea placeholder="Basic usage" :rows="8" v-model="remark"/>
+                                        <a-textarea placeholder="请填写备注" :rows="8" v-model="remark"/>
                                         <div style="text-align: center;margin-top: 10px;">
-                                            <a-button type="primary" :disabled="!remark">保存更改</a-button>
+                                            <a-button type="primary" :disabled="!remark" @click="postAddRemarksBtn">保存更改</a-button>
                                         </div>
                                     </div>
                                     <div class="tool-box12" v-show="visibletype == 6">
@@ -424,11 +424,11 @@
                                         <ul class="info-list">
                                             <li v-for="(item,index) in dataList" :key="index">
 
-                                                <img src="@/assets/0001.png" alt="" width="100" height="100">
+                                                <img :src="item.picUrl" alt="" width="100" height="100">
                                                 <div>
-                                                    <p>{{item.title}}</p>
+                                                    <p>{{item.remarks}}</p>
                                                     <span>
-                                                        <a-icon type="delete" />
+                                                        <a-icon type="delete" @click="postDeleteEXimg(item.id)"/>
                                                     </span>
                                                 </div>
                                             </li>
@@ -640,9 +640,20 @@
                         </div>
                     </div>
                     <ul class="submit-box">
-                        <li>每件价格 <span>$26.40 To $51.2</span></li>
-                        <li>
-                            <a-button icon="plus" v-intro="'The content of tooltip'" v-intro-step="2" @click="$router.push({path: '/neworder'})">添加产品</a-button>
+                        <a-button type="primary">获取价格</a-button>
+                        <li style="display: flex; align-item">
+                            <commonBtn
+                                @handleLink1="$router.push({name: 'neworder'})"
+                                :width="'130px'"
+                                :height="'32px'"
+                                :padding="'15px'"
+                                :radio="'12px'"
+                                :fontsize="'16px'"
+                                :title="'添加产品'"
+                                :icon="'plus'"
+                                v-intro="'The content of tooltip'" v-intro-step="2"
+                            >
+                            </commonBtn>
                             <a-button type="primary" v-intro="'The content of tooltip'" v-intro-step="3"><span class="icon-save" style="margin-right: 10px;vertical-align: middle"></span><a @click="saveEndDesign">保存设计</a></a-button>
                         </li>
                     </ul>
@@ -741,7 +752,7 @@ import 'fabric-customise-controls';
 import FontFaceObserver from 'fontfaceobserver';
 import MyTitle from '@/components/MyTitle/MyTitle'
 import initAligningGuidelines from "@/utils/guidelines";
-
+import commonBtn from "@/components/commonBtn/commonBtn"
 import resize from '@/assets/icons/resize.svg';
 import remove from '@/assets/icons/remove.svg';
 import rotate from '@/assets/icons/rotate.svg';
@@ -750,7 +761,7 @@ import img1 from '@/assets/0001.png';
 import GoodsList from "@/components/GoodsList/GoodsList";
 import User from '@/components/Header/User';
 import MyHeader from '@/components/Header/Header';
-import { listAll,categoryList,selectById,saveDesign } from "@/api/seller";
+import { listAll,categoryList,selectById,saveDesign,referencePic,sourceUpload,addEximg,deleteEXimg,addRemarks } from "@/api/seller";
 
 
 export default {
@@ -759,7 +770,7 @@ export default {
         GoodsList,
         User,
         MyHeader,
-        
+        commonBtn
     },
     data () {
         return {
@@ -914,20 +925,7 @@ export default {
                     text: '上传设计'
                 }
             ],
-            dataList:[
-                {
-                    title: 'Ant Design Title 1',
-                },
-                {
-                    title: 'Ant Design Title 2',
-                },
-                {
-                    title: 'Ant Design Title 3',
-                },
-                {
-                    title: 'Ant Design Title 4',
-                },
-            ],
+            dataList:[],
             uploadA:false,
             Ele: () => document.querySelector("#Design"),
             rootSubmenuKeys: ['0', '1', '2'],
@@ -939,7 +937,11 @@ export default {
             dataPost1:'',
             dataPost2:'',
             dataPost3:'',
-            dataPost4:''
+            dataPost4:'',
+            postId: '',
+            preview_url: '',
+            source_url: '',
+            designId: ''
         }
     },
     created(){
@@ -990,13 +992,57 @@ export default {
     },
     
     methods:{
+        postAddRemarksBtn(){
+            this.postAddRemarks(this.designId,this.remark)
+        },
+        postAddRemarks(id,remarks){
+            addRemarks(id,remarks).then(res => {
+                console.log(res)
+                if(res.code == 200){
+                    this.$message.success('操作成功！')
+                    if(res.result){
+                        this.designId = res.result
+                    }
+                }
+                
+
+            })
+        },
+        postDeleteEXimg(id){
+            let that = this;
+            that.$confirm({
+                title: "确定删除吗?",
+                okText: "确定",
+                cancelText: "取消",
+                class: "my-modal",
+                onOk() {
+                    deleteEXimg(id).then(res =>{
+                        console.log(res)
+                        if(res.code == 200){
+                            that.$message.success('操作成功！');
+                            that.getReferencePic(that.designId);
+                        }
+                    })
+                },
+                onCancel() {
+                    console.log("Cancel");
+                }
+            });
+        },
+        getReferencePic(pidStr){
+            referencePic(pidStr).then(res => {
+                console.log(res)
+                this.dataList = res.result
+
+            })
+        },
         saveEndDesign(){
-            
             this.saveImg();
             this.downLoadImg();
             let params = {
                 positivePicUrl: this.dataUrl1,backPicUrl: this.dataUrl2,leftPicUrl: this.dataUrl3,rightPicUrl: this.dataUrl4,
-                positiveDesignArea: this.dataPost1, backDesignArea: this.dataPost2, leftDesignArea: this.dataPost3, rightDesignArea: this.dataPost4
+                positiveDesignArea: this.dataPost1, backDesignArea: this.dataPost2, leftDesignArea: this.dataPost3, rightDesignArea: this.dataPost4,
+                goodsId: this.postId
             }
             console.log(params)
             this.postSaveDesign(params)
@@ -1049,6 +1095,7 @@ export default {
         },
         openDesignModal(id){
             console.log(id)
+            this.postId = id;
             this.show = true;
             setTimeout(() => {
                     this.$intro().setOptions({
@@ -1062,7 +1109,8 @@ export default {
                         disableInteraction: false,
                     }).start();
             },10)
-            this.getSelectById(id)
+            this.getSelectById(id);
+            
         },
         loadMore(){
             let that = this;
@@ -1383,11 +1431,28 @@ export default {
         handleCancel() {
             this.previewVisible = false
         },
+        postAddEximg(pid,picUrl,remarks,fileUrl){
+            addEximg(pid,picUrl,remarks,fileUrl).then(res => {
+                console.log(res)
+                if(res.code == 200){
+                    this.example = false;
+                    this.$message.success('提交成功！');
+                    
+                    if(res.result){
+                        this.designId = res.result;
+                    }
+                    this.getReferencePic(this.designId);
+                    console.log(this.designId)
+                    
+                    
+                }
+            })
+        },
         clickOk(){
             this.form.validateFields((err,values) => {
                 if (!err) {
-                        this.example = false
-                        console.log(values)
+                    console.log(values.bz)
+                    this.postAddEximg(this.designId,this.preview_url,values.bz,this.source_url);
                 }
             },);
         },
@@ -1510,18 +1575,23 @@ export default {
             this.visibletype = 11;
         },
         beforeUploadEx(file){
-            if(file.type == 'image/png' || file.type == 'image/jpeg'){
-                if(file.size / 1024 / 1024 < 10){
-                    this.uploadA = true
-                    
-                }else{
-                    this.$message.error('图片大小超出限制！');
-                    this.uploadA = false
-                }
+            if(file.size / 1024 / 1024 < 10){
+                this.uploadA = true
+                this.postSourceUpload(file)
+                
             }else{
-                this.$message.error('格式错误，请重新选择！')
+                this.$message.error('图片大小超出限制！');
                 this.uploadA = false
             }
+        },
+        postSourceUpload(file){
+            const formData = new FormData()
+            formData.append('file', file)
+            sourceUpload(formData).then(res => {
+                console.log(res)
+                this.preview_url = res.preview_url;
+                this.source_url = res.source_url;
+            })
         },
         beforeUpload (file) {
             console.log(file)
@@ -1595,6 +1665,8 @@ export default {
             let that = this;
             object.on("object:moving", function(e) {
                 that.movingBox = true;
+                console.log(11)
+                console.log(that.movingBox)
                 var obj = e.target;
                 var canvas = obj.canvas;
                 var top = obj.top;
