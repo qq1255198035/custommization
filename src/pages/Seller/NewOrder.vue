@@ -1647,7 +1647,7 @@ export default {
                             flipY:false,
                             skewX:0,
                             skewY:0,
-                            
+                            lockUniScaling:true, // When `true`, object non-uniform scaling is locked
                             left: 200,
                             top: 150,
                             scaleX: 0.5,
@@ -1745,20 +1745,27 @@ export default {
             var maxWidth = 400 - startX;// scaledObject.aCoords.tl.x; 
             var maxHeight = 450 -startY;
             scaledObject.setCoords();
-            // console.log("xy:",startX,startY);
-            // console.log("max:",maxWidth,maxHeight);
+            
             var isOnScreen = scaledObject.isContainedWithinRect({x:200,y:150},{x:400,y:450},true,true);
             // console.log("onscreen:",isOnScreen);
             if(!isOnScreen) {
+                // console.log("xy:",startX,startY);
+                // console.log("max:",maxWidth,maxHeight);
+                
+                var w = scaledObject.width;
+                var h = scaledObject.height;
+                // console.log("wh:",w,h);
+                // console.log("obj:",maxWidth-w,maxHeight-h);
+                // console.log("obj:",Math.min(maxWidth,w),Math.min(maxHeight,h));
+                if( (maxHeight-h) < (maxWidth-w)){
 
-                if( (maxHeight) <( maxWidth)){
-
-                    var h = scaledObject.scaleToHeight(maxHeight,true);
+                    scaledObject.scaleToHeight(Math.min(maxHeight,h),true);
 
                 } else{
-                    var w = scaledObject.scaleToWidth(maxWidth,true);
+                    scaledObject.scaleToWidth(Math.min(maxWidth,w),true);
                 }
             }
+            return true;
         },
         
         

@@ -45,20 +45,20 @@
 <script>
 import commonBtn from "@/components/commonBtn/commonBtn";
 import HideMenu from "@/components/HideMenu/HideMenu";
-const statusMap = {
-  1: {
-    status: "warning",
-    text: "团购中"
-  },
-  3: {
-    status: "success",
-    text: "设计中"
-  },
-  2: {
-    status: "processing",
-    text: "发货中"
-  }
-};
+// const statusMap = {
+//   1: {
+//     status: "warning",
+//     text: "团购中"
+//   },
+//   3: {
+//     status: "success",
+//     text: "设计中"
+//   },
+//   2: {
+//     status: "processing",
+//     text: "发货中"
+//   }
+// };
 export default {
   props: {
     orderArr: {

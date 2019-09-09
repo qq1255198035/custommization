@@ -88,11 +88,6 @@ export const constantRouterMap = [
   },
   
   {
-    path: "/payment",
-    name: "payment",
-    component: () => import("@/pages/userSystem/payment/payment")
-  },
-  {
     path: "/paylocal",
     name: "paylocal",
     component: () => import("@/pages/userSystem/payLocal/payLocal")
@@ -102,7 +97,11 @@ export const constantRouterMap = [
     name: "paysuccess",
     component: () => import("@/pages/userSystem/paySuccess/paySuccess")
   },
-
+  {
+    path: "/unifiedpay",
+    name: "unifiedpay",
+    component: () => import("@/pages/Seller/UnifiedPay")
+  },
 
   {
     path: '/user',
@@ -125,6 +124,12 @@ export const constantRouterMap = [
           login:true,
           keepAlive: true
         }
+      },
+      {
+        path: "/payment",
+        name: "payment",
+        hidden: true,
+        component: () => import("@/pages/userSystem/payment/payment")
       },
       {
         path: '/register',

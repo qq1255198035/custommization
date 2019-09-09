@@ -364,6 +364,7 @@ function getBase64 (img, callback) {
 }
 export default {
       data () {
+            var bgimg1;
             return {
                   ele:document.querySelector('#box'),
                   rootSubmenuKeys: ['sub1', 'sub2', 'sub4'],
