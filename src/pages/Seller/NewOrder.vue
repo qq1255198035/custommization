@@ -339,8 +339,8 @@
                                             <li @click="openFontFamilyBox">
                                                 <span>Change Font</span>
                                                 <p>
-                                                        <span>{{fontfamily}}</span>
-                                                        <a-icon type="right" />
+                                                    <span>{{fontfamily}}</span>
+                                                    <a-icon type="right" />
                                                 </p>
                                             </li>
                                             <li @click="openChangeColorBox(1,'字体颜色')">
@@ -394,9 +394,9 @@
                                     </div>
                                     <div class="tool-box10" v-show="visibletype == 4">
                                         <h2>颜色：</h2>
-                                        <p>选择颜色： <span :style="{backgroundColor: '#fff'}"></span> 白色</p>
+                                        <p>选择颜色： <span :style="{backgroundColor: productColor ? productColor : '#fff'}"></span> {{productColorName ? productColorName : '白色'}}</p>
                                         <ul class="color-list">
-                                            <li v-for="(item,index) in colorList" :key="index" :style="{backgroundColor: item.color}" @click="changeProductColor(index)">
+                                            <li v-for="(item,index) in colorList.list" :key="index" :style="{backgroundColor: item.itemValue}" @click="changeProductColor(item.itemValue,item.itemText,index)">
                                                 <a-icon type="check" v-show="productColorIcon == index"/>
                                             </li>
                                         </ul>
@@ -451,14 +451,31 @@
                                             {{colorTitle}}
                                         </h2>
                                         <!-- <my-title :title="colorTitle"></my-title> -->
-                                        <p style="display:flex;align-items: center;margin-top: 20px; font-size: 18px;color: #999;">选择颜色： <span :style="{backgroundColor: color}" style="width: 20px;height: 20px;display: inline-block;margin:0 10px;border:1px solid #ccc;"></span>{{colorName}}</p>
+                                        <p style="display:flex;align-items: center;margin-top: 20px; font-size: 18px;color: #999;">选择颜色： <span :style="{backgroundColor: colorShow}" style="width: 20px;height: 20px;display: inline-block;margin:0 10px;border:1px solid #ccc;"></span>{{colorShowName}}</p>
                                         <ul class="color-list-box">
-                                            <li v-for="(item,index) in colorList" :key="item.name" :style="{backgroundColor: item.color}" @click="changeAllColor(item.color,item.name,index)">
-                                                <a-icon type="check" v-show="fontColorIcon == index"></a-icon>
+                                            <li v-for="(item,index) in colorList.list" :key="item.itemText" :style="{backgroundColor: item.itemValue}" @click="changeAllColor(item.itemValue,item.itemText,index)">
+                                                <template v-if="colorList.key == 1">
+                                                    <a-icon type="check" v-show="fontColorIcon1 == index"></a-icon>
+                                                </template>
+                                                <template v-if="colorList.key == 2">
+                                                    <a-icon type="check" v-show="fontColorIcon2 == index"></a-icon>
+                                                </template>
+                                                <template v-if="colorList.key == 3">
+                                                    <a-icon type="check" v-show="fontColorIcon1 == index"></a-icon>
+                                                </template>
+                                                <template v-if="colorList.key == 4">
+                                                    <a-icon type="check" v-show="fontColorIcon2 == index"></a-icon>
+                                                </template>
+                                                <template v-if="colorList.key == 5">
+                                                    <a-icon type="check" v-show="fontColorIcon1 == index"></a-icon>
+                                                </template>
+                                                <template v-if="colorList.key == 6">
+                                                    <a-icon type="check" v-show="fontColorIcon2 == index"></a-icon>
+                                                </template>
                                             </li>
                                         </ul>
                                         <div style="text-align: center;">
-                                            <a-button type="primary" style="font-size: 18px;height: 45px;padding: 0 30px;border-radius: 12px;">保存更改</a-button>
+                                            <a-button type="primary">保存更改</a-button>
                                         </div>
                                     </div>
                                     <div class="tool-box5" v-show="visibletype == 9">
@@ -761,7 +778,20 @@ import img1 from '@/assets/0001.png';
 import GoodsList from "@/components/GoodsList/GoodsList";
 import User from '@/components/Header/User';
 import MyHeader from '@/components/Header/Header';
-import { listAll,categoryList,selectById,saveDesign,referencePic,sourceUpload,addEximg,deleteEXimg,addRemarks } from "@/api/seller";
+import { 
+        listAll,
+        categoryList,
+        selectById,
+        saveDesign,
+        referencePic,
+        sourceUpload,
+        addEximg,
+        deleteEXimg,
+        addRemarks,
+        colorList,
+        changeFontFamily,
+        changeGoodsColor
+    } from "@/api/seller";
 
 
 export default {
@@ -809,18 +839,29 @@ export default {
             shadowColor: '#000',
             // 文字阴影样式结束
             previewVisible: false,
-            fontColorIcon: -1,
+            fontColorIcon1: -1,
+            fontColorIcon2: -1,
+            fontColorIcon3: -1,
+            fontColorIcon4: -1,
+            fontColorIcon5: -1,
+            fontColorIcon6: -1,
             previewImage:'',
             example:false,
             uploadId:0,
             colorIcon: -1,
             productColorIcon: -1,
+            productColor: '',
+            productColorName: '',
             //字体颜色值 | 颜色名
             color:'#000',
             colorName:'黑色',
             //字体背景颜色值 | 颜色名
             bgcolor:'#000',
             fontBgColorName:'黑色',
+            // 选择展示的颜色及颜色名
+
+            colorShow: '#000',
+            colorShowName: '黑色',
             resize,
             remove,
             rotate,
@@ -852,24 +893,7 @@ export default {
                     name: 'testFont'
                 }
             ],
-            colorList:[
-                {
-                        name: '黑色',
-                        color: '#000'
-                },
-                {
-                        name: '红色',
-                        color: '#ff0000'
-                },
-                {
-                        name: '绿色',
-                        color: '#00ff00'
-                },
-                {
-                        name: '蓝色',
-                        color: '#0000ff'
-                }
-            ],
+            colorList:{},
             fileList: [],
             filpx:false,
             filpy:false,
@@ -992,6 +1016,22 @@ export default {
     },
     
     methods:{
+        PostChangeGoodsColor(id,color){
+            changeGoodsColor(id,color).then(res => {
+                console.log(res)
+                this.postId
+            })
+        },
+        
+        PostChangeFontFamily(){
+
+        },
+        getColorList(status){
+            colorList(status).then(res => {
+                console.log(res)
+                this.colorList = res.result
+            })
+        },
         postAddRemarksBtn(){
             this.postAddRemarks(this.designId,this.remark)
         },
@@ -1356,41 +1396,49 @@ export default {
         changeAllColor(val,name,i){
             if(this.colorKey == 1){
                 this.changeFillColor(val,name,i)
+                this.fontColorIcon1 = i
+                
             }else if(this.colorKey == 2){
                 this.changeTextBgColor(val,name,i)
+                this.fontColorIcon2 = i
+               
             }else if(this.colorKey == 3){
                 this.changestrokeColor(val,name,i)
+                this.fontColorIcon3 = i
+               
             }else if(this.colorKey == 4){
                 this.changeShadowColor(val,name,i)
+                this.fontColorIcon4 = i
+                
             }else if(this.colorKey == 5){
                 this.changeFillColor(val,name,i)
+                this.fontColorIcon5 = i
+                
             }else if(this.colorKey == 6){
                 this.changeFillColor(val,name,i)
+                this.fontColorIcon6 = i
             }
+            this.handleColorShow();
         },
         // 字体背景色
-        changeTextBgColor(val,name,i){
-            // let obj = this.myCanvas.getActiveObject()
-            // if (obj) {
-            //     obj.set("textBackgroundColor", this.bgcolor);
-            //     this.myCanvas.requestRenderAll();
-            // }
+        changeTextBgColor(val,name){
+           
             let obj = this.myCanvas.getActiveObject();
             this.bgcolor = val;
             if (obj) {
                 obj.set("textBackgroundColor", val);
-                this.fontColorIcon = i;
+               
                 this.myCanvas.requestRenderAll();
             }
             this.fontBgColorName = name;
         },
         // 设置字体阴影开始
-        changeShadowColor(val,name,i){
+        changeShadowColor(val,name){
                 let obj = this.myCanvas.getActiveObject();
                 this.shadowColor = val;
                 if (obj) {
                     obj.set('shadow', this.shadowColor +' '+ this.Shadow1 +' '+ this.Shadow2 +' '+ this.Shadow3);
-                    this.fontColorIcon = i;
+                  
                     this.myCanvas.requestRenderAll();
                 }
                 this.shadowColorName = name;
@@ -1459,8 +1507,11 @@ export default {
         closeUploadModal(){
             this.example = false
         },
-        changeProductColor(i){
+        changeProductColor(value,name,i){
             this.productColorIcon = i;
+            this.productColor = value;
+            this.productColorName = name;
+            this.PostChangeGoodsColor(this.postId,value)
         },
         // 选择颜色容器返回上一级
         goBackPage(){
@@ -1792,6 +1843,9 @@ export default {
             if(this.visibletype !== key){
                 this.visibletype = key;
             }
+            if(key == 4){
+                this.getColorList(7);
+            }
         },
         // 设置设计背景图
         bindCanvas(canvas,i) {
@@ -1955,7 +2009,11 @@ export default {
             this.visibletype = 8;
             this.colorTitle = title;
             this.colorKey = key;
-            console.log(key,title)
+            
+            console.log(key,title);
+            this.getColorList(key);
+            this.handleColorShow();
+            
         },
         // 打开改变描边样式盒子
         // openFontOutlineBox(){
@@ -2021,11 +2079,11 @@ export default {
                 }
             }
         },
-        changeFillColor(val,name,i){
+        changeFillColor(val,name){
             let obj = this.myCanvas.getActiveObject();
             if (obj) {
                 obj.set("fill", val);
-                this.fontColorIcon = i;
+                
                 this.myCanvas.requestRenderAll();
                 this.colorName = name;
                 this.color = val;
@@ -2033,11 +2091,11 @@ export default {
             
         },
         // 改变描边样式开始
-        changestrokeColor(val,name,i){
+        changestrokeColor(val,name){
             let obj = this.myCanvas.getActiveObject()
             if (obj) {
                 obj.set('stroke', val);
-                this.fontColorIcon = i;
+               
                 this.myCanvas.requestRenderAll();
             }
             this.strokeColorName = name;
@@ -2121,7 +2179,23 @@ export default {
             }
             return color;
         },
+        handleColorShow(){
+            console.log(33)
+            if(this.colorKey == 1){
+                this.colorShow = this.color;
+                this.colorShowName = this.colorName;
+            }else if(this.colorKey == 2){
+                this.colorShow = this.bgcolor;
+                this.colorShowName = this.fontBgColorName;
+            }else{
+                this.colorShow = '#000';
+                this.colorShowName = '黑色';
+            }
+        }
     },
+    computed:{
+        
+    }
 }
 </script>
 <style lang="less">
@@ -2527,11 +2601,13 @@ export default {
                         .color-list-box{
                             display: flex;
                             border-bottom: 1px solid #ccc;
+                            flex-wrap: wrap;
                             margin-bottom: 20px;
+                            padding: 10px 0;
                             li{
                                     width: 26px;
                                     height: 26px;
-                                    margin: 20px 10px;
+                                    margin: 4px;
                                     cursor: pointer;
                                     line-height: 25px;
                                     text-align: center;
@@ -2864,7 +2940,7 @@ export default {
                             display: flex;
                             justify-content: center;
                             align-items: center;
-                            margin: 0 5px;
+                            margin: 4px;
                             cursor: pointer;
                             position: relative;
                             

@@ -309,3 +309,27 @@ export function addRemarks(id,remarks) {
         data:JSON.stringify({pid:id,remarks:remarks})
     })
 }
+
+export function colorList(status) {
+    return axios({
+        url: '/system/jeecgGoodsPic/color',
+        method: 'post',
+        data:qs.stringify({status:status})
+    })
+}
+
+export function changeFontFamily(params) {
+    return axios({
+        url: '/system/jeecgGoods/changeFont',
+        method: 'post',
+        data:qs.stringify(params)
+    })
+}
+
+export function changeGoodsColor(id,color) {
+    return axios({
+        url: '/system/jeecgGoods/changeGoodsColor',
+        method: 'post',
+        data:qs.stringify({goodsId: id,itemValue: color})
+    })
+}
