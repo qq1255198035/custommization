@@ -716,7 +716,7 @@ export default {
       this.endOpen = open;
     },
     onChange() {},
-    onChangeOne(e) {},
+    //onChangeOne(e) {},
     onChangeNums() {
       if(this.nums < this.minNums) {
         this.nums = this.minNums

@@ -160,7 +160,13 @@
 </template>
 
 <script>
-import { payPal, paymentInfos, status, wxPay, wxOrderQuery } from "@/api/system";
+import {
+  payPal,
+  paymentInfos,
+  status,
+  wxPay,
+  wxOrderQuery
+} from "@/api/system";
 import MyPrimaryStpes from "@/components/MyPrimaryStpes/MyPrimaryStpes";
 import MyTitle from "@/components/MyTitle/MyTitle";
 import TableItem from "@/components/TableItem/TableItem";
@@ -254,10 +260,53 @@ export default {
   created() {
     this._paymentInfos();
     this._status();
+    
   },
   mounted() {},
   watch: {},
   methods: {
+    initWebSocket() {
+      const wsuri = "ws://192.168.0.122:8080/jeecg-boot/api/wx/payBack";
+      this.websocket = new WebSocket(wsuri);
+      this.websocket.onopen = this.websocketonopen;
+      this.websocket.onerror = this.websocketonerror;
+      this.websocket.onmessage = this.websocketonmessage;
+      this.websocket.onclose = this.websocketclose;
+    },
+    websocketonopen() {
+      //连接建立之后执行send方法发送数据
+      const param = {
+        order_id: this.userId,
+        user_order_id: this.$route.query.user_order_id,
+        price: this.allPrice.order_price
+      };
+      this.websocketsend(param);
+      console.log(111);
+    },
+    websocketonerror() {
+      //连接建立失败重连
+      this.initWebSocket();
+    },
+    websocketonmessage(e) {
+      let _this = this; //数据接收
+      console.log(e.data)
+      if (e.data == "连接成功") {
+        //这个判断是我业务需求才加的
+        return;
+      }
+      //业务需求，将socket接收到的值存进vuex
+      _this.$store.store.dispatch("RESET_ID"); //先调用reset方法置空vuex > store里面的scorketId（为什么置空，下面标题3解释）
+      _this.$store.store.dispatch("SAVE_ID", JSON.parse(e.data).areaId); //重新给store中的scorketId赋值（数据格式问题先转了json）
+      // console.log(_this.$store.store.state.scorketId);
+    },
+    websocketsend(Data) {
+      //数据发送
+      this.websocket.send(Data);
+    },
+    websocketclose(e) {
+      //关闭
+      console.log("断开连接", e);
+    },
     isHide() {
       this.show = false;
     },
@@ -282,23 +331,31 @@ export default {
         this.listLeft = response.confirmNoPrintPayList[0];
         this.listRight = response.confirmPrintPayList[0];
         this.allPrice = response.userOrderId[0] ? response.userOrderId[0] : 0;
-        this.userId = response.userOrderId[0].order_id
+        this.userId = response.userOrderId[0].order_id;
       });
     },
     resultPsot(data) {
       const that = this;
       console.log(data);
       wxOrderQuery(data).then(res => {
-        console.log(res);
-        if (!res.payStatus == 0) {
+        console.log(res)
+        console.log(res.wxPayStatus)
+        console.log(!res.wxPayStatus == 0);
+        if (res.wxPayStatus == 0) {
+          console.log(5555)
+          this.$router.push({
+            path: "/wxSuccess",
+            query: {
+              user_order_id: res.user_order_id
+            }
+          });
+        } else {
+          console.log(1212)
+          
           setTimeout(() => {
             that.resultPsot(data);
           }, 2000);
-        }else if (res.payStatus == 0){
-          this.$router.push({
-            path: '/paySuccess'
-          })
-          return
+          return;
         }
       });
     },
@@ -316,7 +373,7 @@ export default {
           let first = res.toPayHtml.indexOf("href") + 6;
           let last = res.toPayHtml.lastIndexOf('"');
           let url = res.toPayHtml.slice(first, last);
-          console.log(url)
+          console.log(url);
           this.$ls.set("userOrderId", res.user_order_id);
           this.$ls.set("orderId", res.order_id);
           this.$ls.set("price", res.price);
@@ -328,6 +385,7 @@ export default {
         });
       }
       if (this.value == 2) {
+        //this.initWebSocket();
         wxPay(param).then(res => {
           console.log(res);
           this.prepayId = res.respData.prepay_id;
@@ -344,8 +402,8 @@ export default {
             prepay_id: res.respData.prepay_id,
             user_order_id: res.payInfoList[0].user_order_id
           };
-          console.log()
-          //this.resultPsot(datas);
+          console.log();
+          this.resultPsot(datas);
         });
       }
     },
@@ -368,9 +426,9 @@ export default {
 <style lang="less">
 @import url("./../../../components/index.less");
 @import url("./../../../assets/style.css");
-.pay-font{
+.pay-font {
   font-size: 18px;
-  padding-left: 8px
+  padding-left: 8px;
 }
 .bg-box {
   width: 20px;

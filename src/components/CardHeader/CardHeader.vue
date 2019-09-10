@@ -42,7 +42,6 @@
             <div class="top" style="line-height:40px">
               <span style="float:left">分享给朋友：</span>
               <share  class="share" :config="config">
-                
               </share>
             </div>
             <div class="down">
