@@ -103,6 +103,16 @@ export const constantRouterMap = [
     component: () => import("@/pages/userSystem/wxSuccess/wxSuccess")
   },
   {
+    path: "/SellerPaySuccess",
+    name: "SellerPaySuccess",
+    component: () => import("@/pages/Seller/SellerPaySuccess")
+  },
+  {
+    path: "/SellerPayWx",
+    name: "SellerPayWx",
+    component: () => import("@/pages/Seller/SellerPayWx")
+  },
+  {
     path: "/unifiedpay",
     name: "unifiedpay",
     component: () => import("@/pages/Seller/UnifiedPay")

@@ -109,10 +109,26 @@ export default {
   computed: {},
   created() {
     this._apiPersonOrder();
+    console.log(this.check())
+    this.check()
   },
   mounted() {},
   watch: {},
   methods: {
+
+check() { 
+  var userAgentInfo=navigator.userAgent; 
+  var Agents =new Array("Android","iPhone","SymbianOS","Windows Phone","iPad","iPod"); 
+  var flag=true; 
+  for(var v=0;v<Agents.length;v++) { 
+     if(userAgentInfo.indexOf(Agents[v])>0) { 
+       flag=false; 
+       break; 
+     } 
+   } 
+   return flag; 
+  },
+
     _price(datas) {
       let price = 0;
       for (var i = 0; i < datas.length; i++) {
@@ -153,7 +169,7 @@ export default {
       } else {
         const param = {
           //token: this.$ls.get("token"),
-          order_id: 266,
+          order_id: this.$route.query.order_id,
           order_price: this.bPrice + this.aPrice,
           personOrderNoPrintList: JSON.stringify(this.listNoPay),
           personOrderPrintList: JSON.stringify(this.listPay)
@@ -312,5 +328,4 @@ export default {
     }
   }
 }
-
 </style>

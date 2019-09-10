@@ -41,16 +41,16 @@
                 <div class="pay-detail" v-if="code === 1">
                   <p>付款账户：{{payName}}</p>
                   <p>订单编号：{{orderId}}</p>
-                  <p v-if="type == 1"><share style="text-align:center"  class="share" :config="config"></share></p>
-                  
+                  <share style="text-align:center"  class="share" :config="config">
+              </share>
                 </div>
                 <div class="pay-detail" v-if="code === 0">
                   <p>订单编号：{{orderId}}</p>
                 </div>
-                <div class="pay-btn" v-if="code === 1 && type == 0">
+                <!--<div class="pay-btn" v-if="code === 1">
                   <a-button class="buy-again" @click="alginBtn">再次购买</a-button>
                   <a-button class="back">返回</a-button>
-                </div>
+                </div>-->
                 <div class="pay-btn" v-if="code === 0">
                   <a-button class="buy-again" @click="resetBtn">重新支付</a-button>
                   <a-button class="back">返回</a-button>
@@ -66,14 +66,13 @@
 </template>
 
 <script>
-import { payBack, status } from "@/api/system";
-import { paypalSellerBack } from "@/api/seller";
+import { wxPayBack, status } from "@/api/system";
+import { wxBackPay } from "@/api/seller"
 import MyStpes from "@/components/MyStpes/MyStpes";
 export default {
   props: {},
   data() {
     return {
-      type: "",
       step: 1,
       value: 1,
       code: "",
@@ -99,9 +98,8 @@ export default {
   },
   computed: {},
   created() {
-    this._payBack();
+    this._wxBackPay();
     this._status();
-    this._paypalSellerBack();
     this.config.url = 'http://192.168.0.9/index#/share' + '?order_id='+this.$route.query.orderId
   },
   mounted() {},
@@ -109,7 +107,7 @@ export default {
   methods: {
     _status() {
       const param = {
-        user_order_id: this.$ls.get("userOrderId")
+        user_order_id: this.$route.query.user_order_id
       };
       console.log(param);
       status(param).then(res => {
@@ -117,93 +115,40 @@ export default {
         this.step = parseInt(res.result.schedule);
       });
     },
-    _paypalSellerBack() {
+    _wxBackPay() {
       const param = {
-        paymentId: this.$route.query.paymentId,
-        token: this.$route.query.token,
-        PayerID: this.$route.query.PayerID,
-        order_id: this.$ls.get("orderId")
-      };
-      paypalSellerBack(param).then(res => {
-        console.log(res);
-        if (res.code == 1 && res.type == 1) {
-          this.code = 1;
-          let result = res.payInfoList;
-          this.orderId = result.id;
-          this.price = result.orderPrice;
-          this.payName = res.username;
-          this.orderId = result.orderSn;
-          this.orderAgain = result.order_id;
-          this.userOrderId = result.user_order_id;
-        }
-        if (res.code == 0 && res.type == 1) {
-          this.code = 0;
-          this.orderId = res.payInfoList.orderSn;
-        }
-      });
-    },
-    _payBack() {
-      const param = {
-        paymentId: this.$route.query.paymentId,
-        token: this.$route.query.token,
-        PayerID: this.$route.query.PayerID,
-        user_order_id: this.$ls.get("userOrderId"),
-        order_id: this.$ls.get("orderId"),
-        price: this.$ls.get("price")
+        orderId: this.$route.query.orderId,
       };
       console.log(param);
-      payBack(param).then(res => {
+      wxBackPay(param).then(res => {
         console.log(res);
-        if (res.code == 1 && res.type == 0) {
+        if (res.successCode == 1) {
           this.code = 1;
-          let result = res.payInfoList[0];
-          this.price = result.order_price;
-          this.payName = result.pay_name;
-          this.orderId = result.order_sn;
-          this.orderAgain = result.order_id;
-          this.userOrderId = result.user_order_id;
+          this.payName = res.username;
+          this.orderId = res.orderSn;
+          this.price = res.price;
         }
-        if (res.code == 0 && res.type == 0) {
+        if (res.successCode == 0) {
           this.code = 0;
-          this.orderId = res.payInfoList[0].order_sn;
+          this.orderId = res.orderSn;
         }
       });
     },
     alginBtn() {
-      if (this.type == 0) {
-        this.$router.push({
-          path: "/share",
-          query: {
-            order_id: this.orderAgain
-          }
-        });
-      }
-      if (this.type == 1) {
-        this.$router.push({
-          path: "/share",
-          query: {
-            order_id: this.orderAgain
-          }
-        });
-      }
+      this.$router.push({
+        path: "/share",
+        query: {
+          order_id: this.orderAgain
+        }
+      });
     },
     resetBtn() {
-      if (this.type == 0) {
-        this.$router.push({
-          path: "/payment",
-          query: {
-            user_order_id: this.userOrderId
-          }
-        });
-      }
-      if(this.type == 1) {
-        this.$router.push({
-          path: "/unifiedpay",
-          query: {
-            orderId: this.userOrderId
-          }
-        });
-      }
+      this.$router.push({
+        path: "/payment",
+        query: {
+          user_order_id: this.userOrderId
+        }
+      });
     }
   },
   components: {
@@ -213,21 +158,21 @@ export default {
 </script>
 
 <style lang="less">
-@import url("./../../../components/index.less");
-@import url("./../../../assets/style.css");
+@import url("./../../components/index.less");
+@import url("./../../assets/style.css");
 .shares {
   header {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
-    padding: 30px;
-    p:nth-child(1) {
-      color: #fff;
-      font-size: 60px;
-      margin-bottom: 0;
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255,255,255,0.4);
+      padding: 30px;
+      p:nth-child(1) {
+        color: #fff;
+        font-size: 60px;
+        margin-bottom: 0;
+      }
     }
-  }
   .step {
     padding: 16px 0;
   }
@@ -243,10 +188,10 @@ export default {
       span {
         font-size: 40px;
         padding-right: 16px;
-        color: #fff;
+        color: #fff
       }
-      p {
-        color: #fff;
+      p{
+        color: #fff
       }
     }
     .desc {

@@ -151,7 +151,10 @@ export default {
         target.size = value;
       }
       this.data = newData;
-      this.$emit("getList", this.data1);
+      if(value) {
+        this.$emit("getList", this.data1);
+      }
+      
     },
 
     changeName(value, key, column) {
@@ -165,7 +168,10 @@ export default {
         target.printName = value;
       }
       this.data1 = newData;
-      this.$emit("getList", this.data1);
+      if(value) {
+        this.$emit("getList", this.data1);
+      }
+      
     },
 
     changeNum(value, key, column) {
@@ -178,7 +184,10 @@ export default {
         target.printNumber = value;
       }
       this.data1 = newData;
-      this.$emit("getList", this.data1);
+      if(value) {
+        this.$emit("getList", this.data1);
+      }
+      
     },
     newMembers() {
       const length = this.data1.length;

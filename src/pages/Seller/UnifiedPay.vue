@@ -158,7 +158,7 @@
 
 <script>
 import { payPal, wxPay, wxOrderQuery } from "@/api/system";
-import { orderFroms } from "@/api/seller";
+import { orderFroms, teamPayBack, wxCheckPay ,paypalSeller} from "@/api/seller";
 import MyPrimaryStpes from "@/components/MyPrimaryStpes/MyPrimaryStpes";
 import MyTitle from "@/components/MyTitle/MyTitle";
 import commonBtn from "@/components/commonBtn/commonBtn";
@@ -259,16 +259,19 @@ export default {
     resultPsot(data) {
       const that = this;
       console.log(data);
-      wxOrderQuery(data).then(res => {
+      wxCheckPay(data).then(res => {
         console.log(res);
-        if (!res.payStatus == 0) {
+        if (res.wxPayStatus == 0) {
+          this.$router.push({
+            path: "/SellerPayWx",
+            query: {
+              orderId: this.$route.query.orderId
+            }
+          });
+        } else {
           setTimeout(() => {
             that.resultPsot(data);
           }, 2000);
-        } else if (res.payStatus == 0) {
-          this.$router.push({
-            path: "/paySuccess"
-          });
           return;
         }
       });
@@ -276,13 +279,12 @@ export default {
     payBtn() {
       console.log(this.value);
       const param = {
-        order_id: this.userId,
-        user_order_id: this.$route.query.user_order_id,
-        price: this.allPrice.order_price
+        order_id: this.$route.query.orderId,
+        price: this.allPrice
       };
       if (this.value == 1) {
         console.log(param);
-        payPal(param).then(res => {
+        paypalSeller(param).then(res => {
           console.log(res);
           let first = res.toPayHtml.indexOf("href") + 6;
           let last = res.toPayHtml.lastIndexOf('"');
@@ -299,10 +301,8 @@ export default {
         });
       }
       if (this.value == 2) {
-        wxPay(param).then(res => {
-          console.log(res);
-          this.prepayId = res.respData.prepay_id;
-
+        teamPayBack(param).then(res => {
+          console.log(res)
           const url = res.respData.code_url;
           this.show = true;
           var canvas = document.getElementById("canvas");
@@ -312,8 +312,7 @@ export default {
             }
           });
           const datas = {
-            prepay_id: res.respData.prepay_id,
-            user_order_id: res.payInfoList[0].user_order_id
+            orderId: this.$route.query.orderId
           };
           console.log();
           this.resultPsot(datas);

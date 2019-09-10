@@ -350,8 +350,6 @@ export default {
             }
           });
         } else {
-          console.log(1212)
-          
           setTimeout(() => {
             that.resultPsot(data);
           }, 2000);

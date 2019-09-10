@@ -30,12 +30,12 @@
           <p class="list-last" v-if="item.order_status == 0">
             <commonBtn
               :float="'right'"
-              :width="'80px'"
+              :width="'86px'"
               :title="'去付款'"
               :height="'34px'"
               :padding="'15px'"
               :radio="'6px'"
-              :fontsize="'16px'"
+              :fontsize="'14px'"
               @toAlginPay="toAlginPay(item.user_order_id)"
             ></commonBtn>
           </p>
@@ -47,7 +47,7 @@
               :height="'34px'"
               :padding="'15px'"
               :radio="'6px'"
-              :fontsize="'16px'"
+              :fontsize="'14px'"
               @checkDetail="checkDetail(item.user_order_id)"
             ></commonBtn>
           </p>

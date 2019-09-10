@@ -82,7 +82,7 @@ export default {
       console.log(param);
       orders(param).then(res => {
         console.log(res);
-        this.listData = res.result.personalOrdersList;
+        this.listData = res.result.personalOrdersList;  
         this.listFrom = res.result.personalOrdersParentList;
       });
     },
