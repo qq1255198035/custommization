@@ -81,20 +81,20 @@ export default {
       });
     },
     nextStep() {
-      
       this.form.validateFields((err, values) => {
         if (!err) {
           if (this.code == 0) {
             if(this.captcha){
+              console.log(this.captcha)
               checkCaptcha(values.email, this.captcha).then(res => {
                   console.log(res)
-                  if(res.code == 0){
+                 
                     if(res.success){
                       this.$emit("nextStep", values.email, this.captcha);
                     }else{
                       this.$message.error(res.message)
                     }
-                  }
+                  
               })
               //
             }else{
