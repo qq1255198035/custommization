@@ -30,12 +30,15 @@ import {
   Pagination,
   Badge,
   LocaleProvider,
-  Cascader,
+  Card,
   Tabs,
   Dropdown,
-  InputNumber
+  InputNumber,
+  Alert
 } from "ant-design-vue";
+Vue.use(Alert);
 Vue.use(Button);
+Vue.use(Card);
 Vue.use(Row);
 Vue.use(Col);
 Vue.use(Menu);
@@ -64,7 +67,6 @@ Vue.use(Pagination);
 Vue.use(Form);
 Vue.use(Badge);
 Vue.use(LocaleProvider);
-Vue.use(Cascader);
 Vue.use(Tabs);
 Vue.use(Dropdown);
 Vue.use(InputNumber);

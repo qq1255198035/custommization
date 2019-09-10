@@ -8,7 +8,7 @@
         </p>
       </header>
       <my-title :title="'分享设置'" style="padding: 0 30px;margin-top: 10px;overflow:hidden;">
-        <a-button size="small" icon="rollback" @click="$router.push({path: '/dashbored'})">返回</a-button>
+        <a-button size="small" icon="rollback" @click="$router.go(-1)">返回</a-button>
       </my-title>
       <a-row type="flex" justify="space-between" align="top" style="height: calc(100% - 157px);">
         <a-col :span="7" class="scroll-box left-side">
@@ -322,7 +322,7 @@
         cancelText="返回"
         width="50%"
       >
-        <div class="share-box">
+        <div class="share-box1">
           <div>
             <a-icon class="font-color" style="font-size:40px" type="check-circle" />
           </div>
@@ -793,7 +793,7 @@ input::-webkit-inner-spin-button {
 .form-box {
   padding: 30px 30px 0;
 }
-.share-box {
+.share-box1 {
   text-align: center;
   padding: 20px;
   .success {
@@ -806,6 +806,7 @@ input::-webkit-inner-spin-button {
     color: #999;
   }
 }
+
 .btn-box {
   padding: 20px 0;
   text-align: center;
@@ -925,7 +926,7 @@ input::-webkit-inner-spin-button {
         margin-left: 10px;
       }
       .ant-form-item-label {
-        width: 53px;
+        min-width: 60px;
       }
       &:before {
         content: "";

@@ -6,7 +6,9 @@
             <p slot="b" style="margin: 0; color: #757575;">余额</p>
             <p slot="c" style="margin: 0; color: #757575;">未到账金额</p>
         </order-total>
-        <my-title :title="'提现记录'" :fontsize="20" style="margin: 20px 0 "></my-title>
+        <my-title :title="'提现记录'" :fontsize="20" style="margin: 20px 0 ">
+            <a-button @click="show = true">申请提现</a-button>
+        </my-title>
         <a-table :columns="columns" :dataSource="data" :loading="loading" :pagination="pagination" @change="handleTableChange" :rowClassName="() => {return 'my-throw'}">
                 <span slot="status" slot-scope="text">
                     <a-badge :status="text | statusTypeFilter" :text="text | statusFilter" />
@@ -15,12 +17,67 @@
                     <a href="javascript:;"><a-icon type="file-search" style="font-size: 20px;"/></a>
                 </template>
         </a-table>
+        <a-modal v-model="show" :footer="null" title="申请体现" :width="768">
+            <div class="commodal-box">
+                <a-steps :current="current">
+                    <a-step v-for="item in steps" :key="item.title" :title="item.title" />
+                </a-steps>
+                <div class="steps-content">
+                    <component 
+                        :is="steps[current].content" 
+                        @selected="payType" 
+                        @input1="enterName" 
+                        @input2="enterPrice(arguments)" 
+                        @input3="enterCount"
+                        @input4="enterPassword"
+                        :count="count"
+                        :sname="name"
+                        :cash="price"
+                        :sprice="sprice"
+                        :dprice="dprice"
+                        :dmoney="dmoney"
+                        :persent1="persent1"
+                        :persent2="persent2"
+                        :account3="account3"
+                        :name3="name3"
+                        :price3="price3"
+                    >
+                        
+                    </component>
+                </div>
+                <div class="steps-action" style="text-align: center;">
+                    <a-button
+                        v-if="current < steps.length - 1"
+                        type="primary" @click="next"
+                    >
+                        下一步
+                    </a-button>
+                    <a-button
+                        v-if="current == steps.length - 1"
+                        type="primary"
+                        @click="done"
+                    >
+                        完成
+                    </a-button>
+                    <a-button
+                        v-if="current == 1"
+                        style="margin-left: 8px"
+                        @click="prev"
+                    >
+                        上一步
+                    </a-button>
+                </div>
+            </div>
+        </a-modal>
     </div>
 </template>
 <script>
 import OrderTotal from '@/components/OrderTotal/OrderTotal';
 import MyTitle from "@/components/MyTitle/MyTitle";
-import { commissionsData, withdrawalList } from "@/api/seller"
+import ComponentA from "@/components/Commission/ComponentsCom1";
+import ComponentB from "@/components/Commission/ComponentsCom2";
+import ComponentC from "@/components/Commission/ComponentsCom3";
+import { commissionsData, withdrawalList, nextStptes, twoNext } from "@/api/seller"
 const statusMap = {
     4: {
         status: 'success',
@@ -42,7 +99,10 @@ const statusMap = {
 export default {
     components:{
         OrderTotal,
-        MyTitle
+        MyTitle,
+        ComponentA,
+        ComponentB,
+        ComponentC
     },
     data(){
         return{
@@ -83,9 +143,33 @@ export default {
                             scopedSlots: { customRender: 'operation' },
                     }
                 ],
-                data: [
-                    
-                ]
+                data: [],
+                show: false,
+                current: 0,
+                steps: [{
+                    title: '填写账户信息',
+                    content: ComponentA,
+                    }, {
+                    title: '确认信息',
+                    content: ComponentB,
+                    }, {
+                    title: '完成',
+                    content: ComponentC,
+                }],
+                paytype: '',
+                name:'',
+                price: '',
+                count: '',
+                sprice: '',
+                dprice: '',
+                dmoney: '',
+                totalMoney: '',
+                passWord: '',
+                persent1: '',
+                persent2: '',
+                account3: '',
+                name3: '',
+                price3: ''
             }
     },
     mounted(){
@@ -93,6 +177,78 @@ export default {
         this.getWithdrawalList(1);
     },
     methods:{
+        postTwoNext(params){
+            twoNext(params).then(res => {
+                console.log(res)
+                if(res.code == 200){
+                    this.account3 = this.count;
+                    this.name3 = this.name;
+                    this.price3 = this.dmoney;
+                    this.current++;
+                }else{
+                    this.$message.error('密码错误！')
+                }
+            })
+        },
+        postNextStptes(account,name,amount,type){
+            nextStptes(account,name,amount,type).then(res => {
+                console.log(res)
+                this.sprice = res.result.tax;
+                this.dprice = res.result.procedures;
+                this.dmoney = res.result.arrival;
+                this.persent1 = res.result.taxRate;
+                this.persent2 = res.result.proceduresRate
+            })
+        },
+        enterPassword(passWord){
+            this.passWord = passWord;
+        },
+        enterCount(count){
+            console.log(count)
+            this.count = count;
+        },
+        enterPrice(msg){
+            console.log(name)
+            this.price = msg[0];
+            this.totalMoney = msg[1];
+        },
+        enterName(name){
+            console.log(name)
+            this.name = name;
+        },
+        payType(type){
+            console.log(type)
+            this.paytype = type;
+        },
+        next() {
+            if(this.current == 0){
+                if(this.paytype){
+                    if(this.price > 100){
+                        if(this.price < this.totalMoney){
+                            this.current++;
+                            this.postNextStptes(this.count,this.name,this.price,this.paytype);
+                        }else{
+                            this.$message.error('提现余额不足！')
+                        }
+                        
+                    }else{
+                        this.$message.error('最小体现金额100元！')
+                    }
+                }else{
+                    this.$message.error('请选择收款账户！')
+                }
+            }else{
+                let params = {account: this.count,name:this.name,amount:this.price,type:this.paytype,tax:this.dprice,procedures:this.sprice,arrival:this.dmoney,password:this.passWord}
+                this.postTwoNext(params)
+            }
+        },
+        prev() {
+            this.current--
+        },
+        done(){
+            this.getWithdrawalList(1);
+            this.show = false;
+        },
         handleTableChange (pagination) {
                 //this.loading = true;
                 console.log(pagination.current);
@@ -147,6 +303,9 @@ export default {
         statusTypeFilter (type) {
                 return statusMap[type].status
         }
+    },
+    computed:{
+        
     }
 }
 </script>
@@ -154,5 +313,8 @@ export default {
 @import "./../../components/index.less";
 #Commissions{
     padding: 0 20px;
+}
+.commodal-box{
+    padding: 30px;
 }
 </style>

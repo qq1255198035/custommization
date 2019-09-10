@@ -1,6 +1,6 @@
 <template>
     <div>
-        <a :style="{width:width, height:height, paddingLeft: padding,paddingRight: padding,marginTop:top,borderRadius: radio,fontSize:fontsize,lineHeight:height,float:float}" :data-hover="title"  class="btns"  @click="btnSub"><span class="content-hover"><a-icon :type="icon" /><span>{{title}}</span></span></a>
+        <a :style="{width:width, height:height, paddingLeft: padding,paddingRight: padding,marginTop:top,borderRadius: radio,fontSize:fontsize,lineHeight:height,float:float}" :data-hover="title"  class="btns"  @click="btnSub"><span class="content-hover"><a-icon :type="icon" style="margin-right: 5px;"/><span>{{title}}</span></span></a>
         <slot></slot>
     </div>
 </template>
@@ -50,6 +50,8 @@ export default {
             this.$emit('checkDetail')
             this.$emit('neworder')
             this.$emit('btnClick')
+            this.$emit('handleLink')
+            this.$emit('handleLink1')
         }
     }
 };

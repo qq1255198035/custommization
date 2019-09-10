@@ -237,6 +237,75 @@ export function saveDesign(params) {
             'Content-Type': 'application/json;charset-UTF-8'
         },
         data:JSON.stringify(params)
-       
+    })
+}
+
+export function queryBalance() {
+    return axios({
+        url: '/ios/jeecgCommissionRecord/queryBalanceByToken',
+        method: 'post',
+    })
+}
+
+export function nextStptes(account,name,amount,type) {
+    return axios({
+        url: '/ios/jeecgCommissionRecord/oneNext',
+        method: 'post',
+        data:qs.stringify({account: account,name:name,amount:amount,type:type})
+    })
+}
+
+export function twoNext(params) {
+    return axios({
+        url: '/ios/jeecgCommissionRecord/twoNext',
+        method: 'post',
+        data:qs.stringify(params)
+    })
+}
+
+export function referencePic(pidStr) {
+    return axios({
+        url: '/system/jeecgGoodsPic/referencePic',
+        method: 'post',
+        data:qs.stringify({pidStr:pidStr})
+    })
+}
+
+export function deleteEXimg(id) {
+    return axios({
+        url: '/iso/jeecgGoodsPicDes/delete',
+        method: 'post',
+        data:qs.stringify({id:id})
+    })
+}
+
+export function sourceUpload(formData) {
+    return axios({
+        url: '/sys/oss/sourceUpload',
+        method: 'post',
+        headers: { "Content-Type": "multipart/form-data" },
+        data: formData
+    })
+}
+
+export function addEximg(pid,picUrl,remarks,fileUrl) {
+    return axios({
+        url: '/iso/jeecgGoodsPicDes/add',
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json;charset-UTF-8'
+        },
+        data:JSON.stringify({pid:pid,picUrl:picUrl,remarks:remarks,fileUrl:fileUrl})
+    })
+}
+
+export function addRemarks(id,remarks) {
+    return axios({
+        url: '/system/jeecgGoodsPic/addRemarks',
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json;charset-UTF-8'
+        },
+        data:JSON.stringify({pid:id,remarks:remarks})
     })
 }

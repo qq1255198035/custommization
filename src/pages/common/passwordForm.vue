@@ -1,18 +1,19 @@
 <template>
-<div>
-    <a-steps class="steps" :current="currentTab">
-      <a-step title="确认账号信息" />
-      <a-step title="修改密码" />
-      <a-step title="完成" />
-    </a-steps>
-    <div class="content">
-      <step1 v-if="currentTab === 0" @nextStep="nextStep"/>
-      <step2 :email="email" v-if="currentTab === 1" @nextStep="nextStep" @prevStep="prevStep"/>
-      <step3 v-if="currentTab === 2" @prevStep="prevStep" @finish="finish"/>
-    </div>
-</div>
+  <div style="padding-top: 200px;">
+    <a-card :bordered="false" style="display: block; width: 60%; background-color: #fff; margin: 0 auto; padding: 50px 0;">
+      <a-steps class="steps" :current="currentTab">
+        <a-step title="确认账号信息" />
+        <a-step title="修改密码" />
+        <a-step title="完成" />
+      </a-steps>
+      <div class="content">
+        <step1 v-if="currentTab === 0" @nextStep="nextStep"/>
+        <step2 :email="email" v-if="currentTab === 1" @nextStep="nextStep" @prevStep="prevStep"/>
+        <step3 v-if="currentTab === 2" @prevStep="prevStep" @finish="finish"/>
+      </div>
+    </a-card>
+  </div>
 </template>
-
 <script>
   import Step1 from './Step1'
   import Step2 from './Step2'
@@ -20,7 +21,6 @@
 
   export default {
     name: "passwordForm",
-    
     components: {
       Step1,
       Step2,
@@ -30,22 +30,22 @@
       return {
         description: '',
         currentTab: 0,
-
-        // form
+        email: '',
         form: null,
+        
       }
     },
     methods: {
-
-      // handler
       nextStep (data) {
           console.log(data)
+          console.log(11)
           this.email = data
         if (this.currentTab < 2) {
           this.currentTab += 1
         }
       },
       prevStep () {
+        
         if (this.currentTab > 0) {
           this.currentTab -= 1
         }
@@ -56,7 +56,6 @@
     }
   }
 </script>
-
 <style lang="less">
   .steps {
     max-width: 750px;

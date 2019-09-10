@@ -14,7 +14,7 @@
               size="large"
               type="text"
               placeholder="验证码"
-              v-decorator="['captcha', {rules: [{ required: true, message: '验证码' }], validateTrigger: 'blur'}]"
+              v-model="captcha"
             >
               <a-icon slot="prefix" type="mail" :style="{ color: 'rgba(0,0,0,.25)' }" />
             </a-input>
@@ -32,14 +32,18 @@
 </template>
 
 <script>
-import { passwordEmail } from "@/api/system";
+import { passwordEmail,checkCaptcha } from "@/api/system";
 export default {
   name: "Step1",
   data() {
     return {
       form: this.$form.createForm(this),
-      code: ""
+      code: "",
+      captcha: ''
     };
+  },
+  props:{
+    
   },
   methods: {
     setCode() {
@@ -80,7 +84,23 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           if (this.code == 0) {
-            this.$emit("nextStep", values.email);
+            if(this.captcha){
+              console.log(this.captcha)
+              checkCaptcha(values.email, this.captcha).then(res => {
+                  console.log(res)
+                 
+                    if(res.success){
+                      this.$emit("nextStep", values.email, this.captcha);
+                    }else{
+                      this.$message.error(res.message)
+                    }
+                  
+              })
+              //
+            }else{
+              this.$message.error('请填写验证码！')
+            }
+            
           }
         }
       });
