@@ -28,7 +28,7 @@
         <a-col :xxl="20" :xl="20">
           <!--<table-item :data="listLeft"></table-item>-->
           <a-table :columns="columns" :dataSource="data">
-            <img slot="positivePicUrl" style="width:120px" slot-scope="text" :src="text" alt="">
+            <img slot="positivePicUrl" style="width:120px" slot-scope="text" :src="text" alt />
           </a-table>
         </a-col>
         <!--list2-->
@@ -157,16 +157,14 @@
 </template>
 
 <script>
-import { payPal, paymentInfo, status, wxPay, wxOrderQuery } from "@/api/system";
-import { orderFroms } from "@/api/seller"
+import { payPal, wxPay, wxOrderQuery } from "@/api/system";
+import { orderFroms } from "@/api/seller";
 import MyPrimaryStpes from "@/components/MyPrimaryStpes/MyPrimaryStpes";
 import MyTitle from "@/components/MyTitle/MyTitle";
-import TableItem from "@/components/TableItem/TableItem";
-import TableList from "@/components/TableList/TableList";
 import commonBtn from "@/components/commonBtn/commonBtn";
 import User from "@/components/Header/User";
 import QRCode from "qrcode";
-import img from '@/assets/black.jpg'
+import img from "@/assets/black.jpg";
 export default {
   props: {},
   data() {
@@ -175,23 +173,23 @@ export default {
       prepayId: "",
       show: false,
       step: 1,
-      allPrice: '',
-      goodsPrice: '',
-      procedureMoney: '',
-      freight: '',
+      allPrice: "",
+      goodsPrice: "",
+      procedureMoney: "",
+      freight: "",
       value: 1,
       itemTitle: "订单信息",
       payTitle: "支付信息",
       data: [
         {
-          name: '短袖',
+          name: "短袖",
           imgUrl: img,
           quantity: 2,
           price: 150,
           money: 300
         },
         {
-          name: '裤衩',
+          name: "裤衩",
           imgUrl: img,
           quantity: 2,
           price: 150,
@@ -211,7 +209,7 @@ export default {
           width: "20%",
           align: "center",
           dataIndex: "positivePicUrl",
-          scopedSlots: { customRender: 'positivePicUrl' },
+          scopedSlots: { customRender: "positivePicUrl" }
         },
         {
           title: "数量",
@@ -237,8 +235,7 @@ export default {
   },
   computed: {},
   created() {
-    this._status();
-    this._orderFroms()
+    this._orderFroms();
   },
   mounted() {},
   watch: {},
@@ -246,28 +243,18 @@ export default {
     isHide() {
       this.show = false;
     },
-    _status() {
-      const param = {
-        user_order_id: this.$route.query.user_order_id
-      };
-      console.log(param);
-      status(param).then(res => {
-        console.log(res);
-        this.step = parseInt(res.result.schedule);
-      });
-    },
     _orderFroms() {
       const param = {
         orderId: this.$route.query.orderId
-      }
+      };
       orderFroms(param).then(res => {
-        console.log(res)
+        console.log(res);
         this.data = res.result.list;
         this.allPrice = res.result.allin;
         this.goodsPrice = res.result.amountAll;
         this.procedureMoney = res.result.procedureMoney;
-        this.freight = res.result.freight
-      })
+        this.freight = res.result.freight;
+      });
     },
     resultPsot(data) {
       const that = this;
@@ -340,8 +327,6 @@ export default {
   },
   components: {
     MyTitle,
-    TableItem,
-    TableList,
     commonBtn,
     User,
     MyPrimaryStpes

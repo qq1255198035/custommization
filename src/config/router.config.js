@@ -98,6 +98,11 @@ export const constantRouterMap = [
     component: () => import("@/pages/userSystem/paySuccess/paySuccess")
   },
   {
+    path: "/wxSuccess",
+    name: "wxSuccess",
+    component: () => import("@/pages/userSystem/wxSuccess/wxSuccess")
+  },
+  {
     path: "/unifiedpay",
     name: "unifiedpay",
     component: () => import("@/pages/Seller/UnifiedPay")
@@ -130,6 +135,12 @@ export const constantRouterMap = [
         name: "payment",
         hidden: true,
         component: () => import("@/pages/userSystem/payment/payment")
+      },
+      {
+        path: "/detarlsuccess",
+        name: "detarlsuccess",
+        hidden: true,
+        component: () => import("@/pages/Seller/DetarlSuccess")
       },
       {
         path: '/register',
@@ -166,6 +177,12 @@ export const constantRouterMap = [
         name: "design",
         hidden: true,
         component: () => import("@/pages/Seller/Design")
+      },
+      {
+        path: "/designList",
+        name: "designList",
+        hidden: true,
+        component: () => import("@/pages/Seller/DesignList")
       },
     ]
   },

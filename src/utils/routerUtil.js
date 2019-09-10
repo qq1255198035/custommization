@@ -81,8 +81,6 @@ export const generatorDynamicRouter = () => {
     getRouterByUser().then(res => {
       console.log(res)
       const result = res.result.menu
-      console.log(result)
-      console.log(res.result.menu)
       const resultList = [{
         component: "SellerLayout",
         meta: {
@@ -97,7 +95,6 @@ export const generatorDynamicRouter = () => {
       }]
       const routers = generator(resultList)
       routers.push(notFoundRouter)
-      console.log(routers)
       resolve(routers)
     }).catch(err => {
       reject(err)
@@ -114,13 +111,7 @@ export const generatorDynamicRouter = () => {
  */
 
 export const generator = (routerMap, parent) => {
-  console.log(parent)
-  console.log(routerMap)
-
-  console.log(routerMap)
   return routerMap.map(item => {
-    console.log(item)
-    console.log(constantRouterComponents)
     const currentRouter = {
       // 路由地址 动态拼接生成如 /dashboard/workplace
       path: `${parent && parent.path || ''}/${item.name}`,
@@ -134,9 +125,6 @@ export const generator = (routerMap, parent) => {
         icon: item.meta.icon || undefined
       }
     }
-    console.log(item.hidden)
-    console.log(currentRouter.path)
-    console.log(currentRouter.meta)
     // 为了防止出现后端返回结果不规范，处理有可能出现拼接出两个 反斜杠
     currentRouter.path = currentRouter.path.replace('//', '/')
 
@@ -147,7 +135,6 @@ export const generator = (routerMap, parent) => {
       // Recursion
       currentRouter.children = generator(item.children, currentRouter)
     }
-    console.log(currentRouter)
     return currentRouter
   })
 }

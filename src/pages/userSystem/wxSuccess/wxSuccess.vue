@@ -64,7 +64,7 @@
 </template>
 
 <script>
-import { payBack, status } from "@/api/system";
+import { wxPayBack, status } from "@/api/system";
 import MyStpes from "@/components/MyStpes/MyStpes";
 export default {
   props: {},
@@ -82,7 +82,7 @@ export default {
   },
   computed: {},
   created() {
-    this._payBack();
+    this._wxPayBack();
     this._status();
   },
   mounted() {},
@@ -90,7 +90,7 @@ export default {
   methods: {
     _status() {
       const param = {
-        user_order_id: this.$ls.get("userOrderId")
+        user_order_id: this.$route.query.user_order_id
       };
       console.log(param);
       status(param).then(res => {
@@ -98,17 +98,12 @@ export default {
         this.step = parseInt(res.result.schedule);
       });
     },
-    _payBack() {
+    _wxPayBack() {
       const param = {
-        paymentId: this.$route.query.paymentId,
-        token: this.$route.query.token,
-        PayerID: this.$route.query.PayerID,
-        user_order_id: this.$ls.get("userOrderId"),
-        order_id: this.$ls.get("orderId"),
-        price: this.$ls.get("price")
+        user_order_id: this.$route.query.user_order_id,
       };
       console.log(param);
-      payBack(param).then(res => {
+      wxPayBack(param).then(res => {
         console.log(res);
         if (res.code == 1) {
           this.code = 1;

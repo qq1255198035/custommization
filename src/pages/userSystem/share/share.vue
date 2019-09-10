@@ -1,5 +1,5 @@
 <template>
-  <div class="share-box">
+  <div class="share-boxs">
     <div class="wrapper-box">
       <header>
         <p class="icon-logotxt"></p>
@@ -265,7 +265,7 @@ export default {
   background-size: 100%;
 }
 
-.share-box {
+.share-boxs {
   width: 100%;
   //height: 100%;
   padding: 40px;

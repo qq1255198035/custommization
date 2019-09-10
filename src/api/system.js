@@ -99,7 +99,7 @@ export function apiPay(parameter) {
 export function wxPay(parameter) {
   return axios({
     url: '/api/wx/payBack',
-    method: 'get',
+    method: 'post',
     data: qs.stringify(parameter)
   })
 }
@@ -139,9 +139,18 @@ export function status(parameter) {
     data: qs.stringify(parameter)
   })
 }
+//
 export function payBack(parameter) {
   return axios({
     url: '/api1/paypal/payBack',
+    method: 'post',
+    data: qs.stringify(parameter)
+  })
+}
+//
+export function wxPayBack(parameter) {
+  return axios({
+    url: '/api/wx/wxOrderQueryPayList',
     method: 'post',
     data: qs.stringify(parameter)
   })
