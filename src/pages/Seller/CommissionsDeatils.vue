@@ -26,10 +26,6 @@ const statusMap = {
     3: {
         status: 'error',
         text: '打款失败'
-    },
-    30: {
-        status: 'processing',
-        text: '打款中'
     }
 }
 export default {
@@ -88,10 +84,10 @@ export default {
     },
     filters:{
         statusFilter (type) {
-            return statusMap[type].text
+            return statusMap[type].text;
         },
         statusTypeFilter (type) {
-                return statusMap[type].status
+            return statusMap[type].status;
         }
     }
 }

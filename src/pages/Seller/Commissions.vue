@@ -298,10 +298,10 @@ export default {
             return s.join(dec);
         },
         statusFilter (type) {
-                return statusMap[type].text
+                return statusMap[type].text || ''
         },
         statusTypeFilter (type) {
-                return statusMap[type].status
+                return statusMap[type].status || ''
         }
     },
     computed:{

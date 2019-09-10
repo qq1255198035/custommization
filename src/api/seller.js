@@ -402,3 +402,73 @@ export function addRemarks(id, remarks) {
         })
     })
 }
+
+export function colorList(status) {
+    return axios({
+        url: '/system/jeecgGoodsPic/color',
+        method: 'post',
+        data:qs.stringify({status:status})
+    })
+}
+
+export function changeFontFamily(params) {
+    return axios({
+        url: '/system/jeecgGoods/changeFont',
+        method: 'post',
+        data:qs.stringify(params)
+    })
+}
+
+export function changeGoodsColor(id,color) {
+    return axios({
+        url: '/system/jeecgGoods/changeGoodsColor',
+        method: 'post',
+        data:qs.stringify({goodsId: id,itemValue: color})
+    })
+}
+
+export function artFontList() {
+    return axios({
+        url: '/system/jeecgGoodsPic/artFont',
+        method: 'post'
+    })
+}
+
+export function changeFont(params) {
+    return axios({
+        url: '/system/jeecgGoods/changeFont',
+        method: 'post',
+        data:qs.stringify(params)
+    })
+}
+
+export function designList() {
+    return axios({
+        url: '/system/jeecgCart/carList',
+        method: 'post'
+    })
+}
+
+export function updateShow(id) {
+    return axios({
+        url: '/system/jeecgCart/updateShow',
+        method: 'post',
+        data:qs.stringify({id: id})
+    })
+}
+
+export function delDesignList(id) {
+    return axios({
+        url: '/system/jeecgCart/delete',
+        method: 'post',
+        data:qs.stringify({id: id})
+    })
+}
+
+export function handleDesignList(id) {
+    return axios({
+        url: '/system/jeecgCart/commitOrder',
+        method: 'post',
+        data:qs.stringify({id: id})
+    })
+}

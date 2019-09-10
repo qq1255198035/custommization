@@ -2,15 +2,7 @@
     <div id="OrderResult">
         <div class="header">
             <my-header></my-header>
-            <div id="User">
-                <span class="header-notice">
-                    <a-icon type="bell"/>
-                    <a-badge v-if="count" class="diount" :count="count" showZero></a-badge>
-                </span>
-                <span>
-                    <a-icon type="user"/>
-                </span>
-            </div>
+            <User :bellcolor="'#fff'" :usercolor="'#fff'"></User>
         </div>
         <div class="box1">
             <my-stpes :mycurrent="1" stpesnum="3">
@@ -31,11 +23,11 @@
                 <div class="desc">
                     <span></span>
                     <div class="container">
-                        <p>ddvdvddvdvdvvvdvdvdvdv</p>
-                        <p>dvdvdvdvvdvvdvvdvvdvdv</p>
+                        <p>预计我们会在3个工作日给您回复</p>
+                        <p>并在第四个工作日前给您提交一份设计手稿</p>
                         <div class="btn-box">
-                            <a-button>再来一单</a-button>
-                            <a-button>返回</a-button>
+                            <a-button @click="$router.push({path: '/neworder'})">再来一单</a-button>
+                            <a-button @click="$router.push({path: '/designList'})">返回</a-button>
                         </div>
                     </div>
                 </div>
@@ -46,10 +38,12 @@
 <script>
 import MyStpes from "@/components/MyStpes/MyStpes";
 import MyHeader from "@/components/Header/Header";
+import User from "@/components/Header/User";
 export default {
     components:{
         MyStpes,
         MyHeader,
+        User
     },
     data(){
         return{
@@ -132,15 +126,16 @@ export default {
                 background-color: #fff;
                 height: 300px;
                 margin-top: -8px;
-                padding-top: 50px;
+                padding-top: 80px;
                 P{
                     color: #333;
                     text-align: center;
-                    margin-bottom: 50px;
+                    margin-bottom: 10px;
                 }
                 .btn-box{
                     display: flex;
                     justify-content: center;
+                    margin-top: 50px;
                     button{
                         margin: 0 20px;
                         width: 88px;
