@@ -1,64 +1,72 @@
 <template>
   <div class="wrapper-design">
-    <div class="wrapper-box">
+    <div style="position: relative; height: 100%">
       <header>
         <p class="icon-logotxt"></p>
         <p>
           <User></User>
         </p>
       </header>
-      <a-table :columns="columns" :dataSource="dataDesign" :rowSelection="rowSelection">
-        <div slot="positivePicUrl" slot-scope="text">
-          <div v-for="item in text" :key="item.index">
-            <img :src="item" alt />
+      <div class="wrapper-box">
+      
+      <div style="padding: 30px;">
+        <a-table :columns="columns" :dataSource="dataDesign" :rowSelection="rowSelection" :pagination="false">
+          <div slot="positivePicUrl" slot-scope="text" style="display: flex;">
+            <div v-for="item in text" :key="item.index" style="width: 25%;">
+              <img :src="item" alt style="width: 100%;"/>
+            </div>
           </div>
-        </div>
-        <template slot="action">
-          <a-button>编辑</a-button>
-          <a-button>删除</a-button>
-        </template>
-      </a-table>
+          <div slot="goodsInfo" slot-scope="text" style="display: flex;">
+            <div style="width: 100%;">
+              <h2>{{text.title}}</h2>
+              <p>颜色:{{text.color}}</p>
+            </div>
+          </div>
+          <template slot="action" slot-scope="text,record">
+            <a-button style="margin-right: 10px;" @click="editDesign(text,record)">编辑</a-button>
+            <a-button @click="delDesign(text,record)">删除</a-button>
+          </template>
+        </a-table>
+      </div>
+      <div style="text-align: center; padding: 20px 0;">
+        <a-button type="primary" icon="plus" @click="$router.push({path: '/neworder'})">添加设计</a-button>
+        <a-button style="margin-left: 10px;" @click="posteDesignList(idArr)">提交</a-button>
+      </div>
     </div>
+    </div>
+    
   </div>
 </template>
 <script>
 import User from "@/components/Header/User";
 import img from "@/assets/black.jpg";
+import { designList,updateShow,delDesignList,handleDesignList } from "@/api/seller"
 const columns = [
   {
     title: "图片",
     dataIndex: "positivePicUrl",
     scopedSlots: { customRender: "positivePicUrl" },
-    key: "positivePicUrl"
+    key: "positivePicUrl",
+    width: "60%"
   },
   {
     title: "商品信息",
-    dataIndex: "goosInfo",
-    key: "goosInfo",
-    width: "12%"
+    dataIndex: "goodsInfo",
+    scopedSlots: { customRender: "goodsInfo" },
+    key: "goodsInfo",
+    width: "30%"
   },
   {
     title: "操作",
     dataIndex: "action",
     scopedSlots: { customRender: "action" },
-    width: "30%",
+    width: "10%",
     key: "action"
   }
 ];
 
-const dataDesign = [
-  {
-    key: 1,
-    positivePicUrl: [img],
-    goosInfo: "短袖"
-  },
-  {
-    key: 2,
-    positivePicUrl: [img],
-    goosInfo: "短袖"
-  }
-];
 
+let idArr = [];
 const rowSelection = {
   onChange: (selectedRowKeys, selectedRows) => {
     console.log(
@@ -69,6 +77,8 @@ const rowSelection = {
   },
   onSelect: (record, selected, selectedRows) => {
     console.log(record, selected, selectedRows);
+    idArr.push(record.key)
+    console.log(idArr)
   },
   onSelectAll: (selected, selectedRows, changeRows) => {
     console.log(selected, selectedRows, changeRows);
@@ -78,13 +88,65 @@ const rowSelection = {
 export default {
   data() {
     return {
-      dataDesign,
+      dataDesign:[],
       columns,
-      rowSelection
+      rowSelection,
+      list:[],
+      idArr
     };
   },
   components: {
     User
+  },
+  mounted(){
+    this.getDesignList();
+  },
+  methods:{
+    editDesign(a,b){
+      console.log(a,b)
+      updateShow(b.id).then(res => {
+        console.log(res)
+        if(res.code == 0){
+          this.$router.push({path:'/neworder', query:{res:res.result,show: true}})
+        }
+        // 
+      })
+    },
+    delDesign(a,b){
+      console.log(a,b)
+      let that = this;
+      that.$confirm({
+        title: "删除",
+        content: "确认删除吗？",
+        okText: "确认",
+        cancelText: "取消",
+        onOk() {
+            delDesignList(b.key).then(res => {
+              console.log(res)
+              if(res.code == 200){
+                that.getDesignList();
+              }
+            })
+        },
+        onCancel() {}
+      });
+      
+    },
+    getDesignList(){
+      designList().then(res => {
+        console.log(res)
+        this.dataDesign = res.result;
+      })
+    },
+    posteDesignList(id){
+      handleDesignList(id).then(res => {
+        console.log(res)
+        if(res.code == 200){
+          this.$router.push({path: '/orderres'})
+        }
+      })
+    }
+    
   }
 };
 </script>
@@ -93,24 +155,48 @@ export default {
 @import url("./../../assets/style.css");
 .wrapper-design {
   width: 100%;
+  height: 100%;
   padding: 40px;
-  .wrapper-box {
-    width: 100%;
-    height: 100%;
-    background: #fff;
-    border-radius: 10px;
-    header {
+  
+  header {
       display: flex;
       width: 100%;
       justify-content: space-between;
       border-bottom: 1px solid #33b8b3;
       padding: 30px;
+      position: absolute;
+      left: 0;
+      top: 0;
+      background-color: #fff;
+      z-index: 999;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
       p:nth-child(1) {
         color: #33b8b3;
         font-size: 60px;
         margin-bottom: 0;
       }
     }
+  .wrapper-box {
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    border-radius: 10px;
+    padding-top: 139px;
+    overflow-y: scroll;
+    
+    &::-webkit-scrollbar {  /*滚动条整体样式*/
+        width: 6px;  /*宽分别对应竖滚动条的尺寸*/
+        /*高分别对应横滚动条的尺寸*/
+        background-color: #33b8b3;
+        
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: #33b8b3;
+        border-radius:4px;
+        height: 10%;
+    }
+    
   }
 }
 </style>

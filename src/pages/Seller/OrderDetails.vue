@@ -40,7 +40,7 @@
         </a-col>
         <a-col :span="16" style="padding-right: 30px;padding-bottom: 20px;" class="scroll-box">
           <ul class="forms">
-            <a-form :form="myform" style="padding-left: 30px;">
+            <a-form :form="myform">
               <li>
                 <h3>预期订货数量</h3>
 
@@ -116,7 +116,7 @@
               <li>
                 <h3>
                   选择付款截止日期
-                  <span>描述1313213213213232</span>
+                  <!-- <span>描述1313213213213232</span> -->
                 </h3>
                 <a-form-item
                   class="my-form-item"
@@ -128,6 +128,7 @@
                     :disabledDate="disabledDate"
                     :disabledTime="disabledDateTime"
                     format="YYYY-MM-DD"
+                    style="margin-left: 30px;"
                     v-decorator="['closingDate',{rules: [{ type: 'object', required: true, message: '请填写时间' }]}]"
                   />
                 </a-form-item>
@@ -146,7 +147,7 @@
             <li>
               <h3>
                 运输方式
-                <span>描述4465+5+65+66+56+6+</span>
+                <!-- <span>描述4465+5+65+66+56+6+</span> -->
               </h3>
               <div class="select-way">
                 <a-radio-group @change="onChangeOne" v-model="value">
@@ -716,7 +717,7 @@ export default {
       this.endOpen = open;
     },
     onChange() {},
-    //onChangeOne(e) {},
+    onChangeOne(e) {},
     onChangeNums() {
       if(this.nums < this.minNums) {
         this.nums = this.minNums

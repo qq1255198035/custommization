@@ -1,13 +1,13 @@
 <template>
   <div id="User">
     <span @click="noticeBtn" style="padding:10px;cursor: pointer;">
-      <a-icon style="font-size: 30px; padding: 4px" type="bell" />
+      <a-icon style="font-size: 30px; padding: 4px" type="bell" :style="{color: bellcolor}"/>
     </span>
     <!--<notice></notice>-->
     <span>
       <a-dropdown>
         <a class="ant-dropdown-link" href="#">
-          <a-icon type="user" />
+          <a-icon type="user" :style="{color: usercolor}"/>
         </a>
         <a-menu slot="overlay" @click="onClick">
           <a-menu-item key="1"><a-icon type="logout" />退出登录</a-menu-item>
@@ -26,6 +26,14 @@ export default {
     return {
       count: 0
     };
+  },
+  props:{
+    bellcolor:{
+      default: '#33b8b3'
+    },
+    usercolor:{
+      default: '#33b8b3'
+    }
   },
   components: {
       //notice

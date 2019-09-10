@@ -173,6 +173,13 @@ export const constantRouterMap = [
         }
       },
       {
+        path: "/orderres",
+        name: "orderres",
+        component: () => import("@/pages/Seller/OrderResult"),
+        meta: {  
+        }
+      },
+      {
         path: "/design",
         name: "design",
         hidden: true,

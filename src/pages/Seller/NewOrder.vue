@@ -7,21 +7,32 @@
                         <My-Header></My-Header>
                         <a-menu
                             mode="inline"
-                            :defaultSelectedKeys="['sub00']" 
+                            :defaultSelectedKeys="['sub00']"
                             :openKeys="openKeys"
                             @click="handleClick"
                             @openChange="onOpenChange"
                         >
-                            <a-sub-menu  v-for="(item, index) in menuList" :key="index.toString()">
-                                <span slot="title" style="display: flex;align-items: center;"><a-avatar :size="20" :src="item.icon" style="margin-right: 5px;"/><span>{{item.title}}</span></span>
-                                <a-menu-item v-for="(sub,sindex) in item.subMenu" :key="'sub'+ index + sindex.toString()" @click="handleGetList(sub.categoryId)">{{sub.title}}</a-menu-item>
+                        <!-- <template v-for="item in menuList">
+                            <a-sub-menu :key="item.title" v-if="item.subMenu">
+                                <a-menu-item>
+
+                                </a-menu-item>
                             </a-sub-menu>
+                            <a-menu-item :key="item.title">
+
+                            </a-menu-item>
+                        </template> -->
+                        <a-sub-menu  v-for="(item, index) in menuList" :key="index.toString()">
+                            <span slot="title" style="display: flex;align-items: center;"><a-avatar :size="20" :src="item.icon" style="margin-right: 5px;" v-if="item.icon"/><span>{{item.title}}</span></span>
+                            <a-menu-item v-for="(sub,sindex) in item.subMenu" :key="'sub'+ index + sindex.toString()" @click="handleGetList(sub.categoryId)">{{sub.title}}</a-menu-item>
+                        </a-sub-menu>
+
                         </a-menu>
                     </div>
                 </a-col>
                 <a-col :span="18" style="height: 100%;">
                     <User style="background-color: #fff; padding-top: 20px;border-top-right-radius: 10px;"></User>
-                    
+
                     <div class="right">
                         <my-title :title="'新建订单'" :fontsize="20">
                             <a-button size="small" icon="rollback" style="font-size: 14px;" @click="$router.push({path:'/grouporder'})">返回</a-button>
@@ -36,7 +47,6 @@
                 </a-col>
             </a-row>
         </div>
-        
         <div id="Design" v-show="show">
             <a-modal
                 :visible="true"
@@ -119,7 +129,7 @@
                                     <span class="icon-zoomout"></span>
                                 </li>
                             </ul>
-                            
+
                         </div>
                         <div class="tools-box">
                             <div style="" class="scroll-box">
@@ -165,7 +175,7 @@
                                         <div class="add-text">
                                             <p>Add Text</p>
                                             <a-input v-model="addText"></a-input>
-                                            <a-button type="primary" @click="addItext" :disabled="!addText" style="border-radius: 12px;">添加设计</a-button>
+                                            <a-button type="primary" @click="addItext(addText)" :disabled="!addText" style="border-radius: 12px;">添加设计</a-button>
                                         </div>
                                     </div>
                                     <div class="tool-box6" v-show="visibletype == 1">
@@ -207,7 +217,7 @@
                                                 <span>.png</span>
                                             </p>
                                         </div>
-                                        
+
                                     </div>
                                     <div class="tool-box8" v-show="visibletype == 2">
                                         <dl>
@@ -303,7 +313,7 @@
                                         <my-title :title="'添加文字'"></my-title>
                                         <div class="second">
                                             <div class="text-tool">
-                                                
+
                                                 <div class="text-align">
                                                         <span @click="setTextalignLeft">
                                                             <a-icon type="align-left"/>
@@ -333,13 +343,20 @@
                                                         <p>字体样式</p>
                                                 </div>
                                             </div>
-                                            
+
                                         </div>
                                         <ul class="tool-list">
                                             <li @click="openFontFamilyBox">
                                                 <span>Change Font</span>
                                                 <p>
                                                     <span>{{fontfamily}}</span>
+                                                    <a-icon type="right" />
+                                                </p>
+                                            </li>
+                                            <li @click="visibletype = 12">
+                                                <span>改变字形</span>
+                                                <p>
+                                                    <span>{{fontShape}}</span>
                                                     <a-icon type="right" />
                                                 </p>
                                             </li>
@@ -508,10 +525,10 @@
                                                                 }
                                                                 ]"
                                                                 :disabled="!addNameData"
-                                                                placeholder="名称" 
+                                                                placeholder="名称"
                                                                 style="width: 100%;border-top-right-radius: 0px;border-bottom-right-radius: 0px; border-right: none;"/>
                                                             </a-form-item>
-                                                        
+
                                                             <a-form-item style="width: 20%; margin: 0;min-height: 58px;">
                                                                 <a-input v-decorator="[
                                                                 `number[${k}]`,
@@ -528,7 +545,7 @@
                                                                 placeholder="名称" style="width: 100%;border-radius: 0;border-right: none"/>
                                                             </a-form-item>
                                                             <a-form-item style="width: 30%; margin: 0;min-height: 58px;">
-                                                                <a-select 
+                                                                <a-select
                                                                     v-decorator="[
                                                                         `size[${k}]`,
                                                                         {
@@ -552,10 +569,10 @@
                                                                 :disabled="form1.getFieldValue('keys').length === 1"
                                                                 @click="() => removeInput(k)"
                                                             />
-                                                            
+
                                                     </a-input-group>
-                                                    
-                                                </a-form-item> 
+
+                                                </a-form-item>
                                                 <a-form-item>
                                                 <a
                                                     type="dashed"
@@ -575,7 +592,7 @@
                                                 </a-form-item>
                                             </a-form>
                                         </div>
-                                    
+
                                     </div>
                                     <div class="tool-box2" v-show="visibletype == 10">
                                         <h2 style="color: #333;text-align: left; border-bottom: 1px solid #333; padding-bottom: 5px;">
@@ -590,7 +607,7 @@
                                             </li>
                                             <li class="set-layer">
                                                 <span title="移动到顶层" @click="toTopLayer"><i class="icon-top_layer "></i></span>
-                                                
+
                                                 <span title="移动倒底层" @click="toBottomLayer"><i class="icon-last_layer"></i></span>
                                                 <p>分层</p>
                                             </li>
@@ -610,7 +627,7 @@
                                                 <a-switch v-model="delWhite"/>
                                             </li>
                                         </ul>
-                                        
+
                                         <!-- <dl>
                                                 <dt>
                                                     透明度：
@@ -651,7 +668,21 @@
                                             </li>
                                         </ul>
                                     </div>
-                                    
+                                    <div class="tool-box3" v-show="visibletype == 12">
+                                        <h2 style="color: #333;text-align: left; border-bottom: 1px solid #333; padding-bottom: 5px;">
+                                            <a-icon type="left" style="cursor: pointer;" @click="visibletype = 3"/>
+                                        </h2>
+                                        <ul class="font-family-list">
+                                            <li v-for="item in fontShapeArr" :key="item.itemText" @click="changeFontShape(item.itemText)">
+                                                <span>
+                                                    <img :src="item.itemValue" alt="">
+                                                </span>
+                                            </li>
+                                        </ul>
+                                        <div>
+                                            <a-button type="primary" @click="saveFontShapeDesign">保存设计</a-button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -690,7 +721,7 @@
                             :label-col="{ span: 7 }"
                             :wrapper-col="{ span: 17 }"
                             style="width: 45%;"
-                        >   
+                        >
                             <a-upload
                             listType="picture-card"
                             @preview="handlePreview"
@@ -714,7 +745,7 @@
                                     <span>.png</span>
                                 </p>
                             </div>
-                            
+
                         </a-form-item>
                         <a-form-item
                             label="图片说明"
@@ -750,8 +781,8 @@
                         <p>附加提示，此成功提示出现一系列任务之后，比如在弹窗操作了分步表单任务，完成最后一步后提示。简单的弹窗任务直接使用Message提示。</p>
                     </div>
                     <div class="btn-box">
-                        <a-button icon="file-text">订单列表</a-button>
-                        <a-button type="primary" icon="" style="vertical-align: middle;">
+                        <a-button icon="file-text" @click="$router.push({path:'/designList'})">订单列表</a-button>
+                        <a-button type="primary" icon="" style="vertical-align: middle;" @click="$router.push({path: '/designList'})">
                             <img src="@/assets/monry-icon-bar.png" alt="" width="12" height="19" style="margin-right: 5px;">
                             立即下单
                         </a-button>
@@ -759,7 +790,6 @@
                 </div>
             </a-modal>
         </div>
-        
     </div>
 </template>
 <script>
@@ -778,7 +808,7 @@ import img1 from '@/assets/0001.png';
 import GoodsList from "@/components/GoodsList/GoodsList";
 import User from '@/components/Header/User';
 import MyHeader from '@/components/Header/Header';
-import { 
+import {
         listAll,
         categoryList,
         selectById,
@@ -790,7 +820,9 @@ import {
         addRemarks,
         colorList,
         changeFontFamily,
-        changeGoodsColor
+        changeGoodsColor,
+        artFontList,
+        changeFont
     } from "@/api/seller";
 
 
@@ -813,7 +845,7 @@ export default {
             pageNum: 1,
             id:'',
             btnable:false,
-            
+            fontShapeArr:[],
             nameSize:20,
             numberSize:150,
             namePosition:0,
@@ -859,7 +891,7 @@ export default {
             bgcolor:'#000',
             fontBgColorName:'黑色',
             // 选择展示的颜色及颜色名
-
+            fontShape: '',
             colorShow: '#000',
             colorShowName: '黑色',
             resize,
@@ -898,7 +930,7 @@ export default {
             filpx:false,
             filpy:false,
             fontfamily:'',
-            
+
             // 旋转数值
             rotateNum:0,
             addText:'',
@@ -970,7 +1002,7 @@ export default {
     },
     created(){
         this.getAllList();
-        
+
     },
     beforeCreate () {
         this.form1 = this.$form.createForm(this);
@@ -1009,20 +1041,101 @@ export default {
             this.handleObjectScale(this.myCanvas4);
             this.setEditIcon();
             this.setEditPointer();
-            
+            if(this.$route.query.res){
+                this.loadFromJSON(this.$route.query.res)
+                console.log(this.$route.query.res)
+            }
             //console.log(this.form)
         })
+        this.getWindowScreen();
+        this.getArtFontList();
+        this.show = this.$route.query.show ? this.$route.query.show : false
         
     },
-    
+
     methods:{
+        loadFromJSON (json) {
+            let that = this;
+            that.myCanvas.loadFromJSON(json, that.myCanvas.renderAll.bind(that.myCanvas), function (
+                o,
+                object
+            ) {
+                console.log(o,object)
+            });
+        },
+        handleChangeFont(params){
+            let that = this;
+            changeFont(params).then(res => {
+                console.log(res)
+                if(res.code == 0){
+                    fabric.Image.fromURL(res.result, function(Img) {
+                        Img.on("selected", function() {
+                            let obj = that.myCanvas.getActiveObject();
+                            that.liClick = 0;
+                            that.visibletype = 3;
+                            // that.opacity = obj.opacity;
+                            // that.rotateNum = obj.angle;
+                        });
+                        if(that.myCanvas.getActiveObject()){
+                            let obj = that.myCanvas.getActiveObject();
+                            let width = obj.width;
+                            let height = obj.height;
+                            let left = obj.left;
+                            let top = obj.top;
+                            that.myCanvas.add(
+                            Img.set({
+
+                                width: width,
+                                height :height,
+                                lockUniScaling:true, // When `true`, object non-uniform scaling is locked
+                                left: left,
+                                top: top,
+                                crossOrigin: "*",
+                            })).setActiveObject(Img);
+                        }else{
+                            that.myCanvas.add(
+                                Img.set({
+                                    lockUniScaling:true, // When `true`, object non-uniform scaling is locked
+                                    left: 200,
+                                    top: 150,
+                                    maxWidth: 200,
+                                    crossOrigin: "*",
+                                })
+                            ).setActiveObject(Img);
+                        }
+                        console.log(Img)
+                    });
+                }
+            })
+        },
+        saveFontShapeDesign(){
+            fontShape
+        },
+        getArtFontList(){
+            artFontList().then(res => {
+                console.log(res)
+                this.fontShapeArr = res.result;
+            })
+        },
+        changeFontShape(item){
+            this.fontShape = item;
+        },
+        getWindowScreen(){
+            let screenWidths = window.screen.width;
+            console.log(screenWidths)
+            if(screenWidths > 1366){
+                this.screenWidth = 600;
+            }else if(screenWidths <= 1366){
+                this.screenWidth = 550;
+            }
+        },
         PostChangeGoodsColor(id,color){
             changeGoodsColor(id,color).then(res => {
                 console.log(res)
-                this.postId
+                //this.postId
             })
         },
-        
+
         PostChangeFontFamily(){
 
         },
@@ -1044,7 +1157,7 @@ export default {
                         this.designId = res.result
                     }
                 }
-                
+
 
             })
         },
@@ -1150,7 +1263,7 @@ export default {
                     }).start();
             },10)
             this.getSelectById(id);
-            
+
         },
         loadMore(){
             let that = this;
@@ -1285,7 +1398,7 @@ export default {
                         options.target.lockScalingY = false;
                         options.target.scale(options.target.scaleX);
                     }
-                
+
                 document.onkeydown = function(e) {
                     if (e.keyCode == 8) {
                     that.myCanvas.remove(options.target);
@@ -1294,7 +1407,7 @@ export default {
                 }
             });
         },
-        
+
         removeInput(k) {
             const { form1 } = this;
             // can use data-binding to get
@@ -1355,7 +1468,7 @@ export default {
                             this.myCanvas.requestRenderAll();
                     }
                 }
-                
+
         },
         // 设置文字下划线
         setTextDown(){
@@ -1383,7 +1496,7 @@ export default {
                 }
             }
         },
-        /** 
+        /**
          * 1：改变字体颜色的
          * 2：改变字体背景颜色
          * 3：改变描边颜色
@@ -1391,29 +1504,29 @@ export default {
          * 5：改变名字颜色
          * 6：改变号码颜色
          * 7：改变产品颜色
-         * 
+         *
         */
         changeAllColor(val,name,i){
             if(this.colorKey == 1){
                 this.changeFillColor(val,name,i)
                 this.fontColorIcon1 = i
-                
+
             }else if(this.colorKey == 2){
                 this.changeTextBgColor(val,name,i)
                 this.fontColorIcon2 = i
-               
+
             }else if(this.colorKey == 3){
                 this.changestrokeColor(val,name,i)
                 this.fontColorIcon3 = i
-               
+
             }else if(this.colorKey == 4){
                 this.changeShadowColor(val,name,i)
                 this.fontColorIcon4 = i
-                
+
             }else if(this.colorKey == 5){
                 this.changeFillColor(val,name,i)
                 this.fontColorIcon5 = i
-                
+
             }else if(this.colorKey == 6){
                 this.changeFillColor(val,name,i)
                 this.fontColorIcon6 = i
@@ -1422,12 +1535,12 @@ export default {
         },
         // 字体背景色
         changeTextBgColor(val,name){
-           
+
             let obj = this.myCanvas.getActiveObject();
             this.bgcolor = val;
             if (obj) {
                 obj.set("textBackgroundColor", val);
-               
+
                 this.myCanvas.requestRenderAll();
             }
             this.fontBgColorName = name;
@@ -1438,7 +1551,7 @@ export default {
                 this.shadowColor = val;
                 if (obj) {
                     obj.set('shadow', this.shadowColor +' '+ this.Shadow1 +' '+ this.Shadow2 +' '+ this.Shadow3);
-                  
+
                     this.myCanvas.requestRenderAll();
                 }
                 this.shadowColorName = name;
@@ -1470,7 +1583,7 @@ export default {
             if(this.uploadA){
                 this.fileList = fileList
             }
-            
+
         },
         handlePreview (file) {
             this.previewImage = file.url || file.thumbUrl
@@ -1485,14 +1598,14 @@ export default {
                 if(res.code == 200){
                     this.example = false;
                     this.$message.success('提交成功！');
-                    
+
                     if(res.result){
                         this.designId = res.result;
                     }
                     this.getReferencePic(this.designId);
                     console.log(this.designId)
-                    
-                    
+
+
                 }
             })
         },
@@ -1562,13 +1675,13 @@ export default {
                 });
                 that.myCanvas.add(that.exampleNumber).setActiveObject(that.exampleNumber);
                 that.exampleNumber.on("selected", function() {
-                    
+
                     that.liClick = 2;
                     that.visibletype = 2;
                 })
             }).catch(function(e) {
                 console.log(e)
-                
+
             });
         },
 
@@ -1588,16 +1701,16 @@ export default {
                 });
                 that.myCanvas.add(that.exampleName).setActiveObject(that.exampleName);
                 that.exampleName.on("selected", function() {
-                    
+
                     that.liClick = 2;
                     that.visibletype = 2;
                 })
             }).catch(function(e) {
                 console.log(e)
-                
+
             });
         },
-        
+
         addName (e) {
             console.log(`checked = ${e.target.checked}`)
             let that = this;
@@ -1620,7 +1733,7 @@ export default {
                     that.myCanvas2.remove(that.exampleName);
                 }
             }
-            
+
         },
         moreImgs(){
             this.visibletype = 11;
@@ -1629,7 +1742,7 @@ export default {
             if(file.size / 1024 / 1024 < 10){
                 this.uploadA = true
                 this.postSourceUpload(file)
-                
+
             }else{
                 this.$message.error('图片大小超出限制！');
                 this.uploadA = false
@@ -1690,7 +1803,7 @@ export default {
                     // that.skewy = obj.skewY;
                     that.rotateNum = obj.angle;
                 });
-                oImg.crossOrigin='Anonymous';
+
                 that.myCanvas.add(
                         oImg.set({
                             id: id,
@@ -1703,13 +1816,14 @@ export default {
                             top: 150,
                             scaleX: 0.5,
                             scaleY:0.5,
-                            maxWidth: 200
+                            maxWidth: 200,
+                            crossOrigin: "*",
                         })
-                        
+
                 ).setActiveObject(oImg);
                 console.log(oImg)
             });
-                
+
         },
         // 添加图片结束
         handleObjectMove(object){
@@ -1746,7 +1860,7 @@ export default {
                 }
 
                 // if you need margins set them here
-                
+
                 var top_margin,bottom_margin,left_margin,right_margin
                 if(zoom > 1){
                         top_margin = 0;
@@ -1768,41 +1882,41 @@ export default {
                 if( w > c_width ) {
                 obj.set('left',left_bound);
                 } else {
-                obj.set('left',Math.min(Math.max(left, left_bound), right_bound));          
+                obj.set('left',Math.min(Math.max(left, left_bound), right_bound));
                 }
 
                 if( h > c_height ) {
                         obj.set('top',top_bound);
                         console.log(top_bound)
-                        
+
                 } else {
-                        obj.set('top',Math.min(Math.max(top, top_bound), bottom_bound)); 
-                        console.log(top_bound)       
+                        obj.set('top',Math.min(Math.max(top, top_bound), bottom_bound));
+                        console.log(top_bound)
                 }
             });
         },
 
         handleObjectScale(object){
             let that = this;
-            
+
             object.on("object:scaling",that.onObjectScaled)
-            
+
         },
         onObjectScaled(e){
             var scaledObject = e.target;
             scaledObject.lockScalingFlip = true;
             var startX =scaledObject.getPointByOrigin("left","top").x.toFixed();
             var startY =scaledObject.getPointByOrigin("left","top").y.toFixed();
-            var maxWidth = 400 - startX;// scaledObject.aCoords.tl.x; 
+            var maxWidth = 400 - startX;// scaledObject.aCoords.tl.x;
             var maxHeight = 450 -startY;
             scaledObject.setCoords();
-            
+
             var isOnScreen = scaledObject.isContainedWithinRect({x:200,y:150},{x:400,y:450},true,true);
             // console.log("onscreen:",isOnScreen);
             if(!isOnScreen) {
                 // console.log("xy:",startX,startY);
                 // console.log("max:",maxWidth,maxHeight);
-                
+
                 var w = scaledObject.width;
                 var h = scaledObject.height;
                 // console.log("wh:",w,h);
@@ -1818,8 +1932,8 @@ export default {
             }
             return true;
         },
-        
-        
+
+
         // 切换正反左右面
         changeModelDesign(i){
             console.log(i)
@@ -1860,9 +1974,9 @@ export default {
                 scaleX: that.screenWidth / 600,
                 scaleY: that.screenWidth / 600,
                 // *圖片跨域
-                crossOrigin: "*"
+                crossOrigin: "*",
             });
-            
+
         },
         zoomIn(){
             var zoom = this.myCanvas.getZoom();
@@ -1915,43 +2029,10 @@ export default {
             }
         },
         // 添加文字
-        addItext(text, options) {
-            let that = this;
-            if(that.addText){
-                options = Object.assign({ fontSize: 30, fillColor: '#000000', shadow:'#000 0 0 0',strokeWidth: 0,stroke: '#000',registeObjectEvent: true,textBackgroundColor:'' }, options);
-                var canvasObj = new fabric.Textbox(that.addText, {
-                        ...options,
-                        fill: options.fillColor,
-                        textBackgroundColor: options.textBackgroundColor,
-                        strokeWidth:options.strokeWidth,
-                        stroke:options.stroke,
-                        shadow:options.shadow,
-                        fontFamily: 'Microsoft YaHei',
-                        originX:'center',
-                        originY:'center',
-                        left: that.screenWidth / 2,
-                        top: that.screenWidth / 2
-                });
-                canvasObj.on("selected", function() {
-                    let obj = that.myCanvas.getActiveObject();
-                    that.liClick = 0;
-                    that.visibletype = 3
-                    console.log(obj.angle)
-                    that.color = obj.fill;
-                    
-                    that.bgcolor = obj.textBackgroundColor || '#000000';
-                    that.stroke = obj.stroke;
-                    that.strokeWidth = obj.strokeWidth;
-                    that.Shadow1 = obj.shadow.offsetX;
-                    that.Shadow2 = obj.shadow.offsetY;
-                    that.Shadow3 = obj.shadow.blur;
-                    that.shadowColor = obj.shadow.color;
-                    that.fontfamily = obj.fontFamily
-                });
-                console.log(canvasObj)
-                that.myCanvas.add(canvasObj).setActiveObject(canvasObj);
-                that.visibletype = 3;
-            }
+        addItext(text) {
+            let params = {text: text,style:'',fontName:'Microsoft YaHei',fontHeight: 30, fontColor: '#000', lineweight: 0, outLineColor: '', effect: ''}
+            this.handleChangeFont(params)
+
         },
         // 加载资源字体
         loadAndUse(font) {
@@ -1970,7 +2051,7 @@ export default {
         setObjCenter(){
             let t = this.myCanvas.getActiveObject();
             t.center();
-            t.setCoords(); 
+            t.setCoords();
         },
 
         setTextalignLeft(){
@@ -2009,11 +2090,11 @@ export default {
             this.visibletype = 8;
             this.colorTitle = title;
             this.colorKey = key;
-            
+
             console.log(key,title);
             this.getColorList(key);
             this.handleColorShow();
-            
+
         },
         // 打开改变描边样式盒子
         // openFontOutlineBox(){
@@ -2069,13 +2150,13 @@ export default {
             this.fontfamily = value;
             if (value == 'testFont') {
                 this.loadAndUse(value);
-                
+
             }else{
                 let obj = this.myCanvas.getActiveObject()
                 if (obj) {
                         obj.set('fontFamily', value);
                         this.myCanvas.requestRenderAll();
-                        
+
                 }
             }
         },
@@ -2083,19 +2164,19 @@ export default {
             let obj = this.myCanvas.getActiveObject();
             if (obj) {
                 obj.set("fill", val);
-                
+
                 this.myCanvas.requestRenderAll();
                 this.colorName = name;
                 this.color = val;
             }
-            
+
         },
         // 改变描边样式开始
         changestrokeColor(val,name){
             let obj = this.myCanvas.getActiveObject()
             if (obj) {
                 obj.set('stroke', val);
-               
+
                 this.myCanvas.requestRenderAll();
             }
             this.strokeColorName = name;
@@ -2114,7 +2195,7 @@ export default {
             fabric.Canvas.prototype.customiseControls({
                 br: {
                         action: "scale"
-                       
+
                 },
                 ml:{
                     action: "scale"
@@ -2194,7 +2275,7 @@ export default {
         }
     },
     computed:{
-        
+
     }
 }
 </script>
@@ -2221,7 +2302,7 @@ export default {
             color: #33b8b3;
         }
     }
-} 
+}
 
 #NewOrder{
     width: 100%;
@@ -2241,7 +2322,7 @@ export default {
         }
         .right{
             background-color: #fff;
-            
+
             border-bottom-right-radius: 10px;
             padding: 20px;
             height: calc(100% - 78px);
@@ -2251,7 +2332,7 @@ export default {
                     width: 6px;  /*宽分别对应竖滚动条的尺寸*/
                     /*高分别对应横滚动条的尺寸*/
                     background-color: #fff;
-                    
+
             }
             &::-webkit-scrollbar-thumb {
                 background-color: #33b8b3;
@@ -2259,14 +2340,14 @@ export default {
                 height: 10%;
             }
             .btn-box{
-                margin-top: 20px; 
+                margin-top: 20px;
                 position: absolute;
                 bottom: 10px;
                 left: 50%;
             }
         }
     }
-    
+
 }
 #DesignBox{
     width: 100%;
@@ -2316,19 +2397,19 @@ export default {
             justify-content: center;
             align-items: center;
             min-width: 640px;
-            padding: 20px;
+            padding: 51px;
             position: relative;
             .canvas-container{
                 z-index: 100;
                 position: relative;
                 .moving-box{
-                    position:absolute; 
+                    position:absolute;
                     border: 1px solid #000;
                     z-index: 200;
                     > div:nth-child(1){
                         width: 150px;
                         height: 250px;
-                        position: absolute; 
+                        position: absolute;
                         left: 25px;
                         top: 25px;
                         border: 1px solid #000;
@@ -2336,7 +2417,7 @@ export default {
                     > div:nth-child(2){
                         width:80px;
                         height: 80px;
-                        position: absolute; 
+                        position: absolute;
                         right: 10px;
                         top: 10px;
                         border: 1px solid #000;
@@ -2370,7 +2451,7 @@ export default {
                     border: 1px solid #ccc;
                     margin-bottom: 20px;
                     padding: 10px;
-                    cursor: pointer; 
+                    cursor: pointer;
                     img{
                         width: 100%;
                     }
@@ -2388,9 +2469,9 @@ export default {
                         font-size: 30px;
                     }
                 }
-                
+
             }
-            
+
         }
         .tools-box{
             width: calc(35% - 90px);
@@ -2398,28 +2479,28 @@ export default {
             overflow: hidden;
             border-radius:  0 0 10px 0;
             .scroll-box{
-                width: 100%; 
+                width: 100%;
                 height: 100%;
-                max-height: 640px; 
+                max-height: 700px;
                 overflow-y:scroll;
                 &::-webkit-scrollbar {  /*滚动条整体样式*/
                     width: 6px;  /*宽分别对应竖滚动条的尺寸*/
                     /*高分别对应横滚动条的尺寸*/
                     background-color: #fff;
-                    
+
                 }
                 &::-webkit-scrollbar-thumb {
                     background-color: #33b8b3;
                     border-radius:4px;
                     height: 10%;
                 }
-                
+
             }
             .drawer{
                 width: 100%;
                 border-radius: 10px;
                 padding: 20px 10px;
-                
+
                 .controlers{
                         display: flex;
                         align-items: center;
@@ -2509,12 +2590,12 @@ export default {
                         input{
                                 margin: 20px 0;
                                 width: 80%;
-                                
+
                                 border-color: #33b8b3;
                                 border-radius: 12px;
                         }
                     }
-                    
+
                 }
                 .tool-box2{
                     .tool-list{
@@ -2557,7 +2638,7 @@ export default {
                                 display: inline-block;
                                 cursor: pointer;
                                 &:nth-child(1){
-                                   
+
                                     border-top-right-radius: 0;
                                     border-bottom-right-radius: 0;
                                 }
@@ -2567,14 +2648,14 @@ export default {
                                     border-bottom-left-radius: 0;
                                 }
                             }
-                            
+
                         }
                     }
                     .set-rotate{
                         border-bottom: 1px solid #ccc;
                         padding-bottom: 10px;
                     }
-                    
+
                 }
                 .tool-box3{
                         .font-family-list{
@@ -2615,7 +2696,7 @@ export default {
                                     border: 1px solid #ddd;
                             }
                         }
-                        
+
                 }
                 .tool-box5{
                     h3{
@@ -2716,7 +2797,7 @@ export default {
                             padding: 10px 0;
                             border-bottom: 1px solid #ccc;
                             span{
-                               
+
                                 color: #33b8b3;
                             }
                             > div{
@@ -2813,7 +2894,7 @@ export default {
                                     }
                                     &:nth-child(3){
                                         border-radius: 0;
-                                       
+
                                         border-right: none;
                                     }
                                     &:nth-child(4){
@@ -2829,11 +2910,17 @@ export default {
                                     color: #33b8b3;
                                 }
                             }
+                            .active{
+                                background-color: #33b8b3 !important;
+                                i{
+                                    color: #fff !important;
+                                }
+                            }
                             p{
                                 text-align: center;
                                 margin: 0 10px;
                             }
-                                
+
                         }
                     }
                     .stroke-style{
@@ -2842,7 +2929,7 @@ export default {
                         }
                     }
                     > dl{
-                       
+
                         padding-bottom: 10px;
                         border-bottom: 1px solid #ccc;
                         .title{
@@ -2866,7 +2953,7 @@ export default {
                                         margin-right: 5px;
                                         display: flex;
                                         align-items: center;
-                                        
+
                                 }
                             }
                             &:nth-child(2){
@@ -2874,7 +2961,7 @@ export default {
                             }
                         }
                     }
-                    
+
                     .tool-list{
                         margin-top: 10px;
                         padding-top: 10px;
@@ -2887,7 +2974,7 @@ export default {
                         }
                         li{
                             padding: 10px 0;
-                            border-bottom:1px solid #ccc; 
+                            border-bottom:1px solid #ccc;
                             display: flex;
                             justify-content: space-between;
                             align-items: center;
@@ -2903,7 +2990,7 @@ export default {
                                         margin-right: 5px;
                                         display: flex;
                                         align-items: center;
-                                        
+
                                 }
                             }
                         }
@@ -2943,7 +3030,7 @@ export default {
                             margin: 4px;
                             cursor: pointer;
                             position: relative;
-                            
+
                         }
                     }
                 }
@@ -2986,7 +3073,7 @@ export default {
                                 width: calc(100% - 100px);
                                 height: 100%;
                                 justify-content: space-between;
-                                align-items: flex-start; 
+                                align-items: flex-start;
                                 p{
                                     margin: 0;
                                 }
@@ -3018,26 +3105,26 @@ export default {
                     font-size: 18px;
                     margin-left: 10px;
                 }
-                
+
             }
-            
+
         }
         li{
             button{
                     margin-left: 20px;
-                    
+
                     border-radius: 12px;
                     font-size: 16px;
                     &:nth-child(2){
                         box-shadow: 2px 0 5px rgba(0, 0, 0, 0.25);
                     }
-                    
-                    
+
+
                     i{
                         font-size: 16px;
                         vertical-align: middle;
                     }
-                    
+
                     &:hover{
                         background-color: #33b8b3;
                         box-shadow: 2px 0 5px rgba(0, 0, 0, 0.25);
@@ -3046,7 +3133,7 @@ export default {
                             color: #fff;
                         }
                     }
-                    
+
                 }
         }
     }
@@ -3083,7 +3170,7 @@ export default {
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-top: 30px; 
+            margin-top: 30px;
             > i{
                 font-size: 100px;
                 color: #33b8b3;
@@ -3099,7 +3186,7 @@ export default {
                     font-size: 20px;
                 }
             }
-           
+
         }
         > p{
             width: 70%;
