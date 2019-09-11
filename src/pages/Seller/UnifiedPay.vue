@@ -169,6 +169,7 @@ export default {
   props: {},
   data() {
     return {
+      type: '',
       websocket: null,
       prepayId: "",
       show: false,
@@ -249,6 +250,8 @@ export default {
       };
       orderFroms(param).then(res => {
         console.log(res);
+        this.type = res.result.type;
+        this.$ls.set('types', res.result.type)
         this.data = res.result.list;
         this.allPrice = res.result.allin;
         this.goodsPrice = res.result.amountAll;
@@ -280,7 +283,8 @@ export default {
       console.log(this.value);
       const param = {
         order_id: this.$route.query.orderId,
-        price: this.allPrice
+        price: this.allPrice,
+        type: this.type
       };
       if (this.value == 1) {
         console.log(param);

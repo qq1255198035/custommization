@@ -362,7 +362,8 @@ export default {
       const param = {
         order_id: this.userId,
         user_order_id: this.$route.query.user_order_id,
-        price: this.allPrice.order_price
+        price: this.allPrice.order_price,
+        type: this.$ls.get('types')
       };
       if (this.value == 1) {
         console.log(param);

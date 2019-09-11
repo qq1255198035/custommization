@@ -1,38 +1,41 @@
 <template>
   <div id="TableItem">
-    <div class="check font-reset">
-      {{data.name}}
+      <div class="check font-reset">
+      {{datas.name}}
       <slot></slot>
     </div>
     <div class="img-box">
       <a-row :gutter="24">
         <a-col :span="6">
-          <img :src="data.positive_pic_url" alt />
+          <img :src="datas.positive_pic_url" alt />
         </a-col>
         <a-col :span="6">
-          <img :src="data.back_pic_url" alt />
+          <img :src="datas.back_pic_url" alt />
         </a-col>
         <a-col :span="6">
-          <img :src="data.left_pic_url" alt />
+          <img :src="datas.left_pic_url" alt />
         </a-col>
         <a-col :span="6">
-          <img :src="data.right_pic_url" alt />
+          <img :src="datas.right_pic_url" alt />
         </a-col>
       </a-row>
     </div>
+    
   </div>
 </template>
 <script>
 export default {
   props: {
-    data: {}
+    datas: {
+      
+    }
   },
   data() {
     return {};
   },
   components: {},
   created() {
-    console.log(this.data);
+    console.log(this.datas);
   }
 };
 </script>

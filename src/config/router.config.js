@@ -141,6 +141,12 @@ export const constantRouterMap = [
         }
       },
       {
+        path: "/sellerShare",
+        name: "sellerShare",
+        hidden: true,
+        component: () => import("@/pages/common/sellerShare/sellerShare"),
+      },
+      {
         path: "/payment",
         name: "payment",
         hidden: true,

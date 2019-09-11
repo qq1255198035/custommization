@@ -403,8 +403,8 @@ export default {
     },
     requestFailed(err) {
       this.$notification["error"]({
-        message: "登录失败",
-        description: ((err.response || {}).data || {}).message || "1212",
+        message: "失败",
+        description: ((err.response || {}).data || {}).message || "失败",
         duration: 4
       });
       this.registerBtn = false;

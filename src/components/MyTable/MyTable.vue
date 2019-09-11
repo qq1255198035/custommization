@@ -1,8 +1,8 @@
 <template>
   <div id="table">
     <a-table
-      :columns="columns"
-      :dataSource="data"
+      :columns="colmons"
+      :dataSource="dataSize"
       :pagination="false"
       :loading="memberLoading"
       :rowClassName="function(){return 'table-row'}"
@@ -11,29 +11,29 @@
         <a-select
           class="btn-width"
           @change="handleChange(record.key,col,$event)"
-          v-if="col == 'size'"
+          v-if="col == 'sizes'"
           :key="col"
           placeholder="请选择尺码"
         >
-          <a-select-option v-for="(sitem,index) in size" :key="index" :value="sitem">{{sitem}}</a-select-option>
+          <a-select-option v-for="(sitem,index) in sizes" :key="index" :value="sitem">{{sitem}}</a-select-option>
         </a-select>
         <!-- <Stepper :num="record.number" @onPropsChange="change(record.key,col,)" v-if="col == 'number'" :key="col"></Stepper> -->
-        <div id="steppers" v-if="col == 'quantity'" :key="col">
+        <div id="steppers" v-if="col == 'price'" :key="col">
           <button class="left" @click="clickLeftbtn(record.key,col)">-</button>
           <input
             type="number"
             min="1"
             max="Infinity"
             class="stepper-input"
-            :value="record.quantity"
+            :value="record.number"
           />
           <button class="right" @click="clickRightbtn(record.key,col)">+</button>
         </div>
         <a-input
           class="text-cen btn-width"
-          v-if="col == 'total_price'"
+          v-if="col == 'price'"
           :key="col"
-          :value="record.total_price"
+          :value="record.price"
           style="background-color: rgba(255,255,255,0); border:none;"
         />
       </template>
@@ -70,12 +70,15 @@
 import commonBtn from "@/components/commonBtn/commonBtn";
 export default {
   props: {
-    dataList: {},
+    dataList: [],
     dataSize: {},
     dataSizeText: {
       type: Array
     },
     size: {
+      type: Array
+    },
+    columns: {
       type: Array
     }
   },
@@ -84,43 +87,46 @@ export default {
   },
   created() {
     this._price();
+    
+  },
+  mounted() {
+    
   },
   data() {
     return {
       // table
-      dataLists: ["size", "quantity", "total_price"],
+      dataLists: ["sizes", "quantity", "total_price",],
 
       memberLoading: false,
-      columns: [
+      colmons: [
         {
           title: "尺码",
-          dataIndex: "size",
-          key: "size",
+          dataIndex: "sizes",
           width: "25%",
-          align: 'center',
-          scopedSlots: { customRender: "size" }
+          align: "center",
+          scopedSlots: { customRender: "sizes" }
         },
         {
           title: "数量",
-          dataIndex: "quantity",
-          key: "quantity",
+          dataIndex: "number",
+          key: "number",
           width: "25%",
-          align: 'center',
-          scopedSlots: { customRender: "quantity" }
+          align: "center",
+          scopedSlots: { customRender: "number" }
         },
         {
           title: "合计价格",
-          dataIndex: "total_price",
-          key: "total_price",
+          dataIndex: "price",
+          key: "price",
           width: "25%",
-          align: 'center',
-          scopedSlots: { customRender: "total_price" }
+          align: "center",
+          scopedSlots: { customRender: "price" }
         },
         {
           title: "操作",
           width: "25%",
           key: "action",
-          align: 'center',
+          align: "center",
           scopedSlots: { customRender: "operation" }
         }
       ],
@@ -136,20 +142,20 @@ export default {
     },
     handleChange(key, column, value) {
       console.log(key, column, value);
-      let newData = [...this.data];
+      let newData = [...this.dataSize];
       console.log(newData);
       let target = newData.filter(item => key == item.key)[0];
       console.log(target);
       if (target) {
-        console.log(target.size.length);
-        target.size = value;
+        console.log(target.sizes.length);
+        target.sizes = value;
       }
-      this.data = newData;
-      this.$emit("getList", this.data);
+      this.dataSize = newData;
+      this.$emit("getList", this.dataSize);
     },
     /** 减**/
     clickLeftbtn(key, column) {
-      let newData = [...this.data];
+      let newData = [...this.dataSize];
       console.log(newData);
       let target = newData.filter(item => key == item.key)[0];
       console.log(target);
@@ -159,51 +165,48 @@ export default {
         } else {
           target[column] = 1;
         }
-        target.total_price = target[column] * this.dataSizeText[0].price;
+        target.price = target[column] * this.dataSizeText[0].price;
       }
-      this.data = newData;
-      this.$emit("getList", this.data);
+      this.dataSize = newData;
+      this.$emit("getList", this.dataSize);
     },
     /** 加**/
     clickRightbtn(key, column) {
-      console.log(this.dataSize);
-      console.log(this.data);
-      let newData = [...this.data];
+      let newData = [...this.dataSize];
       let target = newData.filter(item => key == item.key)[0];
       console.log(target);
       if (target) {
         target[column]++;
         target.total_price = target[column] * this.dataSizeText[0].price;
       }
-      this.data = newData;
-      console.log(this.data);
-      this.$emit("getList", this.data);
+      this.dataSize = newData;
+      console.log(this.dataSize);
+      this.$emit("getList", this.dataSize);
     },
     /** 添加**/
-    newMember() {
-      const length = this.data.length;
-      console.log(this.dataSizeText[0]);
+    newMember(e) {
+      const length = this.dataSize.length;
       console.log(this.dataSize);
-      this.data.push({
+      this.dataSize.push({
         key:
           length === 0
             ? "1"
-            : (parseInt(this.data[length - 1].key) + 1).toString(),
-        price: this.dataSizeText[0].price,
-        total_price: this.dataSizeText[0].price,
-        quantity: this.dataSizeText[0].number,
-        size: this.size,
-        goods_id: this.dataSizeText[0].goods_id,
-        des_id: this.dataSizeText[0].des_id
+            : (parseInt(this.dataSize[length - 1].key) + 1).toString(),
+        price: this.dataSize[0].price,
+        total_price: this.dataSize[0].price,
+        quantity: this.dataSize[0].number,
+        size: this.dataSize[0].sizes,
+        goods_id: this.dataSize[0].goods_id,
+        des_id: this.dataSize[0].des_id
       });
     },
 
     remove(key) {
       console.log(key);
-      const newData = this.data.filter(item => item.key !== key);
+      const newData = this.dataSize.filter(item => item.key !== key);
       console.log(newData);
-      this.data = newData;
-      this.$emit("getList", this.data);
+      this.dataSize = newData;
+      this.$emit("getList", this.dataSize);
     }
   },
   watch: {
