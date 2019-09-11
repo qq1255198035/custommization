@@ -69,7 +69,7 @@
                                 <span :class="item.className"></span>
                                 {{item.text}}
                             </li>
-                            <li @click="$router.push({path: '/neworder'})">
+                            <li @click="handleChangePRO">
                                 <span class="icon-change_product"></span>
                                 更换产品
                             </li>
@@ -1131,6 +1131,9 @@ export default {
     },
 
     methods:{
+        handleChangePRO(){
+            this.closeDesignBox();
+        },
         handleGetPic(content){
             getPic(content).then(res => {
                 console.log(res)
