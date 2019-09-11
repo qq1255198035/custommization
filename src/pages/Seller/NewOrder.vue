@@ -116,11 +116,11 @@
                                     <div>胸章</div>
                                 </div>
                             </div>
-                            <a-row class="top">
-                                <a-col v-for="(item,index) in bgimgs" :key="index" :span="3" class="li" @click="changeModelDesign(index)">
+                            <ul class="top">
+                                <li v-for="(item,index) in bgimgs" :key="index" class="li" @click="changeModelDesign(index)">
                                     <img :src="item" alt="">
-                                </a-col>
-                            </a-row>
+                                </li>
+                            </ul>
                             <!-- <ul class="bottom">
                                 <li @click="zoomIn">
                                     <span class="icon-zoomin"></span>
@@ -2209,8 +2209,9 @@ export default {
                 top: that.screenWidth / 2,
                 originX: "center",
                 originY: "center",
-                scaleX: that.screenWidth / 600,
-                scaleY: that.screenWidth / 600,
+                scaleX: 0.5,
+                scaleY: 0.5,
+
                 // *圖片跨域
                 crossOrigin: "*",
             });
@@ -2750,7 +2751,9 @@ export default {
                 .li{
                     border: 1px solid #ccc;
                     margin-bottom: 20px;
-                    padding: 10px;
+                    padding: 5px;
+                    width: 50px;
+                    height: 50px;
                     cursor: pointer;
                     img{
                         width: 100%;
