@@ -57,6 +57,15 @@ export function discountEdit(parameter) {
         data: qs.stringify(parameter)
     })
 }
+
+export function discountEdit1(parameter) {
+    return axios({
+        url: '/system/jeecgGoodsPic/queryMainByIdForGoodsId',
+        method: 'post',
+        data: qs.stringify(parameter)
+    })
+}
+
 //确定订单折扣
 export function discountSure(parameter) {
     return axios({
@@ -470,5 +479,13 @@ export function handleDesignList(id) {
         url: '/system/jeecgCart/commitOrder',
         method: 'post',
         data:qs.stringify({id: id})
+    })
+}
+
+export function getPic(content) {
+    return axios({
+        url: '/system/jeecgGoodsPic/getPic',
+        method: 'post',
+        data:qs.stringify({content: content})
     })
 }

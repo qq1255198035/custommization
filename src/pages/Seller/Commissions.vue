@@ -40,7 +40,7 @@
                         :persent2="persent2"
                         :account3="account3"
                         :name3="name3"
-                        :price3="price3"
+                        :price3="price4"
                     >
                         
                     </component>
@@ -169,7 +169,7 @@ export default {
                 persent2: '',
                 account3: '',
                 name3: '',
-                price3: ''
+                price4: ''
             }
     },
     mounted(){
@@ -183,7 +183,7 @@ export default {
                 if(res.code == 200){
                     this.account3 = this.count;
                     this.name3 = this.name;
-                    this.price3 = this.dmoney;
+                    this.price4 = this.dmoney;
                     this.current++;
                 }else{
                     this.$message.error('密码错误！')

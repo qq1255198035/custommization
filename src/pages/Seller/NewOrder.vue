@@ -121,14 +121,14 @@
                                     <img :src="item" alt="">
                                 </a-col>
                             </a-row>
-                            <ul class="bottom">
+                            <!-- <ul class="bottom">
                                 <li @click="zoomIn">
                                     <span class="icon-zoomin"></span>
                                 </li>
                                 <li @click="zoomOut">
                                     <span class="icon-zoomout"></span>
                                 </li>
-                            </ul>
+                            </ul> -->
 
                         </div>
                         <div class="tools-box">
@@ -156,7 +156,7 @@
                                                 改变产品
                                             </li>
                                         </ul>
-                                        <p>或<a>重新开始</a></p>
+                                        <p>或<a @click="reStart">重新开始</a></p>
                                     </div>
                                     <div class="tool-box1" v-show="visibletype == 0">
                                         <!-- <div v-if="visibletype !== -1">
@@ -175,7 +175,7 @@
                                         <div class="add-text">
                                             <p>Add Text</p>
                                             <a-input v-model="addText"></a-input>
-                                            <a-button type="primary" @click="addItext(addText)" :disabled="!addText" style="border-radius: 12px;">添加设计</a-button>
+                                            <a-button type="primary" @click="addItext(addText,false)" :disabled="!addText" style="border-radius: 12px;">添加设计</a-button>
                                         </div>
                                     </div>
                                     <div class="tool-box6" v-show="visibletype == 1">
@@ -192,15 +192,15 @@
                                         <div  style="padding-bottom: 10px; border-bottom: 1px solid #ccc;">
                                             <a-input-search @search="onSearch"/>
                                         </div>
-                                        <dl v-for="img in imgs" :key="img.className">
+                                        <dl v-for="(img,index) in imgs" :key="img.catalog">
                                             <dt>
-                                                <p @click="moreImgs">
-                                                    <span>{{img.className}}</span>
+                                                <p @click="moreImgs(index)">
+                                                    <span>{{img.catalog}}</span>
                                                     <a-icon type="right" />
                                                 </p>
                                             </dt>
-                                            <dd v-for="(item,index) in img.imgURL" :key="item + index" @click="addImg(item,'img'+index)">
-                                                <img :src="item" alt="">
+                                            <dd v-for="(item,index) in img.pic.length > 4 ? img.pic.slice(0,4) : img.pic" :key="item + index" @click="addImg(item.pic_url,'img'+index)">
+                                                <img :src="item.pic_url" alt="">
                                             </dd>
                                         </dl>
                                         <div class="upload-box">
@@ -239,13 +239,13 @@
                                                 <span>位置：</span>
                                                 <div>
                                                     <p>
-                                                        <a-select defaultValue="0" style="width: 95%;" @change="changeNamePosition">
+                                                        <a-select defaultValue="0" style="width: 95%;" @change="changeNamePosition" :disabled="!addNameData">
                                                             <a-select-option value="0">胸部</a-select-option>
                                                             <a-select-option value="1">背部</a-select-option>
                                                         </a-select>
                                                     </p>
                                                     <p>
-                                                        <a-select defaultValue="0" style="width: 100%;" @change="changeNumberPosition">
+                                                        <a-select defaultValue="0" style="width: 100%;" @change="changeNumberPosition" :disabled="!addNumberData">
                                                             <a-select-option value="0">胸部</a-select-option>
                                                             <a-select-option value="1">背部</a-select-option>
                                                         </a-select>
@@ -256,7 +256,7 @@
                                                 <span>高度：</span>
                                                 <div>
                                                     <p>
-                                                        <a-select defaultValue="6cm" style="width: 95%;" @change="changeNameSize">
+                                                        <a-select defaultValue="6cm" style="width: 95%;" @change="changeNameSize" :disabled="!addNameData">
                                                             <a-select-option value="20">6cm</a-select-option>
                                                             <a-select-option value="30">7cm</a-select-option>
                                                             <a-select-option value="40">8cm</a-select-option>
@@ -264,7 +264,7 @@
                                                         </a-select>
                                                     </p>
                                                     <p>
-                                                        <a-select defaultValue="15cm" style="width: 100%;" @change="changeNumberSize">
+                                                        <a-select defaultValue="15cm" style="width: 100%;" @change="changeNumberSize" :disabled="!addNumberData">
                                                             <a-select-option value="150">15cm</a-select-option>
                                                             <a-select-option value="170">18cm</a-select-option>
                                                             <a-select-option value="190">20cm</a-select-option>
@@ -277,15 +277,14 @@
                                                 <span>字体：</span>
                                                 <div>
                                                     <p>
-                                                        <a-select defaultValue="0" style="width: 95%;">
-                                                            <a-select-option value="0">黑体</a-select-option>
-                                                            <a-select-option value="1">2英寸</a-select-option>
+                                                        <a-select style="width: 95%;" :disabled="!addNameData" placeholder="请选择">
+                                                            <a-select-option v-for="item in fontFamilyArr" :key="item.id" :value="item.name" @change="changeNameFamily">{{item.name}}</a-select-option>
+                                                            
                                                         </a-select>
                                                     </p>
                                                     <p>
-                                                        <a-select defaultValue="0" style="width: 100%;">
-                                                            <a-select-option value="0">黑体</a-select-option>
-                                                            <a-select-option value="1">2英寸</a-select-option>
+                                                        <a-select style="width: 100%;" :disabled="!addNumberData" placeholder="请选择" @change="changeNumberFamily">
+                                                            <a-select-option v-for="item in fontFamilyArr" :key="item.id" :value="item.name">{{item.name}}</a-select-option>
                                                         </a-select>
                                                     </p>
                                                 </div>
@@ -294,10 +293,10 @@
                                                 <span>颜色：</span>
                                                 <div class="color-picker">
                                                     <p>
-                                                        黑色<span :style="{backgroundColor: 'black'}" @click="openChangeColorBox(5,'名称颜色')"></span>
+                                                        {{numberColorName}}<span :style="{backgroundColor: numberColor}" @click="openChangeColorBox(5,'名称颜色')"></span>
                                                     </p>
                                                     <p>
-                                                        黑色<span :style="{backgroundColor: 'black'}" @click="openChangeColorBox(6,'号码颜色')"></span>
+                                                        {{nameColorName}}<span :style="{backgroundColor: nameColor}" @click="openChangeColorBox(6,'号码颜色')"></span>
                                                     </p>
                                                 </div>
                                             </dd>
@@ -310,38 +309,12 @@
                                     </div>
 
                                     <div class="tool-box9" v-show="visibletype == 3">
-                                        <my-title :title="'添加文字'"></my-title>
+                                        <my-title :title="'修改文字'"></my-title>
                                         <div class="second">
                                             <div class="text-tool">
-
-                                                <div class="text-align">
-                                                        <span @click="setTextalignLeft">
-                                                            <a-icon type="align-left"/>
-                                                        </span>
-                                                        <span @click="setTextalignCenter">
-                                                            <a-icon type="align-center"/>
-                                                        </span>
-                                                        <span @click="setTextalignRight">
-                                                            <a-icon type="align-right"/><br/>
-                                                        </span>
-                                                        <p>对齐方式</p>
-                                                </div>
-                                                <div class="font-style">
-                                                        <span @click="setFontWeight">
-                                                            <a-icon type="bold" />
-                                                        </span>
-                                                        <span @click="setFontStyle">
-                                                            <a-icon type="italic" />
-                                                        </span>
-                                                        <span @click="setTextDown">
-                                                            <a-icon type="underline" />
-                                                        </span>
-                                                        <span @click="setTextThrough">
-                                                            <a-icon type="strikethrough" />
-                                                        </span>
-                                                        <br/>
-                                                        <p>字体样式</p>
-                                                </div>
+                                                <a-input v-model="addText" style="width: 70%"></a-input>
+                                                <a-button type="primary" @click="addItext(addText,true)" :disabled="!addText" style="border-radius: 12px;">更改文字</a-button>
+                                                
                                             </div>
 
                                         </div>
@@ -398,16 +371,8 @@
                                                     <a-icon type="right" />
                                                 </p>
                                             </dd>
-                                            <dd>
-                                                <span>大小：</span>
-                                                <div style="width: 85%;">
-                                                    <a-slider :min="-10" :max="10" v-model="Shadow1" :step="1" @change="changeShadowWidth1" style="width: 100%;margin: 10px 0;"/>
-                                                    <a-slider :min="-10" :max="10" v-model="Shadow2" :step="1" @change="changeShadowWidth2" style="width: 100%;margin: 10px 0;"/>
-                                                    <a-slider :min="0" :max="10" v-model="Shadow3" :step="1" @change="changeShadowWidth3" style="width: 100%;margin: 10px 0;"/>
-                                                </div>
-                                            </dd>
                                         </dl>
-                                        <p><a>重置</a>或<a>重新开始</a></p>
+                                        
                                     </div>
                                     <div class="tool-box10" v-show="visibletype == 4">
                                         <h2>颜色：</h2>
@@ -417,9 +382,7 @@
                                                 <a-icon type="check" v-show="productColorIcon == index"/>
                                             </li>
                                         </ul>
-                                        <div style="text-align: center; margin-top: 20px;">
-                                            <a-button type="primary">保存更改</a-button>
-                                        </div>
+                                        
                                     </div>
                                     <div class="tool-box11" v-show="visibletype == 5">
                                         <h2>设计备注：</h2>
@@ -456,8 +419,8 @@
                                             <a-icon type="left" style="cursor: pointer;" @click="visibletype = 3"/>
                                         </h2>
                                         <ul class="font-family-list">
-                                            <li v-for="item in fontFamilyArr" :key="item.id" @click="changeFontFamily(item.name)">
-                                                <span :style="{fontFamily: item.name}" >ABC</span>
+                                            <li v-for="(item,index) in fontFamilyArr" :key="item.id" @click="changeFontFamily(item.name,index)" :style="{backgroundColor: fontfamilydata == index ? '#33b8b3' : '',color: fontfamilydata == index ? '#fff' : '#666'}">
+                                                <span :style="{fontFamily: item.name}" >ABCDEFGHIJKLMN</span>
                                                 <span>{{item.name}}</span>
                                             </li>
                                         </ul>
@@ -491,9 +454,6 @@
                                                 </template>
                                             </li>
                                         </ul>
-                                        <div style="text-align: center;">
-                                            <a-button type="primary">保存更改</a-button>
-                                        </div>
                                     </div>
                                     <div class="tool-box5" v-show="visibletype == 9">
                                         <h2 style="color: #333;text-align: left; border-bottom: 1px solid #333; padding-bottom: 5px;">
@@ -663,8 +623,8 @@
                                             <a-icon type="arrow-left" style="cursor: pointer;" @click="visibletype = 1"/>
                                         </h2>
                                         <ul>
-                                            <li v-for="(item,index) in imgs[0].imgURL" :key="index">
-                                                <img :src="item" alt="">
+                                            <li v-for="(item,index) in imgs1" :key="index" @click="addImg(item.pic_url,'img'+index)">
+                                                <img :src="item.pic_url" alt="">
                                             </li>
                                         </ul>
                                     </div>
@@ -673,14 +633,14 @@
                                             <a-icon type="left" style="cursor: pointer;" @click="visibletype = 3"/>
                                         </h2>
                                         <ul class="font-family-list">
-                                            <li v-for="item in fontShapeArr" :key="item.itemText" @click="changeFontShape(item.itemText)">
+                                            <li v-for="(item,index) in fontShapeArr" :key="item.itemText" @click="changeFontShape(item.itemText,index)" :class="{active: shapeActive == index}">
                                                 <span>
                                                     <img :src="item.itemValue" alt="">
                                                 </span>
                                             </li>
                                         </ul>
-                                        <div>
-                                            <a-button type="primary" @click="saveFontShapeDesign">保存设计</a-button>
+                                        <div style="text-align: center;padding-top: 20px;">
+                                            <a-button type="primary" @click="saveFontShapeDesign(fontShape,true)">保存设计</a-button>
                                         </div>
                                     </div>
                                 </div>
@@ -688,10 +648,10 @@
                         </div>
                     </div>
                     <ul class="submit-box">
-                        <a-button type="primary">获取价格</a-button>
+                        <a-button type="primary" @click="showEdModal(postId)">获取价格</a-button>
                         <li style="display: flex; align-item">
                             <commonBtn
-                                @handleLink1="$router.push({name: 'neworder'})"
+                                @handleLink1="addNewPro"
                                 :width="'130px'"
                                 :height="'32px'"
                                 :padding="'15px'"
@@ -789,6 +749,62 @@
                     </div>
                 </div>
             </a-modal>
+            <a-modal
+                class="show-details"
+                title="获取价格"
+                v-model="showVisible"
+                width="50%"
+                :footer="null"
+                
+            >
+                <a-row :gutter="20" style="padding:20px">
+                <a-col :span="8">
+                    <a-row :gutter="20">
+                    <a-col :span="12">
+                        <img width="100%" :src="designDetail.positivePicUrl" alt />
+                    </a-col>
+                    <a-col :span="12">
+                        <img width="100%" :src="designDetail.backPicUrl" alt />
+                    </a-col>
+                    </a-row>
+                </a-col>
+                <a-col :span="16">
+                    <div class="number">
+                    <div class="font-18">数量：</div>
+                    <div class="number-box">
+                        <div class="minus common-radio" @click="minus(designDetail.minOrder)">
+                        <a-icon type="minus" />
+                        </div>
+                        <div class="num">
+                        <a-input v-model="nums" @blur="onChangeNums" type="number"/>
+                        </div>
+                        <div class="plus common-radio" @click="plus(designDetail.minOrder)">
+                        <a-icon type="plus" />
+                        </div>
+                    </div>
+                    <div class="price-right">
+                        预计代理价格：
+                        <span>￥{{onePrice}}</span>
+                    </div>
+                    </div>
+                    <div class="font-color">最小起订量为{{designDetail.minOrder}}</div>
+                    <div class="prices">
+                    <div class="price-box">
+                        <div class="font-18">价格:</div>
+                        <div class="price-input">
+                        <a-input :value="prices" type="number" @change="onChangeValues" style="width: 120px" />
+                        </div>
+                        <div class="font-18">/件</div>
+                    </div>
+                    <div class="price-right">
+                        预计代理收益：
+                        <span>￥{{twoPrice}}</span>
+                    </div>
+                    </div>
+                    <div class="font-color">建议售价：￥{{designDetail.price}}/件</div>
+                </a-col>
+                </a-row>
+            </a-modal>
         </div>
     </div>
 </template>
@@ -822,7 +838,10 @@ import {
         changeFontFamily,
         changeGoodsColor,
         artFontList,
-        changeFont
+        changeFont,
+        discountEdit1,
+        discount,
+        getPic
     } from "@/api/seller";
 
 
@@ -867,8 +886,8 @@ export default {
             Shadow1:0,
             Shadow2:0,
             Shadow3:0,
-            shadowColorName: '黑色',
-            shadowColor: '#000',
+            shadowColorName: '',
+            shadowColor: '',
             // 文字阴影样式结束
             previewVisible: false,
             fontColorIcon1: -1,
@@ -888,8 +907,8 @@ export default {
             color:'#000',
             colorName:'黑色',
             //字体背景颜色值 | 颜色名
-            bgcolor:'#000',
-            fontBgColorName:'黑色',
+            bgcolor:'',
+            fontBgColorName:'',
             // 选择展示的颜色及颜色名
             fontShape: '',
             colorShow: '#000',
@@ -909,20 +928,60 @@ export default {
             visibletype:-1,
             form: this.$form.createForm(this),
             // 描边样式
-            strokeWidth:1,
-            strokeColor: '#000',
-            strokeColorName: '黑色',
+            strokeWidth:0,
+            strokeColor: '',
+            strokeColorName: '',
 
             // skewx:0,
             // skewy:0,
             fontFamilyArr:[
                 {
                     id:1,
-                    name: 'Microsoft YaHei'
+                    name: 'College-Regular'
                 },
                 {
                     id:2,
-                    name: 'testFont'
+                    name: 'NBA-Cavaliers'
+                },
+                {
+                    id:3,
+                    name: 'NBA-Grizzlies'
+                },
+                {
+                    id:4,
+                    name: 'NBA-Hawks'
+                },
+                {
+                    id:5,
+                    name: 'NBA-Knicks'
+                },
+                {
+                    id:6,
+                    name: 'NBA-Pacers'
+                },
+                {
+                    id:7,
+                    name: 'NBA-Pistons'
+                },
+                {
+                    id:8,
+                    name: 'NBA-Rockets'
+                },
+                {
+                    id:9,
+                    name: 'NBA-Trailblazers'
+                },
+                {
+                    id:10,
+                    name: 'NCAA-Utah-Utes'
+                },
+                {
+                    id:11,
+                    name: 'Stahls-Tiffany---2000'
+                },
+                {
+                    id:12,
+                    name: 'UA-Cadet'
                 }
             ],
             colorList:{},
@@ -937,18 +996,8 @@ export default {
             lineHeight: 1,
             opacity:1,
             bgimgs:[],
-            imgs:[
-                {
-                    className: '图片',
-                    imgURL:[img1]
-                },
-                {
-                    className: '剪贴画',
-                    imgURL:[
-                        img1,img1,img1,img1,img1,
-                    ]
-                }
-            ],
+            imgs:[],
+            imgs1:[],
             list:[
                 {
                     key:0,
@@ -997,7 +1046,26 @@ export default {
             postId: '',
             preview_url: '',
             source_url: '',
-            designId: ''
+            designId: '',
+            picId: '',
+            designDetail: '',
+            showVisible: false,
+            nums: "",
+            onePrice: "",
+            twoPrice: "",
+            prices: '',
+            shapeActive: -1,
+            numberColorName: 'Black',
+            numberColor: '#000',
+            nameColorName: 'Black',
+            nameColor: '#000',
+            discounts: '',
+            fontfamilydata: -1,
+            // top_margin: 75,
+            // bottom_margin: 185,
+            // left_margin : 175,
+            // right_margin: 175,
+            imgIndex: 0,
         }
     },
     created(){
@@ -1019,10 +1087,10 @@ export default {
             initAligningGuidelines(this.myCanvas2);
             initAligningGuidelines(this.myCanvas3);
             initAligningGuidelines(this.myCanvas4);
-            this.handleObjectMove(this.myCanvas1);
-            this.handleObjectMove(this.myCanvas2);
-            this.handleObjectMove(this.myCanvas3);
-            this.handleObjectMove(this.myCanvas4);
+            this.handleObjectMove(this.myCanvas1,128,150,175,175);
+            this.handleObjectMove(this.myCanvas2,75,185,175,175);
+            this.handleObjectMove(this.myCanvas3,146,377,289,233);
+            this.handleObjectMove(this.myCanvas4,146,377,289,233);
             this.onUnselected(this.myCanvas1);
             this.onUnselected(this.myCanvas2);
             this.onUnselected(this.myCanvas3);
@@ -1041,29 +1109,133 @@ export default {
             this.handleObjectScale(this.myCanvas4);
             this.setEditIcon();
             this.setEditPointer();
-            if(this.$route.query.res){
-                this.loadFromJSON(this.$route.query.res)
-                console.log(this.$route.query.res)
+            if(this.$route.query.show){
+                this.loadFromJSON(this.myCanvas1,JSON.parse(this.$route.query.res.posititveDesignArea));
+                this.loadFromJSON(this.myCanvas2,JSON.parse(this.$route.query.res.backDesignArea))
+                this.loadFromJSON(this.myCanvas3,JSON.parse(this.$route.query.res.leftDesignArea))
+                this.loadFromJSON(this.myCanvas4,JSON.parse(this.$route.query.res.rightDesignArea))
+                this.bgimgs = this.$route.query.res.list;
+                this.postId = this.$route.query.res.goodsId;
+                this.picId = this.$route.query.res.picId
+                console.log(this.bgimgs)
+                
             }
+            
             //console.log(this.form)
         })
         this.getWindowScreen();
         this.getArtFontList();
         this.show = this.$route.query.show ? this.$route.query.show : false
+        this.handleGetPic('');
         
     },
 
     methods:{
-        loadFromJSON (json) {
+        handleGetPic(content){
+            getPic(content).then(res => {
+                console.log(res)
+                if(res.code == 0){
+                    this.imgs = res.result;
+                }
+            })
+        },
+        changeNameFamily(e){
+            console.log(e.target.value)
+        },
+        changeNumberFamily(e){
+            console.log(e.target.value)
+        },
+        reStart(){
+            console.log(1)
+            
+        },
+        minus(data) {
+            console.log(data);
+            if (this.nums && this.nums > data) {
+                this.nums--;
+                this.disCounts(this.nums, this.resPrice);
+                if (this.prices) {
+                this.twoPrice = (this.prices - this.onePrice) * this.nums;
+                }
+            }
+        },
+        plus() {
+            this.nums++;
+            this.disCounts(this.nums, this.resPrice);
+            if (this.prices) {
+                this.twoPrice = (this.prices - this.onePrice) * this.nums;
+            }
+        },
+        onChangeValues(e) {
+            console.log("radio checked", e.target.value);
+            this.prices = e.target.value;
+            this.twoPrice = (e.target.value - this.onePrice) * this.nums;
+        },
+        onChangeNums() {
+            if(this.nums < this.minNums) {
+                this.nums = this.minNums
+            }
+            this.disCounts(this.nums, this.resPrice);
+            this.twoPrice = (this.prices - this.onePrice) * this.nums;
+        },
+        showEdModal(id) {
+            console.log(id);
+
+            this.showVisible = true;
+            discount().then(res => {
+                console.log(res);
+                this.discounts = res.result;
+            });
+            const param = {
+                picId: id
+            };
+            setTimeout(() => {
+                discountEdit1(param).then(res => {
+                console.log(res);
+                this.designDetail = res.result;
+                this.nums = res.result.quantity
+                    ? res.result.quantity
+                    : res.result.minOrder;
+                this.prices = res.result.actualPrice
+                    ? res.result.actualPrice
+                    : res.result.price;
+                this.pid = res.result.id;
+                const numbers = this.nums;
+                this.minNums = res.result.minOrder
+                this.disCounts(numbers, res.result.maxPrice);
+                console.log(res.result.price - this.onePrice);
+                this.resPrice = (res.result.maxPrice * this.discounts) / 100;
+                this.twoPrice = (this.prices - this.onePrice) * this.nums;
+                });
+            }, 1000);
+        },
+        disCounts(datas, datanum) {
+            if (datas >= 1 && datas <= 20) {
+                this.onePrice = ((datanum * this.discounts) / 100) * 1;
+            } else if (datas >= 21 && datas <= 50) {
+                this.onePrice = ((datanum * this.discounts) / 100) * 0.95;
+            } else if (datas >= 51 && datas <= 100) {
+                this.onePrice = ((datanum * this.discounts) / 100) * 0.9;
+            } else if (datas >= 101 && datas <= 500) {
+                this.onePrice = ((datanum * this.discounts) / 100) * 0.85;
+            } else {
+                this.onePrice = ((datanum * this.discounts) / 100) * 0.8;
+            }
+        },
+        addNewPro(){
+            this.show = false;
+            this.saveEndDesign()
+        },
+        loadFromJSON (canvas,json) {
             let that = this;
-            that.myCanvas.loadFromJSON(json, that.myCanvas.renderAll.bind(that.myCanvas), function (
+            canvas.loadFromJSON(json, canvas.renderAll.bind(canvas), function (
                 o,
                 object
             ) {
                 console.log(o,object)
             });
         },
-        handleChangeFont(params){
+        handleChangeFont(params,isAdd){
             let that = this;
             changeFont(params).then(res => {
                 console.log(res)
@@ -1073,43 +1245,71 @@ export default {
                             let obj = that.myCanvas.getActiveObject();
                             that.liClick = 0;
                             that.visibletype = 3;
+                            that.addText = obj.mytext;
                             // that.opacity = obj.opacity;
                             // that.rotateNum = obj.angle;
                         });
-                        if(that.myCanvas.getActiveObject()){
-                            let obj = that.myCanvas.getActiveObject();
-                            let width = obj.width;
-                            let height = obj.height;
-                            let left = obj.left;
-                            let top = obj.top;
-                            that.myCanvas.add(
-                            Img.set({
-
-                                width: width,
-                                height :height,
-                                lockUniScaling:true, // When `true`, object non-uniform scaling is locked
-                                left: left,
-                                top: top,
-                                crossOrigin: "*",
-                            })).setActiveObject(Img);
+                        if(isAdd){
+                            if(that.myCanvas.getActiveObject()){
+                                let obj = that.myCanvas.getActiveObject();
+                                let width = obj.width;
+                                let height = obj.height;
+                                let left = obj.left;
+                                let top = obj.top;
+                                that.myCanvas.add(
+                                Img.set({
+                                    // width: width,
+                                    // height :height,
+                                    mytext:that.addText,
+                                    lockUniScaling:true, // When `true`, object non-uniform scaling is locked
+                                    left: left,
+                                    top: top,
+                                    crossOrigin: "*",
+                                    
+                                })).setActiveObject(Img);
+                                if(Img.width > 200){
+                                    Img.set('width', 200)
+                                }
+                                that.myCanvas.remove(obj)
+                            }else{
+                                that.myCanvas.add(
+                                    Img.set({
+                                        lockUniScaling:true, // When `true`, object non-uniform scaling is locked
+                                        left: 200,
+                                        top: 150,
+                                        crossOrigin: "*",
+                                        mytext:that.addText,
+                                    })
+                                ).setActiveObject(Img);
+                                if(Img.width > 200){
+                                    Img.set('width', 200)
+                                }
+                            }
                         }else{
                             that.myCanvas.add(
                                 Img.set({
                                     lockUniScaling:true, // When `true`, object non-uniform scaling is locked
                                     left: 200,
                                     top: 150,
-                                    maxWidth: 200,
                                     crossOrigin: "*",
+                                    mytext:that.addText,
                                 })
                             ).setActiveObject(Img);
+                            if(Img.width > 200){
+                                Img.set('width', 200)
+                            }
                         }
+                        
                         console.log(Img)
                     });
                 }
             })
         },
-        saveFontShapeDesign(){
-            fontShape
+        saveFontShapeDesign(fontShape,isAdd){
+            //fontShape
+            let params = {text: this.addText,style:'outline',fontName:'微软雅黑',fontHeight: 50, fontColor: this.color.substr(1), lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: fontShape,backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1)}
+            this.handleChangeFont(params,isAdd)
+            console.log(this.color)
         },
         getArtFontList(){
             artFontList().then(res => {
@@ -1117,8 +1317,9 @@ export default {
                 this.fontShapeArr = res.result;
             })
         },
-        changeFontShape(item){
+        changeFontShape(item,index){
             this.fontShape = item;
+            this.shapeActive = index
         },
         getWindowScreen(){
             let screenWidths = window.screen.width;
@@ -1131,7 +1332,9 @@ export default {
         },
         PostChangeGoodsColor(id,color){
             changeGoodsColor(id,color).then(res => {
-                console.log(res)
+                console.log(res);
+                this.bgimgs = res.result;
+                this.bindCanvas(this.myCanvas1,0);
                 //this.postId
             })
         },
@@ -1195,7 +1398,7 @@ export default {
             let params = {
                 positivePicUrl: this.dataUrl1,backPicUrl: this.dataUrl2,leftPicUrl: this.dataUrl3,rightPicUrl: this.dataUrl4,
                 positiveDesignArea: this.dataPost1, backDesignArea: this.dataPost2, leftDesignArea: this.dataPost3, rightDesignArea: this.dataPost4,
-                goodsId: this.postId
+                goodsId: this.postId, id: this.picId
             }
             console.log(params)
             this.postSaveDesign(params)
@@ -1222,6 +1425,8 @@ export default {
                 console.log(res)
                 if(res.code == 200){
                     this.endDsign = true;
+                    this.visibletype = -1;
+                    this.liClick = -1;
                 }
             })
         },
@@ -1244,7 +1449,24 @@ export default {
             })
         },
         closeDesignBox(){
-            this.show = false;
+            let that = this;
+            if(that.liClick == -1 && that.visibletype == -1){
+                that.show = false;
+            }else{
+                that.$confirm({
+                    title: "确定离开吗？",
+                    content: "未保存的设计将被自动删除",
+                    okText: "确认",
+                    cancelText: "取消",
+                    onOk() {
+                        that.show = false;
+                        window.location.reload();
+                    },
+                    onCancel() {}
+                });
+            }
+            
+            
         },
         openDesignModal(id){
             console.log(id)
@@ -1338,7 +1560,7 @@ export default {
         onUnselected(object){
             let that = this;
             object.on('mouse:down',function(obj){
-                console.log(obj)
+                console.log(obj.target)
                 if(!obj.target){
                     that.visibletype = -1;
                     that.liClick = -1;
@@ -1360,13 +1582,13 @@ export default {
                     this.designModel = 0;
                     this.bindCanvas(this.myCanvas,0)
                     this.myCanvas2.remove(this.exampleName)
-                    this.addExampleName('testFont2');
+                    this.addExampleName('College-Regular');
                 }else{
                     this.myCanvas = this.myCanvas2;
                     this.designModel = 1;
                     this.bindCanvas(this.myCanvas,1);
                     this.myCanvas1.remove(this.exampleName);
-                    this.addExampleName('testFont2')
+                    this.addExampleName('College-Regular')
                 }
             }
         },
@@ -1379,13 +1601,13 @@ export default {
                     this.designModel = 0;
                     this.bindCanvas(this.myCanvas,0)
                     this.myCanvas2.remove(this.exampleNumber)
-                    this.addExampleNumber('testFont2');
+                    this.addExampleNumber('College-Regular');
                 }else{
                     this.myCanvas = this.myCanvas2;
                     this.designModel = 1;
                     this.bindCanvas(this.myCanvas,1);
                     this.myCanvas1.remove(this.exampleNumber);
-                    this.addExampleNumber('testFont2');
+                    this.addExampleNumber('College-Regular');
                 }
             }
         },
@@ -1508,53 +1730,71 @@ export default {
         */
         changeAllColor(val,name,i){
             if(this.colorKey == 1){
-                this.changeFillColor(val,name,i)
+                this.changeFillColor(val,name,true)
                 this.fontColorIcon1 = i
 
             }else if(this.colorKey == 2){
-                this.changeTextBgColor(val,name,i)
+                this.changeTextBgColor(val,name,true)
                 this.fontColorIcon2 = i
 
             }else if(this.colorKey == 3){
-                this.changestrokeColor(val,name,i)
+                this.changestrokeColor(val,name,true)
                 this.fontColorIcon3 = i
 
             }else if(this.colorKey == 4){
-                this.changeShadowColor(val,name,i)
+                this.changeShadowColor(val,name,true)
                 this.fontColorIcon4 = i
 
             }else if(this.colorKey == 5){
-                this.changeFillColor(val,name,i)
+                this.changeNumberColor(val,name)
                 this.fontColorIcon5 = i
 
             }else if(this.colorKey == 6){
-                this.changeFillColor(val,name,i)
+                this.changeFontColor(val,name,i)
                 this.fontColorIcon6 = i
             }
             this.handleColorShow();
         },
-        // 字体背景色
-        changeTextBgColor(val,name){
-
+        
+        changeNumberColor(val,name){
             let obj = this.myCanvas.getActiveObject();
-            this.bgcolor = val;
             if (obj) {
-                obj.set("textBackgroundColor", val);
-
+                obj.set("fill", val);
                 this.myCanvas.requestRenderAll();
+                this.numberColorName = name;
+                this.numberColor = val;
             }
+        },
+        changeNameColor(val,name){
+            let obj = this.myCanvas.getActiveObject();
+            if (obj) {
+                obj.set("fill", val);
+                this.myCanvas.requestRenderAll();
+                this.nameColorName = name;
+                this.nameColor = val;
+            }
+        },
+        changeTextBgColor(val,name,isAdd){
+            let params = {
+                text: this.addText,style:'outline',fontName:'微软雅黑',
+                fontHeight: 50, fontColor: this.color.substr(1), 
+                lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), 
+                effect: this.fontShape,backGround: val.substr(1),shadowColor: this.shadowColor.substr(1)}
+            this.handleChangeFont(params,isAdd)
+            
             this.fontBgColorName = name;
+            this.bgcolor = val;
         },
         // 设置字体阴影开始
-        changeShadowColor(val,name){
-                let obj = this.myCanvas.getActiveObject();
-                this.shadowColor = val;
-                if (obj) {
-                    obj.set('shadow', this.shadowColor +' '+ this.Shadow1 +' '+ this.Shadow2 +' '+ this.Shadow3);
-
-                    this.myCanvas.requestRenderAll();
+        changeShadowColor(val,name,isAdd){
+            let params = {
+                    text: this.addText,style:'outline',fontName:'微软雅黑',fontHeight: 50, fontColor: this.color.substr(1), 
+                    lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,
+                    backGround: this.bgcolor.substr(1),shadowColor: val.substr(1)
                 }
-                this.shadowColorName = name;
+            this.handleChangeFont(params,isAdd)
+            this.shadowColorName = name;
+            this.shadowColor = val;
         },
         changeShadowWidth1(){
             let obj = this.myCanvas.getActiveObject()
@@ -1624,7 +1864,7 @@ export default {
             this.productColorIcon = i;
             this.productColor = value;
             this.productColorName = name;
-            this.PostChangeGoodsColor(this.postId,value)
+            this.PostChangeGoodsColor(this.postId,value.substr(1))
         },
         // 选择颜色容器返回上一级
         goBackPage(){
@@ -1651,7 +1891,7 @@ export default {
                     that.bindCanvas(that.myCanvas,1);
                     that.designModel = 1;
                 }
-                that.addExampleNumber('testFont2')
+                that.addExampleNumber('College-Regular')
             }else{
                 if(that.exampleNumber){
                     that.myCanvas1.remove(that.exampleNumber);
@@ -1670,9 +1910,11 @@ export default {
                     originX:'center',
                     originY:'center',
                     left: that.screenWidth / 2,
-                    top: 200,
+                    top: 300,
                     fontSize: that.numberSize
                 });
+                that.exampleNumber.lockScalingX = true;
+                that.exampleNumber.lockScalingY = true;
                 that.myCanvas.add(that.exampleNumber).setActiveObject(that.exampleNumber);
                 that.exampleNumber.on("selected", function() {
 
@@ -1696,9 +1938,12 @@ export default {
                     originX:'center',
                     originY:'center',
                     left: that.screenWidth / 2,
-                    top: 100,
-                    fontSize: that.nameSize
+                    top: 200,
+                    fontSize: that.nameSize,
+                    
                 });
+                that.exampleName.lockScalingX = true;
+                that.exampleName.lockScalingY = true;
                 that.myCanvas.add(that.exampleName).setActiveObject(that.exampleName);
                 that.exampleName.on("selected", function() {
 
@@ -1726,7 +1971,7 @@ export default {
                     that.bindCanvas(that.myCanvas,1);
                     that.designModel = 1;
                 }
-                that.addExampleName('testFont2')
+                that.addExampleName('College-Regular')
             }else{
                 if(that.exampleName){
                     that.myCanvas1.remove(that.exampleName);
@@ -1735,8 +1980,11 @@ export default {
             }
 
         },
-        moreImgs(){
+        moreImgs(index){
             this.visibletype = 11;
+            
+            this.imgs1 = this.imgs[index].pic
+            console.log(this.imgs1)
         },
         beforeUploadEx(file){
             if(file.size / 1024 / 1024 < 10){
@@ -1797,13 +2045,8 @@ export default {
                     that.liClick = 1;
                     that.visibletype = 10;
                     that.opacity = obj.opacity;
-                    // that.filpx = obj.flipX;
-                    // that.filpy = obj.flipY;
-                    // that.skewx = obj.skewX;
-                    // that.skewy = obj.skewY;
                     that.rotateNum = obj.angle;
                 });
-
                 that.myCanvas.add(
                         oImg.set({
                             id: id,
@@ -1813,9 +2056,9 @@ export default {
                             skewY:0,
                             lockUniScaling:true, // When `true`, object non-uniform scaling is locked
                             left: 200,
-                            top: 150,
-                            scaleX: 0.5,
-                            scaleY:0.5,
+                            top:  200,
+                            scaleX: 0.3,
+                            scaleY:0.3,
                             maxWidth: 200,
                             crossOrigin: "*",
                         })
@@ -1826,12 +2069,10 @@ export default {
 
         },
         // 添加图片结束
-        handleObjectMove(object){
+        handleObjectMove(object,top_margin,bottom_margin,left_margin,right_margin){
             let that = this;
             object.on("object:moving", function(e) {
                 that.movingBox = true;
-                console.log(11)
-                console.log(that.movingBox)
                 var obj = e.target;
                 var canvas = obj.canvas;
                 var top = obj.top;
@@ -1861,37 +2102,31 @@ export default {
 
                 // if you need margins set them here
 
-                var top_margin,bottom_margin,left_margin,right_margin
+                
                 if(zoom > 1){
                         top_margin = 0;
                         bottom_margin = 40;
                         left_margin = 70;
                         right_margin = 140;
                 }else{
-                        top_margin = 150;
-                        bottom_margin = 150;
-                        left_margin = 200;
-                        right_margin = 200;
+                    var top_bound = top_margin + top_adjust - pan_y;
+                    var bottom_bound = c_height - bottom_adjust - bottom_margin - pan_y;
+                    var left_bound = left_margin + left_adjust - pan_x;
+                    var right_bound = c_width - right_adjust - right_margin - pan_x;
                 }
 
-                var top_bound = top_margin + top_adjust - pan_y;
-                var bottom_bound = c_height - bottom_adjust - bottom_margin - pan_y;
-                var left_bound = left_margin + left_adjust - pan_x;
-                var right_bound = c_width - right_adjust - right_margin - pan_x;
+                
 
                 if( w > c_width ) {
-                obj.set('left',left_bound);
+                    obj.set('left',left_bound);
                 } else {
-                obj.set('left',Math.min(Math.max(left, left_bound), right_bound));
+                    obj.set('left',Math.min(Math.max(left, left_bound), right_bound));
                 }
 
                 if( h > c_height ) {
                         obj.set('top',top_bound);
-                        console.log(top_bound)
-
                 } else {
                         obj.set('top',Math.min(Math.max(top, top_bound), bottom_bound));
-                        console.log(top_bound)
                 }
             });
         },
@@ -1978,20 +2213,22 @@ export default {
             });
 
         },
-        zoomIn(){
-            var zoom = this.myCanvas.getZoom();
-            console.log(zoom)
-            zoom = zoom + 0.4;
-            if (zoom > 1.4) zoom = 1.4;
-            this.myCanvas.zoomToPoint({ x: 300, y: 300 }, zoom);
-        },
-        zoomOut(){
-            var zoom = this.myCanvas.getZoom();
-            console.log(zoom)
-            zoom = zoom - 0.4;
-            if (zoom < 1) zoom = 1;
-            this.myCanvas.zoomToPoint({ x: 300, y: 300 }, zoom);
-        },
+        // zoomIn(){
+        //     var zoom = this.myCanvas.getZoom();
+        //     console.log(zoom)
+        //     zoom = zoom + 0.4;
+        //     if (zoom > 1.4) zoom = 1.4;
+        //     this.myCanvas.zoomToPoint({ x: 300, y: 300 }, zoom);
+        //     this.handleObjectMove(this.myCanvas1,105,264,138,138);
+        // },
+        // zoomOut(){
+        //     var zoom = this.myCanvas.getZoom();
+        //     console.log(zoom)
+        //     zoom = zoom - 0.4;
+        //     if (zoom < 1) zoom = 1;
+        //     this.myCanvas.zoomToPoint({ x: 300, y: 300 }, zoom);
+        //     this.handleObjectMove(this.myCanvas1,128,150,175,175);
+        // },
         toTopLayer () {
             let obj = this.myCanvas.getActiveObject();
             if (obj) {
@@ -2029,9 +2266,14 @@ export default {
             }
         },
         // 添加文字
-        addItext(text) {
-            let params = {text: text,style:'',fontName:'Microsoft YaHei',fontHeight: 30, fontColor: '#000', lineweight: 0, outLineColor: '', effect: ''}
-            this.handleChangeFont(params)
+        addItext(text,isAdd) {
+            
+            let params = {
+                    text: text,style:'outline',fontName:'微软雅黑',fontHeight: 50, fontColor: this.color.substr(1), 
+                    lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,
+                    backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1)
+                }
+            this.handleChangeFont(params,isAdd)
 
         },
         // 加载资源字体
@@ -2087,10 +2329,24 @@ export default {
             this.visibletype = 7;
         },
         openChangeColorBox(key,title){
-            this.visibletype = 8;
-            this.colorTitle = title;
-            this.colorKey = key;
-
+            console.log(key)
+            if(key == 5){
+                if(this.addNameData){
+                    this.visibletype = 8;
+                    this.colorTitle = title;
+                    this.colorKey = key;
+                }
+            }else if(key == 6){
+                if(this.addNumberData){
+                    this.visibletype = 8;
+                    this.colorTitle = title;
+                    this.colorKey = key;
+                }
+            }else{
+                this.visibletype = 8;
+                this.colorTitle = title;
+                this.colorKey = key;
+            }
             console.log(key,title);
             this.getColorList(key);
             this.handleColorShow();
@@ -2145,49 +2401,50 @@ export default {
         //         this.myCanvas.requestRenderAll();
         //     }
         // },
-        changeFontFamily(value){
+        changeFontFamily(value,index){
             console.log(`selected ${value}`);
             this.fontfamily = value;
-            if (value == 'testFont') {
-                this.loadAndUse(value);
-
-            }else{
-                let obj = this.myCanvas.getActiveObject()
-                if (obj) {
-                        obj.set('fontFamily', value);
-                        this.myCanvas.requestRenderAll();
-
+            this.fontfamilydata = index
+            let params = {
+                    text:  this.addText,style:'outline',fontName: value,fontHeight: 50, fontColor: this.color.substr(1), 
+                    lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,
+                    backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1)
                 }
-            }
+            this.handleChangeFont(params,true)
         },
-        changeFillColor(val,name){
-            let obj = this.myCanvas.getActiveObject();
-            if (obj) {
-                obj.set("fill", val);
-
-                this.myCanvas.requestRenderAll();
-                this.colorName = name;
-                this.color = val;
-            }
+        changeFillColor(val,name,isAdd){
+            //let obj = this.myCanvas.getActiveObject();
+            
+            let params = {
+                    text:  this.addText,style:'outline',fontName:'微软雅黑',fontHeight: 50, fontColor: val.substr(1), 
+                    lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,
+                    backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1)
+                }
+            this.handleChangeFont(params,isAdd)
+            this.colorName = name;
+            this.color = val;
+            
 
         },
         // 改变描边样式开始
-        changestrokeColor(val,name){
-            let obj = this.myCanvas.getActiveObject()
-            if (obj) {
-                obj.set('stroke', val);
-
-                this.myCanvas.requestRenderAll();
-            }
+        changestrokeColor(val,name,isAdd){
+            
+            let params = {
+                    text:  this.addText,style:'outline',fontName:'微软雅黑',fontHeight: 50, fontColor: this.color.substr(1),
+                    lineweight: this.strokeWidth, outLineColor: val.substr(1), effect: this.fontShape,
+                    backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1)
+                }
+            this.handleChangeFont(params,isAdd)
             this.strokeColorName = name;
             this.strokeColor = val;
         },
         changestrokeWidth(){
-            let obj = this.myCanvas.getActiveObject()
-            if (obj) {
-                obj.set('strokeWidth', this.strokeWidth);
-                this.myCanvas.requestRenderAll();
-            }
+            let params = {
+                    text:  this.addText,style:'outline',fontName:'微软雅黑',fontHeight: 50, fontColor: this.color.substr(1),
+                    lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,
+                    backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1)
+                }
+            this.handleChangeFont(params,true)
         },
         // 改变描边样式结束
         setEditPointer(){
@@ -2283,12 +2540,52 @@ export default {
 @import url("./../../components/index.less");
 @import url("./../../assets/style.css");
 @font-face {
-    font-family:'testFont';
-    src:url('https://cdnjs.loli.net/ajax/libs/MaterialDesign-Webfont/3.8.95/fonts/materialdesignicons-webfont.ttf')
+    font-family:'College-Regular';
+    src:url('https://wxmall-1253858660.cos.ap-beijing/wxmall/font/CHEISF_5.TTF')
 }
 @font-face {
-    font-family:'testFont2';
-    src:url('./../../assets/FZZYJW_0.TTF')
+    font-family:'NBA-Cavaliers';
+    src:url('https://wxmall-1253858660.cos.ap-beijing.myqcloud.com/wxmall/font/NBACAVAL.TTF')
+}
+@font-face {
+    font-family:'NBA-Grizzlies';
+    src:url('https://wxmall-1253858660.cos.ap-beijing.myqcloud.com/wxmall/font/NBAGRIZZ_0.TTF')
+}
+@font-face {
+    font-family:'NBA-Hawks';
+    src:url('https://wxmall-1253858660.cos.ap-beijing.myqcloud.com/wxmall/font/NBAHAWKS.TTF')
+}
+@font-face {
+    font-family:'NBA-Knicks';
+    src:url('https://wxmall-1253858660.cos.ap-beijing.myqcloud.com/wxmall/font/NBAKNICK.TTF')
+}
+@font-face {
+    font-family:'NBA-Pacers';
+    src:url('https://wxmall-1253858660.cos.ap-beijing.myqcloud.com/wxmall/font/NBAPACER.TTF')
+}
+@font-face {
+    font-family:'NBA-Pistons';
+    src:url('https://wxmall-1253858660.cos.ap-beijing.myqcloud.com/wxmall/font/NBAPISTO.TTF')
+}
+@font-face {
+    font-family:'NBA-Rockets';
+    src:url('https://wxmall-1253858660.cos.ap-beijing.myqcloud.com/wxmall/font/NBAROCKE.TTF')
+}
+@font-face {
+    font-family:'NBA-Trailblazers';
+    src:url('https://wxmall-1253858660.cos.ap-beijing.myqcloud.com/wxmall/font/NBATRAIL.TTF')
+}
+@font-face {
+    font-family:'NCAA-Utah-Utes';
+    src:url('https://wxmall-1253858660.cos.ap-beijing.myqcloud.com/wxmall/font/NCAA Utah Utes.ttf')
+}
+@font-face {
+    font-family:'Stahls-Tiffany---2000';
+    src:url('https://wxmall-1253858660.cos.ap-beijing.myqcloud.com/wxmall/font/shalts tiffany-2000.ttf')
+}
+@font-face {
+    font-family:'UA-Cadet';
+    src:url('https://wxmall-1253858660.cos.ap-beijing.myqcloud.com/wxmall/font/UA Cadet.ttf')
 }
 @normal-fontsize: 18px;
 @normal-fontcolor: #999;
@@ -2675,6 +2972,9 @@ export default {
                                     color: #fff;
                                 }
                             }
+                            .active{
+                                background-color: #33b8b3 !important;
+                            }
                         }
                 }
                 .tool-box4{
@@ -2754,13 +3054,13 @@ export default {
                         }
                         dd{
                             padding: 10px;
-                            width: 50%;
+                            width: 25%;
                             height: auto;
                             display: inline-block;
                             margin: 0;
                             cursor: pointer;
                             img{
-                                    width: 100%;
+                                width: 100%;
                             }
                         }
                     }
@@ -2768,18 +3068,18 @@ export default {
                 .tool-box7{
                     ul{
                         margin: 0;
+
                         li{
                             margin: 0;
                             padding: 10px;
-                            width: 50%;
+                            width: 25%;
                             height: auto;
                             display: inline-block;
                             margin: 0;
                             cursor: pointer;
                             img{
                                     width: 100%;
-                                    max-width: 168px;
-                                    max-height: 83px;
+                                    
                             }
                         }
                     }
@@ -2875,41 +3175,41 @@ export default {
                                     }
                                 }
                             }
-                            .font-style{
-                                span{
-                                    border: 1px solid #33b8b3;
-                                    border-radius: 4px;
-                                    display: inline-block;
-                                    padding: 4px 10px;
-                                    margin: 0;
-                                    cursor: pointer;
-                                    &:nth-child(1){
-                                        border-top-right-radius: 0;
-                                        border-bottom-right-radius: 0;
-                                    }
-                                    &:nth-child(2){
-                                        border-radius: 0;
-                                        border-left: none;
-                                        border-right: none;
-                                    }
-                                    &:nth-child(3){
-                                        border-radius: 0;
+                            // .font-style{
+                            //     span{
+                            //         border: 1px solid #33b8b3;
+                            //         border-radius: 4px;
+                            //         display: inline-block;
+                            //         padding: 4px 10px;
+                            //         margin: 0;
+                            //         cursor: pointer;
+                            //         &:nth-child(1){
+                            //             border-top-right-radius: 0;
+                            //             border-bottom-right-radius: 0;
+                            //         }
+                            //         &:nth-child(2){
+                            //             border-radius: 0;
+                            //             border-left: none;
+                            //             border-right: none;
+                            //         }
+                            //         &:nth-child(3){
+                            //             border-radius: 0;
 
-                                        border-right: none;
-                                    }
-                                    &:nth-child(4){
-                                        border-top-left-radius: 0;
-                                        border-bottom-left-radius: 0;
-                                    }
-                                    i{
-                                        color: #33b8b3;
-                                        font-size: 20px;
-                                    }
-                                }
-                                > p{
-                                    color: #33b8b3;
-                                }
-                            }
+                            //             border-right: none;
+                            //         }
+                            //         &:nth-child(4){
+                            //             border-top-left-radius: 0;
+                            //             border-bottom-left-radius: 0;
+                            //         }
+                            //         i{
+                            //             color: #33b8b3;
+                            //             font-size: 20px;
+                            //         }
+                            //     }
+                            //     > p{
+                            //         color: #33b8b3;
+                            //     }
+                            // }
                             .active{
                                 background-color: #33b8b3 !important;
                                 i{
@@ -3202,5 +3502,48 @@ export default {
             margin: 0 10px;
         }
     }
+}
+.show-details {
+  .number {
+    display: flex;
+    align-items: center;
+    padding: 20px 0 10px 0;
+    .number-box {
+      display: flex;
+      align-items: center;
+      .common-radio {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: #33b8b3;
+        text-align: center;
+        line-height: 24px;
+        color: #fff;
+        margin: 4px 0;
+        cursor: pointer;
+      }
+      .num {
+        margin: 0 10px;
+        text-align: center;
+      }
+    }
+  }
+  .prices {
+    display: flex;
+    align-items: center;
+    margin: 20px 0 10px 0;
+    .price-box {
+      display: flex;
+      align-items: center;
+      .price-input {
+        padding: 0 10px;
+        width: 100px;
+      }
+    }
+  }
+  .price-right {
+    flex: 1;
+    text-align: right;
+}
 }
 </style>

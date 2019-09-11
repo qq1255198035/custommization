@@ -107,7 +107,7 @@ export default {
       updateShow(b.id).then(res => {
         console.log(res)
         if(res.code == 0){
-          this.$router.push({path:'/neworder', query:{res:res.result,show: true}})
+          this.$router.push({path:'/neworder', query:{res: res.result,show: true}})
         }
         // 
       })
