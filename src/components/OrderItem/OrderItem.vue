@@ -6,21 +6,28 @@
           <span>订单Id:{{items.orderSn}}</span>
           <span>订单时间: {{items.createTime}}</span>
           <span>订单关闭时间： {{items.payEndDate}}</span>
+          <span>状态：{{items.orderStatus | statusFilter1}}</span>
         </p>
         <hide-menu @myClick="checkOutDetails(items.id)" @myClick1="openMyshareBox(items.id)" @myClick2="goEditing(items.id)" :isEdit="items.orderStatus"></hide-menu>
       </div>
       <div class="order-content">
         <div class="order-item" v-for="(item,index) in items.interiorList" :key="index + items.id">
           <div class="left">
-            <img src="@/assets/jaw.jpg" alt width="100" height="120" />
-            <div class="desc">
-              <h3>{{item.name}}</h3>
-              <p>颜色： {{item.productColor}}</p>
+            <div style="display: flex; align-items:center;">
+              <img src="@/assets/jaw.jpg" alt width="150" height="150" />
+              <div class="desc">
+                <h3>{{item.name}}</h3>
+                <p>颜色： {{item.productColor}}</p>
+              </div>
+            </div>
+            
+            <div>
+              <span style="margin-right: 20px;">{{item.buyNum}}/{{item.quantity}}</span>
+              <span>状态： {{item.status | statusFilter}}</span>
             </div>
           </div>
           <div class="right">
-            <span>{{item.buyNum}}/{{item.quantity}}</span>
-            <span>状态： {{item.status}}</span>
+            
             <commonBtn
               @btnClick="btnClick(item.id)"
               :width="'100%'"
@@ -45,20 +52,34 @@
 <script>
 import commonBtn from "@/components/commonBtn/commonBtn";
 import HideMenu from "@/components/HideMenu/HideMenu";
-// const statusMap = {
-//   1: {
-//     status: "warning",
-//     text: "团购中"
-//   },
-//   3: {
-//     status: "success",
-//     text: "设计中"
-//   },
-//   2: {
-//     status: "processing",
-//     text: "发货中"
-//   }
-// };
+const statusMap = {
+  '1': {
+    text: "已确认"
+  },
+  '2': {
+    text: "未确认"
+  },
+};
+const statusMap1 = {
+  '1': {
+    text: "订单提交"
+  },
+  '2': {
+    text: "样稿确认"
+  },
+  '3': {
+    text: "分享购买"
+  },
+  '4': {
+    text: "生产中"
+  },
+  '5': {
+    text: "运输中"
+  },
+  '6': {
+    text: "完成"
+  },
+};
 export default {
   props: {
     orderArr: {
@@ -107,6 +128,17 @@ export default {
           this.config.url = 'http://localhost:8080/#/share' + '?order_id='+id
           console.log(this.config.url)
     },
+    statusFilter (type) {
+      return statusMap[type].text
+    },
+  },
+  filters:{
+    statusFilter (type) {
+      return statusMap[type].text
+    },
+    statusFilter1 (type) {
+      return statusMap1[type].text
+    },
   }
 };
 </script>
@@ -130,13 +162,16 @@ export default {
   }
   .order-content {
     .order-item {
-      padding: 20px 0;
+      padding: 20px 50px;
       border-bottom: 1px solid #757575;
       display: flex;
       justify-content: space-between;
+      align-items: center;
       .left {
         display: flex;
-        width: 30%;
+        width: 60%;
+        align-items: center;
+        justify-content: space-between;
         .desc {
           display: flex;
           flex-direction: column;

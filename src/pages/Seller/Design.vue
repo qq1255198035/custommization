@@ -723,18 +723,17 @@ import remove from '@/assets/icons/remove.svg';
 import rotate from '@/assets/icons/rotate.svg';
 import diagonal from "@/assets/icons/repair-tools-cross.svg";
 import img1 from '@/assets/0001.png';
-import GoodsList from "@/components/GoodsList/GoodsList";
-import User from '@/components/Header/User';
-import MyHeader from '@/components/Header/Header';
+
+
+
 import { listAll,categoryList,selectById,saveDesign } from "@/api/seller";
 import img00 from "./../../assets/front.png"
 
 export default {
     components:{
         MyTitle,
-        GoodsList,
-        User,
-        MyHeader,
+      
+       
         commonBtn
     },
     data () {
@@ -810,11 +809,51 @@ export default {
             fontFamilyArr:[
                 {
                     id:1,
-                    name: 'Microsoft YaHei'
+                    name: 'College-Regular'
                 },
                 {
                     id:2,
-                    name: 'testFont'
+                    name: 'NBA-Cavaliers'
+                },
+                {
+                    id:3,
+                    name: 'NBA-Grizzlies'
+                },
+                {
+                    id:4,
+                    name: 'NBA-Hawks'
+                },
+                {
+                    id:5,
+                    name: 'NBA-Knicks'
+                },
+                {
+                    id:6,
+                    name: 'NBA-Pacers'
+                },
+                {
+                    id:7,
+                    name: 'NBA-Pistons'
+                },
+                {
+                    id:8,
+                    name: 'NBA-Rockets'
+                },
+                {
+                    id:9,
+                    name: 'NBA-Trailblazers'
+                },
+                {
+                    id:10,
+                    name: 'NCAA-Utah-Utes'
+                },
+                {
+                    id:11,
+                    name: 'Stahls-Tiffany---2000'
+                },
+                {
+                    id:12,
+                    name: 'UA-Cadet'
                 }
             ],
             colorList:[
@@ -1035,16 +1074,16 @@ export default {
             this.postId = id;
             this.show = true;
             setTimeout(() => {
-                    this.$intro().setOptions({
-                        prevLabel: "上一步",
-                        nextLabel: "下一步",
-                        skipLabel: "跳过",
-                        doneLabel: "结束",
-                        overlayOpacity: "0",
-                        highlightClass: "white",
-                        tooltipClass:"tool-tip",
-                        disableInteraction: false,
-                    }).start();
+                    // this.$intro().setOptions({
+                    //     prevLabel: "上一步",
+                    //     nextLabel: "下一步",
+                    //     skipLabel: "跳过",
+                    //     doneLabel: "结束",
+                    //     overlayOpacity: "0",
+                    //     highlightClass: "white",
+                    //     tooltipClass:"tool-tip",
+                    //     disableInteraction: false,
+                    // }).start();
             },10)
             //this.getSelectById(id)
         },
@@ -1668,9 +1707,11 @@ export default {
                 if( (maxHeight) <( maxWidth)){
 
                     var h = scaledObject.scaleToHeight(maxHeight,true);
+                    console.log(h)
 
                 } else{
                     var w = scaledObject.scaleToWidth(maxWidth,true);
+                    console.log(w)
                 }
             }
         },
@@ -2039,10 +2080,7 @@ export default {
     font-family:'testFont';
     src:url('https://cdnjs.loli.net/ajax/libs/MaterialDesign-Webfont/3.8.95/fonts/materialdesignicons-webfont.ttf')
 }
-@font-face {
-    font-family:'testFont2';
-    src:url('./../../assets/FZZYJW_0.TTF')
-}
+
 @normal-fontsize: 18px;
 @normal-fontcolor: #999;
 .white{
