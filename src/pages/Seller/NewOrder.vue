@@ -988,7 +988,7 @@ export default {
             fileList: [],
             filpx:false,
             filpy:false,
-            fontfamily:'',
+            fontfamily:'微软雅黑',
 
             // 旋转数值
             rotateNum:0,
@@ -1307,7 +1307,7 @@ export default {
         },
         saveFontShapeDesign(fontShape,isAdd){
             //fontShape
-            let params = {text: this.addText,style:'outline',fontName:'微软雅黑',fontHeight: 50, fontColor: this.color.substr(1), lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: fontShape,backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1)}
+            let params = {text: this.addText,style:'outline',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: fontShape,backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1)}
             this.handleChangeFont(params,isAdd)
             console.log(this.color)
         },
@@ -1776,7 +1776,7 @@ export default {
         },
         changeTextBgColor(val,name,isAdd){
             let params = {
-                text: this.addText,style:'outline',fontName:'微软雅黑',
+                text: this.addText,style:'outline',fontName:this.fontfamily,
                 fontHeight: 50, fontColor: this.color.substr(1), 
                 lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), 
                 effect: this.fontShape,backGround: val.substr(1),shadowColor: this.shadowColor.substr(1)}
@@ -1788,7 +1788,7 @@ export default {
         // 设置字体阴影开始
         changeShadowColor(val,name,isAdd){
             let params = {
-                    text: this.addText,style:'outline',fontName:'微软雅黑',fontHeight: 50, fontColor: this.color.substr(1), 
+                    text: this.addText,style:'outline',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
                     lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,
                     backGround: this.bgcolor.substr(1),shadowColor: val.substr(1)
                 }
@@ -2269,7 +2269,7 @@ export default {
         addItext(text,isAdd) {
             
             let params = {
-                    text: text,style:'outline',fontName:'微软雅黑',fontHeight: 50, fontColor: this.color.substr(1), 
+                    text: text,style:'outline',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
                     lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,
                     backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1)
                 }
@@ -2416,7 +2416,7 @@ export default {
             //let obj = this.myCanvas.getActiveObject();
             
             let params = {
-                    text:  this.addText,style:'outline',fontName:'微软雅黑',fontHeight: 50, fontColor: val.substr(1), 
+                    text:  this.addText,style:'outline',fontName:this.fontfamily,fontHeight: 50, fontColor: val.substr(1), 
                     lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,
                     backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1)
                 }
@@ -2430,7 +2430,7 @@ export default {
         changestrokeColor(val,name,isAdd){
             
             let params = {
-                    text:  this.addText,style:'outline',fontName:'微软雅黑',fontHeight: 50, fontColor: this.color.substr(1),
+                    text:  this.addText,style:'outline',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1),
                     lineweight: this.strokeWidth, outLineColor: val.substr(1), effect: this.fontShape,
                     backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1)
                 }
@@ -2440,7 +2440,7 @@ export default {
         },
         changestrokeWidth(){
             let params = {
-                    text:  this.addText,style:'outline',fontName:'微软雅黑',fontHeight: 50, fontColor: this.color.substr(1),
+                    text:  this.addText,style:'outline',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1),
                     lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,
                     backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1)
                 }
