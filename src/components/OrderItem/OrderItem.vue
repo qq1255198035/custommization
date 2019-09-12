@@ -14,7 +14,7 @@
         <div class="order-item" v-for="(item,index) in items.interiorList" :key="index + items.id">
           <div class="left">
             <div style="display: flex; align-items:center;">
-              <img src="@/assets/jaw.jpg" alt width="150" height="150" />
+              <img :src="item.positivePicUrl" alt width="150" height="150" />
               <div class="desc">
                 <h3>{{item.name}}</h3>
                 <p>颜色： {{item.productColor}}</p>

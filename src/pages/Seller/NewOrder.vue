@@ -65,7 +65,7 @@
                             </li>
                         </ul>
                         <div class="container">
-                            <h2>CUSTOM KING T-Shirt<span>查看尺寸表</span></h2>
+                            <h2>CUSTOM KING T-Shirt<span @click="sizeList = true">查看尺寸表</span></h2>
                             <div class="canvas-container"  v-show="designModel == 0">
                                 <canvas id="canvas1" :width="screenWidth" :height="screenWidth"></canvas>
                                 <div class="moving-box" :style="{width: boxSize1.width + 'px',height: boxSize1.height + 'px',top: boxSize1.top + 'px', left: boxSize1.left + 'px'}" v-show="movingBox">
@@ -783,6 +783,9 @@
                 </a-row>
             </a-modal>
         </div>
+        <a-modal :visible="sizeList" :footer="null" width="40%" :centered="true" style="padding: 0;" title="尺寸表" @cancel="sizeList = false">
+            <img :src="sizePicUrl" alt="" style="width: 100%;">
+        </a-modal>
     </div>
 </template>
 <script>
@@ -831,6 +834,7 @@ export default {
     },
     data () {
         return {
+            sizePicUrl:'',
             show: false,
             loading:false,
             goodsList:[],
@@ -1042,7 +1046,8 @@ export default {
             boxSize1: [],
             boxSize2: [],
             boxSize3: [],
-            boxSize4: []
+            boxSize4: [],
+            sizeList: false
         }
     },
     created(){
@@ -1442,6 +1447,7 @@ export default {
         getSelectById(id){
             selectById(id).then(res => {
                 console.log(res);
+                this.sizePicUrl = res.result.sizePicUrl
                 this.bgimgs = res.result.imgs;
                 this.bindCanvas(this.myCanvas1,0);
                 this.bindCanvas(this.myCanvas2,1);
