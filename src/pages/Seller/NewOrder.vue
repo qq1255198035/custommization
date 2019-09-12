@@ -114,7 +114,7 @@
                                     <div class="tool-box" v-show="visibletype == -1">
                                         <h2>你想怎么开始？</h2>
                                         <ul class="btn-box">
-                                            <li @click="startTo(0)" v-intro="'The content of tooltip'" v-intro-step="1" class="active-btn">
+                                            <li @click="startTo(0)" v-intro="'可以从这里开始你的设计'" v-intro-step="1" class="active-btn">
                                                 <span class="icon-txt"></span>
                                                 添加文字
                                             </li>
@@ -636,10 +636,10 @@
                                 :fontsize="'16px'"
                                 :title="'添加产品'"
                                 :icon="'plus'"
-                                v-intro="'The content of tooltip'" v-intro-step="2"
+                                v-intro="'这里即将带你开往新里程'" v-intro-step="2"
                             >
                             </commonBtn>
-                            <a-button type="primary" v-intro="'The content of tooltip'" v-intro-step="3"><span class="icon-save" style="margin-right: 10px;vertical-align: middle"></span><a @click="saveEndDesign">保存设计</a></a-button>
+                            <a-button type="primary" v-intro="'这里是你设计的归属地'" v-intro-step="3"><span class="icon-save" style="margin-right: 10px;vertical-align: middle"></span><a @click="saveEndDesign">保存设计</a></a-button>
                         </li>
                     </ul>
                 </div>
@@ -797,7 +797,6 @@ import resize from '@/assets/icons/resize.svg';
 import remove from '@/assets/icons/remove.svg';
 import rotate from '@/assets/icons/rotate.svg';
 import diagonal from "@/assets/icons/repair-tools-cross.svg";
-import img1 from '@/assets/0001.png';
 import GoodsList from "@/components/GoodsList/GoodsList";
 import User from '@/components/Header/User';
 import MyHeader from '@/components/Header/Header';
@@ -812,7 +811,6 @@ import {
         deleteEXimg,
         addRemarks,
         colorList,
-        changeFontFamily,
         changeGoodsColor,
         artFontList,
         changeFont,
@@ -1252,7 +1250,6 @@ export default {
             this.saveEndDesign()
         },
         loadFromJSON (canvas,json) {
-            let that = this;
             canvas.loadFromJSON(json, canvas.renderAll.bind(canvas), function (
                 o,
                 object

@@ -231,7 +231,7 @@ export default {
         openMyshareBox(id){
             console.log(id)
             this.openShare = true;
-            this.config.url = 'http://localhost:8080/#/share' + '?order_id='+id
+            this.config.url = 'http://1920168.0.9:8080/#/share' + '?order_id='+id
             console.log(this.config.url)
         },
         closeShareBox(){
