@@ -41,7 +41,7 @@ export default {
         onChange: page => {
           console.log(page);
         },
-        pageSize: 3
+        pageSize: 0
       },
       status: "",
       actions: [
@@ -73,7 +73,6 @@ export default {
     },
     _orders() {
       const param = {
-        token: this.$ls.get("token"),
         pay_status: this.status,
         condition: this.search,
         pageNo: this.pageNo,

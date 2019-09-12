@@ -2,7 +2,7 @@
   <div id="table">
     <a-table
       :columns="colmons"
-      :dataSource="dataSize"
+      :dataSource="data"
       :pagination="false"
       :loading="memberLoading"
       :rowClassName="function(){return 'table-row'}"
@@ -11,22 +11,20 @@
         <a-select
           class="btn-width"
           @change="handleChange(record.key,col,$event)"
-          v-if="col == 'sizes'"
+          v-if="col == 'size'"
           :key="col"
-          placeholder="请选择尺码"
+          :placeholder="targetList.sizess[0]"
         >
-          <a-select-option v-for="(sitem,index) in sizes" :key="index" :value="sitem">{{sitem}}</a-select-option>
+          <a-select-option
+            v-for="(sitem,index) in targetList.sizess"
+            :key="index"
+            :value="sitem"
+          >{{sitem}}</a-select-option>
         </a-select>
         <!-- <Stepper :num="record.number" @onPropsChange="change(record.key,col,)" v-if="col == 'number'" :key="col"></Stepper> -->
-        <div id="steppers" v-if="col == 'price'" :key="col">
+        <div id="steppers" v-if="col == 'number'" :key="col">
           <button class="left" @click="clickLeftbtn(record.key,col)">-</button>
-          <input
-            type="number"
-            min="1"
-            max="Infinity"
-            class="stepper-input"
-            :value="record.number"
-          />
+          <input type="number" min="1" max="Infinity" class="stepper-input" :value="record.number" />
           <button class="right" @click="clickRightbtn(record.key,col)">+</button>
         </div>
         <a-input
@@ -55,10 +53,7 @@
       :radio="'12px'"
       :fontsize="'18px'"
       :top="'20px'"
-
-    >
-    
-    </commonBtn>
+    ></commonBtn>
     <!--<a-button
       style="width: 100%; margin-top: 20px;height:45px"
       icon="plus"
@@ -75,9 +70,6 @@ export default {
     dataSizeText: {
       type: Array
     },
-    size: {
-      type: Array
-    },
     columns: {
       type: Array
     }
@@ -87,24 +79,22 @@ export default {
   },
   created() {
     this._price();
-    
   },
-  mounted() {
-    
-  },
+  mounted() {},
   data() {
     return {
       // table
-      dataLists: ["sizes", "quantity", "total_price",],
-
+      sizes: [],
+      dataLists: ["size", "number", "total_price"],
+      targetList: [],
       memberLoading: false,
       colmons: [
         {
           title: "尺码",
-          dataIndex: "sizes",
+          dataIndex: "size",
           width: "25%",
           align: "center",
-          scopedSlots: { customRender: "sizes" }
+          scopedSlots: { customRender: "size" }
         },
         {
           title: "数量",
@@ -137,25 +127,38 @@ export default {
   },
   methods: {
     _price() {
-      this.data = this.dataSize;
-      console.log(this.dataSize);
+      let dataList = [];
+      dataList = this.dataSize;
+      this.data = dataList;
+      this.sizes = this.data[0].sizes;
+      this.data[0].total_price = this.data[0].price;
+      this.targetList = {
+        price: this.data[0].price,
+        number: this.data[0].number,
+        printName: this.data[0].printName,
+        printNumber: this.data[0].printNumber,
+        sizess: this.data[0].sizes,
+        goods_id: this.data[0].goods_id,
+        des_id: this.data[0].des_id
+      };
     },
     handleChange(key, column, value) {
       console.log(key, column, value);
-      let newData = [...this.dataSize];
+      let newData = [...this.data];
       console.log(newData);
       let target = newData.filter(item => key == item.key)[0];
       console.log(target);
       if (target) {
-        console.log(target.sizes.length);
-        target.sizes = value;
+        target.size = value;
+        target.price = target.number * target.total_price;
       }
-      this.dataSize = newData;
-      this.$emit("getList", this.dataSize);
+      this.data = newData;
+      console.log(this.data);
+      this.$emit("getList", this.data);
     },
     /** 减**/
     clickLeftbtn(key, column) {
-      let newData = [...this.dataSize];
+      let newData = [...this.data];
       console.log(newData);
       let target = newData.filter(item => key == item.key)[0];
       console.log(target);
@@ -165,48 +168,52 @@ export default {
         } else {
           target[column] = 1;
         }
-        target.price = target[column] * this.dataSizeText[0].price;
+        target.price = target[column] * target.total_price;
       }
-      this.dataSize = newData;
-      this.$emit("getList", this.dataSize);
+      this.data = newData;
+      this.$emit("getList", this.data);
     },
     /** 加**/
     clickRightbtn(key, column) {
-      let newData = [...this.dataSize];
+      let newData = [...this.data];
+      console.log(newData);
       let target = newData.filter(item => key == item.key)[0];
       console.log(target);
       if (target) {
         target[column]++;
-        target.total_price = target[column] * this.dataSizeText[0].price;
+        target.price = target[column] * target.total_price;
       }
-      this.dataSize = newData;
-      console.log(this.dataSize);
-      this.$emit("getList", this.dataSize);
+      this.data = newData;
+      this.reseList = this.reseList.concat(target);
+      console.log(this.reseList);
+      console.log(this.data);
+      this.$emit("getList", this.data);
     },
     /** 添加**/
-    newMember(e) {
-      const length = this.dataSize.length;
-      console.log(this.dataSize);
-      this.dataSize.push({
+    newMember() {
+      const length = this.data.length;
+      this.data.push({
         key:
           length === 0
             ? "1"
-            : (parseInt(this.dataSize[length - 1].key) + 1).toString(),
-        price: this.dataSize[0].price,
-        total_price: this.dataSize[0].price,
-        quantity: this.dataSize[0].number,
-        size: this.dataSize[0].sizes,
-        goods_id: this.dataSize[0].goods_id,
-        des_id: this.dataSize[0].des_id
+            : (parseInt(this.data[length - 1].key) + 1).toString(),
+        price: this.targetList.price,
+        number: this.targetList.number,
+        printName:this.targetList.printName,
+        printNumber:this.targetList.printNumber,
+        size: this.targetList.sizess,
+        goods_id: this.targetList.goods_id,
+        des_id: this.targetList.des_id,
+        total_price: this.targetList.price
       });
     },
 
     remove(key) {
       console.log(key);
-      const newData = this.dataSize.filter(item => item.key !== key);
+      const newData = this.data.filter(item => item.key !== key);
       console.log(newData);
-      this.dataSize = newData;
-      this.$emit("getList", this.dataSize);
+      this.data = newData;
+      this.$emit("getList", this.data);
     }
   },
   watch: {

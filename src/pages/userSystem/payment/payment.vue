@@ -212,12 +212,12 @@ export default {
           title: "单价",
           width: "25%",
           align: "center",
-          dataIndex: "price"
+          dataIndex: "total_price"
         },
         {
           title: "总价",
           align: "center",
-          dataIndex: "total_price"
+          dataIndex: "price"
         }
       ],
       columns1: [
@@ -245,13 +245,13 @@ export default {
           title: "单价",
           width: "20%",
           align: "center",
-          dataIndex: "price"
+          dataIndex: "total_price"
         },
         {
           title: "合计价格",
           width: "20%",
           align: "center",
-          dataIndex: "total_price"
+          dataIndex: "price"
         }
       ]
     };

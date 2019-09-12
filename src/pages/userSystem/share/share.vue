@@ -9,22 +9,27 @@
       </header>
       <card-header :detailList="detailList"></card-header>
       <my-title style="margin:40px 0;" :fontsize="20" :title="itemTitle"></my-title>
-      <a-row :gutter="20">
+      <a-row :gutter="40">
         <!--list1-->
-        <div>
-          <a-col :xxl="12" :xl="20" v-for="item in resultData" :key="item.index">
-            <table-item :datas="item">
+        <div style="padding:0 20px">
+          <a-col
+            :xxl="12"
+            :xl="20"
+            v-for="(item,index) in resultData"
+            :key="index"
+            style="overflow-y: auto;overflow-x: hidden;height:560px;max-height:560px"
+          >
+            <table-item :datas="item" ref="myTable">
               <a href style="font-size: 18px; color: #999; text-decoration: underline">查看尺寸表</a>
             </table-item>
-              <div v-if="!item.is_print_numbe && !item.is_print_text">
-                <my-table :dataSize="[item]" @getList="list"></my-table>
-              </div>
-                
-              <div v-if="item.is_print_numbe || item.is_print_text">
-                <my-tables :dataName="[item]" @getList="lists"></my-tables>
-              </div>
+            <div v-if="!item.is_print_numbe && !item.is_print_text">
+              <my-table :dataSize="[item]" @getList="list" ref="mychild"></my-table>
               
-            
+            </div>
+
+            <div v-if="item.is_print_numbe || item.is_print_text">
+              <my-tables :dataName="[item]" @getList="lists"></my-tables>
+            </div>
           </a-col>
         </div>
 
@@ -114,52 +119,14 @@ export default {
       imgs: "",
       name: "",
       resultData: [],
-      map: '',
+      map: "",
       columns: [],
-      colmons1: [
-        {
-          title: "尺码",
-          dataIndex: "size",
-          key: "size",
-          algin: "center",
-          width: "20%",
-          scopedSlots: { customRender: "size" }
-        },
-        {
-          title: "名字",
-          dataIndex: "printName",
-          algin: "center",
-          key: "printName",
-          width: "20%",
-          scopedSlots: { customRender: "printName" }
-        },
-        {
-          title: "号码",
-          dataIndex: "printNumber",
-          key: "printNumber",
-          algin: "center",
-          width: "20%",
-          scopedSlots: { customRender: "printNumber" }
-        },
-        {
-          title: "合计价格",
-          dataIndex: "total_price",
-          key: "total_price",
-          algin: "center",
-          width: "20%",
-          scopedSlots: { customRender: "total_price" }
-        },
-
-        {
-          title: "操作",
-          width: "20%",
-          key: "action",
-          algin: "center",
-          scopedSlots: { customRender: "operation" }
-        }
-      ],
-      
-      data: []
+      data: [],
+      newList: [],
+      newListOld: [],
+      newListOld1: [],
+      arrtyNew1:[],
+      arrtyNew2:[]
     };
   },
   computed: {},
@@ -194,22 +161,59 @@ export default {
     _price(datas) {
       let price = 0;
       for (var i = 0; i < datas.length; i++) {
-        price += datas[i].total_price;
+        price += datas[i].price;
       }
       return price;
     },
     list(data) {
-      console.log(data);
-      this.listNoPay.data = data;
-      this.aPrice = this._price(data);
-      console.log(this.aPrice);
-      this.allPrice = this.bPrice + this.aPrice;
+      for (var i = 0; i < data.length; i++) {
+        this.newListOld.push(data[i]);
+      }
+      const newLists = [];
+      for (var i = 0; i < this.newListOld.length; i++) {
+        const count = 0;
+        for (var j = 0; j < newLists.length; j++) {
+          if (newLists[j] == this.newListOld[i]) {
+            count++;
+            break;
+          }
+        }
+        console.log(count);
+        if (count == 0) {
+          newLists[newLists.length] = this.newListOld[i];
+        }
+      }
+      this.arrtyNew1 = newLists
+      this.arrtyAllList = this.arrtyNew1.concat(this.arrtyNew2)
+      this.allPrice = this._price(this.arrtyAllList)
+      this.listNoPay.data = this.arrtyAllList
     },
     lists(data) {
-      console.log(data);
-      this.listPay.data = data;
-      this.bPrice = this._price(data);
-      this.allPrice = this.bPrice + this.aPrice;
+      console.log(data)
+      for (var i = 0; i < data.length; i++) {
+        this.newListOld1.push(data[i]);
+      }
+      const newLists = [];
+      for (var i = 0; i < this.newListOld1.length; i++) {
+        const count = 0;
+        for (var j = 0; j < newLists.length; j++) {
+          if (newLists[j] == this.newListOld1[i]) {
+            count++;
+            break;
+          }
+        }
+        console.log(count);
+        if (count == 0) {
+          newLists[newLists.length] = this.newListOld1[i];
+        }
+      }
+      for(var i =0;i<this.arrtyAllList.length;i++) {
+
+      }
+      this.arrtyNew2 = newLists
+      this.arrtyAllList = this.arrtyNew2.concat(this.arrtyNew1)
+      this.allPrice=this._price(this.arrtyAllList)
+      this.listNoPay.data = this.arrtyAllList
     },
     payTo() {
       const token = this.$ls.get(ACCESS_TOKEN);
@@ -232,9 +236,8 @@ export default {
         const param = {
           //token: this.$ls.get("token"),
           order_id: this.$route.query.order_id,
-          order_price: this.bPrice + this.aPrice,
-          personOrderNoPrintList: JSON.stringify(this.listNoPay),
-          personOrderPrintList: JSON.stringify(this.listPay)
+          order_price: this.allPrice,
+          personOrderList: JSON.stringify(this.listNoPay),
         };
         console.log(param);
         apiPay(param).then(res => {
@@ -259,38 +262,15 @@ export default {
         pageSize: 10
       }).then(res => {
         console.log(res);
-        this.type = this.$ls.get("types");
+        this.$ls.set("types",res.result.type);
         let imgUrls = [];
         let columns = [];
         let data = [];
         let result = res.result;
         let resultData = res.result.personOrderNoPrintList;
         this.resultData = res.result.personOrderNoPrintList;
-        let map = {
-          imgUrls:[],
-          data: []
-        }
-        let resultTable = [];
-        for (var i = 0; i < resultData.length; i++) {
-          let row = resultData[i];
-          let price = resultData.price
-            map.imgUrls.push(row.positive_pic_url);
-            map.imgUrls.push(row.back_pic_url);
-            map.imgUrls.push(row.left_pic_url);
-            map.imgUrls.push(row.right_pic_url);
-
-            var oneData = {number:row.numbe, price: row.price, 
-                          is_print_text:row.is_print_text, 
-                          size : row.size};
-            map.data.push(oneData)
-          
-        }
-
-        this.columns = columns;
-        this.detailList = res.result;
-        this.map = map
-        console.log(map)
-       /* let result1 = res.result.personOrderPrintList;
+        this.detailList = res.result
+        /* let result1 = res.result.personOrderPrintList;
         this.showList = result1;
         this.showTable = result;
         

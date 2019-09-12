@@ -3,9 +3,9 @@
     <div class="search-wrapper">
       <div class="left">
         <a-radio-group @change="onChange" v-model="value">
-          <a-radio-button value="0">全部订单</a-radio-button>
-          <a-radio-button value="1">已支付</a-radio-button>
-          <a-radio-button value="2">未支付</a-radio-button>
+          <a-radio-button value="">全部订单</a-radio-button>
+          <a-radio-button value="2">已支付</a-radio-button>
+          <a-radio-button value="0">未支付</a-radio-button>
         </a-radio-group>
       </div>
       <div class="right">
@@ -24,10 +24,10 @@
           <p>联系商家：{{item.contact}}</p>
         </a-col>
         <a-col :xs="24" :sm="6" :md="5">
-          <p>状态：{{item.order_status | status}}</p>
+          <p>状态：{{item.pay_status | status}}</p>
         </a-col>
         <a-col :xs="24" :sm="6" :md="4">
-          <p class="list-last" v-if="item.order_status == 0">
+          <p class="list-last" v-if="item.pay_status == 0">
             <commonBtn
               :float="'right'"
               :width="'86px'"
@@ -39,9 +39,9 @@
               @toAlginPay="toAlginPay(item.user_order_id)"
             ></commonBtn>
           </p>
-          <p class="list-last" v-if="item.order_status == 201">
+          <p class="list-last" v-if="item.pay_status == 3">
             <commonBtn
-            :float="'right'"
+              :float="'right'"
               :width="'80px'"
               :title="'退款'"
               :height="'34px'"
@@ -132,6 +132,16 @@ export default {
       switch (data) {
         case 0:
           return "待付款";
+        case 1:
+          return "付款中";
+        case 2:
+          return "已付款";
+        case 3:
+          return "已退款";
+      }
+      /*switch (data) {
+        case 0:
+          return "待付款";
         case 101:
           return "订单已取消";
         case 102:
@@ -146,18 +156,18 @@ export default {
           return "退款";
         case 402:
           return "完成";
-      }
+      }*/
     }
   },
   methods: {
     toAlginPay(id) {
-      console.log(id)
+      console.log(id);
       this.$router.push({
-        path: '/payment',
+        path: "/payment",
         query: {
-          user_order_id:id
+          user_order_id: id
         }
-      })
+      });
     },
     checkDetail() {},
     onSearch(value) {

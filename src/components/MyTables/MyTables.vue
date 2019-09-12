@@ -1,9 +1,8 @@
 <template>
   <div id="table">
     <a-table
-    :expandedRowKeys="expandedRowKeys"
       :columns="columns"
-      :dataSource="dataName"
+      :dataSource="data1"
       :pagination="false"
       :loading="memberLoading"
       :rowClassName="function(){return 'table-row'}"
@@ -16,7 +15,7 @@
           style="text-align: center;width: 100%;background:#fff"
           placeholder="请选择尺码"
         >
-          <a-select-option v-for="(sitem,index) in sizes" :key="index" :value="sitem">{{sitem}}</a-select-option>
+          <a-select-option v-for="(sitem,index) in targetList.sizess" :key="index" :value="sitem">{{sitem}}</a-select-option>
         </a-select>
         <!-- <Stepper :num="record.number" @onPropsChange="change(record.key,col,)" v-if="col == 'number'" :key="col"></Stepper> -->
         <a-input
@@ -24,6 +23,7 @@
           v-if="col == 'printName'"
           :key="col"
           :value="record.printName"
+          :disabled="record.is_print_text === 0"
           style="text-align: center;background-color: rgba(255,255,255,0);"
         />
         <a-input
@@ -31,6 +31,7 @@
           v-if="col == 'printNumber'"
           :key="col"
           :value="record.printNumber"
+          :disabled="record.is_print_number === 0"
           style="text-align: center;background-color: rgba(255,255,255,0);"
         />
         <a-input
@@ -74,26 +75,17 @@ import commonBtn from "@/components/commonBtn/commonBtn";
 export default {
   props: {
     dataName: {},
-    dataSizeTexts: {
-      type: Array
-    },
-    sizes: {
-      type: Array
-    },
-    columons:{
-      type: Array
-    }
+
   },
   components: {
     commonBtn
   },
   created() {
-    
+    this._price1()
   },
   data() {
     return {
-      expandedRowKeys:["size", "printName",],
-      dataList1: ["size", "printName", "printNumber", "total_price"],
+      dataList1: ["size","printName", "printNumber", "is_print_text", "is_print_number", "total_price"],
       // table
       quantity: 1,
       memberLoading: false,
@@ -140,11 +132,31 @@ export default {
         }
       ],
       data1: "",
-
+      sizes: [],
+targetList: {},
       errors: []
     };
   },
   methods: {
+    _price1() {
+      let dataList = [];
+      dataList = this.dataName;
+      this.data1 = dataList;
+      this.sizes = this.data1[0].sizes
+      console.log(this.dataName)
+      this.data1[0].total_price = this.data1[0].price
+      this.targetList = {
+        price: this.data1[0].price,
+        number: this.data1[0].number,
+        is_print_number: this.data1[0].is_print_number,
+        is_print_text: this.data1[0].is_print_text,
+        printName:this.data1[0].printName,
+        printNumber:this.data1[0].printNumber,
+        sizess: this.data1[0].sizes,
+        goods_id: this.data1[0].goods_id,
+        des_id: this.data1[0].des_id
+      }
+    },
     handleChange(key, column, value) {
       console.log(key, column, value);
       let newData = [...this.data1];
@@ -152,8 +164,8 @@ export default {
       let target = newData.filter(item => key == item.key)[0];
       console.log(target);
       if (target) {
-        console.log(target.size.length);
         target.size = value;
+        target.price = target.number * target.total_price;
       }
       this.data = newData;
       if(value) {
@@ -196,19 +208,24 @@ export default {
     },
     newMembers() {
       const length = this.data1.length;
+      console.log(length)
       this.data1.push({
         key:
           length === 0
             ? "1"
-            : (parseInt(this.data1[length - 1].key) + 1).toString(),
-            price: this.dataSizeTexts[0].price,
-        total_price: this.dataSizeTexts[0].price,
-        name: this.dataSizeTexts[0].printName,
-        num: this.dataSizeTexts[0].printNumber,
-        size: this.sizes,
-        goods_id: this.dataSizeTexts[0].goods_id,
-        des_id: this.dataSizeTexts[0].des_id
+            : (parseInt(this.data1[length - 1].key) + 1).toString(),    
+        price: this.targetList.price,
+        is_print_number: this.targetList.is_print_number,
+        is_print_text: this.targetList.is_print_text,
+        printName:this.targetList.printName,
+        printNumber:this.targetList.printNumber,
+        number: this.targetList.number,
+        size: this.targetList.sizess,
+        goods_id: this.targetList.goods_id,
+        des_id: this.targetList.des_id,
+        total_price: this.targetList.price
       });
+      console.log(this.data1)
     },
 
     remove(key) {

@@ -49,11 +49,11 @@
                 </div>
                 <div class="pay-btn" v-if="code === 1 && type == 0">
                   <a-button class="buy-again" @click="alginBtn">再次购买</a-button>
-                  <a-button class="back">返回</a-button>
+                  <a-button class="back" @click="backBtn">返回</a-button>
                 </div>
                 <div class="pay-btn" v-if="code === 0">
                   <a-button class="buy-again" @click="resetBtn">重新支付</a-button>
-                  <a-button class="back">返回</a-button>
+                  <a-button class="back" @click="backBtn">返回</a-button>
                 </div>
               </div>
             </div>
@@ -107,6 +107,11 @@ export default {
   mounted() {},
   watch: {},
   methods: {
+    backBtn() {
+      this.$router.push({
+        path: '/index'
+      })
+    },
     _status() {
       const param = {
         user_order_id: this.$ls.get("userOrderId")

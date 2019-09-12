@@ -53,7 +53,7 @@
                 </div>-->
                 <div class="pay-btn" v-if="code === 0">
                   <a-button class="buy-again" @click="resetBtn">重新支付</a-button>
-                  <a-button class="back">返回</a-button>
+                  <a-button class="back" @click="backBtn">返回</a-button>
                 </div>
               </div>
             </div>
@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import { wxPayBack, status } from "@/api/system";
+import { status } from "@/api/system";
 import { wxBackPay } from "@/api/seller"
 import MyStpes from "@/components/MyStpes/MyStpes";
 export default {
@@ -105,6 +105,11 @@ export default {
   mounted() {},
   watch: {},
   methods: {
+    backBtn() {
+      this.$router.push({
+        path: '/index'
+      })
+    },
     _status() {
       const param = {
         user_order_id: this.$route.query.user_order_id
