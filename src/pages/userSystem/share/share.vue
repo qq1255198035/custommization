@@ -169,9 +169,9 @@ export default {
       for (var i = 0; i < data.length; i++) {
         this.newListOld.push(data[i]);
       }
-      const newLists = [];
+      let newLists = [];
       for (var i = 0; i < this.newListOld.length; i++) {
-        const count = 0;
+        let count = 0;
         for (var j = 0; j < newLists.length; j++) {
           if (newLists[j] == this.newListOld[i]) {
             count++;
@@ -193,9 +193,9 @@ export default {
       for (var i = 0; i < data.length; i++) {
         this.newListOld1.push(data[i]);
       }
-      const newLists = [];
+      let newLists = [];
       for (var i = 0; i < this.newListOld1.length; i++) {
-        const count = 0;
+        let count = 0;
         for (var j = 0; j < newLists.length; j++) {
           if (newLists[j] == this.newListOld1[i]) {
             count++;
@@ -207,9 +207,7 @@ export default {
           newLists[newLists.length] = this.newListOld1[i];
         }
       }
-      for(var i =0;i<this.arrtyAllList.length;i++) {
-
-      }
+      
       this.arrtyNew2 = newLists
       this.arrtyAllList = this.arrtyNew2.concat(this.arrtyNew1)
       this.allPrice=this._price(this.arrtyAllList)
@@ -263,11 +261,7 @@ export default {
       }).then(res => {
         console.log(res);
         this.$ls.set("types",res.result.type);
-        let imgUrls = [];
-        let columns = [];
-        let data = [];
-        let result = res.result;
-        let resultData = res.result.personOrderNoPrintList;
+        
         this.resultData = res.result.personOrderNoPrintList;
         this.detailList = res.result
         /* let result1 = res.result.personOrderPrintList;
