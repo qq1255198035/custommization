@@ -1,7 +1,7 @@
 <template>
     <div id="dashbored">
         <my-header :name="name" :level="level" :intro="intro" :imgUrl="imgUrl"></my-header>
-        <order-total :num1="price1 | moneyFormat" :num2="price2 | moneyFormat" :num3="price3 | moneyFormat">
+        <order-total :num1="price1 | moneyFormat" :num2="price2" :num3="price3 | moneyFormat">
             <p slot="a" style="color:#727272;font-size: 16px;margin:0;">总销售额</p>
             <p slot="b" style="color:#727272;font-size: 16px;margin:0;">总订单数</p>
             <p slot="c" style="color:#727272;font-size: 16px;margin:0;">总佣金</p>
@@ -74,7 +74,7 @@ export default {
         },
         getSalesDate(){
             salesDate().then(res => {
-                //console.log(res)
+                console.log(res)
                 if(res.code == 0){
                     this.price1 = res.result.saleAll;
                     this.price2 = res.result.orderAll;

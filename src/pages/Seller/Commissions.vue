@@ -13,11 +13,11 @@
                 <span slot="status" slot-scope="text">
                     <a-badge :status="text | statusTypeFilter" :text="text | statusFilter" />
                 </span>
-                <template slot="operation">
-                    <a href="javascript:;"><a-icon type="file-search" style="font-size: 20px;"/></a>
+                <template slot="operation" slot-scope="text,record">
+                    <a href="javascript:;" @click="checkOutPrice(record.id)"><a-icon type="file-search" style="font-size: 20px;"/></a>
                 </template>
         </a-table>
-        <a-modal v-model="show" :footer="null" title="申请体现" :width="768">
+        <a-modal v-model="show" :footer="null" title="申请提现" :width="768">
             <div class="commodal-box">
                 <a-steps :current="current">
                     <a-step v-for="item in steps" :key="item.title" :title="item.title" />
@@ -69,6 +69,21 @@
                 </div>
             </div>
         </a-modal>
+        <a-modal v-model="show1" :footer="null" title="提现" :width="768">
+            <div class="commodal-box">
+                <ul class="content">
+                    <li>
+                        收款账户：<span>{{count1}}</span>
+                    </li>
+                    <li>收款人姓名：<span>{{ sname1 }}</span></li>
+                    <li>提现金额：<span>￥{{ cash1 }}</span></li>
+                    <li>手续费({{persent3}}%)：<span>￥{{sprice1}}</span></li>
+                    <li>地方税({{persent4}}%)：<span>￥{{dprice1}}</span></li>
+                    <li>到账金额：<h3>￥{{dmoney1}}</h3></li>
+                </ul>
+               
+            </div>
+        </a-modal>
     </div>
 </template>
 <script>
@@ -106,6 +121,15 @@ export default {
     },
     data(){
         return{
+                count1: '',
+                sname1: '',
+                cash1: '',
+                persent3: '',
+                persent4: '',
+                dprice1: '',
+                dmoney1: '',
+                sprice1: '',
+                show1: false,
                 price1:0,
                 price2:0,
                 price3:0,
@@ -177,6 +201,10 @@ export default {
         this.getWithdrawalList(1);
     },
     methods:{
+        checkOutPrice(id){
+            this.show1 = true;
+            console.log(id)
+        },
         postTwoNext(params){
             twoNext(params).then(res => {
                 console.log(res)
@@ -223,7 +251,7 @@ export default {
         next() {
             if(this.current == 0){
                 if(this.paytype){
-                    if(this.price > 100){
+                    if(this.price >= 100){
                         if(this.price < this.totalMoney){
                             this.current++;
                             this.postNextStptes(this.count,this.name,this.price,this.paytype);
@@ -261,7 +289,7 @@ export default {
                 if(res.code == 0){
                     this.price1 = res.result.amount;
                     this.price2 = res.result.balance;
-                    this.price2 = res.result.unpaid;
+                    this.price3 = res.result.unpaid;
                 }
             })
         },
@@ -316,5 +344,24 @@ export default {
 }
 .commodal-box{
     padding: 30px;
+    .content{
+        width: 60%;
+        margin: 0 auto;
+        border-bottom: 1px solid #ccc;
+        li{
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            
+            padding: 5px;
+            span{
+                font-size: 16px;
+                color: #33b8b3;
+            }
+            h3{
+                color: #33b8b3;
+            }
+        }
+    }
 }
 </style>

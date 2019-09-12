@@ -12,16 +12,6 @@
                             @click="handleClick"
                             @openChange="onOpenChange"
                         >
-                        <!-- <template v-for="item in menuList">
-                            <a-sub-menu :key="item.title" v-if="item.subMenu">
-                                <a-menu-item>
-
-                                </a-menu-item>
-                            </a-sub-menu>
-                            <a-menu-item :key="item.title">
-
-                            </a-menu-item>
-                        </template> -->
                         <a-sub-menu  v-for="(item, index) in menuList" :key="index.toString()">
                             <span slot="title" style="display: flex;align-items: center;"><a-avatar :size="20" :src="item.icon" style="margin-right: 5px;" v-if="item.icon"/><span>{{item.title}}</span></span>
                             <a-menu-item v-for="(sub,sindex) in item.subMenu" :key="'sub'+ index + sindex.toString()" @click="handleGetList(sub.categoryId)">{{sub.title}}</a-menu-item>
@@ -742,7 +732,7 @@
                     </div>
                     <div class="btn-box">
                         <a-button icon="file-text" @click="$router.push({path:'/designList'})">订单列表</a-button>
-                        <a-button type="primary" icon="" style="vertical-align: middle;" @click="$router.push({path: '/designList'})">
+                        <a-button type="primary" icon="" style="vertical-align: middle;" @click="posteDesignList">
                             <img src="@/assets/monry-icon-bar.png" alt="" width="12" height="19" style="margin-right: 5px;">
                             立即下单
                         </a-button>
@@ -841,7 +831,8 @@ import {
         changeFont,
         discountEdit1,
         discount,
-        getPic
+        getPic,
+        handleDesignList
     } from "@/api/seller";
 
 
@@ -1131,6 +1122,14 @@ export default {
     },
 
     methods:{
+        posteDesignList(){
+            handleDesignList().then(res => {
+                console.log(res)
+                if(res.code == 200){
+                    this.$router.push({path: '/orderres'})
+                }
+            })
+        },
         handleChangePRO(){
             this.closeDesignBox();
         },

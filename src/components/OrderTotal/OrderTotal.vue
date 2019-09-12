@@ -9,7 +9,7 @@
                     <div class="desc">
                         
                         <slot name="a"></slot>
-                        <h3>$ {{num1}}</h3>
+                        <h3>{{num1}}</h3>
                     </div>
                 </div>
             </a-col>
@@ -25,7 +25,7 @@
                     <div class="desc">
                         
                         <slot name="b"></slot>
-                        <h3>$ {{num2}}</h3>
+                        <h3>{{num2}}</h3>
                     </div>
                 </div>
             </a-col>
@@ -40,7 +40,7 @@
                     <div class="desc">
                         
                         <slot name="c"></slot>
-                        <h3>$ {{num3}}</h3>
+                        <h3>{{num3}}</h3>
                     </div>
                 </div>
             </a-col>
@@ -58,7 +58,11 @@ export default {
         },
         num3:{
             required: true
-        }
+        },
+        
+    },
+    mounted(){
+        
     }
 }
 </script>

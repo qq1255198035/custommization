@@ -27,7 +27,7 @@
                         <p>并在第四个工作日前给您提交一份设计手稿</p>
                         <div class="btn-box">
                             <a-button @click="$router.push({path: '/neworder'})">再来一单</a-button>
-                            <a-button @click="$router.push({path: '/designList'})">返回</a-button>
+                            <a-button @click="$router.go(-1)">返回</a-button>
                         </div>
                     </div>
                 </div>

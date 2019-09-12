@@ -54,10 +54,10 @@ import commonBtn from "@/components/commonBtn/commonBtn";
 import HideMenu from "@/components/HideMenu/HideMenu";
 const statusMap = {
   '1': {
-    text: "已确认"
+    text: "未确认"
   },
   '2': {
-    text: "未确认"
+    text: "已确认"
   },
 };
 const statusMap1 = {
