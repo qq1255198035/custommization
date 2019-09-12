@@ -8,15 +8,22 @@
             <User></User>
           </p>
         </header>
-
         <div class="user-layout-register">
           <a-row>
             <a-col :span="4"></a-col>
             <a-col :span="16">
               <my-title :title="itemTitle" :fontsize="24"></my-title>
               <a-form ref="formRegister" :form="form" id="formRegister">
-                <a-form-item label="选择角色">
-              <a-select
+                <a-form-item
+                  label="选择角色"
+                  :label-col="{ span: 3 }"
+                  :wrapper-col="{ span: 12 ,offset: 1}"
+                >
+                  <a-radio-group @change="onChangeRadio" v-model="valueRadio">
+                    <a-radio :value="1">用户</a-radio>
+                    <a-radio :value="2">经销商</a-radio>
+                  </a-radio-group>
+                  <!--<a-select
                 @change="roleChange"
                 v-decorator="['namerole',{rules: [{ required: true, message: '选择角色' }]}]"
               >
@@ -25,8 +32,8 @@
                   :key="index"
                   :value="item.key"
                 >{{item.name}}</a-select-option>
-              </a-select>
-            </a-form-item>
+                  </a-select>-->
+                </a-form-item>
                 <a-form-item label="邮箱">
                   <a-input
                     size="large"
@@ -35,7 +42,9 @@
                     v-decorator="['email', {rules: [{ required: true, type: 'email', message: '请输入邮箱' }], validateTrigger: ['change', 'blur']}]"
                   ></a-input>
                   <div v-if="formShow" class="font-splic">
-                    <span><a-icon type="close-circle" /></span>
+                    <span>
+                      <a-icon type="close-circle" />
+                    </span>
                     <span>{{emailText}}</span>
                   </div>
                 </a-form-item>
@@ -105,7 +114,7 @@
                     v-decorator="['password2', {rules: [{ required: true, message: '请填写密码'}, { validator: this.handlePasswordCheck }], validateTrigger: ['change', 'blur']}]"
                   ></a-input>
                 </a-form-item>
-                <a-row :gutter="16" type="flex" align="bottom">
+                <a-row :gutter="16" type="flex" align="bottom" style="align-items: center;">
                   <a-col class="gutter-row" :span="16">
                     <a-form-item label="验证码">
                       <a-input
@@ -118,7 +127,7 @@
                       </a-input>
                     </a-form-item>
                   </a-col>
-                  <a-col class="gutter-row" :span="8" style="text-align:right">
+                  <a-col class="gutter-row" :span="8" style="padding-top:30px;text-align:right">
                     <a-button
                       v-if="state.smsSendBtn"
                       class="getCaptcha"
@@ -204,17 +213,20 @@ const levelColor = {
 export default {
   data() {
     return {
-      roleValue: '',
-      role:[{
-        name: '用户',
-        key: 1
-      },
-      {
-        name: '经销商',
-        key: 2
-      }],
+      valueRadio: 1,
+      roleValue: "",
+      role: [
+        {
+          name: "用户",
+          key: 1
+        },
+        {
+          name: "经销商",
+          key: 2
+        }
+      ],
       formShow: false,
-      emailText: '',
+      emailText: "",
       itemTitle: "注册",
       registerBtn: false,
       customActiveKey: "tab1",
@@ -230,7 +242,7 @@ export default {
         passwordLevel: 0,
         passwordLevelChecked: false,
         percent: 10,
-        progressColor: '#FF0000'
+        progressColor: "#FF0000"
       }
     };
   },
@@ -250,9 +262,13 @@ export default {
     }
   },
   methods: {
+    onChangeRadio(e) {
+      console.log(e.target.value);
+      this.valueRadio = e.target.value;
+    },
     roleChange(value) {
-      console.log(value)
-      this.roleValue = value
+      console.log(value);
+      this.valueRadio = value;
     },
     handlePasswordLevel(rule, value, callback) {
       console.log(value);
@@ -371,9 +387,8 @@ export default {
           })
             .then(res => {
               console.log(res);
-              if(res.code == 500) {
-                this.formShow = true,
-                this.emailText = res.message
+              if (res.code == 500) {
+                (this.formShow = true), (this.emailText = res.message);
               }
               if (res.status == 200) {
                 //setTimeout(hide, 1);
@@ -383,8 +398,8 @@ export default {
                   duration: 8
                 });
                 this.$route.push({
-                  path: '/login'
-                })
+                  path: "/login"
+                });
               } else if (res.status == 201) {
                 this.$message.error(res.info);
                 state.time = 60;
@@ -496,18 +511,16 @@ export default {
   float: right;
 }
 .user-register {
-      &.error {
-        color: #ff0000;
-      }
+  &.error {
+    color: #ff0000;
+  }
 
-      &.warning {
-        color: #ff7e05;
-      }
+  &.warning {
+    color: #ff7e05;
+  }
 
-      &.success {
-        color: #52c41a;
-      }
-    }
-    
-
+  &.success {
+    color: #52c41a;
+  }
+}
 </style>
