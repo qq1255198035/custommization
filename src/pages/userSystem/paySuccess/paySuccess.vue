@@ -67,7 +67,7 @@
 
 <script>
 import { payBack, status } from "@/api/system";
-import { paypalSellerBack } from "@/api/seller";
+//import { paypalSellerBack } from "@/api/seller";
 import MyStpes from "@/components/MyStpes/MyStpes";
 export default {
   props: {},
@@ -100,9 +100,9 @@ export default {
   computed: {},
   created() {
     this._payBack();
-    this._status();
-    this._paypalSellerBack();
-    this.config.url = 'http://192.168.0.9/index#/share' + '?order_id='+this.$route.query.orderId
+    //this._status();
+    this.config.url = 'http://192.168.0.9/index#/sellerShare' + '?order_id='+this.$route.query.orderId
+    //this.config.url = 'localhost:3000/#/sellerShare' + '?order_id='+this.userOrderId
   },
   mounted() {},
   watch: {},
@@ -117,44 +117,38 @@ export default {
         this.step = parseInt(res.result.schedule);
       });
     },
-    _paypalSellerBack() {
-      const param = {
+    _payBack() {
+      let param ={}
+      const types = this.$ls.get('types')
+      const data = {
         paymentId: this.$route.query.paymentId,
         token: this.$route.query.token,
         PayerID: this.$route.query.PayerID,
-        order_id: this.$ls.get("orderId")
+        order_id: this.$ls.get("orderId"),
+        price: this.$ls.get("price"),
+        type: this.$ls.get('types')
       };
-      paypalSellerBack(param).then(res => {
-        console.log(res);
-        if (res.code == 1 && res.type == 1) {
-          this.code = 1;
-          let result = res.payInfoList;
-          this.orderId = result.id;
-          this.price = result.orderPrice;
-          this.payName = res.username;
-          this.orderId = result.orderSn;
-          this.orderAgain = result.order_id;
-          this.userOrderId = result.user_order_id;
-        }
-        if (res.code == 0 && res.type == 1) {
-          this.code = 0;
-          this.orderId = res.payInfoList.orderSn;
-        }
-      });
-    },
-    _payBack() {
-      const param = {
+      const data1 = {
         paymentId: this.$route.query.paymentId,
         token: this.$route.query.token,
         PayerID: this.$route.query.PayerID,
         user_order_id: this.$ls.get("userOrderId"),
         order_id: this.$ls.get("orderId"),
-        price: this.$ls.get("price")
+        price: this.$ls.get("price"),
+        type: this.$ls.get('types')
       };
+      
+      if(types == 1) {
+        param = data
+      }else{
+        param = data1
+      }
+      
       console.log(param);
       payBack(param).then(res => {
         console.log(res);
-        if (res.code == 1 && res.type == 0) {
+        this.type = res.type
+        if (res.code == 1) {
           this.code = 1;
           let result = res.payInfoList[0];
           this.price = result.order_price;
@@ -163,7 +157,7 @@ export default {
           this.orderAgain = result.order_id;
           this.userOrderId = result.user_order_id;
         }
-        if (res.code == 0 && res.type == 0) {
+        if (res.code == 0) {
           this.code = 0;
           this.orderId = res.payInfoList[0].order_sn;
         }

@@ -11,25 +11,15 @@
       <my-title style="margin:40px 0;" :fontsize="20" :title="itemTitle"></my-title>
       <a-row :gutter="20">
         <!--list1-->
-        <div>
-          <a-col :xxl="12" :xl="20" v-for="item in resultData" :key="item.index">
-            <table-item :datas="item">
-              <a href style="font-size: 18px; color: #999; text-decoration: underline">查看尺寸表</a>
-            </table-item>
-              <div v-if="!item.is_print_numbe && !item.is_print_text">
-                <my-table :dataSize="[item]" @getList="list"></my-table>
-              </div>
-                
-              <div v-if="item.is_print_numbe || item.is_print_text">
-                <my-tables :dataName="[item]" @getList="lists"></my-tables>
-              </div>
-              
-            
-          </a-col>
-        </div>
-
+        <a-col :span="2" v-if="showTable"></a-col>
+        <a-col :xxl="8" :xl="20" v-if="showTable">
+          <table-item :data="img1">
+            <a href style="font-size: 18px; color: #999; text-decoration: underline">查看尺寸表</a>
+          </table-item>
+          <my-table :dataSize="dataSize" :size="size" :dataSizeText="dataSizeText" @getList=" list"></my-table>
+        </a-col>
         <!--list2-->
-        <!--<a-col :span="2"></a-col>
+        <a-col :span="2"></a-col>
         <a-col :xxl="10" :xl="20" v-if="showList">
           <table-item :data="img2">
             <a href style="font-size: 18px; color: #999; text-decoration: underline">查看尺寸表</a>
@@ -41,7 +31,8 @@
             :sizes="sizes"
             @getList=" lists"
           ></my-tables>
-        </a-col>-->
+        </a-col>
+        <a-col :span="2"></a-col>
       </a-row>
       <my-title :title="itemTitle"></my-title>
       <!--支付-->
@@ -111,85 +102,32 @@ export default {
       dataList1: "",
       itemTitle: "",
       img1: "",
-      imgs: "",
-      name: "",
-      resultData: [],
-      map: '',
-      columns: [],
-      colmons1: [
-        {
-          title: "尺码",
-          dataIndex: "size",
-          key: "size",
-          algin: "center",
-          width: "20%",
-          scopedSlots: { customRender: "size" }
-        },
-        {
-          title: "名字",
-          dataIndex: "printName",
-          algin: "center",
-          key: "printName",
-          width: "20%",
-          scopedSlots: { customRender: "printName" }
-        },
-        {
-          title: "号码",
-          dataIndex: "printNumber",
-          key: "printNumber",
-          algin: "center",
-          width: "20%",
-          scopedSlots: { customRender: "printNumber" }
-        },
-        {
-          title: "合计价格",
-          dataIndex: "total_price",
-          key: "total_price",
-          algin: "center",
-          width: "20%",
-          scopedSlots: { customRender: "total_price" }
-        },
-
-        {
-          title: "操作",
-          width: "20%",
-          key: "action",
-          algin: "center",
-          scopedSlots: { customRender: "operation" }
-        }
-      ],
-      
-      data: []
+      img2: "",
+      name: ""
     };
   },
   computed: {},
   created() {
     this._apiPersonOrder();
-    console.log(this.check());
-    this.check();
+    console.log(this.check())
+    this.check()
   },
   mounted() {},
   watch: {},
   methods: {
-    check() {
-      var userAgentInfo = navigator.userAgent;
-      var Agents = new Array(
-        "Android",
-        "iPhone",
-        "SymbianOS",
-        "Windows Phone",
-        "iPad",
-        "iPod"
-      );
-      var flag = true;
-      for (var v = 0; v < Agents.length; v++) {
-        if (userAgentInfo.indexOf(Agents[v]) > 0) {
-          flag = false;
-          break;
-        }
-      }
-      return flag;
-    },
+
+check() { 
+  var userAgentInfo=navigator.userAgent; 
+  var Agents =new Array("Android","iPhone","SymbianOS","Windows Phone","iPad","iPod"); 
+  var flag=true; 
+  for(var v=0;v<Agents.length;v++) { 
+     if(userAgentInfo.indexOf(Agents[v])>0) { 
+       flag=false; 
+       break; 
+     } 
+   } 
+   return flag; 
+  },
 
     _price(datas) {
       let price = 0;
@@ -259,58 +197,28 @@ export default {
         pageSize: 10
       }).then(res => {
         console.log(res);
-        this.type = this.$ls.get("types");
-        let imgUrls = [];
-        let columns = [];
-        let data = [];
-        let result = res.result;
-        let resultData = res.result.personOrderNoPrintList;
-        this.resultData = res.result.personOrderNoPrintList;
-        let map = {
-          imgUrls:[],
-          data: []
-        }
-        let resultTable = [];
-        for (var i = 0; i < resultData.length; i++) {
-          let row = resultData[i];
-          let price = resultData.price
-            map.imgUrls.push(row.positive_pic_url);
-            map.imgUrls.push(row.back_pic_url);
-            map.imgUrls.push(row.left_pic_url);
-            map.imgUrls.push(row.right_pic_url);
-
-            var oneData = {number:row.numbe, price: row.price, 
-                          is_print_text:row.is_print_text, 
-                          size : row.size};
-            map.data.push(oneData)
-          
-        }
-
-        this.columns = columns;
-        this.detailList = res.result;
-        this.map = map
-        console.log(map)
-       /* let result1 = res.result.personOrderPrintList;
+        let result = res.result.personOrderNoPrintList[0];
+        let result1 = res.result.personOrderPrintList[0];
         this.showList = result1;
         this.showTable = result;
-        
+        this.detailList = res.result.list[0];
         this.img1 = result;
         this.img2 = result1;
-        if (result) {
+        if(result) {
           const json = {
-            key: "0",
-            price: result.price,
-            total_price: result.price,
-            quantity: 1,
-            size: result.sizes.split(","),
-            goods_id: result.goods_id,
-            des_id: result.des_id
-          };
-          this.dataSize.push(json);
-          this.size = result.sizes.split(",");
-          this.dataSizeText = res.result.personOrderNoPrintList;
+          key: "0",
+          price: result.price,
+          total_price: result.price,
+          quantity: 1,
+          size: result.sizes.split(","),
+          goods_id: result.goods_id,
+          des_id: result.des_id
+        };
+        this.dataSize.push(json);
+        this.size = result.sizes.split(",");
+        this.dataSizeText = res.result.personOrderNoPrintList;
         }
-
+        
         if (result1) {
           const json1 = {
             key: "0",
@@ -326,7 +234,7 @@ export default {
           this.dataSizeTexts = res.result.personOrderPrintList;
           this.sizes = result1.sizes.split(",");
         }
-        console.log(this.dataSizeText);*/
+        console.log(this.dataSizeText);
       });
     }
   },

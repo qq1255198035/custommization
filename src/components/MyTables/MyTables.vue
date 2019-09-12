@@ -1,8 +1,9 @@
 <template>
   <div id="table">
     <a-table
+    :expandedRowKeys="expandedRowKeys"
       :columns="columns"
-      :dataSource="data1"
+      :dataSource="dataName"
       :pagination="false"
       :loading="memberLoading"
       :rowClassName="function(){return 'table-row'}"
@@ -33,9 +34,9 @@
           style="text-align: center;background-color: rgba(255,255,255,0);"
         />
         <a-input
-          v-if="col == 'total_price'"
+          v-if="col == 'price'"
           :key="col"
-          :value="record.total_price"
+          :value="record.price"
           style="text-align: center; border:none;"
         />
       </template>
@@ -72,11 +73,14 @@
 import commonBtn from "@/components/commonBtn/commonBtn";
 export default {
   props: {
-    dataSizes: {},
+    dataName: {},
     dataSizeTexts: {
       type: Array
     },
     sizes: {
+      type: Array
+    },
+    columons:{
       type: Array
     }
   },
@@ -84,10 +88,11 @@ export default {
     commonBtn
   },
   created() {
-    this.data1 = this.dataSizes;
+    
   },
   data() {
     return {
+      expandedRowKeys:["size", "printName",],
       dataList1: ["size", "printName", "printNumber", "total_price"],
       // table
       quantity: 1,
@@ -119,11 +124,11 @@ export default {
         },
         {
           title: "合计价格",
-          dataIndex: "total_price",
-          key: "total_price",
+          dataIndex: "price",
+          key: "price",
           algin:"center",
           width: "20%",
-          scopedSlots: { customRender: "total_price" }
+          scopedSlots: { customRender: "price" }
         },
 
         {
