@@ -452,7 +452,10 @@ export default {
         discountSure(param).then(res => {
           console.log(res);
           if (res.code == 200) {
-            window.location.reload();
+            //window.location.reload();
+            this.getTeamOrderDetails(this.id);
+            this.showVisible = false;
+            this.$message.success('操作成功！')
           }
         });
       }
