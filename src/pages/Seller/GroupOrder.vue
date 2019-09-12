@@ -64,11 +64,11 @@
           <div v-show="textshow">{{item.opinion}}</div>
           <a-button @click="textShowOne(item.id,index)" v-show="!item.opinion && !item.checked">添加描述</a-button>
           <a-button @click="textShowTwo(item.id,item.pic_id)" v-show="!item.opinion && item.checked">保存</a-button>
-          <a-button @click="programmeBtn(item.id)" v-show="item.status == 0">选用此方案</a-button>
+          <a-button @click="programmeBtn(item.id)" v-show="item.status == 0" :disabled="astatus == 2">选用此方案</a-button>
           <a-button @click="programmeBtn(item.id,item.pic_id)" v-show="item.status == 1" disabled="disabled">方案已选择</a-button>
         </li>
 
-        <a-button @click="newSchemeBtn" type="primary">申请新方案</a-button>
+        <a-button @click="newSchemeBtn" type="primary" :disabled="astatus == 2">申请新方案</a-button>
       </ul>
     </a-modal>
   </div>
@@ -98,7 +98,8 @@ export default {
         key: "",
         modelShow: false,
         textshow: true,
-        exList: []
+        exList: [],
+        astatus:""
     };
   },
   methods: {
@@ -150,16 +151,18 @@ export default {
         }
       });
     },
-    openConfirmBox(id) {
+    openConfirmBox(id,status) {
       this.modelShow = true;
+      this.astatus = status;
       console.log(id);
+      console.log(status == 2)
       this.getExampleConfirm(id);
     },
     getExampleConfirm(id) {
       exampleConfirm(id).then(res => {
         console.log(res);
         this.exList = res.result;
-        console.log(res.result.pic_id)
+        
         this.orderId = res.result[0].pic_id
         
       });

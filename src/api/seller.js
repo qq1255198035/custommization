@@ -489,3 +489,11 @@ export function getPic(content) {
         data:qs.stringify({content: content})
     })
 }
+
+export function comDetails(id) {
+    return axios({
+        url: '/ios/jeecgCommissionRecord/selectById',
+        method: 'post',
+        data:qs.stringify({id: id})
+    })
+}

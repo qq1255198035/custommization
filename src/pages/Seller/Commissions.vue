@@ -92,7 +92,7 @@ import MyTitle from "@/components/MyTitle/MyTitle";
 import ComponentA from "@/components/Commission/ComponentsCom1";
 import ComponentB from "@/components/Commission/ComponentsCom2";
 import ComponentC from "@/components/Commission/ComponentsCom3";
-import { commissionsData, withdrawalList, nextStptes, twoNext } from "@/api/seller"
+import { commissionsData, withdrawalList, nextStptes, twoNext,comDetails } from "@/api/seller"
 const statusMap = {
     4: {
         status: 'success',
@@ -201,9 +201,21 @@ export default {
         this.getWithdrawalList(1);
     },
     methods:{
+        
         checkOutPrice(id){
             this.show1 = true;
             console.log(id)
+            comDetails(id).then(res => {
+                console.log(res)
+                this.count1 = res.result.account,
+                this.sname1 = res.result.name,
+                this.cash1 =  res.result.amount,
+                this.persent3 = res.result.taxRate,
+                this.persent4 = res.result.proceduresRate,
+                this.dprice1 = res.result.procedures,
+                this.dmoney1 = res.result.arrival,
+                this.sprice1 = res.result.tax
+            })
         },
         postTwoNext(params){
             twoNext(params).then(res => {

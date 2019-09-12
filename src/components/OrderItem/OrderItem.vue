@@ -29,7 +29,7 @@
           <div class="right">
             
             <commonBtn
-              @btnClick="btnClick(item.id)"
+              @btnClick="btnClick(item.id,item.status)"
               :width="'100%'"
               :title="'样稿确认'"
               :height="'32px'"
@@ -118,9 +118,8 @@ export default {
           console.log(id);
           this.$router.push({path: '/myorder',query: {id: id}})
     },
-    btnClick(id){
-          
-          this.$emit('handleMyClick',id)
+    btnClick(id,status){
+      this.$emit('handleMyClick',id,status)
     },
     openMyshareBox(id){
           console.log(id)

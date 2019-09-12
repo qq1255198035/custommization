@@ -68,42 +68,29 @@
                             <h2>CUSTOM KING T-Shirt<span>查看尺寸表</span></h2>
                             <div class="canvas-container"  v-show="designModel == 0">
                                 <canvas id="canvas1" :width="screenWidth" :height="screenWidth"></canvas>
-                                <div class="moving-box" :style="{width: '200px',height: '300px',top: '150px', left: '200px'}" v-show="movingBox">
-                                    成人
-                                    <div>
-                                        儿童
+                                <div class="moving-box" :style="{width: boxSize1.width + 'px',height: boxSize1.height + 'px',top: boxSize1.top + 'px', left: boxSize1.left + 'px'}" v-show="movingBox">
+                                    <div v-for="(item,index) in boxSize1.list" :key="index" :style="{width: item.width + 'px',height: item.height + 'px',top: item.top + 'px', left: item.left + 'px'}">
                                     </div>
-                                    <div>胸章</div>
                                 </div>
                             </div>
                             <div class="canvas-container"  v-show="designModel == 1">
                                 <canvas id="canvas2" :width="screenWidth" :height="screenWidth"></canvas>
-                                <div class="moving-box" :style="{width: '200px',height: '300px',top: '150px', left: '200px'}" v-show="movingBox">
-                                    成人
-                                    <div>
-                                        儿童
+                                <div class="moving-box" :style="{width: boxSize2.width + 'px',height: boxSize2.height + 'px',top: boxSize2.top + 'px', left: boxSize2.left + 'px',border:'none'}" v-show="movingBox">
+                                    <div v-for="(item,index) in boxSize2.list" :key="index" :style="{width: item.width + 'px',height: item.height + 'px',top: item.top + 'px', left: item.left + 'px'}">
+                                        
                                     </div>
-                                    <div>胸章</div>
                                 </div>
                             </div>
                             <div class="canvas-container"  v-show="designModel == 2">
                                 <canvas id="canvas3" :width="screenWidth" :height="screenWidth"></canvas>
-                                <div class="moving-box" :style="{width: '200px',height: '300px',top: '150px', left: '200px'}" v-show="movingBox">
-                                    成人
-                                    <div>
-                                        儿童
-                                    </div>
-                                    <div>胸章</div>
+                                <div class="moving-box" :style="{width: boxSize3.width + 'px',height: boxSize3.height + 'px',top: boxSize3.top + 'px', left: boxSize3.left + 'px'}" v-show="movingBox">
+                                    <div v-for="(item,index) in boxSize3.list" :key="index" :style="{width: item.width + 'px',height: item.height + 'px',top: item.top + 'px', left: item.left + 'px'}"></div>
                                 </div>
                             </div>
                             <div class="canvas-container"  v-show="designModel == 3">
                                 <canvas id="canvas4" :width="screenWidth" :height="screenWidth"></canvas>
-                                <div class="moving-box" :style="{width: '200px',height: '300px',top: '150px', left: '200px'}" v-show="movingBox">
-                                    成人
-                                    <div>
-                                        儿童
-                                    </div>
-                                    <div>胸章</div>
+                                <div class="moving-box" :style="{width: boxSize4.width + 'px',height: boxSize4.height + 'px',top: boxSize4.top + 'px', left: boxSize4.left + 'px'}" v-show="movingBox">
+                                    <div v-for="(item,index) in boxSize4.list" :key="index" :style="{width: item.width + 'px',height: item.height + 'px',top: item.top + 'px', left: item.left + 'px'}"></div>
                                 </div>
                             </div>
                             <ul class="top">
@@ -267,8 +254,8 @@
                                                 <span>字体：</span>
                                                 <div>
                                                     <p>
-                                                        <a-select style="width: 95%;" :disabled="!addNameData" placeholder="请选择">
-                                                            <a-select-option v-for="item in fontFamilyArr" :key="item.id" :value="item.name" @change="changeNameFamily">{{item.name}}</a-select-option>
+                                                        <a-select style="width: 95%;" :disabled="!addNameData" placeholder="请选择" @change="changeNameFamily">
+                                                            <a-select-option v-for="item in fontFamilyArr" :key="item.id" :value="item.name">{{item.name}}</a-select-option>
                                                             
                                                         </a-select>
                                                     </p>
@@ -574,7 +561,7 @@
                                         <ul class="tool-list">
                                             <li>
                                                 <span>删除白色</span>
-                                                <a-switch v-model="delWhite"/>
+                                                <a-switch v-model="delWhite" @change='removeColor'/>
                                             </li>
                                         </ul>
 
@@ -922,7 +909,8 @@ export default {
             strokeWidth:0,
             strokeColor: '',
             strokeColorName: '',
-
+            nameFontFamily: 'NBA-Hawks',
+            numberFontFamily: 'NBA-Hawks',
             // skewx:0,
             // skewy:0,
             fontFamilyArr:[
@@ -1052,11 +1040,11 @@ export default {
             nameColor: '#000',
             discounts: '',
             fontfamilydata: -1,
-            // top_margin: 75,
-            // bottom_margin: 185,
-            // left_margin : 175,
-            // right_margin: 175,
             imgIndex: 0,
+            boxSize1: [],
+            boxSize2: [],
+            boxSize3: [],
+            boxSize4: []
         }
     },
     created(){
@@ -1078,10 +1066,6 @@ export default {
             initAligningGuidelines(this.myCanvas2);
             initAligningGuidelines(this.myCanvas3);
             initAligningGuidelines(this.myCanvas4);
-            this.handleObjectMove(this.myCanvas1,128,150,175,175);
-            this.handleObjectMove(this.myCanvas2,75,185,175,175);
-            this.handleObjectMove(this.myCanvas3,146,377,289,233);
-            this.handleObjectMove(this.myCanvas4,146,377,289,233);
             this.onUnselected(this.myCanvas1);
             this.onUnselected(this.myCanvas2);
             this.onUnselected(this.myCanvas3);
@@ -1094,10 +1078,7 @@ export default {
             this.delSelected(this.myCanvas2);
             this.delSelected(this.myCanvas3);
             this.delSelected(this.myCanvas4);
-            this.handleObjectScale(this.myCanvas1);
-            this.handleObjectScale(this.myCanvas2);
-            this.handleObjectScale(this.myCanvas3);
-            this.handleObjectScale(this.myCanvas4);
+            
             this.setEditIcon();
             this.setEditPointer();
             if(this.$route.query.show){
@@ -1114,14 +1095,48 @@ export default {
             
             //console.log(this.form)
         })
-        this.getWindowScreen();
+        //this.getWindowScreen();
         this.getArtFontList();
         this.show = this.$route.query.show ? this.$route.query.show : false
         this.handleGetPic('');
+        console.log(this.boxSize1)
         
     },
 
     methods:{
+        removeColor(){
+            let that = this;
+            let f = fabric.Image.filters;
+            if(that.delWhite){
+                that.applyFilter(2, true && new f.RemoveColor({
+                    distance: 0.1,
+                    color: '#fff',
+                }));
+                that.applyFilterValue(2, 'color', that.removecolor);
+            }else{
+                that.applyFilter(2, true && new f.RemoveColor({
+                    distance: 0,
+                    color: '#fff',
+                }));
+                that.applyFilterValue(2, 'color', that.removecolor);
+            }
+            
+        },
+        applyFilterValue(index, prop, value) {
+            var obj = this.myCanvas.getActiveObject();
+            if (obj.filters[index]) {
+                obj.filters[index][prop] = value;
+                obj.applyFilters();
+                this.myCanvas.renderAll();
+            }
+        },
+        applyFilter(index, filter) {
+                  
+            var obj = this.myCanvas.getActiveObject();
+            obj.filters[index] = filter;
+            obj.applyFilters();
+            this.myCanvas.renderAll();
+        },
         posteDesignList(){
             handleDesignList().then(res => {
                 console.log(res)
@@ -1142,10 +1157,18 @@ export default {
             })
         },
         changeNameFamily(e){
-            console.log(e.target.value)
+            console.log(e)
+            this.nameFontFamily = e;
+            let obj = this.myCanvas.getActiveObject();
+            obj.set('fontFamily', e)
+            this.myCanvas.requestRenderAll();
         },
         changeNumberFamily(e){
-            console.log(e.target.value)
+            console.log(e)
+            this.numberFontFamily = e;
+            let obj = this.myCanvas.getActiveObject();
+            obj.set('fontFamily', e)
+            this.myCanvas.requestRenderAll();
         },
         reStart(){
             console.log(1)
@@ -1242,68 +1265,47 @@ export default {
             changeFont(params).then(res => {
                 console.log(res)
                 if(res.code == 0){
-                    fabric.Image.fromURL(res.result, function(Img) {
-                        Img.on("selected", function() {
-                            let obj = that.myCanvas.getActiveObject();
-                            that.liClick = 0;
-                            that.visibletype = 3;
-                            that.addText = obj.mytext;
-                            // that.opacity = obj.opacity;
-                            // that.rotateNum = obj.angle;
-                        });
+                    let img = new Image();
+                    let imgInstance;
+                    //设置图片跨域访问
+                    img.crossOrigin = 'anonymous';
+                    img.src = res.result+"?timeStamp="+new Date();
+                    img.onload = function () {
                         if(isAdd){
                             if(that.myCanvas.getActiveObject()){
                                 let obj = that.myCanvas.getActiveObject();
-                                let width = obj.width;
-                                let height = obj.height;
                                 let left = obj.left;
                                 let top = obj.top;
-                                that.myCanvas.add(
-                                Img.set({
-                                    // width: width,
-                                    // height :height,
+                                that.myCanvas.remove(obj)
+                                imgInstance = new fabric.Image(img, {
                                     mytext:that.addText,
                                     lockUniScaling:true, // When `true`, object non-uniform scaling is locked
                                     left: left,
                                     top: top,
-                                    crossOrigin: "*",
-                                    
-                                })).setActiveObject(Img);
-                                if(Img.width > 200){
-                                    Img.set('width', 200)
-                                }
-                                that.myCanvas.remove(obj)
-                            }else{
-                                that.myCanvas.add(
-                                    Img.set({
-                                        lockUniScaling:true, // When `true`, object non-uniform scaling is locked
-                                        left: 200,
-                                        top: 150,
-                                        crossOrigin: "*",
-                                        mytext:that.addText,
-                                    })
-                                ).setActiveObject(Img);
-                                if(Img.width > 200){
-                                    Img.set('width', 200)
-                                }
+                                });
                             }
                         }else{
-                            that.myCanvas.add(
-                                Img.set({
-                                    lockUniScaling:true, // When `true`, object non-uniform scaling is locked
-                                    left: 200,
-                                    top: 150,
-                                    crossOrigin: "*",
-                                    mytext:that.addText,
-                                })
-                            ).setActiveObject(Img);
-                            if(Img.width > 200){
-                                Img.set('width', 200)
-                            }
+                            imgInstance = new fabric.Image(img, {
+                                lockUniScaling:true, // When `true`, object non-uniform scaling is locked
+                                left: 200,
+                                top: 150,
+                                mytext:that.addText,
+                            });
                         }
-                        
-                        console.log(Img)
-                    });
+                        if(imgInstance.width > 200){
+                            imgInstance.set('width', 200)
+                        }
+                        that.myCanvas.add(imgInstance).setActiveObject(imgInstance);
+                        that.myCanvas.requestRenderAll();
+                        that.liClick = 0;
+                        that.visibletype = 3;
+                        imgInstance.on("selected", function() {
+                            let obj = that.myCanvas.getActiveObject();
+                            that.liClick = 0;
+                            that.visibletype = 3;
+                            that.addText = obj.mytext;
+                        });
+                    }
                 }
             })
         },
@@ -1448,6 +1450,20 @@ export default {
                 this.bindCanvas(this.myCanvas2,1);
                 this.bindCanvas(this.myCanvas3,2);
                 this.bindCanvas(this.myCanvas4,3);
+                let SIZE= JSON.parse(res.result.boxSizes)
+                console.log(SIZE)
+                this.boxSize1 = SIZE.canvas1;
+                this.boxSize2 = SIZE.canvas2;
+                this.boxSize3 = SIZE.canvas3;
+                this.boxSize4 = SIZE.canvas4;
+                this.handleObjectMove(this.myCanvas1,this.boxSize1.top,600 - this.boxSize1.top - this.boxSize1.height,this.boxSize1.left,600 - this.boxSize1.left - this.boxSize1.width);
+                this.handleObjectMove(this.myCanvas2,this.boxSize2.top,600 - this.boxSize2.top - this.boxSize2.height,this.boxSize2.left,600 - this.boxSize2.left - this.boxSize2.width);
+                this.handleObjectMove(this.myCanvas3,this.boxSize3.top,600 - this.boxSize3.top - this.boxSize3.height,this.boxSize3.left,600 - this.boxSize3.left - this.boxSize3.width);
+                this.handleObjectMove(this.myCanvas4,this.boxSize4.top,600 - this.boxSize4.top - this.boxSize4.height,this.boxSize4.left,600 - this.boxSize4.left - this.boxSize4.width);
+                this.handleObjectScale(this.myCanvas1,this.boxSize1.left,this.boxSize1.top,this.boxSize1.width,this.boxSize1.height);
+                // this.handleObjectScale(this.myCanvas2);
+                // this.handleObjectScale(this.myCanvas3);
+                // this.handleObjectScale(this.myCanvas4);
             })
         },
         closeDesignBox(){
@@ -1489,6 +1505,7 @@ export default {
             this.getSelectById(id);
 
         },
+
         loadMore(){
             let that = this;
             that.pageNum ++;
@@ -1584,13 +1601,13 @@ export default {
                     this.designModel = 0;
                     this.bindCanvas(this.myCanvas,0)
                     this.myCanvas2.remove(this.exampleName)
-                    this.addExampleName('College-Regular');
+                    this.addExampleName(this.nameFontFamily);
                 }else{
                     this.myCanvas = this.myCanvas2;
                     this.designModel = 1;
                     this.bindCanvas(this.myCanvas,1);
                     this.myCanvas1.remove(this.exampleName);
-                    this.addExampleName('College-Regular')
+                    this.addExampleName(this.nameFontFamily)
                 }
             }
         },
@@ -1603,13 +1620,13 @@ export default {
                     this.designModel = 0;
                     this.bindCanvas(this.myCanvas,0)
                     this.myCanvas2.remove(this.exampleNumber)
-                    this.addExampleNumber('College-Regular');
+                    this.addExampleNumber(this.numberFontFamily);
                 }else{
                     this.myCanvas = this.myCanvas2;
                     this.designModel = 1;
                     this.bindCanvas(this.myCanvas,1);
                     this.myCanvas1.remove(this.exampleNumber);
-                    this.addExampleNumber('College-Regular');
+                    this.addExampleNumber(this.numberFontFamily);
                 }
             }
         },
@@ -1617,17 +1634,11 @@ export default {
             var that = this;
             obj.on("mouse:down", function(options) {
                 if (options.target) {
-                    if(options.target.lockScalingX || options.target.lockScalingY){
-                        options.target.lockScalingX = false;
-                        options.target.lockScalingY = false;
-                        options.target.scale(options.target.scaleX);
-                    }
-
-                document.onkeydown = function(e) {
-                    if (e.keyCode == 8) {
-                    that.myCanvas.remove(options.target);
-                    }
-                };
+                    document.onkeydown = function(e) {
+                        if (e.keyCode == 8) {
+                            that.myCanvas.remove(options.target);
+                        }
+                    };
                 }
             });
         },
@@ -1893,7 +1904,7 @@ export default {
                     that.bindCanvas(that.myCanvas,1);
                     that.designModel = 1;
                 }
-                that.addExampleNumber('College-Regular')
+                that.addExampleNumber(that.numberFontFamily)
             }else{
                 if(that.exampleNumber){
                     that.myCanvas1.remove(that.exampleNumber);
@@ -1903,8 +1914,8 @@ export default {
         },
         addExampleNumber(font){
             let that = this;
-            let myfont = new FontFaceObserver(font);
-            myfont.load().then(function() {
+            // let myfont = new FontFaceObserver(font);
+            // myfont.load().then(function() {
                 // when font is loaded, use it.
                 that.exampleNumber = new fabric.Text("00", {
                     id: 'Number',
@@ -1923,16 +1934,16 @@ export default {
                     that.liClick = 2;
                     that.visibletype = 2;
                 })
-            }).catch(function(e) {
-                console.log(e)
+            // }).catch(function(e) {
+            //     console.log(e)
 
-            });
+            // });
         },
 
         addExampleName(font){
             let that = this;
-            let myfont = new FontFaceObserver(font);
-            myfont.load().then(function() {
+            // let myfont = new FontFaceObserver(font);
+            // myfont.load().then(function() {
                 // when font is loaded, use it.
                 that.exampleName = new fabric.Text("EXAMPLE", {
                     id: 'Name',
@@ -1942,6 +1953,7 @@ export default {
                     left: that.screenWidth / 2,
                     top: 200,
                     fontSize: that.nameSize,
+                    lockUniScaling:true,
                     
                 });
                 that.exampleName.lockScalingX = true;
@@ -1952,10 +1964,10 @@ export default {
                     that.liClick = 2;
                     that.visibletype = 2;
                 })
-            }).catch(function(e) {
-                console.log(e)
+            // }).catch(function(e) {
+            //     console.log(e)
 
-            });
+            // });
         },
 
         addName (e) {
@@ -1973,7 +1985,7 @@ export default {
                     that.bindCanvas(that.myCanvas,1);
                     that.designModel = 1;
                 }
-                that.addExampleName('College-Regular')
+                that.addExampleName(that.nameFontFamily)
             }else{
                 if(that.exampleName){
                     that.myCanvas1.remove(that.exampleName);
@@ -2029,6 +2041,7 @@ export default {
         },
         onSearch (value) {
             console.log(value)
+            this.handleGetPic(value)
         },
         startTo(i){
             this.visibletype = i;
@@ -2041,34 +2054,52 @@ export default {
         },
         selectImg(imgUrl,id) {
             let that = this;
-            fabric.Image.fromURL(imgUrl, function(oImg) {
-                oImg.on("selected", function() {
+            let img = new Image();
+            let imgInstance;
+            //设置图片跨域访问
+            img.crossOrigin = 'anonymous';
+            img.src = imgUrl+"?timeStamp="+new Date();
+            img.onload = function () {
+                if(that.designModel == 0 || that.designModel == 1){
+                    imgInstance = new fabric.Image(img, {
+                        id: id,
+                        flipX:false,
+                        flipY:false,
+                        skewX:0,
+                        skewY:0,
+                        lockUniScaling:true, // When `true`, object non-uniform scaling is locked
+                        left: 200,
+                        top:  200,
+                        scaleX: 0.3,
+                        scaleY:0.3,
+                    });
+                }else{
+                    imgInstance = new fabric.Image(img, {
+                        id: id,
+                        flipX:false,
+                        flipY:false,
+                        skewX:0,
+                        skewY:0,
+                        lockUniScaling:true, // When `true`, object non-uniform scaling is locked
+                        left: 275,
+                        top:  170,
+                        scaleX: 0.1,
+                        scaleY:0.1,
+                    });
+                }
+                that.myCanvas.add(imgInstance);
+                that.myCanvas.setActiveObject(imgInstance);
+                that.myCanvas.requestRenderAll();
+                that.liClick = 1;
+                that.visibletype = 10;
+                imgInstance.on("selected", function() {
                     let obj = that.myCanvas.getActiveObject();
                     that.liClick = 1;
                     that.visibletype = 10;
                     that.opacity = obj.opacity;
                     that.rotateNum = obj.angle;
                 });
-                that.myCanvas.add(
-                        oImg.set({
-                            id: id,
-                            flipX:false,
-                            flipY:false,
-                            skewX:0,
-                            skewY:0,
-                            lockUniScaling:true, // When `true`, object non-uniform scaling is locked
-                            left: 200,
-                            top:  200,
-                            scaleX: 0.3,
-                            scaleY:0.3,
-                            maxWidth: 200,
-                            crossOrigin: "*",
-                        })
-
-                ).setActiveObject(oImg);
-                console.log(oImg)
-            });
-
+            };
         },
         // 添加图片结束
         handleObjectMove(object,top_margin,bottom_margin,left_margin,right_margin){
@@ -2133,42 +2164,39 @@ export default {
             });
         },
 
-        handleObjectScale(object){
-            let that = this;
+        handleObjectScale(object,x,y,width,height){
+            object.on("object:scaling",function(e){
+                var scaledObject = e.target;
+                console.log(x,y,width,height)
+                scaledObject.lockScalingFlip = true;
+                var startX =scaledObject.getPointByOrigin("left","top").x.toFixed();
+                var startY =scaledObject.getPointByOrigin("left","top").y.toFixed();
+                var maxWidth = width - startX;// scaledObject.aCoords.tl.x;
+                var maxHeight = height -startY;
+                scaledObject.setCoords();
+                
+                var isOnScreen = scaledObject.isContainedWithinRect({x:x,y:y},{x:width + x,y:height + y},true,true);
+                // console.log("onscreen:",isOnScreen);
+                if(!isOnScreen) {
+                    // console.log("xy:",startX,startY);
+                    // console.log("max:",maxWidth,maxHeight);
+                    var w = scaledObject.width;
+                    var h = scaledObject.height;
+                    // console.log("wh:",w,h);
+                    // console.log("obj:",maxWidth-w,maxHeight-h);
+                    // console.log("obj:",Math.min(maxWidth,w),Math.min(maxHeight,h));
+                    if( (maxHeight-h) < (maxWidth-w)){
 
-            object.on("object:scaling",that.onObjectScaled)
+                        scaledObject.scaleToHeight(Math.min(maxHeight,h),true);
 
-        },
-        onObjectScaled(e){
-            var scaledObject = e.target;
-            scaledObject.lockScalingFlip = true;
-            var startX =scaledObject.getPointByOrigin("left","top").x.toFixed();
-            var startY =scaledObject.getPointByOrigin("left","top").y.toFixed();
-            var maxWidth = 400 - startX;// scaledObject.aCoords.tl.x;
-            var maxHeight = 450 -startY;
-            scaledObject.setCoords();
-
-            var isOnScreen = scaledObject.isContainedWithinRect({x:200,y:150},{x:400,y:450},true,true);
-            // console.log("onscreen:",isOnScreen);
-            if(!isOnScreen) {
-                // console.log("xy:",startX,startY);
-                // console.log("max:",maxWidth,maxHeight);
-
-                var w = scaledObject.width;
-                var h = scaledObject.height;
-                // console.log("wh:",w,h);
-                // console.log("obj:",maxWidth-w,maxHeight-h);
-                // console.log("obj:",Math.min(maxWidth,w),Math.min(maxHeight,h));
-                if( (maxHeight-h) < (maxWidth-w)){
-
-                    scaledObject.scaleToHeight(Math.min(maxHeight,h),true);
-
-                } else{
-                    scaledObject.scaleToWidth(Math.min(maxWidth,w),true);
+                    } else{
+                        scaledObject.scaleToWidth(Math.min(maxWidth,w),true);
+                    }
                 }
-            }
-            return true;
+                return true;
+            })
         },
+        
 
 
         // 切换正反左右面
@@ -2544,51 +2572,51 @@ export default {
 @import url("./../../assets/style.css");
 @font-face {
     font-family:'College-Regular';
-    src:url('https://wxmall-1253858660.cos.ap-beijing/wxmall/font/CHEISF_5.TTF')
+    src:url('./../../fonts/CHEISF.ttf')format('truetype')
 }
 @font-face {
     font-family:'NBA-Cavaliers';
-    src:url('https://wxmall-1253858660.cos.ap-beijing.myqcloud.com/wxmall/font/NBACAVAL.TTF')
+    src:url('./../../fonts/NBACAVAL.TTF')
 }
 @font-face {
     font-family:'NBA-Grizzlies';
-    src:url('https://wxmall-1253858660.cos.ap-beijing.myqcloud.com/wxmall/font/NBAGRIZZ_0.TTF')
+    src:url('./../../fonts/NBAGRIZZ_0.TTF')
 }
 @font-face {
     font-family:'NBA-Hawks';
-    src:url('https://wxmall-1253858660.cos.ap-beijing.myqcloud.com/wxmall/font/NBAHAWKS.TTF')
+    src:url('./../../fonts/NBAHAWKS.TTF')
 }
 @font-face {
     font-family:'NBA-Knicks';
-    src:url('https://wxmall-1253858660.cos.ap-beijing.myqcloud.com/wxmall/font/NBAKNICK.TTF')
+    src:url('./../../fonts/NBAKNICK.TTF')
 }
 @font-face {
     font-family:'NBA-Pacers';
-    src:url('https://wxmall-1253858660.cos.ap-beijing.myqcloud.com/wxmall/font/NBAPACER.TTF')
+    src:url('./../../fonts/NBAPACER.TTF')
 }
 @font-face {
     font-family:'NBA-Pistons';
-    src:url('https://wxmall-1253858660.cos.ap-beijing.myqcloud.com/wxmall/font/NBAPISTO.TTF')
+    src:url('./../../fonts/NBAPISTO.TTF')
 }
 @font-face {
     font-family:'NBA-Rockets';
-    src:url('https://wxmall-1253858660.cos.ap-beijing.myqcloud.com/wxmall/font/NBAROCKE.TTF')
+    src:url('./../../fonts/NBAROCKE.TTF')
 }
 @font-face {
     font-family:'NBA-Trailblazers';
-    src:url('https://wxmall-1253858660.cos.ap-beijing.myqcloud.com/wxmall/font/NBATRAIL.TTF')
+    src:url('./../../fonts/NBATRAIL.TTF')
 }
 @font-face {
     font-family:'NCAA-Utah-Utes';
-    src:url('https://wxmall-1253858660.cos.ap-beijing.myqcloud.com/wxmall/font/NCAA Utah Utes.ttf')
+    src:url('./../../fonts/NCAAUtahUtes.ttf')
 }
 @font-face {
     font-family:'Stahls-Tiffany---2000';
-    src:url('https://wxmall-1253858660.cos.ap-beijing.myqcloud.com/wxmall/font/shalts tiffany-2000.ttf')
+    src:url('./../../fonts/StahlsTiffany-2000.ttf')
 }
 @font-face {
     font-family:'UA-Cadet';
-    src:url('https://wxmall-1253858660.cos.ap-beijing.myqcloud.com/wxmall/font/UA Cadet.ttf')
+    src:url('./../../fonts/UACadet.ttf')
 }
 @normal-fontsize: 18px;
 @normal-fontcolor: #999;
@@ -2704,23 +2732,11 @@ export default {
                 position: relative;
                 .moving-box{
                     position:absolute;
-                    border: 1px solid #000;
+                    border: 1px solid #333;
                     z-index: 200;
-                    > div:nth-child(1){
-                        width: 150px;
-                        height: 250px;
+                    > div{
                         position: absolute;
-                        left: 25px;
-                        top: 25px;
-                        border: 1px solid #000;
-                    }
-                    > div:nth-child(2){
-                        width:80px;
-                        height: 80px;
-                        position: absolute;
-                        right: 10px;
-                        top: 10px;
-                        border: 1px solid #000;
+                        border: 1px solid #333;
                     }
                 }
             }
