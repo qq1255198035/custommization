@@ -2226,20 +2226,24 @@ export default {
         // 设置设计背景图
         bindCanvas(canvas,i) {
             var that = this
-            canvas.setBackgroundImage(that.bgimgs[i],canvas.renderAll.bind(canvas),{
-                opacity: 1,
-                angle: 0,
-                left: that.screenWidth / 2,
-                top: that.screenWidth / 2,
-                originX: "center",
-                originY: "center",
-                scaleX: 0.5,
-                scaleY: 0.5,
-
-                // *圖片跨域
-                crossOrigin: "*",
-            });
-
+            let img = new Image();
+            let imgInstance;
+            //设置图片跨域访问
+            img.crossOrigin = 'anonymous';
+            img.src = that.bgimgs[i]+"?timeStamp="+new Date();
+            img.onload = function () {
+                imgInstance = new fabric.Image(img, {
+                        opacity: 1,
+                        angle: 0,
+                        left: that.screenWidth / 2,
+                        top: that.screenWidth / 2,
+                        originX: "center",
+                        originY: "center",
+                        scaleX: 0.5,
+                        scaleY: 0.5,
+                    });
+                canvas.setBackgroundImage(imgInstance,canvas.renderAll.bind(canvas));
+            }
         },
         // zoomIn(){
         //     var zoom = this.myCanvas.getZoom();
