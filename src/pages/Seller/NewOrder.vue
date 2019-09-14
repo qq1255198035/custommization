@@ -204,7 +204,7 @@
                                                 </div>
                                             </dd>
                                             <dd>
-                                                <span>位置：</span>
+                                                <span>Position：</span>
                                                 <div>
                                                     <p>
                                                         <a-select defaultValue="0" style="width: 95%;" @change="changeNamePosition" :disabled="!addNameData">
@@ -343,7 +343,7 @@
                                         
                                     </div>
                                     <div class="tool-box10" v-show="visibletype == 4">
-                                        <h2>颜色：</h2>
+                                        <h2>COLOR：</h2>
                                         <p>Choose Color： <span :style="{backgroundColor: productColor ? productColor : '#fff'}"></span> {{productColorName ? productColorName : 'White'}}</p>
                                         <ul class="color-list">
                                             <li v-for="(item,index) in colorList.list" :key="index" :style="{backgroundColor: item.itemValue}" @click="changeProductColor(item.itemValue,item.itemText,index)">
@@ -1105,8 +1105,8 @@ export default {
             let that = this;
             let obj = that.myCanvas.getActiveObject();
             if(obj){
-                // let width = obj.width;
-                // let height = obj.height;
+                let scalex = obj.scaleX;
+                let scaley = obj.scaleY;
                 let left = obj.left;
                 let top = obj.top;
                 let id = obj.id
@@ -1120,7 +1120,7 @@ export default {
                         console.log(res)
                         if(res.code == 0){
                             that.myCanvas.remove(obj);
-                            img.src = res.result.out + "?timeStamp="+new Date();
+                            img.src = res.result.out + "?timeStamp="+new Date().getTime();
                             img.onload = function () {
                                 imgInstance = new fabric.Image(img, {
                                     id: id,
@@ -1131,16 +1131,27 @@ export default {
                                     lockUniScaling:true, // When `true`, object non-uniform scaling is locked
                                     left: left,
                                     top:  top,
+                                    scaleY: 0.3,
+                                    scaleX: 0.3,
                                     removeColor: true
                                 });
                                 that.myCanvas.add(imgInstance);
                                 that.myCanvas.setActiveObject(imgInstance);
                                 that.myCanvas.requestRenderAll();
+                                imgInstance.on("selected", function() {
+                                    let obj1 = that.myCanvas.getActiveObject();
+                                    that.liClick = 1;
+                                    that.visibletype = 10;
+                                    that.opacity = obj1.opacity;
+                                    that.rotateNum = obj1.angle;
+                                    that.reImgColorurl = obj1.id
+                                    that.delWhite = obj1.removeColor;
+                                });
                             }
                         }
                     })
                 }else{
-                    img.src = id + "?timeStamp="+new Date();
+                    img.src = id + "?timeStamp="+new Date().getTime();
                     img.onload = function () {
                         imgInstance = new fabric.Image(img, {
                             id: id,
@@ -1151,11 +1162,22 @@ export default {
                             lockUniScaling:true, // When `true`, object non-uniform scaling is locked
                             left: left,
                             top:  top,
+                            scaleY: 0.3,
+                            scaleX: 0.3,
                             removeColor: false
                         });
                         that.myCanvas.add(imgInstance);
                         that.myCanvas.setActiveObject(imgInstance);
                         that.myCanvas.requestRenderAll();
+                        imgInstance.on("selected", function() {
+                            let obj2 = that.myCanvas.getActiveObject();
+                            that.liClick = 1;
+                            that.visibletype = 10;
+                            that.opacity = obj2.opacity;
+                            that.rotateNum = obj2.angle;
+                            that.reImgColorurl = obj2.id
+                            that.delWhite = obj2.removeColor;
+                        });
                     }
                     
                 }
@@ -1294,7 +1316,7 @@ export default {
                     let imgInstance;
                     //设置图片跨域访问
                     img.crossOrigin = 'anonymous';
-                    img.src = res.result+"?timeStamp="+new Date();
+                    img.src = res.result+"?timeStamp="+new Date().getTime();
                     img.onload = function () {
                         if(isAdd){
                             if(that.myCanvas.getActiveObject()){
@@ -2089,7 +2111,7 @@ export default {
             that.delWhite = false;
             //设置图片跨域访问
             img.crossOrigin = 'anonymous';
-            img.src = imgUrl+"?timeStamp="+new Date();
+            img.src = imgUrl+"?timeStamp="+new Date().getTime();
             img.onload = function () {
                 if(that.designModel == 0 || that.designModel == 1){
                     imgInstance = new fabric.Image(img, {
@@ -2269,7 +2291,7 @@ export default {
             let imgInstance;
             //设置图片跨域访问
             img.crossOrigin = 'anonymous';
-            img.src = that.bgimgs[i]+"?timeStamp="+new Date();
+            img.src = that.bgimgs[i]+"?timeStamp="+new Date().getTime();
             img.onload = function () {
                 imgInstance = new fabric.Image(img, {
                         opacity: 1,
