@@ -341,7 +341,7 @@ export default {
             });
           }
         });
-    }
+    },
     /*_paymentInfos() {
       const param = {
         user_order_id: this.$route.query.user_order_id
