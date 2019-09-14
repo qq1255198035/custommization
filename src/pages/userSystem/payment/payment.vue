@@ -26,13 +26,13 @@
         <a-col :span="2"></a-col>
         <!--list1-->
         <a-col :xxl="8" :xl="20" v-if="dataList1.length>0">
-          <table-item :data="listLeft"></table-item>
+          <table-item :datas="listLeft"></table-item>
           <table-list :columns="columns" :data="dataList1"></table-list>
         </a-col>
         <!--list2-->
         <a-col :span="2" v-if="dataList1.length>0"></a-col>
         <a-col :xxl="10" :xl="20" v-if="dataList2.length>0">
-          <table-item :data="listRight"></table-item>
+          <table-item :datas="listRight"></table-item>
           <table-list :columns="columns1" :data="dataList2"></table-list>
         </a-col>
         <a-col :span="2"></a-col>
@@ -70,7 +70,7 @@
                     <h3 class="font-18">商品金额：</h3>
                   </a-col>
                   <a-col :span="12">
-                    <p class="textRight font-color">$2000</p>
+                    <p class="textRight font-color">${{pricess.order_price}}</p>
                   </a-col>
                 </a-row>
               </li>
@@ -80,7 +80,7 @@
                     <h3 class="font-18">手续费：</h3>
                   </a-col>
                   <a-col :span="12">
-                    <p class="textRight font-color">$2000</p>
+                    <p class="textRight font-color">${{pricess.commission}}</p>
                   </a-col>
                 </a-row>
               </li>
@@ -90,7 +90,7 @@
                     <h3 class="font-18">运费：</h3>
                   </a-col>
                   <a-col :span="12">
-                    <p class="textRight font-color">$2000</p>
+                    <p class="textRight font-color">${{pricess.shipping_fee}}</p>
                   </a-col>
                 </a-row>
               </li>
@@ -100,7 +100,7 @@
                     <h3 class="font-color">合计总额：</h3>
                   </a-col>
                   <a-col :span="12">
-                    <p class="textRight font-color">${{allPrice.order_price}}</p>
+                    <p class="textRight font-color">${{pricess.all_price}}</p>
                   </a-col>
                 </a-row>
               </li>
@@ -122,7 +122,7 @@
           <div class="paynum">
             <div class="left textRight">
               <div class="font-18" style="padding-bottom:20px">总价</div>
-              <div class="font-reset">${{allPrice.order_price}}</div>
+              <div class="font-reset">${{pricess.all_price}}</div>
             </div>
             <div class="right">
               <commonBtn
@@ -165,7 +165,8 @@ import {
   paymentInfos,
   status,
   wxPay,
-  wxOrderQuery
+  wxOrderQuery,
+  apiPay
 } from "@/api/system";
 import MyPrimaryStpes from "@/components/MyPrimaryStpes/MyPrimaryStpes";
 import MyTitle from "@/components/MyTitle/MyTitle";
@@ -179,6 +180,7 @@ export default {
   props: {},
   data() {
     return {
+      pricess: '',
       websocket: null,
       prepayId: "",
       show: false,
@@ -320,7 +322,27 @@ export default {
         this.step = parseInt(res.result.schedule);
       });
     },
-    _paymentInfos() {
+    toPayInfos() {
+      const param = {
+          //token: this.$ls.get("token"),
+          order_id: this.$route.query.order_id,
+          order_price: this.allPrice,
+          personOrderList: JSON.stringify(this.listNoPay),
+        };
+        console.log(param);
+        apiPay(param).then(res => {
+          console.log(res);
+          if (res.code == 1) {
+            this.$router.push({
+              path: "/payment",
+              query: {
+                user_order_id: res.user_order_id
+              }
+            });
+          }
+        });
+    }
+    /*_paymentInfos() {
       const param = {
         user_order_id: this.$route.query.user_order_id
       };
@@ -330,10 +352,11 @@ export default {
         this.dataList2 = response.confirmPrintPayList;
         this.listLeft = response.confirmNoPrintPayList[0];
         this.listRight = response.confirmPrintPayList[0];
+        this.pricess = response.userOrderId[0]
         this.allPrice = response.userOrderId[0] ? response.userOrderId[0] : 0;
         this.userId = response.userOrderId[0].order_id;
       });
-    },
+    },*/
     resultPsot(data) {
       const that = this;
       console.log(data);
@@ -342,7 +365,6 @@ export default {
         console.log(res.wxPayStatus)
         console.log(!res.wxPayStatus == 0);
         if (res.wxPayStatus == 0) {
-          console.log(5555)
           this.$router.push({
             path: "/wxSuccess",
             query: {

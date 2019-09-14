@@ -47,7 +47,7 @@ export default {
   .img-box {
     img {
       width: 100%;
-      height: 130px;
+      //height: 130px;
     }
   }
   .paynum {

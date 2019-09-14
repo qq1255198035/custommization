@@ -32,21 +32,6 @@
             </div>
           </a-col>
         </div>
-
-        <!--list2-->
-        <!--<a-col :span="2"></a-col>
-        <a-col :xxl="10" :xl="20" v-if="showList">
-          <table-item :data="img2">
-            <a href style="font-size: 18px; color: #999; text-decoration: underline">查看尺寸表</a>
-          </table-item>
-          <my-tables
-            v-if="showList"
-            :dataSizes="dataSizes"
-            :dataSizeTexts="dataSizeTexts"
-            :sizes="sizes"
-            @getList=" lists"
-          ></my-tables>
-        </a-col>-->
       </a-row>
       <my-title :title="itemTitle"></my-title>
       <!--支付-->
@@ -101,7 +86,7 @@ export default {
       showTable: "",
       aPrice: "",
       bPrice: "",
-      allPrice: "",
+      allPrice: 0,
       listPay: {},
       listNoPay: {},
       size: [],
@@ -169,21 +154,23 @@ export default {
       for (var i = 0; i < data.length; i++) {
         this.newListOld.push(data[i]);
       }
+      console.log(this.newListOld)
       let newLists = [];
-      for (var i = 0; i < this.newListOld.length; i++) {
+      for (var k = 0; k < this.newListOld.length; k++) {
         let count = 0;
         for (var j = 0; j < newLists.length; j++) {
-          if (newLists[j] == this.newListOld[i]) {
+          if (newLists[j] == this.newListOld[k]) {
             count++;
             break;
           }
         }
         console.log(count);
         if (count == 0) {
-          newLists[newLists.length] = this.newListOld[i];
+          newLists[newLists.length] = this.newListOld[k];
         }
       }
       this.arrtyNew1 = newLists
+      console.log(newLists)
       this.arrtyAllList = this.arrtyNew1.concat(this.arrtyNew2)
       this.allPrice = this._price(this.arrtyAllList)
       this.listNoPay.data = this.arrtyAllList
@@ -194,17 +181,17 @@ export default {
         this.newListOld1.push(data[i]);
       }
       let newLists = [];
-      for (var i = 0; i < this.newListOld1.length; i++) {
+      for (var k = 0; k < this.newListOld1.length; k++) {
         let count = 0;
         for (var j = 0; j < newLists.length; j++) {
-          if (newLists[j] == this.newListOld1[i]) {
+          if (newLists[j] == this.newListOld1[k]) {
             count++;
             break;
           }
         }
         console.log(count);
         if (count == 0) {
-          newLists[newLists.length] = this.newListOld1[i];
+          newLists[newLists.length] = this.newListOld1[k];
         }
       }
       
@@ -230,7 +217,8 @@ export default {
             });
           }
         });
-      } else {
+      } 
+      if(this.allPrice && token) {
         const param = {
           //token: this.$ls.get("token"),
           order_id: this.$route.query.order_id,
@@ -244,7 +232,7 @@ export default {
             this.$router.push({
               path: "/payment",
               query: {
-                user_order_id: res.result.user_order_id
+                user_order_id: res.user_order_id
               }
             });
           }
@@ -264,43 +252,6 @@ export default {
         
         this.resultData = res.result.personOrderNoPrintList;
         this.detailList = res.result
-        /* let result1 = res.result.personOrderPrintList;
-        this.showList = result1;
-        this.showTable = result;
-        
-        this.img1 = result;
-        this.img2 = result1;
-        if (result) {
-          const json = {
-            key: "0",
-            price: result.price,
-            total_price: result.price,
-            quantity: 1,
-            size: result.sizes.split(","),
-            goods_id: result.goods_id,
-            des_id: result.des_id
-          };
-          this.dataSize.push(json);
-          this.size = result.sizes.split(",");
-          this.dataSizeText = res.result.personOrderNoPrintList;
-        }
-
-        if (result1) {
-          const json1 = {
-            key: "0",
-            price: result1.price,
-            total_price: result1.price,
-            printName: "名字",
-            printNumber: 0,
-            size: result1.sizes.split(","),
-            goods_id: result1.goods_id,
-            des_id: result1.des_id
-          };
-          this.dataSizes.push(json1);
-          this.dataSizeTexts = res.result.personOrderPrintList;
-          this.sizes = result1.sizes.split(",");
-        }
-        console.log(this.dataSizeText);*/
       });
     }
   },

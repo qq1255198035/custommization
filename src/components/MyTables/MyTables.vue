@@ -229,9 +229,17 @@ targetList: {},
     },
 
     remove(key) {
-      const newData = this.data1.filter(item => item.key !== key);
+      let newData = [...this.data1]
+      newData = this.data1.filter(item => item.key !== key);
+      let newData2 = [...this.data]
       this.data1 = newData;
-      this.$emit("getList", this.data1);
+      let target = newData2.filter(item => key == item.key)[0];
+      if(target) {
+        target.price = 0;
+      }
+      this.data1 = newData;
+      this.data2 = newData2
+      this.$emit("getList", this.data2);
     }
   },
   watch: {},

@@ -8,7 +8,7 @@
           @page="getPage"
           @radios="getRadios"
           :listData="listData"
-          :listFrom="listFrom"
+          :total="total"
         ></person-list>
       </div>
     </div>
@@ -31,12 +31,12 @@ export default {
   props: {},
   data() {
     return {
+      total: 0,
       pageNo: 1,
       pageSize: 10,
       itemTitles: "个人订单",
       visible: false,
       listData: [],
-      listFrom: [],
       pagination: {
         onChange: page => {
           console.log(page);
@@ -81,8 +81,8 @@ export default {
       console.log(param);
       orders(param).then(res => {
         console.log(res);
-        this.listData = res.result.personalOrdersList;  
-        this.listFrom = res.result.personalOrdersParentList;
+        this.listData = res.records;
+        this.total = res.total
       });
     },
     showDrawer() {

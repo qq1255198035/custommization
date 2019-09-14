@@ -90,7 +90,7 @@ export function upLoad(parameter) {
 //
 export function apiPay(parameter) {
   return axios({
-    url: '/apiPersonOrder/toPay',
+    url: '/apiPersonOrder/toPayInfo',
     method: 'post',
     data: qs.stringify(parameter)
   })

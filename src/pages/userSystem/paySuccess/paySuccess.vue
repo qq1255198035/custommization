@@ -173,7 +173,7 @@ export default {
         this.$router.push({
           path: "/share",
           query: {
-            order_id: this.orderAgain
+            order_id: this.userOrderId
           }
         });
       }
@@ -181,7 +181,7 @@ export default {
         this.$router.push({
           path: "/share",
           query: {
-            order_id: this.orderAgain
+            order_id: this.userOrderId
           }
         });
       }

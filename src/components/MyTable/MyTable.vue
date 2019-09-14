@@ -143,6 +143,7 @@ export default {
       };
     },
     handleChange(key, column, value) {
+      
       console.log(key, column, value);
       let newData = [...this.data];
       console.log(newData);
@@ -176,17 +177,12 @@ export default {
     /** 加**/
     clickRightbtn(key, column) {
       let newData = [...this.data];
-      console.log(newData);
       let target = newData.filter(item => key == item.key)[0];
-      console.log(target);
       if (target) {
         target[column]++;
         target.price = target[column] * target.total_price;
       }
       this.data = newData;
-      this.reseList = this.reseList.concat(target);
-      console.log(this.reseList);
-      console.log(this.data);
       this.$emit("getList", this.data);
     },
     /** 添加**/
@@ -209,17 +205,26 @@ export default {
     },
 
     remove(key) {
+      
       console.log(key);
-      const newData = this.data.filter(item => item.key !== key);
+      let newData = [...this.data]
+      newData = this.data.filter(item => item.key !== key);
+      let newData1 = [...this.data]
+      let target = newData1.filter(item => key == item.key)[0];
+      if(target) {
+        target.price = 0;
+      }
       console.log(newData);
       this.data = newData;
-      this.$emit("getList", this.data);
+      this.data1 = newData1
+      console.log(this.data)
+      this.$emit("getList", this.data1);
     }
   },
   watch: {
     number(val) {
       if (val) {
-        return val * this.dataSizeText[0].price;
+        return val * this.data[0].price;
       } else {
         return 0;
       }

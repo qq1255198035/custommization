@@ -12,7 +12,7 @@
         <a-input-search @search="onSearch"></a-input-search>
       </div>
     </div>
-    <div class="list" v-for="item in listFrom" :key="item.user_order_id">
+    <div class="list" v-for="item in listData" :key="item.index">
       <a-row class="list-title">
         <a-col :xs="24" :sm="6" :md="5">
           <p>订单号：{{item.order_sn}}</p>
@@ -54,7 +54,7 @@
         </a-col>
       </a-row>
       <ul class="list-item">
-        <li v-for="items in filterItems(listData, item.id)" :key="items.id">
+        <li v-for="items in item.interiorList" :key="items.index">
           <div class="listCol">
             <div class="avatar">
               <img :src="items.positive_pic_url" alt />
@@ -87,7 +87,8 @@
         @showSizeChange="changeSize"
         @change="changeTotal"
         size="large"
-        :total="50"
+        :pageSize="pageSize"
+        :total="total"
         showSizeChanger
         showQuickJumper
       />
@@ -101,9 +102,7 @@ export default {
     listData: {
       type: Array
     },
-    listFrom: {
-      type: Array
-    }
+    total:{}
   },
   components: {
     commonBtn
@@ -112,19 +111,22 @@ export default {
     return {
       status: "",
       seacher: "",
+      pageSize: 10,
       pagination: {
         onChange: page => {
           console.log(page);
-        },
-        pageSize: 3
+        }
       },
-      value: 0,
+      value: '',
       actions: [
         { type: "star-o", text: "156" },
         { type: "like-o", text: "156" },
         { type: "message", text: "2" }
       ]
     };
+  },
+  created() {
+    
   },
   filters: {
     status(data) {
@@ -180,17 +182,18 @@ export default {
       this.value = e.target.value;
       this.$emit("radios", this.value);
     },
-    filterItems(a, b) {
+    /*filterItems(a, b) {
       return a.filter(item => {
         return item.pid == b;
       });
-    },
+    },*/
     changeSize(current, size) {
       console.log(current, size);
+      this.pageSize = size
       this.$emit("page", current, size);
     },
-    changeTotal(page, pageSize) {
-      console.log(page, pageSize);
+    changeTotal(page,pageSize) {
+      console.log(page,pageSize);
       this.$emit("page", page, pageSize);
     }
   }

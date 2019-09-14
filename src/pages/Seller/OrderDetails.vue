@@ -301,7 +301,12 @@
               <div class="price-box">
                 <div class="font-18">价格:</div>
                 <div class="price-input">
-                  <a-input :value="prices" type="number" @change="onChangeValues" style="width: 120px" />
+                  <a-input
+                    :value="prices"
+                    type="number"
+                    @change="onChangeValues"
+                    style="width: 120px"
+                  />
                 </div>
                 <div class="font-18">/件</div>
               </div>
@@ -364,7 +369,7 @@ export default {
   },
   data() {
     return {
-      orderPid: '',
+      orderPid: "",
       resPrice: "",
       priceChange: "",
       onePrice: "",
@@ -418,14 +423,14 @@ export default {
 
     disabledDate(current) {
       // Can not select days before today and today
-      return current && current < moment(new Date()).add(7,'days');
+      return current && current < moment(new Date()).add(7, "days");
     },
 
     disabledDateTime() {
       return {
         disabledHours: () => this.range(0, 24).splice(4, 20),
         disabledMinutes: () => this.range(30, 60),
-        disabledSeconds: () => [55, 56],
+        disabledSeconds: () => [55, 56]
       };
     },
     handImg() {
@@ -443,6 +448,14 @@ export default {
       });
     },
     handleOk() {
+      if (this.twoPrice < 0) {
+        this.$notification.error({
+          message: "预计代理价格为负数",
+          description: "请重新填写",
+          duration: 4
+        });
+        return
+      }
       if (this.pid) {
         const param = {
           picId: this.pid,
@@ -479,27 +492,26 @@ export default {
               payMode: this.adressValue
             };
             console.log(param);
-            if(this.adressValue == 1) {
+            if (this.adressValue == 1) {
               startGroup(param).then(res => {
-              console.log(res);
-              if (res.code == 200) {
-                this.shareChecked = true;
-              }
-            });
-            }else{
+                console.log(res);
+                if (res.code == 200) {
+                  this.shareChecked = true;
+                }
+              });
+            } else {
               startGroup(param).then(res => {
-              console.log(res);
-              if (res.code == 200) {
-                this.$router.push({
-                  path: '/unifiedpay',
-                  query: {
-                    orderId: this.orderPid
-                  }
-                })
-              }
-            });
+                console.log(res);
+                if (res.code == 200) {
+                  this.$router.push({
+                    path: "/unifiedpay",
+                    query: {
+                      orderId: this.orderPid
+                    }
+                  });
+                }
+              });
             }
-            
           } else {
             this.$notification["error"]({
               message: "填写收货地址",
@@ -517,7 +529,9 @@ export default {
         this.nums--;
         this.disCounts(this.nums, this.resPrice);
         if (this.prices) {
-          this.twoPrice = (this.prices - this.onePrice) * this.nums;
+          this.twoPrice = ((this.prices - this.onePrice) * this.nums).toFixed(
+            2
+          );
         }
       }
     },
@@ -525,9 +539,11 @@ export default {
       this.nums++;
       this.disCounts(this.nums, this.resPrice);
       if (this.prices) {
-        this.twoPrice = (this.prices - this.onePrice) * this.nums;
+        this.twoPrice = ((this.prices - this.onePrice) * this.nums).toFixed(2);
       }
+
     },
+
     showEdModal(id) {
       console.log(id);
 
@@ -551,25 +567,27 @@ export default {
             : res.result.price;
           this.pid = res.result.id;
           const numbers = this.nums;
-          this.minNums = res.result.minOrder
+          this.minNums = res.result.minOrder;
           this.disCounts(numbers, res.result.maxPrice);
           console.log(res.result.price - this.onePrice);
           this.resPrice = (res.result.maxPrice * this.discounts) / 100;
-          this.twoPrice = (this.prices - this.onePrice) * this.nums;
+          this.twoPrice = ((this.prices - this.onePrice) * this.nums).toFixed(
+            2
+          );
         });
       }, 1000);
     },
     disCounts(datas, datanum) {
       if (datas >= 1 && datas <= 20) {
-        this.onePrice = ((datanum * this.discounts) / 100) * 1;
+        this.onePrice = (((datanum * this.discounts) / 100) * 1).toFixed(2);
       } else if (datas >= 21 && datas <= 50) {
-        this.onePrice = ((datanum * this.discounts) / 100) * 0.95;
+        this.onePrice = (((datanum * this.discounts) / 100) * 0.95).toFixed(2);
       } else if (datas >= 51 && datas <= 100) {
-        this.onePrice = ((datanum * this.discounts) / 100) * 0.9;
+        this.onePrice = (((datanum * this.discounts) / 100) * 0.9).toFixed(2);
       } else if (datas >= 101 && datas <= 500) {
-        this.onePrice = ((datanum * this.discounts) / 100) * 0.85;
+        this.onePrice = (((datanum * this.discounts) / 100) * 0.85).toFixed(2);
       } else {
-        this.onePrice = ((datanum * this.discounts) / 100) * 0.8;
+        this.onePrice = (((datanum * this.discounts) / 100) * 0.8).toFixed(2);
       }
     },
     deletePro(id) {
@@ -611,7 +629,7 @@ export default {
             ? moment(formList.payEndDate, "YYYY-MM-DD")
             : {}
         });
-        this.orderPid = formList.id
+        this.orderPid = formList.id;
         this.addressId = formList.addressId;
         this.timeover = parseInt(formList.payMode);
         this.fileUrl = formList.topicUrl;
@@ -718,19 +736,19 @@ export default {
     },
     onChange() {},
     onChangeOne(e) {
-      console.log(e)
+      console.log(e);
     },
     onChangeNums() {
-      if(this.nums < this.minNums) {
-        this.nums = this.minNums
+      if (this.nums < this.minNums) {
+        this.nums = this.minNums;
       }
       this.disCounts(this.nums, this.resPrice);
-      this.twoPrice = (this.prices - this.onePrice) * this.nums;
+      this.twoPrice = ((this.prices - this.onePrice) * this.nums).toFixed(2);
     },
     onChangeValues(e) {
       console.log("radio checked", e.target.value);
       this.prices = e.target.value;
-      this.twoPrice = (e.target.value - this.onePrice) * this.nums;
+      this.twoPrice = ((e.target.value - this.onePrice) * this.nums).toFixed(2);
     },
     getAdressList() {
       adressList().then(res => {
