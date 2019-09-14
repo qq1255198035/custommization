@@ -20,7 +20,7 @@
             style="overflow-y: auto;overflow-x: hidden;height:560px;max-height:560px"
           >
             <table-item :datas="item" ref="myTable">
-              <a href style="font-size: 18px; color: #999; text-decoration: underline">查看尺寸表</a>
+              <a href style="font-size: 18px; color: #999; text-decoration: underline">View the size chart</a>
             </table-item>
             <div v-if="!item.is_print_numbe && !item.is_print_text">
               <my-table :dataSize="[item]" @getList="list" ref="mychild"></my-table>

@@ -34,7 +34,8 @@ import {
   Tabs,
   Dropdown,
   InputNumber,
-  Alert
+  Alert,
+  Cascader,
 } from "ant-design-vue";
 Vue.use(Alert);
 Vue.use(Button);
@@ -70,6 +71,7 @@ Vue.use(LocaleProvider);
 Vue.use(Tabs);
 Vue.use(Dropdown);
 Vue.use(InputNumber);
+Vue.use(Cascader);
 Vue.prototype.$message = Message;
 Vue.prototype.$notification = notification;
 Vue.prototype.$confirm = Modal.confirm

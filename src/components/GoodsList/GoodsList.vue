@@ -9,7 +9,7 @@
                                           <h3>{{item.name}}</h3>
                                           <p><span>$ {{item.min_price}} - $ {{item.max_price}}</span></p>
                                           <p>Min QTY: {{item.min_order}}</p>
-                                          <p>尺码： {{item.size}}</p>
+                                          <p>Size： {{item.size}}</p>
                                     </div>
                               </div>
                         </a-col>

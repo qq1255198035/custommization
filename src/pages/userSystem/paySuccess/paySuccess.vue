@@ -15,7 +15,7 @@
             <p slot="p1">选择尺码</p>
             <p slot="p2">确认支付</p>
             <p slot="p3">等待开团</p>
-            <p slot="p4">完成</p>
+            <p slot="p4">Completed</p>
           </my-stpes>
           <div class="content">
             <div class="title">

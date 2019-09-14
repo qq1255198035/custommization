@@ -61,11 +61,11 @@
                             </li>
                             <li @click="handleChangePRO">
                                 <span class="icon-change_product"></span>
-                                更换产品
+                                Replace the product
                             </li>
                         </ul>
                         <div class="container">
-                            <h2>CUSTOM KING T-Shirt<span>查看尺寸表</span></h2>
+                            <h2>CUSTOM KING T-Shirt<span @click="sizeList = true">View the size chart</span></h2>
                             <div class="canvas-container"  v-show="designModel == 0">
                                 <canvas id="canvas1" :width="screenWidth" :height="screenWidth"></canvas>
                                 <div class="moving-box" :style="{width: boxSize1.width + 'px',height: boxSize1.height + 'px',top: boxSize1.top + 'px', left: boxSize1.left + 'px'}" v-show="movingBox">
@@ -112,11 +112,11 @@
                             <div style="" class="scroll-box">
                                 <div class="drawer">
                                     <div class="tool-box" v-show="visibletype == -1">
-                                        <h2>你想怎么开始？</h2>
+                                        <h2>HOW DO YOU WANT TO GET STARTED?</h2>
                                         <ul class="btn-box">
-                                            <li @click="startTo(0)" v-intro="'可以从这里开始你的设计'" v-intro-step="1" class="active-btn">
+                                            <li @click="startTo(0)" v-intro="'start your design from here'" v-intro-step="1" class="active-btn">
                                                 <span class="icon-txt"></span>
-                                                添加文字
+                                                Add text
                                             </li>
                                             <li @click="startTo(1)">
                                                 <span class="icon-icon-image"></span>
@@ -126,14 +126,14 @@
                                         <ul class="btn-box">
                                             <li @click="startTo(6)">
                                                 <span class="icon-upload"></span>
-                                                上传设计
+                                                Upload design
                                             </li>
                                             <li @click="$router.push({path: '/neworder'})">
                                                 <span class="icon-change_product"></span>
                                                 改变产品
                                             </li>
                                         </ul>
-                                        <p>或<a @click="reStart">重新开始</a></p>
+                                        <p>OR<a @click="reStart">START OVER</a></p>
                                     </div>
                                     <div class="tool-box1" v-show="visibletype == 0">
                                         <!-- <div v-if="visibletype !== -1">
@@ -147,12 +147,12 @@
                                         </div> -->
                                         <h2 style="color: #33b8b3;text-align: left; border-bottom: 1px solid #999; padding-bottom: 5px; font-size: 18px;">
                                             <!-- <a-icon type="left" style="cursor: pointer;" @click="visibletype = -1"/> -->
-                                            添加文字
+                                            Add text
                                         </h2>
                                         <div class="add-text">
                                             <p>Add Text</p>
                                             <a-input v-model="addText"></a-input>
-                                            <a-button type="primary" @click="addItext(addText,false)" :disabled="!addText" style="border-radius: 12px;">添加设计</a-button>
+                                            <a-button type="primary" @click="addItext(addText,false)" :disabled="!addText" style="border-radius: 12px;">ADDING DESIGN</a-button>
                                         </div>
                                     </div>
                                     <div class="tool-box6" v-show="visibletype == 1">
@@ -181,14 +181,14 @@
                                             </dd>
                                         </dl>
                                         <div class="upload-box">
-                                            <h4>请选择要上传的文件</h4>
+                                            <h4>PLEASE SELECT THE FILE TO UPLOAD</h4>
                                             <a-upload-dragger name="file" class="my-upload" :beforeUpload="beforeUpload">
                                                     <p class="ant-upload-drag-icon">
                                                         <a-icon type="cloud-upload" />
                                                     </p>
-                                                    <p class="ant-upload-text">拖放或浏览您的计算机</p>
+                                                    <p class="ant-upload-text">DRAG AND DROP OR BROWSE YOUR COMPUTER</p>
                                             </a-upload-dragger>
-                                            <p>接受的文件类型(最大大小： 10MB)</p>
+                                            <p>ACCEPTED FILE TYPE(MAXIMUM SIZE: 10MB)</p>
                                             <p>
                                                 <span>.jpg</span>
                                                 <span>.png</span>
@@ -199,16 +199,16 @@
                                     <div class="tool-box8" v-show="visibletype == 2">
                                         <dl>
                                             <dt>
-                                                名字和号码：
+                                                Name And Number：
                                             </dt>
                                             <dd>
                                                 <span style="min-width: 52px;">步骤1：</span>
                                                 <div>
                                                     <p>
-                                                        <a-checkbox @change="addName">添加名称</a-checkbox>
+                                                        <a-checkbox @change="addName">ADD A NAME</a-checkbox>
                                                     </p>
                                                     <p>
-                                                        <a-checkbox @change="addNumber">添加号码</a-checkbox>
+                                                        <a-checkbox @change="addNumber">Add a number</a-checkbox>
                                                     </p>
                                                 </div>
                                             </dd>
@@ -218,19 +218,19 @@
                                                     <p>
                                                         <a-select defaultValue="0" style="width: 95%;" @change="changeNamePosition" :disabled="!addNameData">
                                                             <a-select-option value="0">胸部</a-select-option>
-                                                            <a-select-option value="1">背部</a-select-option>
+                                                            <a-select-option value="1">BACK</a-select-option>
                                                         </a-select>
                                                     </p>
                                                     <p>
                                                         <a-select defaultValue="0" style="width: 100%;" @change="changeNumberPosition" :disabled="!addNumberData">
                                                             <a-select-option value="0">胸部</a-select-option>
-                                                            <a-select-option value="1">背部</a-select-option>
+                                                            <a-select-option value="1">BACK</a-select-option>
                                                         </a-select>
                                                     </p>
                                                 </div>
                                             </dd>
                                             <dd>
-                                                <span>高度：</span>
+                                                <span>HEIGHT：</span>
                                                 <div>
                                                     <p>
                                                         <a-select defaultValue="6cm" style="width: 95%;" @change="changeNameSize" :disabled="!addNameData">
@@ -267,7 +267,7 @@
                                                 </div>
                                             </dd>
                                             <dd>
-                                                <span>颜色：</span>
+                                                <span>COLOR：</span>
                                                 <div class="color-picker">
                                                     <p>
                                                         {{numberColorName}}<span :style="{backgroundColor: numberColor}" @click="openChangeColorBox(5,'名称颜色')"></span>
@@ -310,15 +310,15 @@
                                                     <a-icon type="right" />
                                                 </p>
                                             </li>
-                                            <li @click="openChangeColorBox(1,'字体颜色')">
-                                                <span>字体颜色</span>
+                                            <li @click="openChangeColorBox(1,'Font colour')">
+                                                <span>Font colour</span>
                                                 <p>
                                                     <span>{{colorName}} <i class="square" :style="{backgroundColor:color}"></i></span>
                                                     <a-icon type="right" />
                                                 </p>
                                             </li>
-                                            <li @click="openChangeColorBox(2,'字体背景颜色')">
-                                                <span>字体背景颜色</span>
+                                            <li @click="openChangeColorBox(2,'Font Highlight colour')">
+                                                <span>Font Highlight colour</span>
                                                 <p>
                                                     <span>{{fontBgColorName}} <i class="square" :style="{backgroundColor:bgcolor}"></i></span>
                                                     <a-icon type="right" />
@@ -326,23 +326,23 @@
                                             </li>
                                         </ul>
                                         <dl class="stroke-style">
-                                            <dt class="title">描边</dt>
+                                            <dt class="title">Outline</dt>
                                             <dd @click="openChangeColorBox(3,'描边颜色')">
-                                                <span>颜色：</span>
+                                                <span>COLOR：</span>
                                                 <p>
                                                         <span>{{strokeColorName}} <i class="square" :style="{backgroundColor: strokeColor}"></i></span>
                                                         <a-icon type="right" />
                                                 </p>
                                             </dd>
                                             <dd>
-                                                <span>大小：</span>
+                                                <span>SIZE：</span>
                                                 <a-slider :min="0" :max="10" v-model="strokeWidth" :step="1" @change="changestrokeWidth" style="width: 85%;margin:0;"/>
                                             </dd>
                                         </dl>
                                         <dl>
-                                            <dt class="title">阴影</dt>
+                                            <dt class="title">Shadow</dt>
                                             <dd @click="openChangeColorBox(4,'阴影颜色')">
-                                                <span>颜色：</span>
+                                                <span>COLOR：</span>
                                                 <p>
                                                     <span>{{shadowColorName}} <i class="square" :style="{backgroundColor: shadowColor}"></i></span>
                                                     <a-icon type="right" />
@@ -353,7 +353,7 @@
                                     </div>
                                     <div class="tool-box10" v-show="visibletype == 4">
                                         <h2>颜色：</h2>
-                                        <p>选择颜色： <span :style="{backgroundColor: productColor ? productColor : '#fff'}"></span> {{productColorName ? productColorName : '白色'}}</p>
+                                        <p>选择颜色： <span :style="{backgroundColor: productColor ? productColor : '#fff'}"></span> {{productColorName ? productColorName : 'White'}}</p>
                                         <ul class="color-list">
                                             <li v-for="(item,index) in colorList.list" :key="index" :style="{backgroundColor: item.itemValue}" @click="changeProductColor(item.itemValue,item.itemText,index)">
                                                 <a-icon type="check" v-show="productColorIcon == index"/>
@@ -362,10 +362,10 @@
                                         
                                     </div>
                                     <div class="tool-box11" v-show="visibletype == 5">
-                                        <h2>设计备注：</h2>
+                                        <h2>Design notes：</h2>
                                         <a-textarea placeholder="请填写备注" :rows="8" v-model="remark"/>
                                         <div style="text-align: center;margin-top: 10px;">
-                                            <a-button type="primary" :disabled="!remark" @click="postAddRemarksBtn">保存更改</a-button>
+                                            <a-button type="primary" :disabled="!remark" @click="postAddRemarksBtn">Save changes</a-button>
                                         </div>
                                     </div>
                                     <div class="tool-box12" v-show="visibletype == 6">
@@ -375,7 +375,7 @@
                                                 上传照片
                                             </a-button>
                                             <p>
-                                                可以上传您喜欢的设计作为参考，并附加说明
+                                                You can upload your design as a reference and attach an explanation
                                             </p>
                                         </div>
                                         <ul class="info-list">
@@ -436,12 +436,12 @@
                                         <h2 style="color: #333;text-align: left; border-bottom: 1px solid #333; padding-bottom: 5px;">
                                             <a-icon type="left" style="cursor: pointer;" @click="goBackPage"/>
                                         </h2>
-                                        <h3>名字和号码</h3>
+                                        <h3>NAME AND NUMBER</h3>
                                         <div>
                                             <ul style="display:flex;background-color: #ccc;padding: 5px 0;">
-                                                <li style="width: 40%; color:#33b8b3;padding-left: 10px;">名称</li>
+                                                <li style="width: 40%; color:#33b8b3;padding-left: 10px;">Name</li>
                                                 <li style="width: 20%; color:#33b8b3;padding-left: 10px;">号码</li>
-                                                <li style="width: 30%; color:#33b8b3;padding-left: 10px;">尺寸</li>
+                                                <li style="width: 30%; color:#33b8b3;padding-left: 10px;">Size</li>
                                             </ul>
                                             <a-form
                                                 :form="form1"
@@ -462,7 +462,7 @@
                                                                 }
                                                                 ]"
                                                                 :disabled="!addNameData"
-                                                                placeholder="名称"
+                                                                placeholder="Name"
                                                                 style="width: 100%;border-top-right-radius: 0px;border-bottom-right-radius: 0px; border-right: none;"/>
                                                             </a-form-item>
 
@@ -479,7 +479,7 @@
                                                                 }
                                                                 ]"
                                                                 :disabled="!addNumberData"
-                                                                placeholder="名称" style="width: 100%;border-radius: 0;border-right: none"/>
+                                                                placeholder="Name" style="width: 100%;border-radius: 0;border-right: none"/>
                                                             </a-form-item>
                                                             <a-form-item style="width: 30%; margin: 0;min-height: 58px;">
                                                                 <a-select
@@ -493,7 +493,7 @@
                                                                         }
                                                                         ]"
                                                                         style="width: 100%; border-top-left-radius: 0;border-bottom-left-radius: 0;"
-                                                                        placeholder="尺寸"
+                                                                        placeholder="Size"
                                                                 >
                                                                     <a-select-option value="Zhejiang">Zhejiang</a-select-option>
                                                                     <a-select-option value="Jiangsu">Jiangsu</a-select-option>
@@ -516,7 +516,7 @@
                                                     style="width: 60%;color: #33b8b3"
                                                     @click="add"
                                                 >
-                                                    <a-icon type="plus" /> 添加更多
+                                                    <a-icon type="plus" /> Add more
                                                 </a>
                                                 </a-form-item>
                                                 <a-form-item style="text-align: center;">
@@ -524,7 +524,7 @@
                                                     type="primary"
                                                     html-type="submit"
                                                 >
-                                                    保存
+                                                    Save
                                                 </a-button>
                                                 </a-form-item>
                                             </a-form>
@@ -551,7 +551,7 @@
                                             <li class="set-filp">
                                                 <span title="移动到顶层" @click="changeFilPx"><a-icon type="vertical-left" /></span>
                                                 <span title="移动倒底层" @click="changeFilPy"><a-icon type="vertical-left" style="transform:rotate(90deg)"/></span>
-                                                <p>翻转</p>
+                                                <p>Flip</p>
                                             </li>
                                         </ul>
                                         <div class="set-rotate">
@@ -560,7 +560,7 @@
                                         </div>
                                         <ul class="tool-list">
                                             <li>
-                                                <span>删除白色</span>
+                                                <span>Remove white</span>
                                                 <a-switch v-model="delWhite" @change='removeColor'/>
                                             </li>
                                         </ul>
@@ -617,7 +617,7 @@
                                             </li>
                                         </ul>
                                         <div style="text-align: center;padding-top: 20px;">
-                                            <a-button type="primary" @click="saveFontShapeDesign(fontShape,true)">保存设计</a-button>
+                                            <a-button type="primary" @click="saveFontShapeDesign(fontShape,true)"> Save the design</a-button>
                                         </div>
                                     </div>
                                 </div>
@@ -634,12 +634,12 @@
                                 :padding="'15px'"
                                 :radio="'12px'"
                                 :fontsize="'16px'"
-                                :title="'添加产品'"
+                                :title="'Add product'"
                                 :icon="'plus'"
-                                v-intro="'这里即将带你开往新里程'" v-intro-step="2"
+                                v-intro="'Here will take you to new miles'" v-intro-step="2"
                             >
                             </commonBtn>
-                            <a-button type="primary" v-intro="'这里是你设计的归属地'" v-intro-step="3"><span class="icon-save" style="margin-right: 10px;vertical-align: middle"></span><a @click="saveEndDesign">保存设计</a></a-button>
+                            <a-button type="primary" v-intro="'Here is the attribution of your design.'" v-intro-step="3"><span class="icon-save" style="margin-right: 10px;vertical-align: middle"></span><a @click="saveEndDesign"> Save the design</a></a-button>
                         </li>
                     </ul>
                 </div>
@@ -654,7 +654,7 @@
                 <div class="upLoadExampleImg">
                     <a-form :form="form" style="display: flex;justify-content: space-between;">
                         <a-form-item
-                            label="附件上传"
+                            label="Attachment"
                             :label-col="{ span: 7 }"
                             :wrapper-col="{ span: 17 }"
                             style="width: 45%;"
@@ -676,7 +676,7 @@
                                 <img alt="example" style="width: 100%" :src="previewImage" />
                             </a-modal>
                             <div class="desc">
-                                <p>接受的文件类型(最大大小： 10MB)</p>
+                                <p>ACCEPTED FILE TYPE(MAXIMUM SIZE: 10MB)</p>
                                 <p>
                                     <span>.jpg</span>
                                     <span>.png</span>
@@ -685,7 +685,7 @@
 
                         </a-form-item>
                         <a-form-item
-                            label="图片说明"
+                            label="Description "
                             :label-col="{ span: 7 }"
                             :wrapper-col="{ span: 17 }"
                             style="width: 55%;"
@@ -694,14 +694,14 @@
                         </a-form-item>
                     </a-form>
                     <div class="btn-box">
-                        <a-button @click="clickOk">提交</a-button>
-                        <a-button style="color:#ccc;border-color: #ccc;" @click="closeUploadModal">取消</a-button>
+                        <a-button @click="clickOk">Submit </a-button>
+                        <a-button style="color:#ccc;border-color: #ccc;" @click="closeUploadModal">Cancel</a-button>
                     </div>
                 </div>
             </a-modal>
             <a-modal
                 v-model="endDsign"
-                title="保存设计"
+                title=" Save the design"
                 :centered="true"
                 width="40%"
                 :footer="null"
@@ -712,16 +712,16 @@
                             <a-icon type="smile" theme="filled"/>
                             <div>
                                 <h3>操作成功！</h3>
-                                <p>感谢您的信赖</p>
+                                <p>Thank you for your trust.</p>
                             </div>
                         </div>
-                        <p>附加提示，此成功提示出现一系列任务之后，比如在弹窗操作了分步表单任务，完成最后一步后提示。简单的弹窗任务直接使用Message提示。</p>
+                        <p>Additional tips. This success prompt appears after a series of tasks, such as a step-by-step form task in the pop-up window, and a prompt after completing the final step. Simple pop-up tasks use the Message prompt directly.</p>
                     </div>
                     <div class="btn-box">
-                        <a-button icon="file-text" @click="$router.push({path:'/designList'})">订单列表</a-button>
+                        <a-button icon="file-text" @click="$router.push({path:'/designList'})">Order list</a-button>
                         <a-button type="primary" icon="" style="vertical-align: middle;" @click="posteDesignList">
                             <img src="@/assets/monry-icon-bar.png" alt="" width="12" height="19" style="margin-right: 5px;">
-                            立即下单
+                            Order now
                         </a-button>
                     </div>
                 </div>
@@ -747,7 +747,7 @@
                 </a-col>
                 <a-col :span="16">
                     <div class="number">
-                    <div class="font-18">数量：</div>
+                    <div class="font-18">Quantity：</div>
                     <div class="number-box">
                         <div class="minus common-radio" @click="minus(designDetail.minOrder)">
                         <a-icon type="minus" />
@@ -783,6 +783,9 @@
                 </a-row>
             </a-modal>
         </div>
+        <a-modal :visible="sizeList" :footer="null" width="40%" :centered="true" style="padding: 0;" title="Size chart:" @cancel="sizeList = false">
+            <img :src="sizePicUrl" alt="" style="width: 100%;">
+        </a-modal>
     </div>
 </template>
 <script>
@@ -831,6 +834,7 @@ export default {
     },
     data () {
         return {
+            sizePicUrl:'',
             show: false,
             loading:false,
             goodsList:[],
@@ -881,14 +885,14 @@ export default {
             productColorName: '',
             //字体颜色值 | 颜色名
             color:'#000',
-            colorName:'黑色',
+            colorName:'BLACK',
             //字体背景颜色值 | 颜色名
             bgcolor:'',
             fontBgColorName:'',
             // 选择展示的颜色及颜色名
             fontShape: '',
             colorShow: '#000',
-            colorShowName: '黑色',
+            colorShowName: 'BLACK',
             resize,
             remove,
             rotate,
@@ -965,7 +969,7 @@ export default {
             fileList: [],
             filpx:false,
             filpy:false,
-            fontfamily:'微软雅黑',
+            fontfamily:'Microsoft YaHei',
 
             // 旋转数值
             rotateNum:0,
@@ -994,17 +998,17 @@ export default {
                 {
                     key:4,
                     className: 'icon-icon-06',
-                    text: '产品颜色'
+                    text: 'Product colour'
                 },
                 {
                     key:5,
                     className: 'icon-bz',
-                    text: '设计备注'
+                    text: 'Design notes'
                 },
                 {
                     key:6,
                     className: 'icon-upload',
-                    text: '上传设计'
+                    text: 'Upload design'
                 }
             ],
             dataList:[],
@@ -1042,7 +1046,8 @@ export default {
             boxSize1: [],
             boxSize2: [],
             boxSize3: [],
-            boxSize4: []
+            boxSize4: [],
+            sizeList: false
         }
     },
     created(){
@@ -1336,6 +1341,9 @@ export default {
                 console.log(res);
                 this.bgimgs = res.result;
                 this.bindCanvas(this.myCanvas1,0);
+                this.bindCanvas(this.myCanvas2,1);
+                this.bindCanvas(this.myCanvas3,2);
+                this.bindCanvas(this.myCanvas4,3);
                 //this.postId
             })
         },
@@ -1369,8 +1377,8 @@ export default {
             let that = this;
             that.$confirm({
                 title: "确定删除吗?",
-                okText: "确定",
-                cancelText: "取消",
+                okText: "CONFIRM",
+                cancelText: "Cancel",
                 class: "my-modal",
                 onOk() {
                     deleteEXimg(id).then(res =>{
@@ -1399,7 +1407,8 @@ export default {
             let params = {
                 positivePicUrl: this.dataUrl1,backPicUrl: this.dataUrl2,leftPicUrl: this.dataUrl3,rightPicUrl: this.dataUrl4,
                 positiveDesignArea: this.dataPost1, backDesignArea: this.dataPost2, leftDesignArea: this.dataPost3, rightDesignArea: this.dataPost4,
-                goodsId: this.postId, id: this.picId
+                goodsId: this.postId, id: this.picId,textFront: this.nameFontFamily, textColor: this.nameColor, textLocation: this.namePosition,textHeight: this.nameSize,
+                numberLocation: this.numberPosition,numberHeight: this.numberSize,numberFront:this.numberFontFamily, numberColor: this.numberColor, isPrintText: this.addNameData ? 1 : 0,isPrintNumber: this.addNumberData ? 1 : 0
             }
             console.log(params)
             this.postSaveDesign(params)
@@ -1442,6 +1451,7 @@ export default {
         getSelectById(id){
             selectById(id).then(res => {
                 console.log(res);
+                this.sizePicUrl = res.result.sizePicUrl
                 this.bgimgs = res.result.imgs;
                 this.bindCanvas(this.myCanvas1,0);
                 this.bindCanvas(this.myCanvas2,1);
@@ -1472,7 +1482,7 @@ export default {
                     title: "确定离开吗？",
                     content: "未保存的设计将被自动删除",
                     okText: "确认",
-                    cancelText: "取消",
+                    cancelText: "Cancel",
                     onOk() {
                         that.show = false;
                         window.location.reload();
@@ -1669,7 +1679,7 @@ export default {
         handleSubmit  (e) {
             e.preventDefault();
             this.form1.validateFields((err, values) => {
-                console.log(this.form1)
+                console.log(values)
                 if (!err) {
                     console.log('Received values of form: ', values);
                 }
@@ -1735,7 +1745,7 @@ export default {
          * 4：改变阴影颜色
          * 5：改变名字颜色
          * 6：改变号码颜色
-         * 7：改变产品颜色
+         * 7：改变Product colour
          *
         */
         changeAllColor(val,name,i){
@@ -2226,20 +2236,24 @@ export default {
         // 设置设计背景图
         bindCanvas(canvas,i) {
             var that = this
-            canvas.setBackgroundImage(that.bgimgs[i],canvas.renderAll.bind(canvas),{
-                opacity: 1,
-                angle: 0,
-                left: that.screenWidth / 2,
-                top: that.screenWidth / 2,
-                originX: "center",
-                originY: "center",
-                scaleX: 0.5,
-                scaleY: 0.5,
-
-                // *圖片跨域
-                crossOrigin: "*",
-            });
-
+            let img = new Image();
+            let imgInstance;
+            //设置图片跨域访问
+            img.crossOrigin = 'anonymous';
+            img.src = that.bgimgs[i]+"?timeStamp="+new Date();
+            img.onload = function () {
+                imgInstance = new fabric.Image(img, {
+                        opacity: 1,
+                        angle: 0,
+                        left: that.screenWidth / 2,
+                        top: that.screenWidth / 2,
+                        originX: "center",
+                        originY: "center",
+                        scaleX: 0.5,
+                        scaleY: 0.5,
+                    });
+                canvas.setBackgroundImage(imgInstance,canvas.renderAll.bind(canvas));
+            }
         },
         // zoomIn(){
         //     var zoom = this.myCanvas.getZoom();
@@ -2555,7 +2569,7 @@ export default {
                 this.colorShowName = this.fontBgColorName;
             }else{
                 this.colorShow = '#000';
-                this.colorShowName = '黑色';
+                this.colorShowName = 'BLACK';
             }
         }
     },
@@ -2704,6 +2718,7 @@ export default {
                 align-items: center;
                 color: #999;
                 font-size: 16px;
+                text-align: center;
                 cursor: pointer;
                 span{
                     font-size: 30px;

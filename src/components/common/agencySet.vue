@@ -48,7 +48,7 @@
                 <commonBtn
                   :icon="'upload'"
                   :width="'100%'"
-                  :title="'上传图片'"
+                  :title="'Upload photo'"
                   :height="'40px'"
                   :padding="'7px'"
                   :radio="'6px'"

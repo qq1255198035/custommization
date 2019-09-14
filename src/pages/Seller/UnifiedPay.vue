@@ -15,7 +15,7 @@
             <p slot="p1">选择尺码</p>
             <p slot="p2">确认支付</p>
             <p slot="p3">等待开团</p>
-            <p slot="p4">完成</p>
+            <p slot="p4">Completed</p>
           </MyPrimaryStpes>
           <my-title :title="itemTitle" :fontsize="20" :paddingtop="'40px'" :paddingbottom="'20px'"></my-title>
         </a-col>
@@ -213,7 +213,7 @@ export default {
           scopedSlots: { customRender: "positivePicUrl" }
         },
         {
-          title: "数量",
+          title: "Quantity",
           className: "quantity",
           width: "20%",
           align: "center",

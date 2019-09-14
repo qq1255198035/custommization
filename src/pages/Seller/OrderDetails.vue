@@ -14,9 +14,9 @@
         <a-col :span="7" class="scroll-box left-side">
           <div class="order-info">
             <dl class="top">
-              <dt>订单ID：</dt>
+              <dt>Order ID：</dt>
               <dd>{{information.orderId}}</dd>
-              <dt>订单时间：</dt>
+              <dt>Order time：</dt>
               <dd>{{information.orderTime}}</dd>
             </dl>
             <ul class="bottom">
@@ -25,9 +25,9 @@
                 <div>
                   <div>
                     <h3>{{item.name}}</h3>
-                    <p>颜色：{{item.product_color}}</p>
+                    <p>COLOR：{{item.product_color}}</p>
                     <p>价格：${{item.price}}</p>
-                    <p>数量：{{item.quantity}}</p>
+                    <p>Quantity：{{item.quantity}}</p>
                   </div>
                   <p>
                     <a-icon type="edit" @click="showEdModal(item.id)" />
@@ -44,24 +44,24 @@
               <li>
                 <h3>预期订货数量</h3>
 
-                <a-form-item label="标题" :label-col="{ span: 2 }" :wrapper-col="{ span: 12 }">
+                <a-form-item label="Headings" :label-col="{ span: 3 }" :wrapper-col="{ span: 12 }">
                   <a-input
                     v-decorator="[
                                     'note',
-                                    {rules: [{ required: true, message: '标题' }]}
+                                    {rules: [{ required: true, message: 'Headings' }]}
                                     ]"
                   />
                 </a-form-item>
-                <a-form-item label="简介" :label-col="{ span: 2}" :wrapper-col="{ span: 12 }">
+                <a-form-item label="Introduction" :label-col="{ span: 3}" :wrapper-col="{ span: 12 }">
                   <a-textarea
                     :rows="4"
                     v-decorator="[
                                     'desc',
-                                    {rules: [{ required: true, message: '简介' }]}
+                                    {rules: [{ required: true, message: 'Introduction' }]}
                                     ]"
                   />
                 </a-form-item>
-                <a-form-item label="上传图片" :label-col="{ span: 2 }" :wrapper-col="{ span: 12 }">
+                <a-form-item label="Upload photo" :label-col="{ span: 3 }" :wrapper-col="{ span: 12 }">
                   <a-upload
                     name="avatar"
                     listType="picture-card"
@@ -88,7 +88,7 @@
               <li>
                 <h3>负责人联系方式</h3>
 
-                <a-form-item label="联系人" :label-col="{ span: 2 }" :wrapper-col="{ span: 12 }">
+                <a-form-item label="联系人" :label-col="{ span: 3 }" :wrapper-col="{ span: 12 }">
                   <a-input
                     v-decorator="[
                                     'contanct',
@@ -96,15 +96,15 @@
                                     ]"
                   />
                 </a-form-item>
-                <a-form-item label="邮箱" :label-col="{ span: 2 }" :wrapper-col="{ span: 12 }">
+                <a-form-item label="邮箱" :label-col="{ span: 3 }" :wrapper-col="{ span: 12 }">
                   <a-input
                     v-decorator="[
-                                    'email',
-                                    {rules: [{ required: true, message: '邮箱' }]}
-                                    ]"
+                            'email',
+                            {rules: [{ required: true, message: '邮箱' }]}
+                            ]"
                   />
                 </a-form-item>
-                <a-form-item label="电话" :label-col="{ span: 2 }" :wrapper-col="{ span: 12 }">
+                <a-form-item label="电话" :label-col="{ span: 3 }" :wrapper-col="{ span: 12 }">
                   <a-input
                     v-decorator="[
                                     'phone',
@@ -146,7 +146,7 @@
             </a-form>
             <li>
               <h3>
-                运输方式
+                Delivery type
                 <!-- <span>描述4465+5+65+66+56+6+</span> -->
               </h3>
               <div class="select-way">
@@ -155,11 +155,11 @@
                     <h4>统一地址发货</h4>
                   </a-radio>
                   <div style="margin-left: 24px;">
-                    <p>用户付款后，我们会统一发送到同一地址，由收到包裹的人员一起发放。</p>
+                    <p>After the user pays, we will send it to the unified address uniformly. Issued by the person receiving the package，我们会统一发送到同一地址，由收到包裹的人员一起发放。</p>
                     <h4>
-                      收货地址：
+                      Delivery address：
                       <span @click="addressManagement">
-                        <a-icon type="edit" />管理地址
+                        <a-icon type="edit" />Manage address
                       </span>
                     </h4>
                     <p>{{adress}}</p>
@@ -193,13 +193,13 @@
               </div>
             </li>
             <li>
-              <h3>开始</h3>
+              <h3>Start</h3>
             </li>
           </ul>
-          <a-button @click="startGroupBtn" style="margin-left: 30px;">开始团体订单</a-button>
+          <a-button @click="startGroupBtn" style="margin-left: 30px;">Start group order</a-button>
         </a-col>
       </a-row>
-      <a-modal v-model="modelShow1" :footer="null" :width="700" :centered="true" title="管理地址">
+      <a-modal v-model="modelShow1" :footer="null" :width="700" :centered="true" title="Manage address">
         <ul class="adress">
           <li v-for="(item,index) in adressList" :key="index" @click="setDefaultAdress(item)">
             <p>
@@ -253,8 +253,8 @@
             </a-form-item>
           </a-form>
           <div class="btn-box">
-            <a-button type="primary" style="padding: 0 30px;" @click="postAddAddress">提 交</a-button>
-            <a-button @click="handColse" style="padding: 0 30px;">取 消</a-button>
+            <a-button type="primary" style="padding: 0 30px;" @click="postAddAddress">Submit</a-button>
+            <a-button @click="handColse" style="padding: 0 30px;">Cancel</a-button>
           </div>
         </div>
       </a-modal>
@@ -277,9 +277,9 @@
             </a-row>
           </a-col>
           <a-col :span="16">
-            <div class="title font-18">颜色：{{designDetail.productColor}}</div>
+            <div class="title font-18">COLOR：{{designDetail.productColor}}</div>
             <div class="number">
-              <div class="font-18">数量：</div>
+              <div class="font-18">Quantity：</div>
               <div class="number-box">
                 <div class="minus common-radio" @click="minus(designDetail.minOrder)">
                   <a-icon type="minus" />
@@ -465,7 +465,10 @@ export default {
         discountSure(param).then(res => {
           console.log(res);
           if (res.code == 200) {
-            window.location.reload();
+            //window.location.reload();
+            this.getTeamOrderDetails(this.id);
+            this.showVisible = false;
+            this.$message.success('操作成功！')
           }
         });
       }
@@ -594,8 +597,8 @@ export default {
       let that = this;
       that.$confirm({
         title: "确定删除此信息?",
-        okText: "确定",
-        cancelText: "取消",
+        okText: "CONFIRM",
+        cancelText: "Cancel",
         class: "my-modal",
         onOk() {
           console.log("OK");
@@ -772,7 +775,7 @@ export default {
         this.$message.error(this.$t("不支持此格式"));
         return isJPG;
       }
-      const isLt2M = file.size / 1024 / 1024 < 2;
+      const isLt2M = file.size / 1024 / 1024 < 10;
       if (!isLt2M) {
         this.$message.error(this.$t("图片超过2M"));
         return isLt2M;

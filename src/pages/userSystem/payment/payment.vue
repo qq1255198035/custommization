@@ -15,7 +15,7 @@
             <p slot="p1">选择尺码</p>
             <p slot="p2">确认支付</p>
             <p slot="p3">等待开团</p>
-            <p slot="p4">完成</p>
+            <p slot="p4">Completed</p>
           </MyPrimaryStpes>
           <my-title :title="itemTitle" :fontsize="20" :paddingtop="'40px'" :paddingbottom="'20px'"></my-title>
         </a-col>
@@ -197,14 +197,14 @@ export default {
       dataList2: [],
       columns: [
         {
-          title: "尺码",
+          title: "SIZE",
           dataIndex: "size",
           width: "25%",
           align: "center",
           scopedSlots: { customRender: "size" }
         },
         {
-          title: "数量",
+          title: "Quantity",
           className: "quantity",
           width: "25%",
           align: "center",
@@ -224,21 +224,21 @@ export default {
       ],
       columns1: [
         {
-          title: "尺码",
+          title: "SIZE",
           dataIndex: "size",
           align: "center",
           width: "20%",
           scopedSlots: { customRender: "size" }
         },
         {
-          title: "名字",
+          title: "Name",
           className: "printName",
           align: "center",
           width: "20%",
           dataIndex: "printName"
         },
         {
-          title: "号码",
+          title: "Number",
           width: "20%",
           align: "center",
           dataIndex: "printNumber"

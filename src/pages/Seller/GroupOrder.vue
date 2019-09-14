@@ -45,17 +45,17 @@
         :pageSize="5"
       />
     </div>
-    <a-modal v-model="modelShow" :footer="null" :centered="true" title="样稿确认" width="40%">
+    <a-modal v-model="modelShow" :footer="null" :centered="true" title="Confirm draft" width="40%">
       <ul class="example-box">
         <li v-for="(item,index) in exList" :key="item.id">
-          <h2>方案{{index + 1}}</h2>
+          <h2>Option {{index + 1}}</h2>
           <div style="text-align: center;margin: 10px 0;">
             <span v-for="(img,index) in item.imgList" :key="index">
               <img :src="img" alt />
-              <i v-if="index == 0" style="font-style: normal;">正面</i>
-              <i v-if="index == 1" style="font-style: normal;">背面</i>
-              <i v-if="index == 2" style="font-style: normal;">左面</i>
-              <i v-if="index == 3" style="font-style: normal;">右面</i>
+              <i v-if="index == 0" style="font-style: normal;">Front</i>
+              <i v-if="index == 1" style="font-style: normal;">Back</i>
+              <i v-if="index == 2" style="font-style: normal;">Left</i>
+              <i v-if="index == 3" style="font-style: normal;">Right</i>
             </span>
           </div>
           <div v-if="item.checked" style="width: 70%;margin:20px auto;">
@@ -63,8 +63,8 @@
           </div>
           <div v-show="textshow">{{item.opinion}}</div>
           <a-button @click="textShowOne(item.id,index)" v-show="!item.opinion && !item.checked">添加描述</a-button>
-          <a-button @click="textShowTwo(item.id,item.pic_id)" v-show="!item.opinion && item.checked">保存</a-button>
-          <a-button @click="programmeBtn(item.id)" v-show="item.status == 0" :disabled="astatus == 2">选用此方案</a-button>
+          <a-button @click="textShowTwo(item.id,item.pic_id)" v-show="!item.opinion && item.checked">Save</a-button>
+          <a-button @click="programmeBtn(item.id)" v-show="item.status == 0" :disabled="astatus == 2">Choose this option</a-button>
           <a-button @click="programmeBtn(item.id,item.pic_id)" v-show="item.status == 1" disabled="disabled">方案已选择</a-button>
         </li>
 

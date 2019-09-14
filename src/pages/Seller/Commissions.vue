@@ -57,7 +57,7 @@
                         type="primary"
                         @click="done"
                     >
-                        完成
+                        Completed
                     </a-button>
                     <a-button
                         v-if="current == 1"
@@ -153,7 +153,7 @@ export default {
                             dataIndex: 'amount',
                     },
                     {
-                            title: '状态',
+                            title: 'Status',
                             dataIndex: 'status',
                             scopedSlots: { customRender: 'status' }
                     },
@@ -177,7 +177,7 @@ export default {
                     title: '确认信息',
                     content: ComponentB,
                     }, {
-                    title: '完成',
+                    title: 'Completed',
                     content: ComponentC,
                 }],
                 paytype: '',

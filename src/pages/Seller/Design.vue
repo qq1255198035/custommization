@@ -25,11 +25,11 @@
                             </li>
                             <li @click="$router.push({path: '/neworder'})">
                                 <span class="icon-change_product"></span>
-                                更换产品
+                                Replace the product
                             </li>
                         </ul>
                         <div class="container">
-                            <h2>CUSTOM KING T-Shirt<span>查看尺寸表</span></h2>
+                            <h2>CUSTOM KING T-Shirt<span>View the size chart</span></h2>
                             <div class="canvas-container"  v-show="designModel == 0">
                                 <canvas id="canvas1" :width="screenWidth" :height="screenWidth"></canvas>
                                 <div class="moving-box" :style="{width: '200px',height: '300px',top: '150px', left: '200px'}" v-show="movingBox">
@@ -89,11 +89,11 @@
                             <div style="" class="scroll-box">
                                 <div class="drawer">
                                     <div class="tool-box" v-show="visibletype == -1">
-                                        <h2>你想怎么开始？</h2>
+                                        <h2>HOW DO YOU WANT TO GET STARTED?</h2>
                                         <ul class="btn-box">
                                             <li @click="startTo(0)" v-intro="'The content of tooltip'" v-intro-step="1" class="active-btn">
                                                 <span class="icon-txt"></span>
-                                                添加文字
+                                                Add text
                                             </li>
                                             <li @click="startTo(1)">
                                                 <span class="icon-icon-image"></span>
@@ -103,14 +103,14 @@
                                         <ul class="btn-box">
                                             <li @click="startTo(6)">
                                                 <span class="icon-upload"></span>
-                                                上传设计
+                                                Upload design
                                             </li>
                                             <li @click="$router.push({path: '/neworder'})">
                                                 <span class="icon-change_product"></span>
                                                 改变产品
                                             </li>
                                         </ul>
-                                        <p>或<a>重新开始</a></p>
+                                        <p>OR<a>START OVER</a></p>
                                     </div>
                                     <div class="tool-box1" v-show="visibletype == 0">
                                         <!-- <div v-if="visibletype !== -1">
@@ -124,12 +124,12 @@
                                         </div> -->
                                         <h2 style="color: #33b8b3;text-align: left; border-bottom: 1px solid #999; padding-bottom: 5px; font-size: 18px;">
                                             <!-- <a-icon type="left" style="cursor: pointer;" @click="visibletype = -1"/> -->
-                                            添加文字
+                                            Add text
                                         </h2>
                                         <div class="add-text">
                                             <p>Add Text</p>
                                             <a-input v-model="addText"></a-input>
-                                            <a-button type="primary" @click="addItext" :disabled="!addText" style="border-radius: 12px;">添加设计</a-button>
+                                            <a-button type="primary" @click="addItext" :disabled="!addText" style="border-radius: 12px;">ADDING DESIGN</a-button>
                                         </div>
                                     </div>
                                     <div class="tool-box6" v-show="visibletype == 1">
@@ -158,14 +158,14 @@
                                             </dd>
                                         </dl>
                                         <div class="upload-box">
-                                            <h4>请选择要上传的文件</h4>
+                                            <h4>PLEASE SELECT THE FILE TO UPLOAD</h4>
                                             <a-upload-dragger name="file" class="my-upload" :beforeUpload="beforeUpload">
                                                     <p class="ant-upload-drag-icon">
                                                         <a-icon type="cloud-upload" />
                                                     </p>
-                                                    <p class="ant-upload-text">拖放或浏览您的计算机</p>
+                                                    <p class="ant-upload-text">DRAG AND DROP OR BROWSE YOUR COMPUTER</p>
                                             </a-upload-dragger>
-                                            <p>接受的文件类型(最大大小： 10MB)</p>
+                                            <p>ACCEPTED FILE TYPE(MAXIMUM SIZE: 10MB)</p>
                                             <p>
                                                 <span>.jpg</span>
                                                 <span>.png</span>
@@ -176,16 +176,16 @@
                                     <div class="tool-box8" v-show="visibletype == 2">
                                         <dl>
                                             <dt>
-                                                名字和号码：
+                                                名字和Number：
                                             </dt>
                                             <dd>
                                                 <span style="min-width: 52px;">步骤1：</span>
                                                 <div>
                                                     <p>
-                                                        <a-checkbox @change="addName">添加名称</a-checkbox>
+                                                        <a-checkbox @change="addName">ADD A NAME</a-checkbox>
                                                     </p>
                                                     <p>
-                                                        <a-checkbox @change="addNumber">添加号码</a-checkbox>
+                                                        <a-checkbox @change="addNumber">Add a number</a-checkbox>
                                                     </p>
                                                 </div>
                                             </dd>
@@ -195,13 +195,13 @@
                                                     <p>
                                                         <a-select defaultValue="0" style="width: 95%;" @change="changeNamePosition">
                                                             <a-select-option value="0">胸部</a-select-option>
-                                                            <a-select-option value="1">背部</a-select-option>
+                                                            <a-select-option value="1">BACK</a-select-option>
                                                         </a-select>
                                                     </p>
                                                     <p>
                                                         <a-select defaultValue="0" style="width: 100%;" @change="changeNumberPosition">
                                                             <a-select-option value="0">胸部</a-select-option>
-                                                            <a-select-option value="1">背部</a-select-option>
+                                                            <a-select-option value="1">BACK</a-select-option>
                                                         </a-select>
                                                     </p>
                                                 </div>
@@ -264,7 +264,7 @@
                                     </div>
 
                                     <div class="tool-box9" v-show="visibletype == 3">
-                                        <my-title :title="'添加文字'"></my-title>
+                                        <my-title :title="'Add text'"></my-title>
                                         <div class="second">
                                             <div class="text-tool">
                                                 
@@ -354,7 +354,7 @@
                                                 </div>
                                             </dd>
                                         </dl>
-                                        <p><a>重置</a>或<a>重新开始</a></p>
+                                        <p><a>重置</a>OR<a>START OVER</a></p>
                                     </div>
                                     <div class="tool-box10" v-show="visibletype == 4">
                                         <h2>颜色：</h2>
@@ -369,7 +369,7 @@
                                         </div>
                                     </div>
                                     <div class="tool-box11" v-show="visibletype == 5">
-                                        <h2>设计备注：</h2>
+                                        <h2>Design notes：</h2>
                                         <a-textarea placeholder="Basic usage" :rows="8" v-model="remark"/>
                                         <div style="text-align: center;margin-top: 10px;">
                                             <a-button type="primary" :disabled="!remark">保存更改</a-button>
@@ -429,7 +429,7 @@
                                         <h2 style="color: #333;text-align: left; border-bottom: 1px solid #333; padding-bottom: 5px;">
                                             <a-icon type="left" style="cursor: pointer;" @click="goBackPage"/>
                                         </h2>
-                                        <h3>名字和号码</h3>
+                                        <h3>NAME AND NUMBER</h3>
                                         <div>
                                             <ul style="display:flex;background-color: #ccc;padding: 5px 0;">
                                                 <li style="width: 40%; color:#33b8b3;padding-left: 10px;">名称</li>
@@ -604,7 +604,7 @@
                         </div>
                     </div>
                     <ul class="submit-box">
-                        <li>每件价格 <span>$26.40 To $51.2</span></li>
+                        <li>Price per item <span>$26.40 To $51.2</span></li>
                         <li style="display: flex; align-item">
                             
                             <commonBtn
@@ -614,12 +614,12 @@
                                 :padding="'15px'"
                                 :radio="'12px'"
                                 :fontsize="'16px'"
-                                :title="'添加产品'"
+                                :title="'Add product'"
                                 :icon="'plus'"
                                 v-intro="'The content of tooltip'" v-intro-step="2"
                             >
                             </commonBtn>
-                            <a-button type="primary" v-intro="'The content of tooltip'" v-intro-step="3"><span class="icon-save" style="margin-right: 10px;vertical-align: middle"></span><a @click="saveEndDesign">保存设计</a></a-button>
+                            <a-button type="primary" v-intro="'The content of tooltip'" v-intro-step="3"><span class="icon-save" style="margin-right: 10px;vertical-align: middle"></span><a @click="saveEndDesign">Save the design</a></a-button>
                         </li>
                     </ul>
                 </div>
@@ -656,7 +656,7 @@
                                 <img alt="example" style="width: 100%" :src="previewImage" />
                             </a-modal>
                             <div class="desc">
-                                <p>接受的文件类型(最大大小： 10MB)</p>
+                                <p>ACCEPTED FILE TYPE(MAXIMUM SIZE: 10MB)</p>
                                 <p>
                                     <span>.jpg</span>
                                     <span>.png</span>
@@ -674,14 +674,14 @@
                         </a-form-item>
                     </a-form>
                     <div class="btn-box">
-                        <a-button @click="clickOk">提交</a-button>
-                        <a-button style="color:#ccc;border-color: #ccc;" @click="closeUploadModal">取消</a-button>
+                        <a-button @click="clickOk">Submit </a-button>
+                        <a-button style="color:#ccc;border-color: #ccc;" @click="closeUploadModal">Cancel</a-button>
                     </div>
                 </div>
             </a-modal>
             <a-modal
                 v-model="endDsign"
-                title="保存设计"
+                title=" Save the design"
                 :centered="true"
                 width="40%"
                 :footer="null"
@@ -916,22 +916,22 @@ export default {
                 {
                     key:2,
                     className: 'icon-icon-04',
-                    text: '号码'
+                    text: 'Number'
                 },
                 {
                     key:4,
                     className: 'icon-icon-06',
-                    text: '产品颜色'
+                    text: 'Product colour'
                 },
                 {
                     key:5,
                     className: 'icon-bz',
-                    text: '设计备注'
+                    text: 'Design notes'
                 },
                 {
                     key:6,
                     className: 'icon-upload',
-                    text: '上传设计'
+                    text: 'Upload design'
                 }
             ],
             dataList:[
@@ -1325,7 +1325,7 @@ export default {
          * 4：改变阴影颜色
          * 5：改变名字颜色
          * 6：改变号码颜色
-         * 7：改变产品颜色
+         * 7：改变Product colour
          * 
         */
         changeAllColor(val,name,i){

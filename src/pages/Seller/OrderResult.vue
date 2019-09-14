@@ -8,7 +8,7 @@
             <my-stpes :mycurrent="1" stpesnum="3">
                     <p slot="p1" style="color: #fff;">设计原稿</p>
                     <p slot="p2" style="color: #fff;">打样确认</p>
-                    <p slot="p3" style="color: #fff;">分享购买</p>
+                    <p slot="p3" style="color: #fff;">Share purchase</p>
             </my-stpes>
         </div>
         <div class="content">
@@ -27,7 +27,7 @@
                         <p>并在第四个工作日前给您提交一份设计手稿</p>
                         <div class="btn-box">
                             <a-button @click="$router.push({path: '/neworder'})">再来一单</a-button>
-                            <a-button @click="$router.go(-1)">返回</a-button>
+                            <a-button @click="$router.push({path: '/grouporder'})">返回</a-button>
                         </div>
                     </div>
                 </div>

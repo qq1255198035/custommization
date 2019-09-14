@@ -39,7 +39,7 @@ export default {
   height: 100%;
   
   input::-webkit-input-placeholder{
-    color: #fff;
+    color: #ccc;
   }
 }
 

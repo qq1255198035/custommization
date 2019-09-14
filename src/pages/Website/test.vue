@@ -323,10 +323,10 @@
                                     </dd>
                               </dl>
                               <div class="btn-box">
-                                    <a-button @click="$router.push({path:'/swiper'})">保存</a-button>
+                                    <a-button @click="$router.push({path:'/swiper'})">Save</a-button>
                                     <a-button @click="saveImg">保存</a-button>
-                                    <a-button @click="handleSetFront">正面</a-button>
-                                    <a-button @click="handleSetback">背面</a-button>
+                                    <a-button @click="handleSetFront">Front</a-button>
+                                    <a-button @click="handleSetback">Back</a-button>
                                     <a-button><a class="downLoad" download="downImg" @click="downLoadImg" :href="dataUrl">下载</a></a-button>
                               </div>
                         </div>
