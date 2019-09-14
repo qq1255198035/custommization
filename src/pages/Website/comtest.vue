@@ -22,7 +22,7 @@
                   <a-radio-button value="small">Small</a-radio-button>
             </a-radio-group>
             <table-item>
-                  <a href="" style="font-size: 14px; text-decoration: underline">查看尺寸表</a>
+                  <a href="" style="font-size: 14px; text-decoration: underline">View the size chart</a>
             </table-item>
             <card-header></card-header>
             <my-title :title="itemTitle">
@@ -33,7 +33,7 @@
                   <p slot="p1">选择尺码</p>
                   <p slot="p2">确认支付</p>
                   <p slot="p3">等待开团</p>
-                  <p slot="p4">完成</p>
+                  <p slot="p4">Completed</p>
             </my-stpes>
             <my-table></my-table>
             <a-input></a-input>
@@ -83,7 +83,7 @@ export default {
             return{
                   number:0,
                   show: true,
-                  itemTitle: '订单详情',
+                  itemTitle: 'Order details',
                   hidemenu:false
             }
       },

@@ -3,10 +3,10 @@
     <div v-for="items in orderArr" :key="items.id">
       <div class="order-title">
         <p>
-          <span>订单Id:{{items.orderSn}}</span>
-          <span>订单时间: {{items.createTime}}</span>
+          <span>Order ID:{{items.orderSn}}</span>
+          <span>Order time: {{items.createTime}}</span>
           <span>订单关闭时间： {{items.payEndDate}}</span>
-          <span>状态：{{items.orderStatus | statusFilter1}}</span>
+          <span>Status{{items.orderStatus | statusFilter1}}</span>
         </p>
         <hide-menu @myClick="checkOutDetails(items.id)" @myClick1="openMyshareBox(items.id)" @myClick2="goEditing(items.id)" :isEdit="items.orderStatus"></hide-menu>
       </div>
@@ -17,13 +17,13 @@
               <img :src="item.positivePicUrl" alt width="150" height="150" />
               <div class="desc">
                 <h3>{{item.name}}</h3>
-                <p>颜色： {{item.productColor}}</p>
+                <p>COLOUR： {{item.productColor}}</p>
               </div>
             </div>
             
             <div>
               <span style="margin-right: 20px;">{{item.buyNum}}/{{item.quantity}}</span>
-              <span>状态： {{item.status | statusFilter}}</span>
+              <span>Status: {{item.status | statusFilter}}</span>
             </div>
           </div>
           <div class="right">
@@ -31,13 +31,13 @@
             <commonBtn
               @btnClick="btnClick(item.id,item.status)"
               :width="'100%'"
-              :title="'样稿确认'"
+              :title="'Confirm draft'"
               :height="'32px'"
               :padding="'15px'"
               :radio="'12px'"
               :fontsize="'16px'"
             ></commonBtn>
-            <!--<a-button style="color: #33b8b3;" @click="btnClick(item.id)">样稿确认</a-button>-->
+            <!--<a-button style="color: #33b8b3;" @click="btnClick(item.id)">Confirm draft</a-button>-->
           </div>
         </div>
       </div>
@@ -65,10 +65,10 @@ const statusMap1 = {
     text: "订单提交"
   },
   '2': {
-    text: "样稿确认"
+    text: "Confirm draft"
   },
   '3': {
-    text: "分享购买"
+    text: "Share purchase"
   },
   '4': {
     text: "生产中"
@@ -77,7 +77,7 @@ const statusMap1 = {
     text: "运输中"
   },
   '6': {
-    text: "完成"
+    text: "Completed"
   },
 };
 export default {

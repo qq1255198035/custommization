@@ -92,7 +92,7 @@
                                     </dd>
                               </dl>
                               <div class="btn-box">
-                                    <a-button type="primary" @click="saveImg">保存</a-button>
+                                    <a-button type="primary" @click="saveImg">Save</a-button>
                                     
                                     <a-button><a class="downLoad" download="downImg" @click="downLoadImg" :href="dataUrl">下载</a></a-button>
                               </div>

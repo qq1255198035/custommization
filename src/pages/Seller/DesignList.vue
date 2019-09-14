@@ -19,7 +19,7 @@
           <div slot="goodsInfo" slot-scope="text" style="display: flex;">
             <div style="width: 100%;">
               <h2>{{text.title}}</h2>
-              <p>颜色:{{text.color}}</p>
+              <p>COLOUR:{{text.color}}</p>
             </div>
           </div>
           <template slot="action" slot-scope="text,record">
@@ -29,8 +29,8 @@
         </a-table>
       </div>
       <div style="text-align: center; padding: 20px 0;">
-        <a-button type="primary" icon="plus" @click="$router.push({path: '/neworder'})">添加设计</a-button>
-        <a-button style="margin-left: 10px;" @click="posteDesignList(idArr)">提交</a-button>
+        <a-button type="primary" icon="plus" @click="$router.push({path: '/neworder'})">ADDING DESIGN</a-button>
+        <a-button style="margin-left: 10px;" @click="posteDesignList(idArr)">Submit </a-button>
       </div>
     </div>
     </div>
@@ -50,7 +50,7 @@ const columns = [
     width: "60%"
   },
   {
-    title: "商品信息",
+    title: "Product Information",
     dataIndex: "goodsInfo",
     scopedSlots: { customRender: "goodsInfo" },
     key: "goodsInfo",
@@ -119,7 +119,7 @@ export default {
         title: "删除",
         content: "确认删除吗？",
         okText: "确认",
-        cancelText: "取消",
+        cancelText: "Cancel",
         onOk() {
             delDesignList(b.key).then(res => {
               console.log(res)

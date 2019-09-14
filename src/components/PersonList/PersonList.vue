@@ -18,13 +18,13 @@
           <p>订单号：{{item.order_sn}}</p>
         </a-col>
         <a-col :xs="24" :sm="6" :md="5">
-          <p>订单时间：{{item.confirm_time}}</p>
+          <p>Order time：{{item.confirm_time}}</p>
         </a-col>
         <a-col :xs="24" :sm="6" :md="5">
           <p>联系商家：{{item.contact}}</p>
         </a-col>
         <a-col :xs="24" :sm="6" :md="5">
-          <p>状态：{{item.pay_status | status}}</p>
+          <p>Status：{{item.pay_status | status}}</p>
         </a-col>
         <a-col :xs="24" :sm="6" :md="4">
           <p class="list-last" v-if="item.pay_status == 0">
@@ -61,8 +61,8 @@
               <div class>
                 <h3>{{items.name}}</h3>
                 <div class="desc">
-                  <p>颜色：蓝色</p>
-                  <p>尺码：{{items.size}}</p>
+                  <p>COLOR：蓝色</p>
+                  <p>SIZE：{{items.size}}</p>
                 </div>
               </div>
             </div>
@@ -71,10 +71,10 @@
             <p class="list-p">名称：{{items.print_name}}</p>
           </div>
           <div class="listCol" v-if="items.print_number">
-            <p class="list-p">号码：{{items.print_number}}</p>
+            <p class="list-p">Number：{{items.print_number}}</p>
           </div>
           <div class="listCol">
-            <p class="list-p">数量：{{items.quantity}}</p>
+            <p class="list-p">Quantity：{{items.quantity}}</p>
           </div>
           <div class="listCol">
             <p class="list-p" style="border: none;">合计：${{items.total_price}}</p>
@@ -135,7 +135,7 @@ export default {
         case 1:
           return "付款中";
         case 2:
-          return "已付款";
+          return "Paid";
         case 3:
           return "已退款";
       }
@@ -143,7 +143,7 @@ export default {
         case 0:
           return "待付款";
         case 101:
-          return "订单已取消";
+          return "订单已Cancel";
         case 102:
           return "订单已删除";
         case 201:

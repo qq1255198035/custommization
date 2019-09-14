@@ -43,7 +43,7 @@ export default {
                             dataIndex: 'orderSn'
                     },
                     {
-                            title: '订单时间',
+                            title: 'Order time',
                             dataIndex: 'orderTime',
                     },
                     {
@@ -51,7 +51,7 @@ export default {
                             dataIndex: 'amount',
                     },
                     {
-                            title: '状态',
+                            title: 'Status',
                             dataIndex: 'status',
                             scopedSlots: { customRender: 'status' }
                     },

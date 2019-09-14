@@ -28,7 +28,7 @@
                                           </a-menu-item>
                                     </a-sub-menu>
                                     <a-sub-menu key="sub4" class="my-submenu">
-                                          <span slot="title"><a-icon type="pie-chart" /><span>产品颜色</span></span>
+                                          <span slot="title"><a-icon type="pie-chart" /><span>Product colour</span></span>
                                           <a-menu-item key="9" class="color-picker">
                                                 
                                           </a-menu-item>
@@ -221,10 +221,10 @@
                                     </dd>
                               </dl>
                               <div class="btn-box">
-                                    <a-button @click="$router.push({path:'/swiper'})">保存</a-button>
-                                    <a-button @click="saveImg">保存</a-button>
-                                    <a-button @click="handleSetFront">正面</a-button>
-                                    <a-button @click="handleSetback">背面</a-button>
+                                    <a-button @click="$router.push({path:'/swiper'})">Save</a-button>
+                                    <a-button @click="saveImg">Save</a-button>
+                                    <a-button @click="handleSetFront">Front</a-button>
+                                    <a-button @click="handleSetback">Back</a-button>
                                     <a-button><a class="downLoad" @click="downLoadImg">下载</a></a-button>
                               </div>
                         </div>

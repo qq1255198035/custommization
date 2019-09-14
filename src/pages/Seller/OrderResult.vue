@@ -8,7 +8,7 @@
             <my-stpes :mycurrent="1" stpesnum="3">
                     <p slot="p1" style="color: #fff;">设计原稿</p>
                     <p slot="p2" style="color: #fff;">打样确认</p>
-                    <p slot="p3" style="color: #fff;">分享购买</p>
+                    <p slot="p3" style="color: #fff;">Share purchase</p>
             </my-stpes>
         </div>
         <div class="content">

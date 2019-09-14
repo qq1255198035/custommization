@@ -52,7 +52,7 @@ export default {
         title: "退出登录",
         content: "确认退出登录？",
         okText: "确认",
-        cancelText: "取消",
+        cancelText: "Cancel",
         onOk() {
           that.Logout();
           window.location.reload();

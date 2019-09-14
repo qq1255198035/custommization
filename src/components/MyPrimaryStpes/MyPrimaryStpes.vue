@@ -76,8 +76,10 @@ export default {
 #Stpesprimary{
       display: flex;
       justify-content: space-around;
-      
       align-items: center;
+      p{
+            text-align: center;
+      }
       .section{
             display: flex;
             flex-direction: column;

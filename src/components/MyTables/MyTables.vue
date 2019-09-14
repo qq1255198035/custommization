@@ -91,7 +91,7 @@ export default {
       memberLoading: false,
       columns: [
         {
-          title: "尺码",
+          title: "SIZE",
           dataIndex: "size",
           key: "size",
           algin:"center",
@@ -99,7 +99,7 @@ export default {
           scopedSlots: { customRender: "size" }
         },
         {
-          title: "名字",
+          title: "Name",
           dataIndex: "printName",
           algin:"center",
           key: "printName",
@@ -107,7 +107,7 @@ export default {
           scopedSlots: { customRender: "printName" }
         },
         {
-          title: "号码",
+          title: "Number",
           dataIndex: "printNumber",
           key: "printNumber",
           algin:"center",

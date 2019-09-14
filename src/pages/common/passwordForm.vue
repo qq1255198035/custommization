@@ -4,7 +4,7 @@
       <a-steps class="steps" :current="currentTab">
         <a-step title="确认账号信息" />
         <a-step title="修改密码" />
-        <a-step title="完成" />
+        <a-step title="Completed" />
       </a-steps>
       <div class="content">
         <step1 v-if="currentTab === 0" @nextStep="nextStep"/>

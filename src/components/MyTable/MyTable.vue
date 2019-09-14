@@ -90,14 +90,14 @@ export default {
       memberLoading: false,
       colmons: [
         {
-          title: "尺码",
+          title: "SIZE",
           dataIndex: "size",
           width: "25%",
           align: "center",
           scopedSlots: { customRender: "size" }
         },
         {
-          title: "数量",
+          title: "Quantity",
           dataIndex: "number",
           key: "number",
           width: "25%",
