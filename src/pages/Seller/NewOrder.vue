@@ -1410,7 +1410,6 @@ export default {
                 goodsId: this.postId, id: this.picId,textFront: this.nameFontFamily, textColor: this.nameColor, textLocation: this.namePosition,textHeight: this.nameSize,
                 numberLocation: this.numberPosition,numberHeight: this.numberSize,numberFront:this.numberFontFamily, numberColor: this.numberColor, isPrintText: this.addNameData ? 1 : 0,isPrintNumber: this.addNumberData ? 1 : 0
             }
-            console.log(params)
             this.postSaveDesign(params)
         },
         downLoadImg(){

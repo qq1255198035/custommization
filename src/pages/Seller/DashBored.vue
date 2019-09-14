@@ -29,7 +29,7 @@ export default {
         OrderTotal,
         MyTitle,
         OrderList,
-
+ 
     },
     data(){
         return{
