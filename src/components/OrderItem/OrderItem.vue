@@ -5,8 +5,8 @@
         <p>
           <span>Order ID:{{items.orderSn}}</span>
           <span>Order time: {{items.createTime}}</span>
-          <span>订单关闭时间： {{items.payEndDate}}</span>
-          <span>Status{{items.orderStatus | statusFilter1}}</span>
+          <span>Order Deadline： {{items.payEndDate}}</span>
+          <span>Status：{{items.orderStatus | statusFilter1}}</span>
         </p>
         <hide-menu @myClick="checkOutDetails(items.id)" @myClick1="openMyshareBox(items.id)" @myClick2="goEditing(items.id)" :isEdit="items.orderStatus"></hide-menu>
       </div>
@@ -42,7 +42,7 @@
         </div>
       </div>
     </div>
-    <a-modal :visible="openShare" :footer="null" @cancel="closeShareBox" title="分享给朋友" :centered="true">
+    <a-modal :visible="openShare" :footer="null" @cancel="closeShareBox" title="Share to a Friend" :centered="true">
           <div class="share-box1">
                 <share class="share" :config="config"></share>
           </div>
@@ -54,15 +54,15 @@ import commonBtn from "@/components/commonBtn/commonBtn";
 import HideMenu from "@/components/HideMenu/HideMenu";
 const statusMap = {
   '1': {
-    text: "未确认"
+    text: "To Be Confirmed"
   },
   '2': {
-    text: "已确认"
+    text: "Confirmed"
   },
 };
 const statusMap1 = {
   '1': {
-    text: "订单提交"
+    text: "Submit Order"
   },
   '2': {
     text: "Confirm draft"
@@ -74,7 +74,7 @@ const statusMap1 = {
     text: "生产中"
   },
   '5': {
-    text: "运输中"
+    text: "In Transit"
   },
   '6': {
     text: "Completed"

@@ -4,11 +4,11 @@
       <a-col :lg="14">
         <div>
           <a-form layout="vertical" :form="form">
-            <a-form-item label="邮箱">
+            <a-form-item label="Email">
               <a-input
-                placeholder="邮箱"
+                placeholder="Email"
                 :disabled="true"
-                v-decorator="['email',{rules: [{ required: true, message: '邮箱' }]}]"
+                v-decorator="['email',{rules: [{ required: true, message: 'Email' }]}]"
               />
             </a-form-item>
 
@@ -30,17 +30,17 @@
                 </a-form-item>
               </a-col>
             </a-row>
-            <a-form-item label="个人简介">
+            <a-form-item label="About You">
               <a-input
-                placeholder="个人简介"
-                v-decorator="['company',{rules: [{ required: true, message: '个人简介' }]}]"
+                placeholder="About You"
+                v-decorator="['company',{rules: [{ required: true, message: 'About You' }]}]"
               />
             </a-form-item>
 
             <a-form-item label="地点">
               <a-select
                 @change="countryBtn"
-                v-decorator="['countryName',{rules: [{ required: true, message: '邮箱' }]}]"
+                v-decorator="['countryName',{rules: [{ required: true, message: 'Email' }]}]"
               >
                 <a-select-option
                   v-for="(item, index) in country"
@@ -51,12 +51,12 @@
             </a-form-item>
             <a-row :gutter="32">
               <a-col :span="12">
-                <a-form-item label="所在省">
+                <a-form-item label="Province/State">
                   <div class>
                     <a-select
                       @change="onProvince"
-                      placeholder="请选择"
-                      v-decorator="['province',{rules: [{ required: true, message: '邮箱' }]}]"
+                      placeholder="Please choose"
+                      v-decorator="['province',{rules: [{ required: true, message: 'Email' }]}]"
                     >
                       <a-select-option
                         v-for="(item, index) in province"
@@ -73,7 +73,7 @@
                     <a-select
                       @change="onCity"
                       placeholder="请选择"
-                      v-decorator="['city',{rules: [{ required: true, message: '邮箱' }]}]"
+                      v-decorator="['city',{rules: [{ required: true, message: 'Email' }]}]"
                     >
                       <a-select-option
                         v-for="(item, index) in city"
@@ -94,7 +94,7 @@
               />
             </a-form-item>
             <a-input-group compact>
-              <a-form-item label="电话">
+              <a-form-item label="Phone Number">
                 <a-row :gutter="32">
                   <a-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
                     <a-input
@@ -107,7 +107,7 @@
                     <a-input
                       @change="phoneLastBtn"
                       placeholder="电话号"
-                      v-decorator="['phoneName2',{rules: [{ required: true, message: '电话' }]}]"
+                      v-decorator="['phoneName2',{rules: [{ required: true, message: 'Phone Number' }]}]"
                     />
                   </a-col>
                 </a-row>
@@ -334,7 +334,7 @@ export default {
       const isJPG = file.type === "image/jpeg";
       const isPNG = file.type === "image/png";
       if (!isJPG && !isPNG) {
-        this.$message.error(this.$t("不支持此格式"));
+        this.$message.error(this.$t("Unsupported Format, Please Try Again."));
         return isJPG;
       }
       const isLt2M = file.size / 1024 / 1024 < 2;

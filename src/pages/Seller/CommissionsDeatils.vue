@@ -1,6 +1,6 @@
 <template>
     <div id="CommissionsDeatils">
-        <my-title :title="'佣金明细'" style="margin-bottom: 30px;" :fontsize="20"></my-title>
+        <my-title :title="'Commission Details'" style="margin-bottom: 30px;" :fontsize="20"></my-title>
         <a-table :columns="columns" :dataSource="data" :loading="loading" :pagination="pagination" @change="handleTableChange" :rowClassName="() => {return 'my-throw'}">
                 <span slot="status" slot-scope="text">
                     <a-badge :status="text | statusTypeFilter" :text="text | statusFilter" />
@@ -17,15 +17,15 @@ import {commissionList} from "@/api/seller"
 const statusMap = {
     2: {
         status: 'success',
-        text: '已到账'
+        text: 'Money Received'
     },
     1: {
         status: 'warning',
-        text: '未到账'
+        text: 'Outstanding account'
     },
     3: {
         status: 'error',
-        text: '打款失败'
+        text: 'Payment Unsuccessful'
     }
 }
 export default {
@@ -39,7 +39,7 @@ export default {
             num:1,
             columns: [
                     {
-                            title: '订单号',
+                            title: 'Order Number',
                             dataIndex: 'orderSn'
                     },
                     {
@@ -47,7 +47,7 @@ export default {
                             dataIndex: 'orderTime',
                     },
                     {
-                            title: '金额',
+                            title: 'Time Submitted',
                             dataIndex: 'amount',
                     },
                     {
@@ -56,7 +56,7 @@ export default {
                             scopedSlots: { customRender: 'status' }
                     },
                     {
-                            title: '操作',
+                            title: 'Active',
                             dataIndex: 'operation',
                             scopedSlots: { customRender: 'operation' },
                     }

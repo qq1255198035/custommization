@@ -105,7 +105,7 @@ export default {
           scopedSlots: { customRender: "number" }
         },
         {
-          title: "合计价格",
+          title: "Total Price价格",
           dataIndex: "price",
           key: "price",
           width: "25%",
@@ -113,7 +113,7 @@ export default {
           scopedSlots: { customRender: "price" }
         },
         {
-          title: "操作",
+          title: "Active",
           width: "25%",
           key: "action",
           align: "center",

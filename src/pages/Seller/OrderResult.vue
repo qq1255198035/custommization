@@ -16,18 +16,18 @@
                 <div class="title">
                     <a-icon type="smile" theme="filled" style="color: #fff;"/>
                     <div>
-                        <h3>操作成功！</h3>
-                        <p style="color: #fff;">感谢您的下单</p>
+                        <h3>Successful！</h3>
+                        <p style="color: #fff;">Thank you for your order.</p>
                     </div>
                 </div>
                 <div class="desc">
                     <span></span>
                     <div class="container">
-                        <p>预计我们会在3个工作日给您回复</p>
-                        <p>并在第四个工作日前给您提交一份设计手稿</p>
+                        <p>We will reply you within 3 working days</p>
+                        <p>We will provide a design mockup within 4 working days.</p>
                         <div class="btn-box">
-                            <a-button @click="$router.push({path: '/neworder'})">再来一单</a-button>
-                            <a-button @click="$router.push({path: '/grouporder'})">返回</a-button>
+                            <a-button @click="$router.push({path: '/neworder'})">Order Again</a-button>
+                            <a-button @click="$router.push({path: '/grouporder'})">Back</a-button>
                         </div>
                     </div>
                 </div>

@@ -2,12 +2,12 @@
     <div id="compoents-com3">
         <h2>
             <a-icon type="check-circle" />
-            <p>操作成功</p>
+            <p>Successful</p>
         </h2>
         <ul class="content">
-            <li>收款账户：<span>{{account3}}</span></li>
-            <li>收款人姓名：<span>{{name3}}</span></li>
-            <li>转账金额：<span>￥{{price3}}</span></li>
+            <li>Receiver's Account：<span>{{account3}}</span></li>
+            <li>Recipient Name：<span>{{name3}}</span></li>
+            <li>Transfer Amount：<span>${{price3}}</span></li>
         </ul>
     </div>
 </template>

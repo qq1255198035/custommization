@@ -12,9 +12,9 @@
         <a-col :span="20">
           <div class="step font-reset">流程进度</div>
           <MyPrimaryStpes :mycurrent="step">
-            <p slot="p1">选择尺码</p>
+            <p slot="p1">Select Size</p>
             <p slot="p2">确认支付</p>
-            <p slot="p3">等待开团</p>
+            <p slot="p3">Waiting To Start Group Order</p>
             <p slot="p4">Completed</p>
           </MyPrimaryStpes>
           <my-title :title="itemTitle" :fontsize="20" :paddingtop="'40px'" :paddingbottom="'20px'"></my-title>
@@ -84,7 +84,7 @@
               <li style="border-bottom:solid 1px #eee;">
                 <a-row>
                   <a-col :span="12">
-                    <h3 class="font-18">运费：</h3>
+                    <h3 class="font-18">Shipping Fee：</h3>
                   </a-col>
                   <a-col :span="12">
                     <p class="textRight font-color">${{freight}}</p>
@@ -94,7 +94,7 @@
               <li style="padding-top:20px">
                 <a-row>
                   <a-col :span="12">
-                    <h3 class="font-color">合计总额：</h3>
+                    <h3 class="font-color">Total Amount：</h3>
                   </a-col>
                   <a-col :span="12">
                     <p class="textRight font-color">${{allPrice}}</p>
@@ -118,14 +118,14 @@
         <a-col :span="4" :offset="18">
           <div class="paynum">
             <div class="left textRight">
-              <div class="font-18" style="padding-bottom:20px">总价</div>
+              <div class="font-18" style="padding-bottom:20px">Total Amount</div>
               <div class="font-reset">${{allPrice}}</div>
             </div>
             <div class="right">
               <commonBtn
                 @payBtn="payBtn"
                 :width="'100%'"
-                :title="'立即支付'"
+                :title="'Pay Now'"
                 :height="'56px'"
                 :padding="'10px'"
                 :radio="'12px'"
@@ -157,7 +157,6 @@
 </template>
 
 <script>
-import { payPal, wxPay, wxOrderQuery } from "@/api/system";
 import { orderFroms, teamPayBack, wxCheckPay ,paypalSeller} from "@/api/seller";
 import MyPrimaryStpes from "@/components/MyPrimaryStpes/MyPrimaryStpes";
 import MyTitle from "@/components/MyTitle/MyTitle";
@@ -179,8 +178,8 @@ export default {
       procedureMoney: "",
       freight: "",
       value: 1,
-      itemTitle: "订单信息",
-      payTitle: "支付信息",
+      itemTitle: "Order Information",
+      payTitle: "Payment Details",
       data: [
         {
           name: "短袖",
@@ -220,7 +219,7 @@ export default {
           dataIndex: "quantity"
         },
         {
-          title: "单价",
+          title: "Price",
           width: "20%",
           align: "center",
           dataIndex: "price"

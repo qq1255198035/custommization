@@ -34,11 +34,11 @@
                 >{{item.name}}</a-select-option>
                   </a-select>-->
                 </a-form-item>
-                <a-form-item label="邮箱">
+                <a-form-item label="Email">
                   <a-input
                     size="large"
                     type="text"
-                    placeholder="邮箱"
+                    placeholder="Email"
                     v-decorator="['email', {rules: [{ required: true, type: 'email', message: '请输入邮箱' }], validateTrigger: ['change', 'blur']}]"
                   ></a-input>
                   <div v-if="formShow" class="font-splic">

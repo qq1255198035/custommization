@@ -5,36 +5,36 @@
                 <a-icon type="pay-circle" />
             </span>
             <div class="desc">
-                <span>当前佣金</span>
-                <h3>￥{{ money }}</h3>
+                <span>Commission - Current</span>
+                <h3>${{ money }}</h3>
             </div>
         </div>
         <div class="form-box">
             <a-form layout="horizontal">
                 <a-form-item
-                    label="收款账户"
-                    :labelCol="{span: 3}" :wrapperCol="{span: 21}"
+                    label="Recipient Account Number"
+                    :labelCol="{span: 7}" :wrapperCol="{span: 17}"
                 >
-                    <a-input placeholder="请输入账户" @change="inputEnter3" v-model="count">
-                        <a-select slot="addonBefore" style="width: 90px" @change="select" placeholder="请选择账户">
+                    <a-input placeholder="Please Fill In Account Information" @change="inputEnter3" v-model="count">
+                        <a-select slot="addonBefore" style="width: 90px" @change="select" placeholder="Please select an account.">
                             <a-select-option value="1">Paypal</a-select-option>
-                            <a-select-option value="2">微信</a-select-option>
+                            <a-select-option value="2">Weixin</a-select-option>
                         </a-select>
                     </a-input>
                 </a-form-item>
                 <a-form-item
-                    label="收款人姓名"
-                    :labelCol="{span: 3}" :wrapperCol="{span: 21}"
+                    label="Recipient Name"
+                    :labelCol="{span: 7}" :wrapperCol="{span: 17}"
                 >
-                    <a-input placeholder="请输入姓名" @change="inputEnter1" v-model="name">
+                    <a-input placeholder="Please enter your name." @change="inputEnter1" v-model="name">
                        
                     </a-input>
                 </a-form-item>
                 <a-form-item
-                    label="提现金额"
-                    :labelCol="{span: 3}" :wrapperCol="{span: 21}"
+                    label="Withdrawal Amount"
+                    :labelCol="{span: 7}" :wrapperCol="{span: 17}"
                 >
-                    <a-input placeholder="最低提现金额￥100" type="number" @change="inputEnter2" v-model="price" min="100"></a-input>
+                    <a-input placeholder="Minimum cash withdrawal$100" type="number" @change="inputEnter2" v-model="price" min="100"></a-input>
                 </a-form-item>
             </a-form>
         </div>

@@ -2,7 +2,7 @@
       <div id="MyHeader">
             <a-avatar :size="100" :src="imgUrl"/>
             <div class="desc">
-                  <h3><span>{{timeFix()}}，</span> <span>{{name}}，</span>祝你开心每一天</h3>
+                  <h3><span>{{timeFix()}}，</span> <span>{{name}}，</span>Have A Nice Day</h3>
                   <p><span>{{level}}</span><a-divider type="vertical" />{{intro}}</p>
             </div>
       </div>
@@ -33,7 +33,7 @@ export default {
                   const time = new Date()
                   const hour = time.getHours()
                   //return hour < 9 ? i18n.t('header.HeadMenu.morning') : hour <= 11 ? i18n.t('header.HeadMenu.swh') : hour <= 13 ? i18n.t('header.HeadMenu.zwh') : hour < 20 ? i18n.t('header.HeadMenu.xwh') : i18n.t('header.HeadMenu.wsh');
-                  return hour < 9 ? '早上好' : hour <= 11 ? '上午好' : hour <= 13 ? '中午好' : hour < 20 ? '下午好' : '晚上好'
+                  return hour < 9 ? 'Good morning' : hour <= 11 ? 'Good morning' : hour <= 13 ? 'Good noon' : hour < 20 ? 'Good afternoon' : 'Good evening'
             }
       }
 }

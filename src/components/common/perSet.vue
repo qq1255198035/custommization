@@ -4,11 +4,11 @@
       <a-col :lg="14">
         <div>
           <a-form layout="vertical" :form="form">
-            <a-form-item label="邮箱">
+            <a-form-item label="Email">
               <a-input
-                placeholder="邮箱"
+                placeholder="Email"
                 :disabled="true"
-                v-decorator="['email',{rules: [{ required: true, message: '邮箱' }]}]"
+                v-decorator="['email',{rules: [{ required: true, message: 'Email' }]}]"
               />
             </a-form-item>
 
@@ -94,7 +94,7 @@
               />
             </a-form-item>
             <a-input-group compact>
-              <a-form-item label="电话">
+              <a-form-item label="Phone Number">
                 <a-row :gutter="32">
                   <a-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
                     <a-input
@@ -333,7 +333,7 @@ export default {
       const isJPG = file.type === "image/jpeg";
       const isPNG = file.type === "image/png";
       if (!isJPG && !isPNG) {
-        this.$message.error(this.$t("不支持此格式"));
+        this.$message.error(this.$t("Unsupported Format, Please Try Again."));
         return isJPG;
       }
       const isLt2M = file.size / 1024 / 1024 < 2;

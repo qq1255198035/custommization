@@ -13,7 +13,7 @@
           v-if="col == 'size'"
           :key="col"
           style="text-align: center;width: 100%;background:#fff"
-          placeholder="请选择尺码"
+          placeholder="请Select Size"
         >
           <a-select-option v-for="(sitem,index) in targetList.sizess" :key="index" :value="sitem">{{sitem}}</a-select-option>
         </a-select>
@@ -115,7 +115,7 @@ export default {
           scopedSlots: { customRender: "printNumber" }
         },
         {
-          title: "合计价格",
+          title: "Total Price",
           dataIndex: "price",
           key: "price",
           algin:"center",
@@ -124,7 +124,7 @@ export default {
         },
 
         {
-          title: "操作",
+          title: "Active",
           width: "20%",
           key: "action",
           algin:"center",

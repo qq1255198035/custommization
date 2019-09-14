@@ -12,9 +12,9 @@
         <a-col :span="20">
           <div class="step font-reset">流程进度</div>
           <MyPrimaryStpes :mycurrent="step">
-            <p slot="p1">选择尺码</p>
+            <p slot="p1">Select Size</p>
             <p slot="p2">确认支付</p>
-            <p slot="p3">等待开团</p>
+            <p slot="p3">Waiting To Start Group Order</p>
             <p slot="p4">Completed</p>
           </MyPrimaryStpes>
           <my-title :title="itemTitle" :fontsize="20" :paddingtop="'40px'" :paddingbottom="'20px'"></my-title>
@@ -87,7 +87,7 @@
               <li style="border-bottom:solid 1px #eee;">
                 <a-row>
                   <a-col :span="12">
-                    <h3 class="font-18">运费：</h3>
+                    <h3 class="font-18">Shipping Fee：</h3>
                   </a-col>
                   <a-col :span="12">
                     <p class="textRight font-color">${{pricess.shipping_fee}}</p>
@@ -162,7 +162,6 @@
 <script>
 import {
   payPal,
-  paymentInfos,
   status,
   wxPay,
   wxOrderQuery,
@@ -188,7 +187,7 @@ export default {
       listLeft: {},
       listRight: {},
       value: 1,
-      itemTitle: "订单信息",
+      itemTitle: "Order Information",
       payTitle: "支付信息",
       allPrice: "",
       img1: {},
@@ -211,7 +210,7 @@ export default {
           dataIndex: "quantity"
         },
         {
-          title: "单价",
+          title: "Price",
           width: "25%",
           align: "center",
           dataIndex: "total_price"
@@ -244,13 +243,13 @@ export default {
           dataIndex: "printNumber"
         },
         {
-          title: "单价",
+          title: "Price",
           width: "20%",
           align: "center",
           dataIndex: "total_price"
         },
         {
-          title: "合计价格",
+          title: "Total Price",
           width: "20%",
           align: "center",
           dataIndex: "price"

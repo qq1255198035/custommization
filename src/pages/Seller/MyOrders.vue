@@ -1,7 +1,7 @@
 <template>
     <div id="my-order">
         <my-title :title="'Order details'" :fontsize="20">
-            <a-button size="small" icon="rollback" style="font-size: 14px;" @click="$router.go(-1)">返回</a-button>
+            <a-button size="small" icon="rollback" style="font-size: 14px;" @click="$router.go(-1)">Back</a-button>
         </my-title>
         <div class="side">
             <p>
@@ -15,34 +15,34 @@
             <a-button size="small" style="font-size: 14px;" @mouseover="hidemenu = true">Main operation</a-button>
             <ul v-show="hidemenu" @mouseover="hidemenu = true" @mouseout="hidemenu = false">
                 <li style="border-bottom: 1px solid #fff;" @click="$router.push({path:'/orderdetails',query:{id: id}})">
-                    <a-icon type="edit" />编辑
+                    <a-icon type="edit" />Edit
                 </li>
                 <li @click="openMyshareBox(id)">
-                    <a-icon type="share-alt" />分享
+                    <a-icon type="share-alt" />Share
                 </li>
             </ul>
         </div>
         <div class="title">
             <ul>
                 <li>
-                    <p><span>创建人：</span>{{ contact }}</p>
+                    <p><span>Founder：</span>{{ contact }}</p>
                     <p><span>Creation time: </span>{{ createTime }}</p>
                 </li>
                 <li>
                     
-                    <p><span>备注：</span>{{ introduction }}</p>
+                    <p><span>Add Notes：</span>{{ introduction }}</p>
                 </li>
             </ul>
             <div class="status">
                 <div>
                     <div>
-                        <p>待关闭时间</p>
+                        <p>Standby Closing Time</p>
                         <span>{{payEndDate}}</span>
                     </div>
                     <a-divider type="vertical" style="height: 40px; margin: 0 50px;"/>
                     <div>
                         <p>Status</p>
-                        <span>待审批</span>
+                        <span>Pending approval</span>
                     </div>
                     <a-divider type="vertical" style="height: 40px; margin: 0 50px;"/>
                     <div>
@@ -79,7 +79,7 @@
                                         <span>Back</span>
                                     </li>
                                 </ul>
-                                <p>价格： <span>$ {{item.price}}</span></p>
+                                <p>Price： <span>$ {{item.price}}</span></p>
                                 <p>
                                     <span>COLOR：{{item.productColor}}</span>
                                     <span style="margin-left: 10px;">Quantity： <i>{{item.buyNum}}</i>/{{item.quantity}}</span>
@@ -141,7 +141,7 @@
                 
             </a-tab-pane>
         </a-tabs>
-        <a-modal :visible="openShare" :footer="null" @cancel="closeShareBox" title="分享给朋友" :centered="true">
+        <a-modal :visible="openShare" :footer="null" @cancel="closeShareBox" title="Share to a Friend" :centered="true">
             <div class="share-box1">
                 <share class="share" :config="config"></share>
             </div>
@@ -155,19 +155,19 @@ import { orderDetailUp, orderStatus, orderDetailDown } from "@/api/seller"
 const statusMap = {
     0: {
         status: 'success',
-        text: '已到账'
+        text: 'Money Received'
     },
     1: {
         status: 'warning',
-        text: '申请中'
+        text: 'Applying'
     },
     3: {
         status: 'error',
-        text: '打款失败'
+        text: 'Payment Unsuccessful'
     },
     2: {
         status: 'processing',
-        text: '打款中'
+        text: 'Processing Payment'
     }
 }
 export default {

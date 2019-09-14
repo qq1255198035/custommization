@@ -46,7 +46,7 @@ export default {
   props: {},
   data() {
     return {
-      itemTitle: "账户设置",
+      itemTitle: "Account Settings",
       visible: false,
       listData,
       pagination: {

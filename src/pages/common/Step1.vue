@@ -3,8 +3,8 @@
     <a-form style="max-width: 500px; margin: 40px auto 0;" :form="form">
       <a-form-item label="登录的账户" :labelCol="{span: 5}" :wrapperCol="{span: 19}">
         <a-input
-          placeholder="邮箱"
-          v-decorator="['email',{rules: [{ required: true, message: '邮箱' }]}]"
+          placeholder="Email"
+          v-decorator="['email',{rules: [{ required: true, message: 'Email' }]}]"
         />
       </a-form-item>
       <a-form-item label="验证码" :labelCol="{span: 5}" :wrapperCol="{span: 19}">
@@ -57,8 +57,8 @@ export default {
             this.code = res.code;
             if (res.code == 0) {
               this.$notification["success"]({
-                message: "成功",
-                description: "操作成功",
+                message: "Successful",
+                description: "Successful",
                 duration: 4
               });
             }

@@ -1,24 +1,24 @@
 <template>
   <div id="GroupOrder">
-    <my-title :title="'团体订单'"></my-title>
+    <my-title :title="'Group Order'"></my-title>
     <ul class="input-box">
       <li>
         
         <commonBtn
-            @handleLink="$router.push({name: 'neworder'})"
+            @handleLink="goNewOrder"
             :width="'130px'"
             :height="'32px'"
             :padding="'15px'"
             :radio="'12px'"
             :fontsize="'16px'"
-            :title="'新建订单'"
+            :title="'New Order'"
             :icon="'plus'"
         >
         </commonBtn>
         <a-radio-group defaultValue="9" style="margin-left: 10px;" @change="changeStatus">
-          <a-radio-button value="9">全部订单</a-radio-button>
-          <a-radio-button value="2">已支付</a-radio-button>
-          <a-radio-button value="0">未支付</a-radio-button>
+          <a-radio-button value="9">All Orders</a-radio-button>
+          <a-radio-button value="2">Paid</a-radio-button>
+          <a-radio-button value="0">To Be Paid</a-radio-button>
         </a-radio-group>
       </li>
       <li>
@@ -34,7 +34,7 @@
       <template v-if="orderList">
         <order-item :orderArr="orderList" @handleMyClick="openConfirmBox" style="margin-bottom: "></order-item>
       </template>
-      <p v-else>暂无数据</p>
+      <p v-else>No Data</p>
     </div>
     <div class="pagination-box">
       <a-pagination
@@ -62,13 +62,13 @@
             <a-textarea v-model="texts" :autosize="{ minRows: 2, maxRows: 6 }" />
           </div>
           <div v-show="textshow">{{item.opinion}}</div>
-          <a-button @click="textShowOne(item.id,index)" v-show="!item.opinion && !item.checked">添加描述</a-button>
+          <a-button @click="textShowOne(item.id,index)" v-show="!item.opinion && !item.checked">Add Description</a-button>
           <a-button @click="textShowTwo(item.id,item.pic_id)" v-show="!item.opinion && item.checked">Save</a-button>
           <a-button @click="programmeBtn(item.id)" v-show="item.status == 0" :disabled="astatus == 2">Choose this option</a-button>
-          <a-button @click="programmeBtn(item.id,item.pic_id)" v-show="item.status == 1" disabled="disabled">方案已选择</a-button>
+          <a-button @click="programmeBtn(item.id,item.pic_id)" v-show="item.status == 1" disabled="disabled">Campaign has been selected</a-button>
         </li>
 
-        <a-button @click="newSchemeBtn" type="primary" :disabled="astatus == 2">申请新方案</a-button>
+        <a-button @click="newSchemeBtn" type="primary" :disabled="astatus == 2">Apply for New Case</a-button>
       </ul>
     </a-modal>
   </div>
@@ -77,7 +77,7 @@
 import MyTitle from "@/components/MyTitle/MyTitle";
 import OrderItem from "@/components/OrderItem/OrderItem";
 import commonBtn from "@/components/commonBtn/commonBtn"
-import { groupOrderList, exampleConfirm, texts, programme, newScheme } from "@/api/seller";
+import { groupOrderList, exampleConfirm, texts, programme, newScheme,queryByIdA } from "@/api/seller";
 
 export default {
   components: {
@@ -103,6 +103,20 @@ export default {
     };
   },
   methods: {
+      goNewOrder(){
+          queryByIdA().then(res => {
+            console.log(res)
+            if(res.code == 0){
+              if(res.result == 1){
+                this.$router.push({path:'/grouporder'})
+              }else if(res.result == 0){
+                this.$message.error('Sorry,Not examined and approved')
+              }else if(res.result == 1){
+                this.$message.error('Sorry,Failure to pass the examination and approval')
+              }
+            }
+          })
+      },
       newSchemeBtn() {
           const param = {
               orderId: this.orderId

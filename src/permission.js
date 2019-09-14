@@ -4,6 +4,7 @@ import store from './store'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
 import notification from 'ant-design-vue/es/notification'
+import {queryByIdA} from './api/seller'
 import {
   setDocumentTitle,
   domTitle
@@ -20,15 +21,40 @@ console.log(router)
 router.beforeEach((to, from, next) => {
   NProgress.start()
   to.meta && (typeof to.meta.title !== 'undefined' && setDocumentTitle(`${to.meta.title} - ${domTitle}`))
-  console.log(Vue.ls.get(ACCESS_TOKEN))
-  console.log(to.path)
     if (Vue.ls.get(ACCESS_TOKEN)) {
       /* has token */
       if (to.path === '/login') {
         next()
         NProgress.done()
+      }else if(to.path === '/neworder'){
+        next()
+        console.log(999)
+        // 未通過審批，禁止進入
+        // queryByIdA().then(res => {
+        //   console.log(res)
+        //   if(res.code == 0){
+        //     if(res.result == 1){
+        //       next()
+        //     }else if(res.result == 0){
+        //       notification.error({
+        //         message: 'Error',
+        //         description: 'Sorry,Not examined and approved'
+        //       })
+        //       next({
+        //         path: from.path,
+        //       })
+        //     }else if(res.result == 2){
+        //       notification.error({
+        //         message: 'Error',
+        //         description: 'Sorry,Failure to pass the examination and approval'
+        //       });
+        //       next({
+        //         path: from.path,
+        //       })
+        //     }
+        //   }
+        // })
       } else {
-  
         if (store.getters.roles.length === 0) {
           console.log(store.getters.roles.length)
           store
@@ -61,8 +87,8 @@ router.beforeEach((to, from, next) => {
             })
             .catch(() => {
               notification.error({
-                message: '错误',
-                description: '请求用户信息失败，请重试'
+                message: 'Error',
+                description: 'Failed to request user information, please try again'
               })
               store.dispatch('Logout').then(() => {
                 next({

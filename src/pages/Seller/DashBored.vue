@@ -2,15 +2,15 @@
     <div id="dashbored">
         <my-header :name="name" :level="level" :intro="intro" :imgUrl="imgUrl"></my-header>
         <order-total :num1="price1 | moneyFormat" :num2="price2" :num3="price3 | moneyFormat">
-            <p slot="a" style="color:#727272;font-size: 16px;margin:0;">总销售额</p>
-            <p slot="b" style="color:#727272;font-size: 16px;margin:0;">总订单数</p>
-            <p slot="c" style="color:#727272;font-size: 16px;margin:0;">总佣金</p>
+            <p slot="a" style="color:#727272;font-size: 16px;margin:0;">Total Sales</p>
+            <p slot="b" style="color:#727272;font-size: 16px;margin:0;">Total Orders</p>
+            <p slot="c" style="color:#727272;font-size: 16px;margin:0;">Total Commission</p>
         </order-total>
-        <my-title :title="'进行中的订单'">
-            <router-link to="/grouporder" style="text-decoration: underline;color: #33b8b3">全部订单</router-link>
+        <my-title :title="'Order - In Progress'">
+            <router-link to="/grouporder" style="text-decoration: underline;color: #33b8b3">All Orders</router-link>
         </my-title>
         <order-list :orderList="orderList" @openShareBox="openMyshareBox"></order-list>
-        <a-modal :visible="openShare" :footer="null" @cancel="closeShareBox" title="分享给朋友" :centered="true">
+        <a-modal :visible="openShare" :footer="null" @cancel="closeShareBox" title="Share to a Friend" :centered="true">
             <div class="share-box1">
                 <share class="share" :config="config"></share>
             </div>

@@ -40,19 +40,19 @@
         <a-col :xxl="4" :xl="6">
           <div class="right-desc">
             <div class="top" style="line-height:40px">
-              <span style="float:left">分享给朋友：</span>
+              <span style="float:left">Share to a Friend：</span>
               <share  class="share" :config="config">
               </share>
             </div>
             <div class="down">
               <div class="texts">
-                已支付数量
+                Paid Quantity
                 <br />
                 <span class="font-reset">{{detailList.payNum}}</span>
               </div>
               <a-divider type="vertical" class="my-divider" />
               <div class="texts">
-                订单关闭时间
+                Order Deadline
                 <br />
                 <span class="font-reset">{{detailList.payEndDate}}</span>
               </div>

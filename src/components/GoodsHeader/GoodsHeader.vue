@@ -18,8 +18,8 @@
         </a-col>
         <a-col :xs="2" :sm="4" :md="6" :lg="8" :xl="10">
             <div class="right-desc">
-                        <p>已支付数量<br><span>14</span></p> <a-divider type="vertical" class="my-divider"/>
-                        <p>订单关闭时间<br><span>2019-10-12</span></p>
+                        <p>Paid Quantity<br><span>14</span></p> <a-divider type="vertical" class="my-divider"/>
+                        <p>Order Deadline<br><span>2019-10-12</span></p>
                   </div>
         </a-col>
       </a-row>

@@ -14,9 +14,9 @@
                                     <p>
                                           <span>{{item.buyNum}}/{{item.reservation}}</span>
                                           <span>
-                                                <a-icon type="edit" @click="$router.push({path:'/orderdetails',query:{id: item.id}})"/>
+                                                <a-icon type="edit" @click="goEdit(item.id,item.order_status)"/>
                                                 <a-icon type="file-search" @click="$router.push({path:'/myorder',query:{id: item.id}})"/>
-                                                <a-icon type="share-alt" @click="open(item.id)"/>
+                                                <a-icon type="share-alt" @click="open(item.id,item.order_status)" />
                                           </span>
                                     </p>
                               </div>
@@ -33,9 +33,25 @@ export default {
             }
       },
       methods:{
-            open(id){
-                  this.$emit('openShareBox', id)
+            open(id,status){
+                  if(status == 3){
+                        this.$emit('openShareBox', id)
+                  }else if(status < 3){
+                        this.$message.error('The order has not been confirmed yet.')
+                  }else{
+                        this.$message.error('The order has been put into production.')
+                  }
+                  
+            },
+            goEdit(id,status){
+                  if(status == 1 || status == 2){
+                        this.$router.push({path:'/orderdetails',query:{id: id}})
+                  }else{
+                        this.$message.error('The order has been put into production.')
+                  }
+                  
             }
+            
       }
 }
 </script>

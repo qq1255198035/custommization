@@ -497,3 +497,18 @@ export function comDetails(id) {
         data:qs.stringify({id: id})
     })
 }
+
+export function rmWhite(pic) {
+    return axios({
+        url: '/system/jeecgGoods/rmWhite',
+        method: 'post',
+        data:qs.stringify({pic: pic})
+    })
+}
+
+export function queryByIdA() {
+    return axios({
+        url: '/iso/jeecgDealerUser/queryById',
+        method: 'post',
+    })
+}

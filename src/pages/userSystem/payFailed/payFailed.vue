@@ -4,9 +4,9 @@
       <sys-header></sys-header>
       <div class="step">流程进度</div>
       <my-stpes :mycurrent="1">
-        <p slot="p1">选择尺码</p>
+        <p slot="p1">Select Size</p>
         <p slot="p2">确认支付</p>
-        <p slot="p3">等待开团</p>
+        <p slot="p3">Waiting To Start Group Order</p>
         <p slot="p4">Completed</p>
       </my-stpes>
       <div class="content">
@@ -15,8 +15,8 @@
             <a-icon type="frown" />
           </span>
           <div>
-            <h3>支付失败</h3>
-            <p>请重新支付</p>
+            <h3>Payment Unsuccessful</h3>
+            <p>Pay Again</p>
           </div>
         </div>
         <div class="desc">
@@ -26,8 +26,8 @@
               <p>订单编号：xxxx xxxx xxxx xxx</p>
             </div>
             <div class="pay-btn">
-              <a-button class="buy-again">重新支付</a-button>
-              <a-button class="back">返回</a-button>
+              <a-button class="buy-again">Pay Again</a-button>
+              <a-button class="back">Back</a-button>
             </div>
           </div>
         </div>

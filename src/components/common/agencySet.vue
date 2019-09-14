@@ -164,7 +164,7 @@ export default {
       const isJPG = file.type === "image/jpeg";
       const isPNG = file.type === "image/png";
       if (!isJPG && !isPNG) {
-        this.$message.error(this.$t("不支持此格式"));
+        this.$message.error(this.$t("Unsupported Format, Please Try Again."));
         return isJPG;
       }
       const isLt2M = file.size / 1024 / 1024 < 2;
