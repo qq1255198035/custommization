@@ -138,12 +138,19 @@ export default {
       })
     },
     posteDesignList(id){
-      handleDesignList(id).then(res => {
-        console.log(res)
-        if(res.code == 200){
-          this.$router.push({path: '/orderres'})
-        }
-      })
+      console.log(id)
+      if(id.length > 0){
+        handleDesignList(id).then(res => {
+          console.log(res)
+          console.log(id)
+          if(res.code == 200){
+            this.$router.push({path: '/orderres'})
+          }
+        })
+      }else{
+        this.$message.error('Please select at least one order.')
+      }
+      
     }
     
   }

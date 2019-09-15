@@ -175,8 +175,7 @@ export default {
       exampleConfirm(id).then(res => {
         console.log(res);
         this.exList = res.result;
-        
-        this.orderId = res.result[0].pic_id
+        this.orderId = res.result.length > 0 ? res.result[0].pic_id : ''
         
       });
     },
