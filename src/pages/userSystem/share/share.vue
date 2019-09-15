@@ -276,7 +276,7 @@ export default {
         pageSize: 10
       }).then(res => {
         console.log(res);
-        this.$ls.set("types", res.result.type);
+        this.$ls.set("pay_mode", res.result.pay_mode);
         this.pay_mode = res.result.pay_mode
         this.resultData = res.result.personOrderNoPrintList;
         this.detailList = res.result;

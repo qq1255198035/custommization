@@ -39,15 +39,14 @@
               <div class="bg">
                 <h1 v-if="code === 1">${{price}}</h1>
                 <div class="pay-detail" v-if="code === 1">
-                  <p>Payment Account：{{payName}}</p>
                   <p>Order No{{orderId}}</p>
-                  <p v-if="type == 1"><share style="text-align:center"  class="share" :config="config"></share></p>
+                  <p v-if="pay_mode == 1"><share style="text-align:center"  class="share" :config="config"></share></p>
                   
                 </div>
                 <div class="pay-detail" v-if="code === 0">
                   <p>Order No{{orderId}}</p>
                 </div>
-                <div class="pay-btn" v-if="code === 1 && type == 0">
+                <div class="pay-btn" v-if="code === 1 && pay_mode == 2">
                   <a-button class="buy-again" @click="alginBtn">Buy Again</a-button>
                   <a-button class="back" @click="backBtn">Back</a-button>
                 </div>
@@ -66,20 +65,20 @@
 </template>
 
 <script>
-import { payBack, status } from "@/api/system";
+import { payBack } from "@/api/system";
 //import { paypalSellerBack } from "@/api/seller";
 import MyStpes from "@/components/MyStpes/MyStpes";
+import User from '@/components/Header/User'
 export default {
   props: {},
   data() {
     return {
       order_ids: '',
-      type: "",
-      step: 1,
+      pay_mode: "",
+      step: 2,
       value: 1,
       code: "",
       price: "",
-      payName: "",
       orderId: "",
       orderAgain: "",
       userId: "",
@@ -98,6 +97,7 @@ export default {
       }
     };
   },
+  components: {User},
   computed: {},
   created() {
     this._payBack();
@@ -113,77 +113,44 @@ export default {
         path: '/index'
       })
     },
-    _status() {
-      const param = {
-        user_order_id: this.$ls.get("userOrderId")
-      };
-      console.log(param);
-      status(param).then(res => {
-        console.log(res);
-        this.step = parseInt(res.result.schedule);
-      });
-    },
     _payBack() {
-      let param ={}
-      const types = this.$ls.get('types')
-      console.log(types)
       const data = {
         paymentId: this.$route.query.paymentId,
         token: this.$route.query.token,
         PayerID: this.$route.query.PayerID,
-        order_id: this.$ls.get("orderId"),
-        price: this.$ls.get("price"),
-        type: this.$ls.get('types')
       };
-      const data1 = {
-        paymentId: this.$route.query.paymentId,
-        token: this.$route.query.token,
-        PayerID: this.$route.query.PayerID,
-        user_order_id: this.$ls.get("userOrderId"),
-        order_id: this.$ls.get("orderId"),
-        price: this.$ls.get("price"),
-        type: this.$ls.get('types')
-      };
-      
-      if(types == 1) {
-        param = data
-      }else{
-        param = data1
-      }
-      
-      console.log(param);
-      payBack(param).then(res => {
+
+      console.log(data);
+      payBack(data).then(res => {
         console.log(res);
-        this.type = res.type
+        this.pay_mode = res.pay_mode
         if (res.code == 1) {
           this.code = 1;
-          let result = res.payInfoList[0];
-          this.price = result.order_price;
-          this.payName = result.pay_name;
-          this.orderId = result.order_sn;
-          this.orderAgain = result.order_id;
-          this.userOrderId = result.user_order_id;
-          this.config.url = 'http://192.168.0.9/index#/share' + '?order_id='+result.user_order_id
+          this.price = res.order_price;
+          this.orderId = res.order_sn;
+          this.orderAgain = res.userOrderId;
+          this.userOrderId = res.order_id;
+          this.config.url = 'http://192.168.0.9/index#/share' + '?order_id='+res.order_id
         }
         if (res.code == 0) {
           this.code = 0;
-          this.orderId = res.payInfoList[0].order_sn;
-          this.order_ids = res.payInfoList[0].user_order_id
+          this.orderId = res.order_sn;
+          this.order_ids = res.userOrderId
         }
       });
     },
     alginBtn() {
-      if (this.type == 0) {
+      if (this.pay_mode == 2) {
         this.$router.push({
           path: "/share",
           query: {
-            order_id: this.orderAgain,
+            order_id: this.userOrderId,
             //user_order_id: this.userOrderId
             
           }
         });
       }
-      if (this.type == 1) {
+      if (this.pay_mode == 1) {
         this.$router.push({
           path: "/share",
           query: {
@@ -193,7 +160,7 @@ export default {
       }
     },
     resetBtn() {
-      if (this.type == 0) {
+      if (this.pay_mode == 2) {
         this.$router.push({
           path: "/payment",
           query: {
@@ -203,7 +170,7 @@ export default {
           }
         });
       }
-      if(this.type == 1) {
+      if(this.pay_mode == 1) {
         this.$router.push({
           path: "/unifiedpay",
           query: {

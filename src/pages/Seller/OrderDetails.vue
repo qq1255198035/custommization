@@ -165,13 +165,13 @@
               <h3>Payment Method</h3>
               <div class="select-way">
                 <a-radio-group @change="onChange" v-model="adressValue">
-                  <a-radio :value="1" style="display: flex; align-items: top;">
+                  <a-radio :value="2" style="display: flex; align-items: top;">
                     <h4>Individual Payments</h4>
                   </a-radio>
                   <div style="margin-left: 24px;">
                     <p>User pays individually through this link</p>
                   </div>
-                  <a-radio :value="2" style="display: flex; align-items: top;">
+                  <a-radio :value="1" style="display: flex; align-items: top;">
                     <h4>Pay for the Whole Order</h4>
                   </a-radio>
                   <div style="margin-left: 24px;">
@@ -438,7 +438,7 @@ export default {
     handleOk() {
       if (this.twoPrice < 0) {
         this.$notification.error({
-          message: "预计代理价格为负数",
+          message: "Projected agency price is negative",
           description: "Please fill in again.",
           duration: 4
         });
@@ -483,7 +483,7 @@ export default {
               payMode: this.adressValue
             };
             console.log(param);
-            if (this.adressValue == 1) {
+            if (this.adressValue == 2) {
               startGroup(param).then(res => {
                 console.log(res);
                 if (res.code == 200) {
@@ -601,7 +601,7 @@ export default {
       delProducts(id).then(res => {
         console.log(res);
         if (res.code == 200) {
-          this.getTeamOrderDetails(266);
+          this.getTeamOrderDetails();
           this.$message.success(res.message);
         }
       });
@@ -622,7 +622,7 @@ export default {
         });
         this.orderPid = formList.id;
         this.addressId = formList.addressId;
-        this.timeover = parseInt(formList.payMode);
+        this.timeover = formList.payEndDate
         this.fileUrl = formList.topicUrl;
         this.imgurl = formList.topicUrl;
         this.adressValue = parseInt(formList.payMode);
@@ -725,7 +725,10 @@ export default {
     handleEndOpenChange(open) {
       this.endOpen = open;
     },
-    onChange() {},
+    onChange(e) {
+      console.log(e.target.value)
+      this.adressValue = e.target.value
+    },
     onChangeOne(e) {
       console.log(e);
     },

@@ -101,7 +101,7 @@ export default {
       }
       .line{
             height: 1px;
-            width: 45%;
+            width: 39%;
             background-color: #ddd;
             margin-bottom: 45px;
             min-width: 20px;

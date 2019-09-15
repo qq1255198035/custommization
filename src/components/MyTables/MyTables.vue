@@ -241,7 +241,6 @@ export default {
 
     changeNum(value, key, column) {
       if(/^\d{3}$/.test(value)) {
-        this.$message.error("输入长度为2");
         value = value.substr(0, 2);''
       }
         console.log(value, key, column);

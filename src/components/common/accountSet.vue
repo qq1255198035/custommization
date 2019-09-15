@@ -125,7 +125,7 @@
               :src="imgurl"
               width="130"
               height="130"
-              style="border-radius:50%;background:#808080;margin-bottom: 10px;"
+              style="border-radius:50%;background:#808080;margin:0 auto;"
             />
             <a-avatar v-else style="backgroundColor:#23C6C8" :size="130">Sponsor Cube</a-avatar>
             <template>

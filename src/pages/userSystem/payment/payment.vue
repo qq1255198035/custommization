@@ -35,11 +35,11 @@
             :key="index"
             style="margin:20px 0"
           >
-            <div v-if="!item.is_print_numbe && !item.is_print_text">
+            <div v-if="!item.is_print_number && !item.is_print_text">
               <table-item :datas="item" ref="myTable"></table-item>
               <table-list :columns="columns" :data="[item]"></table-list>
             </div>
-            <div v-if="item.is_print_numbe || item.is_print_text">
+            <div v-if="item.is_print_number || item.is_print_text">
               <table-item :datas="item" ref="myTable"></table-item>
               <table-list :columns="columns1" :data="[item]"></table-list>
             </div>
@@ -48,15 +48,15 @@
         <a-row>
           <a-col :span="2"></a-col>
           <a-col :span="20">
-            <my-title :title="payTitle" :fontsize="20" :paddingtop="'40px'" :paddingbottom="'20px'"></my-title>
+            <my-title v-if="pay_mode == 2" :title="payTitle" :fontsize="20" :paddingtop="'40px'" :paddingbottom="'20px'"></my-title>
           </a-col>
           <a-col :span="2"></a-col>
         </a-row>
         <div class="payment">
-          <a-row :gutter="20" v-if="!pay_mode == 1">
+          <a-row :gutter="20" v-if="pay_mode == 2">
             <a-col :span="2"></a-col>
             <a-col :span="8" style="display:flex">
-              <div class="pay-title font-18">支付方式:</div>
+              <div class="pay-title font-18">Payment method:</div>
               <div>
                 <a-radio-group @change="onChange" v-model="value">
                   <a-radio :value="1">
@@ -117,7 +117,7 @@
             <a-col :span="2"></a-col>
           </a-row>
         </div>
-        <a-row v-if="!pay_mode == 1">
+        <a-row v-if="pay_mode == 2">
           <a-col :span="2"></a-col>
           <a-col :span="20">
             <my-title></my-title>
@@ -128,7 +128,7 @@
         <a-row :gutter="20">
           <a-col :span="4" :offset="18">
             <div class="paynum">
-              <div class="left textRight" v-if="!pay_mode == 1">
+              <div class="left textRight" v-if="pay_mode == 2">
                 <div class="font-18" style="padding-bottom:20px">Total Amount</div>
                 <div class="font-reset">${{pricess.all_price}}</div>
               </div>
@@ -152,7 +152,7 @@
                 <commonBtn
                   @payBtnOrder="payBtnOrder"
                   :width="'100%'"
-                  :title="'提交订单'"
+                  :title="'Submit Order'"
                   :height="'56px'"
                   :padding="'10px'"
                   :radio="'12px'"
@@ -183,7 +183,6 @@
 <script>
 import {
   payPal,
-  status,
   wxPay,
   wxOrderQuery,
   apiPay,
@@ -208,19 +207,14 @@ export default {
       personOrderList: {},
       pricess: "",
       websocket: null,
-      prepayId: "",
       show: false,
       step: 1,
-      listLeft: {},
-      listRight: {},
       value: 1,
       itemTitle: "Order Information",
       payTitle: "Payment Details",
       allPrice: "",
       img1: {},
       img2: {},
-      dataList1: [],
-      dataList2: [],
       columns: [
         {
           title: "SIZE",
@@ -287,7 +281,6 @@ export default {
   computed: {},
   created() {
     //this._paymentInfos();
-    this._status();
     this._paymentSessionInfos();
   },
   mounted() {},
@@ -338,47 +331,17 @@ export default {
     isHide() {
       this.show = false;
     },
-    _status() {
-      const param = {
-        user_order_id: this.userId
-      };
-      console.log(param);
-      status(param).then(res => {
-        console.log(res);
-        this.step = parseInt(res.result.schedule);
-      });
-    },
-    /*_paymentInfos() {
-      const param = {
-        user_order_id: this.$route.query.user_order_id
-      };
-      paymentInfos(param).then(response => {
-        console.log(response);
-        this.dataList1 = response.confirmNoPrintPayList;
-        this.dataList2 = response.confirmPrintPayList;
-        this.listLeft = response.confirmNoPrintPayList[0];
-        this.listRight = response.confirmPrintPayList[0];
-        this.pricess = response.userOrderId[0];
-        this.allPrice = response.userOrderId[0] ? response.userOrderId[0] : 0;
-        this.userId = response.userOrderId[0].order_id;
-      });
-    },*/
+    //回调订单
     _paymentSessionInfos() {
-      const param = {
-        user_order_id: this.$route.query.user_order_id
-      };
       paymentSessionInfos().then(response => {
         console.log(response);
-        this.dataList1 = response.confirmNoPrintPayList;
-        this.dataList2 = response.confirmPrintPayList;
-        this.listLeft = response.confirmNoPrintPayList[0];
-        this.listRight = response.confirmPrintPayList[0];
-        this.pricess = response.userOrderId[0];
+        this.pricess = response;
         this.allPrice = response.order_price ? response.order_price : 0;
         this.userId = response.order_id;
-        this.personOrderList = response.personOrderList;
+        this.personOrderList.data = response.personOrderList;
         this.pay_mode = response.pay_mode;
-        this.tablesList = response.personOrderList.data;
+        
+        this.tablesList = response.personOrderList;
       });
     },
     resultPsot(data) {
@@ -406,7 +369,7 @@ export default {
     payBtnOrder() {
       const pata = {
         personOrderList: JSON.stringify(this.personOrderList),
-        order_id: this.$route.query.user_order_id,
+        order_id: this.pricess.order_id,
         order_price: this.pricess.all_price,
         pay_mode: this.pay_mode
       };
@@ -426,7 +389,7 @@ export default {
     payBtn() {
       const pata = {
         personOrderList: JSON.stringify(this.personOrderList),
-        order_id: this.$route.query.user_order_id,
+        order_id: this.pricess.order_id,
         order_price: this.pricess.all_price
       };
       console.log(pata);
@@ -434,23 +397,20 @@ export default {
         console.log(res);
         if (res.code == 1) {
           const param = {
-            order_id: this.userId,
+            order_id: this.pricess.order_id,
             user_order_id: res.result.user_order_id,
             price: this.pricess.all_price,
-            type: this.types,
             pay_mode: this.pay_mode
           };
+          console.log(param);
           if (this.value == 1) {
             console.log(param);
             payPal(param).then(res => {
               console.log(res);
+              
               let first = res.toPayHtml.indexOf("href") + 6;
               let last = res.toPayHtml.lastIndexOf('"');
               let url = res.toPayHtml.slice(first, last);
-              console.log(url);
-              this.$ls.set("userOrderId", res.user_order_id);
-              this.$ls.set("orderId", res.order_id);
-              this.$ls.set("price", res.price);
               let routeData = this.$router.resolve({
                 path: "paylocal",
                 query: { url: url }
@@ -462,7 +422,6 @@ export default {
             //this.initWebSocket();
             wxPay(param).then(res => {
               console.log(res);
-              this.prepayId = res.respData.prepay_id;
 
               const url = res.respData.code_url;
               this.show = true;

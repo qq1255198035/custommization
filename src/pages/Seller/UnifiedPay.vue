@@ -168,7 +168,7 @@ export default {
   props: {},
   data() {
     return {
-      type: '',
+      pay_mode: '',
       websocket: null,
       prepayId: "",
       show: false,
@@ -249,8 +249,7 @@ export default {
       };
       orderFroms(param).then(res => {
         console.log(res);
-        this.type = res.result.type;
-        this.$ls.set('types', res.result.type)
+        this.pay_mode = res.result.pay_mode;
         this.data = res.result.list;
         this.allPrice = res.result.allin;
         this.goodsPrice = res.result.amountAll;
@@ -283,7 +282,7 @@ export default {
       const param = {
         order_id: this.$route.query.orderId,
         price: this.allPrice,
-        type: this.type
+        pay_mode: this.pay_mode
       };
       if (this.value == 1) {
         console.log(param);
@@ -292,10 +291,6 @@ export default {
           let first = res.toPayHtml.indexOf("href") + 6;
           let last = res.toPayHtml.lastIndexOf('"');
           let url = res.toPayHtml.slice(first, last);
-          console.log(url);
-          this.$ls.set("userOrderId", res.user_order_id);
-          this.$ls.set("orderId", res.order_id);
-          this.$ls.set("price", res.price);
           let routeData = this.$router.resolve({
             path: "paylocal",
             query: { url: url }

@@ -93,7 +93,7 @@ export default {
       }
       .line{
             height: 1px;
-            width: 45%;
+            width: 39%;
             background-color: #fff;
             margin-bottom: 25px;
             min-width: 20px;
