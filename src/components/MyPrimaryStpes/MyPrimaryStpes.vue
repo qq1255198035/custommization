@@ -23,7 +23,7 @@
             <div class="section" :class="{'section-active': mycurrent - 3 >= 0}" v-if="stpesnum == 4">
                   <doct2 v-if="mycurrent - 3 > 0"></doct2>
                   <doct1 v-else-if="mycurrent - 3 === 0"></doct1>
-                  <span class="doct3" v-else-if="mycurrent - 3 < 0"></span>
+                  <span class="doct3" v-else-if="mycurrent - 3 < 0" style="margin-top: 0"></span>
                   <slot name="p4"></slot>
             </div>
       </div>
@@ -87,7 +87,7 @@ export default {
             align-items: center;
             min-width: 74px;
             p{
-                  font-size: 18px;
+                  font-size: 14px;
                   margin-top: 20px;
                   margin-bottom: 0;
                   color: #999;
@@ -115,6 +115,7 @@ export default {
             background-color: #ddd;
             border-radius: 9px;
             display: block;
+            margin-top: 10px;
       }
       .line-active{
             background-color: #33b8b3

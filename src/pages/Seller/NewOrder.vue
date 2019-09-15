@@ -1494,6 +1494,7 @@ export default {
                     this.endDsign = true;
                     this.visibletype = -1;
                     this.liClick = -1;
+                    this.picId = res.result.id
                 }
             })
         },
@@ -1503,9 +1504,6 @@ export default {
                 if(res.code == 200){
                     this.visibletype = -1;
                     this.liClick = -1;
-                    // this.$message.success('Successful preservation, please re-select the goods!',function(){
-                    //     window.location.reload();
-                    // })
                     this.$success({
                         title: 'Successful preservation',
                         content: (  // JSX support
@@ -1760,8 +1758,6 @@ export default {
             if (keys.length === 1) {
                 return;
             }
-
-            // can use data-binding to set
             form1.setFieldsValue({
                 keys: keys.filter(key => key !== k),
             });

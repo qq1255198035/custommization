@@ -17,6 +17,7 @@ export default {
       display: flex;
       justify-content: center;
       align-items: center;
+      margin-top: 10px;
       .circle{
             width: 14px;
             height: 14px;

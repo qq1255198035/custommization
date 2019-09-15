@@ -14,10 +14,10 @@
             </p>
             <a-button size="small" style="font-size: 14px;" @mouseover="hidemenu = true">Main operation</a-button>
             <ul v-show="hidemenu" @mouseover="hidemenu = true" @mouseout="hidemenu = false">
-                <li style="border-bottom: 1px solid #fff;" @click="$router.push({path:'/orderdetails',query:{id: id}})">
+                <li style="border-bottom: 1px solid #fff;" @click="$router.push({path:'/orderdetails',query:{id: id}})" v-if="orderStatus < 3">
                     <a-icon type="edit" />Edit
                 </li>
-                <li @click="openMyshareBox(id)">
+                <li @click="openMyshareBox(id)" v-if="orderStatus == 3">
                     <a-icon type="share-alt" />Share
                 </li>
             </ul>
@@ -58,7 +58,7 @@
             <a-tab-pane tab="Details" key="1">
                 <div class="details">
                     <h3>Order progress</h3>
-                    <my-stpes :mycurrent="1" stpesnum="4">
+                    <my-stpes :mycurrent="mycurrent" stpesnum="4">
                         <p slot="p1" style="color: #33b8b3;">Submit order</p>
                         <p slot="p2" style="color: #33b8b3;">Confirm draft</p>
                         <p slot="p3">Share purchase</p>
@@ -151,7 +151,7 @@
 <script>
 import MyTitle from "@/components/MyTitle/MyTitle";
 import MyStpes from "@/components/MyPrimaryStpes/MyPrimaryStpes";
-import { orderDetailUp, orderStatus, orderDetailDown } from "@/api/seller"
+import { orderDetailUp, orderDetailDown } from "@/api/seller"
 const statusMap = {
     0: {
         status: 'success',
@@ -179,6 +179,7 @@ export default {
         return{
             hidemenu:false,
             id:'',
+            orderStatus:'',
             orderId:'',
             contact:'',
             createTime: '',
@@ -218,20 +219,20 @@ export default {
                 //disabled: ['google', 'facebook', 'twitter'], // 禁用的站点
                 wechatQrcodeTitle: "WeChat Scan: Share", // 微信二维码提示文字
                 wechatQrcodeHelper: "Scan the two-dimensional code to share this article with friends."
-            }
+            },
+            mycurrent: 3
         }
     },
     mounted(){
         this.id = this.$route.query.id;
         this.getOrderDetailUp(this.id);
-        this.getOrderStatus(this.id);
         this.getOrderDetailDown(this.id);
     },
     methods:{
         openMyshareBox(id){
             console.log(id)
             this.openShare = true;
-            this.config.url = 'http://1920168.0.9:8080/#/share' + '?order_id='+id
+            this.config.url = 'http://192.168.0.9:8080/#/share' + '?order_id='+id
             console.log(this.config.url)
         },
         closeShareBox(){
@@ -243,14 +244,10 @@ export default {
                 this.infoList = res.result;
             })
         },
-        getOrderStatus(id){
-            orderStatus(id).then(res => {
-                console.log(res);
-            })
-        },
+
         getOrderDetailUp(id){
             orderDetailUp(id).then(res => {
-                //console.log(res)
+                console.log(res)
                 if(res.code == 0){
                     this.orderId = res.result.orderSn;
                     this.contact = res.result.contact;
@@ -259,9 +256,20 @@ export default {
                     this.orderPrice = res.result.orderPrice;
                     this.introduction = res.result.introduction;
                     this.payEndDate = res.result.payEndDate;
+                    this.orderStatus = res.result.orderStatus;
+                    if(this.orderStatus == 1){
+                        this.mycurrent = 0;
+                    }else if(this.orderStatus == 2){
+                        this.mycurrent = 1;
+                    }else if(this.orderStatus == 3){
+                        this.mycurrent = 2;
+                    }else if(this.orderStatus == 6){
+                        this.mycurrent = 3;
+                    }
                 }
             })
-        }
+        },
+        
     },
     filters:{
         statusFilter (type) {
