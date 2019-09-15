@@ -16,19 +16,19 @@
           <router-link to>个人订单</router-link>
         </a-menu-item>
         <a-menu-item key="grouporder">
-          <router-link to="grouporder">团体订单</router-link>
+          <router-link to="grouporder">Group Order</router-link>
         </a-menu-item>
       </a-sub-menu>
       <a-sub-menu key="commission" class="my-submenu">
         <span slot="title">
           <a-icon type="dollar" class="title-icon" />
-          <span>佣金管理</span>
+          <span>Commission Management</span>
         </span>
         <a-menu-item key="commissions">
-          <router-link to="/commissions">佣金管理</router-link>
+          <router-link to="/commissions">Commission Management</router-link>
         </a-menu-item>
         <a-menu-item key="commissionsdetails">
-          <router-link to="/commissionsdetails">佣金明细</router-link>
+          <router-link to="/commissionsdetails">Commission Details</router-link>
         </a-menu-item>
       </a-sub-menu>
       <a-menu-item key="accountset">

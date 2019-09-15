@@ -24,13 +24,13 @@
                     <User style="background-color: #fff; padding-top: 20px;border-top-right-radius: 10px;"></User>
 
                     <div class="right">
-                        <my-title :title="'新建订单'" :fontsize="20">
-                            <a-button size="small" icon="rollback" style="font-size: 14px;" @click="$router.push({path:'/grouporder'})">返回</a-button>
+                        <my-title :title="'New Order'" :fontsize="20">
+                            <a-button size="small" icon="rollback" style="font-size: 14px;" @click="$router.push({path:'/grouporder'})">Back</a-button>
                         </my-title>
                         <goods-list :goodsArr="goodsList" @on-click="openDesignModal($event)"></goods-list>
                         <div class="btn-box">
                             <a-button :loading="loading" @click="loadMore" :disabled="btnable">
-                                加载更多
+                                MORE
                             </a-button>
                         </div>
                     </div>
@@ -120,7 +120,7 @@
                                             </li>
                                             <li @click="startTo(1)">
                                                 <span class="icon-icon-image"></span>
-                                                添加艺术
+                                                Add Cliparts
                                             </li>
                                         </ul>
                                         <ul class="btn-box">
@@ -130,7 +130,7 @@
                                             </li>
                                             <li @click="$router.push({path: '/neworder'})">
                                                 <span class="icon-change_product"></span>
-                                                改变产品
+                                                Change Product
                                             </li>
                                         </ul>
                                         <p>OR<a @click="reStart">START OVER</a></p>
@@ -156,16 +156,7 @@
                                         </div>
                                     </div>
                                     <div class="tool-box6" v-show="visibletype == 1">
-                                        <!-- <div v-if="visibletype !== -1">
-                                            <h3 style="color: #33b8b3;padding-bottom: 3px; border-bottom: 1px solid #333;">图层</h3>
-                                            <div class="controlers">
-                                                <span title="移动到下一层" @click="toNextLayer"><a-icon type="up" /></span>
-                                                <span title="移动倒上一层" @click="toPreLayer"><a-icon type="down" /></span>
-                                                <span title="移动到顶层" @click="toTopLayer"><i class="icon-top_layer "></i></span>
-                                                <span title="移动倒底层" @click="toBottomLayer"><i class="icon-last_layer"></i></span>
-                                            </div>
-                                        </div> -->
-                                        <h3>艺术插图：</h3>
+                                        <h3>Insert Clipart：</h3>
                                         <div  style="padding-bottom: 10px; border-bottom: 1px solid #ccc;">
                                             <a-input-search @search="onSearch"/>
                                         </div>
@@ -202,7 +193,7 @@
                                                 Name And Number：
                                             </dt>
                                             <dd>
-                                                <span style="min-width: 52px;">步骤1：</span>
+                                                <span style="min-width: 52px;">Step 1：</span>
                                                 <div>
                                                     <p>
                                                         <a-checkbox @change="addName">ADD A NAME</a-checkbox>
@@ -213,17 +204,17 @@
                                                 </div>
                                             </dd>
                                             <dd>
-                                                <span>位置：</span>
+                                                <span>Position：</span>
                                                 <div>
                                                     <p>
                                                         <a-select defaultValue="0" style="width: 95%;" @change="changeNamePosition" :disabled="!addNameData">
-                                                            <a-select-option value="0">胸部</a-select-option>
+                                                            <a-select-option value="0">Chest</a-select-option>
                                                             <a-select-option value="1">BACK</a-select-option>
                                                         </a-select>
                                                     </p>
                                                     <p>
                                                         <a-select defaultValue="0" style="width: 100%;" @change="changeNumberPosition" :disabled="!addNumberData">
-                                                            <a-select-option value="0">胸部</a-select-option>
+                                                            <a-select-option value="0">Chest</a-select-option>
                                                             <a-select-option value="1">BACK</a-select-option>
                                                         </a-select>
                                                     </p>
@@ -251,16 +242,16 @@
                                                 </div>
                                             </dd>
                                             <dd>
-                                                <span>字体：</span>
+                                                <span>Font：</span>
                                                 <div>
                                                     <p>
-                                                        <a-select style="width: 95%;" :disabled="!addNameData" placeholder="请选择" @change="changeNameFamily">
+                                                        <a-select style="width: 95%;" :disabled="!addNameData" placeholder="Please choose" @change="changeNameFamily">
                                                             <a-select-option v-for="item in fontFamilyArr" :key="item.id" :value="item.name">{{item.name}}</a-select-option>
                                                             
                                                         </a-select>
                                                     </p>
                                                     <p>
-                                                        <a-select style="width: 100%;" :disabled="!addNumberData" placeholder="请选择" @change="changeNumberFamily">
+                                                        <a-select style="width: 100%;" :disabled="!addNumberData" placeholder="Please choose" @change="changeNumberFamily">
                                                             <a-select-option v-for="item in fontFamilyArr" :key="item.id" :value="item.name">{{item.name}}</a-select-option>
                                                         </a-select>
                                                     </p>
@@ -270,27 +261,27 @@
                                                 <span>COLOR：</span>
                                                 <div class="color-picker">
                                                     <p>
-                                                        {{numberColorName}}<span :style="{backgroundColor: numberColor}" @click="openChangeColorBox(5,'名称颜色')"></span>
+                                                        {{numberColorName}}<span :style="{backgroundColor: numberColor}" @click="openChangeColorBox(5,'Name Color')"></span>
                                                     </p>
                                                     <p>
-                                                        {{nameColorName}}<span :style="{backgroundColor: nameColor}" @click="openChangeColorBox(6,'号码颜色')"></span>
+                                                        {{nameColorName}}<span :style="{backgroundColor: nameColor}" @click="openChangeColorBox(6,'Number Color')"></span>
                                                     </p>
                                                 </div>
                                             </dd>
                                         </dl>
                                         <div style="text-align: center;">
                                             <a-button type="primary" :disabled="!addNameData && !addNumberData" @click="visibletype = 9">
-                                                输入号码和名称
+                                                Input Number and Name
                                             </a-button>
                                         </div>
                                     </div>
 
                                     <div class="tool-box9" v-show="visibletype == 3">
-                                        <my-title :title="'修改文字'"></my-title>
+                                        <my-title :title="'Edit Font'"></my-title>
                                         <div class="second">
                                             <div class="text-tool">
                                                 <a-input v-model="addText" style="width: 70%"></a-input>
-                                                <a-button type="primary" @click="addItext(addText,true)" :disabled="!addText" style="border-radius: 12px;">更改文字</a-button>
+                                                <a-button type="primary" @click="addItext(addText,true)" :disabled="!addText" style="border-radius: 12px;">Modifying text</a-button>
                                                 
                                             </div>
 
@@ -304,7 +295,7 @@
                                                 </p>
                                             </li>
                                             <li @click="visibletype = 12">
-                                                <span>改变字形</span>
+                                                <span>Change Font</span>
                                                 <p>
                                                     <span>{{fontShape}}</span>
                                                     <a-icon type="right" />
@@ -327,7 +318,7 @@
                                         </ul>
                                         <dl class="stroke-style">
                                             <dt class="title">Outline</dt>
-                                            <dd @click="openChangeColorBox(3,'描边颜色')">
+                                            <dd @click="openChangeColorBox(3,'Outline Color')">
                                                 <span>COLOR：</span>
                                                 <p>
                                                         <span>{{strokeColorName}} <i class="square" :style="{backgroundColor: strokeColor}"></i></span>
@@ -341,7 +332,7 @@
                                         </dl>
                                         <dl>
                                             <dt class="title">Shadow</dt>
-                                            <dd @click="openChangeColorBox(4,'阴影颜色')">
+                                            <dd @click="openChangeColorBox(4,'Shadow Color')">
                                                 <span>COLOR：</span>
                                                 <p>
                                                     <span>{{shadowColorName}} <i class="square" :style="{backgroundColor: shadowColor}"></i></span>
@@ -352,8 +343,8 @@
                                         
                                     </div>
                                     <div class="tool-box10" v-show="visibletype == 4">
-                                        <h2>颜色：</h2>
-                                        <p>选择颜色： <span :style="{backgroundColor: productColor ? productColor : '#fff'}"></span> {{productColorName ? productColorName : 'White'}}</p>
+                                        <h2>COLOR：</h2>
+                                        <p>Choose Color： <span :style="{backgroundColor: productColor ? productColor : '#fff'}"></span> {{productColorName ? productColorName : 'White'}}</p>
                                         <ul class="color-list">
                                             <li v-for="(item,index) in colorList.list" :key="index" :style="{backgroundColor: item.itemValue}" @click="changeProductColor(item.itemValue,item.itemText,index)">
                                                 <a-icon type="check" v-show="productColorIcon == index"/>
@@ -363,16 +354,16 @@
                                     </div>
                                     <div class="tool-box11" v-show="visibletype == 5">
                                         <h2>Design notes：</h2>
-                                        <a-textarea placeholder="请填写备注" :rows="8" v-model="remark"/>
+                                        <a-textarea placeholder="Please Add Notes" :rows="8" v-model="remark"/>
                                         <div style="text-align: center;margin-top: 10px;">
                                             <a-button type="primary" :disabled="!remark" @click="postAddRemarksBtn">Save changes</a-button>
                                         </div>
                                     </div>
                                     <div class="tool-box12" v-show="visibletype == 6">
-                                        <h2>参考图片：</h2>
+                                        <h2>Reference pictures：</h2>
                                         <div class="upload-box">
                                             <a-button type="primary" @click="example = true">
-                                                上传照片
+                                                Upload photos
                                             </a-button>
                                             <p>
                                                 You can upload your design as a reference and attach an explanation
@@ -408,7 +399,7 @@
                                             {{colorTitle}}
                                         </h2>
                                         <!-- <my-title :title="colorTitle"></my-title> -->
-                                        <p style="display:flex;align-items: center;margin-top: 20px; font-size: 18px;color: #999;">选择颜色： <span :style="{backgroundColor: colorShow}" style="width: 20px;height: 20px;display: inline-block;margin:0 10px;border:1px solid #ccc;"></span>{{colorShowName}}</p>
+                                        <p style="display:flex;align-items: center;margin-top: 20px; font-size: 18px;color: #999;">Choose Color： <span :style="{backgroundColor: colorShow}" style="width: 20px;height: 20px;display: inline-block;margin:0 10px;border:1px solid #ccc;"></span>{{colorShowName}}</p>
                                         <ul class="color-list-box">
                                             <li v-for="(item,index) in colorList.list" :key="item.itemText" :style="{backgroundColor: item.itemValue}" @click="changeAllColor(item.itemValue,item.itemText,index)">
                                                 <template v-if="colorList.key == 1">
@@ -440,7 +431,7 @@
                                         <div>
                                             <ul style="display:flex;background-color: #ccc;padding: 5px 0;">
                                                 <li style="width: 40%; color:#33b8b3;padding-left: 10px;">Name</li>
-                                                <li style="width: 20%; color:#33b8b3;padding-left: 10px;">号码</li>
+                                                <li style="width: 20%; color:#33b8b3;padding-left: 10px;">Number</li>
                                                 <li style="width: 30%; color:#33b8b3;padding-left: 10px;">Size</li>
                                             </ul>
                                             <a-form
@@ -457,7 +448,7 @@
                                                                     rules: [{
                                                                     required: addNameData,
                                                                     whitespace: true,
-                                                                    message: '请填写名称',
+                                                                    message: 'Please Fill In Name',
                                                                     }],
                                                                 }
                                                                 ]"
@@ -474,7 +465,7 @@
                                                                     rules: [{
                                                                     required: addNumberData,
                                                                     whitespace: true,
-                                                                    message: '请填写名称',
+                                                                    message: 'Please Fill In Name',
                                                                     }],
                                                                 }
                                                                 ]"
@@ -488,7 +479,7 @@
                                                                         {
                                                                             rules: [{
                                                                             required: true,
-                                                                            message: '请填写尺寸',
+                                                                            message: 'Please Fill In Size(s)',
                                                                             }],
                                                                         }
                                                                         ]"
@@ -543,19 +534,19 @@
                                                 Center
                                             </li>
                                             <li class="set-layer">
-                                                <span title="移动到顶层" @click="toTopLayer"><i class="icon-top_layer "></i></span>
+                                                <span title="Bring to Front" @click="toTopLayer"><i class="icon-top_layer "></i></span>
 
-                                                <span title="移动倒底层" @click="toBottomLayer"><i class="icon-last_layer"></i></span>
-                                                <p>分层</p>
+                                                <span title="Send to Back" @click="toBottomLayer"><i class="icon-last_layer"></i></span>
+                                                <p>Layer</p>
                                             </li>
                                             <li class="set-filp">
-                                                <span title="移动到顶层" @click="changeFilPx"><a-icon type="vertical-left" /></span>
-                                                <span title="移动倒底层" @click="changeFilPy"><a-icon type="vertical-left" style="transform:rotate(90deg)"/></span>
+                                                <span title="Bring to Front" @click="changeFilPx"><a-icon type="vertical-left" /></span>
+                                                <span title="Send to Back" @click="changeFilPy"><a-icon type="vertical-left" style="transform:rotate(90deg)"/></span>
                                                 <p>Flip</p>
                                             </li>
                                         </ul>
                                         <div class="set-rotate">
-                                            <p>旋转</p>
+                                            <p>Rotate</p>
                                             <a-slider :min="0" :max="360" :step="10" @change="setRotate" v-model="rotateNum"/>
                                         </div>
                                         <ul class="tool-list">
@@ -600,7 +591,7 @@
                                             <a-icon type="arrow-left" style="cursor: pointer;" @click="visibletype = 1"/>
                                         </h2>
                                         <ul>
-                                            <li v-for="(item,index) in imgs1" :key="index" @click="addImg(item.pic_url,'img'+index)">
+                                            <li v-for="(item,index) in imgs1" :key="index" @click="addImg(item.pic_url)">
                                                 <img :src="item.pic_url" alt="">
                                             </li>
                                         </ul>
@@ -625,7 +616,7 @@
                         </div>
                     </div>
                     <ul class="submit-box">
-                        <a-button type="primary" @click="showEdModal(postId)">获取价格</a-button>
+                        <a-button type="primary" @click="showEdModal(postId)">Quote Now</a-button>
                         <li style="display: flex; align-item">
                             <commonBtn
                                 @handleLink1="addNewPro"
@@ -646,7 +637,7 @@
             </a-modal>
             <a-modal
                 v-model="example"
-                title="参考图片上传："
+                title="Reference picture upload："
                 :centered="true"
                 width="45%"
                 :footer="null"
@@ -665,7 +656,7 @@
                             :fileList="fileList"
                             :beforeUpload="beforeUploadEx"
                             @change="handleChange"
-                            v-decorator="['img',{rules: [{ required: true, message: '请上传图片！' }]}]"
+                            v-decorator="['img',{rules: [{ required: true, message: 'Please upload pictures！' }]}]"
                             >
                                 <div v-if="fileList.length < 1">
                                     <a-icon type="plus" />
@@ -690,7 +681,7 @@
                             :wrapper-col="{ span: 17 }"
                             style="width: 55%;"
                         >
-                            <a-textarea :rows="4" v-decorator="['bz',{rules: [{ required: true, message: '请填写说明！' }]}]"/>
+                            <a-textarea :rows="4" v-decorator="['bz',{rules: [{ required: true, message: 'Please Fill In Description!' }]}]"/>
                         </a-form-item>
                     </a-form>
                     <div class="btn-box">
@@ -711,7 +702,7 @@
                         <div class="title">
                             <a-icon type="smile" theme="filled"/>
                             <div>
-                                <h3>操作成功！</h3>
+                                <h3>Successful！</h3>
                                 <p>Thank you for your trust.</p>
                             </div>
                         </div>
@@ -728,7 +719,7 @@
             </a-modal>
             <a-modal
                 class="show-details"
-                title="获取价格"
+                title="Quote Now"
                 v-model="showVisible"
                 width="50%"
                 :footer="null"
@@ -760,14 +751,14 @@
                         </div>
                     </div>
                     <div class="price-right">
-                        预计代理价格：
-                        <span>￥{{onePrice}}</span>
+                        Expected Agent Pricing：
+                        <span>${{onePrice}}</span>
                     </div>
                     </div>
-                    <div class="font-color">最小起订量为{{designDetail.minOrder}}</div>
+                    <div class="font-color">Minimum Order Quantity{{designDetail.minOrder}}</div>
                     <div class="prices">
                     <div class="price-box">
-                        <div class="font-18">价格:</div>
+                        <div class="font-18">Price:</div>
                         <div class="price-input">
                         <a-input :value="prices" type="number" @change="onChangeValues" style="width: 120px" />
                         </div>
@@ -775,10 +766,10 @@
                     </div>
                     <div class="price-right">
                         预计代理收益：
-                        <span>￥{{twoPrice}}</span>
+                        <span>${{twoPrice}}</span>
                     </div>
                     </div>
-                    <div class="font-color">建议售价：￥{{designDetail.price}}/件</div>
+                    <div class="font-color">建议售价：${{designDetail.price}}/件</div>
                 </a-col>
                 </a-row>
             </a-modal>
@@ -820,7 +811,8 @@ import {
         discountEdit1,
         discount,
         getPic,
-        handleDesignList
+        handleDesignList,
+        rmWhite
     } from "@/api/seller";
 
 
@@ -913,6 +905,7 @@ export default {
             strokeColorName: '',
             nameFontFamily: 'NBA-Hawks',
             numberFontFamily: 'NBA-Hawks',
+            reImgColorurl: '',
             // skewx:0,
             // skewy:0,
             fontFamilyArr:[
@@ -983,17 +976,17 @@ export default {
                 {
                     key:0,
                     className: 'icon-txt',
-                    text: '文字'
+                    text: 'Font'
                 },
                 {
                     key:1,
                     className: 'icon-icon-image',
-                    text: '图片'
+                    text: 'Image'
                 },
                 {
                     key:2,
                     className: 'icon-icon-04',
-                    text: '号码'
+                    text: 'Number'
                 },
                 {
                     key:4,
@@ -1107,39 +1100,91 @@ export default {
     },
 
     methods:{
+       
         removeColor(){
             let that = this;
-            let f = fabric.Image.filters;
-            if(that.delWhite){
-                that.applyFilter(2, true && new f.RemoveColor({
-                    distance: 0.1,
-                    color: '#fff',
-                }));
-                that.applyFilterValue(2, 'color', that.removecolor);
-            }else{
-                that.applyFilter(2, true && new f.RemoveColor({
-                    distance: 0,
-                    color: '#fff',
-                }));
-                that.applyFilterValue(2, 'color', that.removecolor);
+            let obj = that.myCanvas.getActiveObject();
+            if(obj){
+                let scalex = obj.scaleX;
+                let scaley = obj.scaleY;
+                let left = obj.left;
+                let top = obj.top;
+                let id = obj.id
+                let img = new Image();
+                let imgInstance;
+                console.log(obj)
+                //设置图片跨域访问
+                img.crossOrigin = 'anonymous';
+                if(that.delWhite){
+                    rmWhite(id).then(res => {
+                        console.log(res)
+                        if(res.code == 0){
+                            that.myCanvas.remove(obj);
+                            img.src = res.result.out + "?timeStamp="+new Date().getTime();
+                            img.onload = function () {
+                                imgInstance = new fabric.Image(img, {
+                                    id: id,
+                                    flipX:false,
+                                    flipY:false,
+                                    skewX:0,
+                                    skewY:0,
+                                    lockUniScaling:true, // When `true`, object non-uniform scaling is locked
+                                    left: left,
+                                    top:  top,
+                                    scaleY: 0.3,
+                                    scaleX: 0.3,
+                                    removeColor: true
+                                });
+                                that.myCanvas.add(imgInstance);
+                                that.myCanvas.setActiveObject(imgInstance);
+                                that.myCanvas.requestRenderAll();
+                                imgInstance.on("selected", function() {
+                                    let obj1 = that.myCanvas.getActiveObject();
+                                    that.liClick = 1;
+                                    that.visibletype = 10;
+                                    that.opacity = obj1.opacity;
+                                    that.rotateNum = obj1.angle;
+                                    that.reImgColorurl = obj1.id
+                                    that.delWhite = obj1.removeColor;
+                                });
+                            }
+                        }
+                    })
+                }else{
+                    img.src = id + "?timeStamp="+new Date().getTime();
+                    img.onload = function () {
+                        imgInstance = new fabric.Image(img, {
+                            id: id,
+                            flipX:false,
+                            flipY:false,
+                            skewX:0,
+                            skewY:0,
+                            lockUniScaling:true, // When `true`, object non-uniform scaling is locked
+                            left: left,
+                            top:  top,
+                            scaleY: 0.3,
+                            scaleX: 0.3,
+                            removeColor: false
+                        });
+                        that.myCanvas.add(imgInstance);
+                        that.myCanvas.setActiveObject(imgInstance);
+                        that.myCanvas.requestRenderAll();
+                        imgInstance.on("selected", function() {
+                            let obj2 = that.myCanvas.getActiveObject();
+                            that.liClick = 1;
+                            that.visibletype = 10;
+                            that.opacity = obj2.opacity;
+                            that.rotateNum = obj2.angle;
+                            that.reImgColorurl = obj2.id
+                            that.delWhite = obj2.removeColor;
+                        });
+                    }
+                    
+                }
+                
             }
-            
         },
-        applyFilterValue(index, prop, value) {
-            var obj = this.myCanvas.getActiveObject();
-            if (obj.filters[index]) {
-                obj.filters[index][prop] = value;
-                obj.applyFilters();
-                this.myCanvas.renderAll();
-            }
-        },
-        applyFilter(index, filter) {
-                  
-            var obj = this.myCanvas.getActiveObject();
-            obj.filters[index] = filter;
-            obj.applyFilters();
-            this.myCanvas.renderAll();
-        },
+        
         posteDesignList(){
             handleDesignList().then(res => {
                 console.log(res)
@@ -1271,7 +1316,7 @@ export default {
                     let imgInstance;
                     //设置图片跨域访问
                     img.crossOrigin = 'anonymous';
-                    img.src = res.result+"?timeStamp="+new Date();
+                    img.src = res.result+"?timeStamp="+new Date().getTime();
                     img.onload = function () {
                         if(isAdd){
                             if(that.myCanvas.getActiveObject()){
@@ -1364,7 +1409,7 @@ export default {
             addRemarks(id,remarks).then(res => {
                 console.log(res)
                 if(res.code == 200){
-                    this.$message.success('操作成功！')
+                    this.$message.success('Successful！')
                     if(res.result){
                         this.designId = res.result
                     }
@@ -1376,7 +1421,7 @@ export default {
         postDeleteEXimg(id){
             let that = this;
             that.$confirm({
-                title: "确定删除吗?",
+                title: "Are you sure you want to delete??",
                 okText: "CONFIRM",
                 cancelText: "Cancel",
                 class: "my-modal",
@@ -1384,7 +1429,7 @@ export default {
                     deleteEXimg(id).then(res =>{
                         console.log(res)
                         if(res.code == 200){
-                            that.$message.success('操作成功！');
+                            that.$message.success('Successful！');
                             that.getReferencePic(that.designId);
                         }
                     })
@@ -1410,7 +1455,6 @@ export default {
                 goodsId: this.postId, id: this.picId,textFront: this.nameFontFamily, textColor: this.nameColor, textLocation: this.namePosition,textHeight: this.nameSize,
                 numberLocation: this.numberPosition,numberHeight: this.numberSize,numberFront:this.numberFontFamily, numberColor: this.numberColor, isPrintText: this.addNameData ? 1 : 0,isPrintNumber: this.addNumberData ? 1 : 0
             }
-            console.log(params)
             this.postSaveDesign(params)
         },
         downLoadImg(){
@@ -1479,9 +1523,9 @@ export default {
                 that.show = false;
             }else{
                 that.$confirm({
-                    title: "确定离开吗？",
-                    content: "未保存的设计将被自动删除",
-                    okText: "确认",
+                    title: "Are you sure you want to leave?",
+                    content: "Unsaved designs will be automatically deleted!",
+                    okText: "Confirm",
                     cancelText: "Cancel",
                     onOk() {
                         that.show = false;
@@ -1499,10 +1543,10 @@ export default {
             this.show = true;
             setTimeout(() => {
                     this.$intro().setOptions({
-                        prevLabel: "上一步",
+                        prevLabel: "Previous",
                         nextLabel: "Next",
-                        skipLabel: "跳过",
-                        doneLabel: "结束",
+                        skipLabel: "Skip",
+                        doneLabel: "End",
                         overlayOpacity: "0",
                         highlightClass: "white",
                         tooltipClass:"tool-tip",
@@ -1857,7 +1901,7 @@ export default {
                 console.log(res)
                 if(res.code == 200){
                     this.example = false;
-                    this.$message.success('提交成功！');
+                    this.$message.success('Successful submission!');
 
                     if(res.result){
                         this.designId = res.result;
@@ -2013,7 +2057,7 @@ export default {
                 this.postSourceUpload(file)
 
             }else{
-                this.$message.error('图片大小超出限制！');
+                this.$message.error('Image Size Exceeds Limit');
                 this.uploadA = false
             }
         },
@@ -2035,10 +2079,10 @@ export default {
                         this.selectImg(imageUrl,'upload' + this.uploadId);
                     })
                 }else{
-                    this.$message.error('图片大小超出限制！')
+                    this.$message.error('Image Size Exceeds Limit')
                 }
             }else{
-                this.$message.error('格式错误，请重新选择！')
+                this.$message.error('Invalid Format. Please try again.！')
             }
         },
         getBase64 (img, callback) {
@@ -2056,20 +2100,22 @@ export default {
         },
 
         // 添加图片开始
-        addImg(imgUrl,id){
-            this.selectImg(imgUrl,id);
+        addImg(imgUrl){
+            
+            this.selectImg(imgUrl);
         },
-        selectImg(imgUrl,id) {
+        selectImg(imgUrl) {
             let that = this;
             let img = new Image();
             let imgInstance;
+            that.delWhite = false;
             //设置图片跨域访问
             img.crossOrigin = 'anonymous';
-            img.src = imgUrl+"?timeStamp="+new Date();
+            img.src = imgUrl+"?timeStamp="+new Date().getTime();
             img.onload = function () {
                 if(that.designModel == 0 || that.designModel == 1){
                     imgInstance = new fabric.Image(img, {
-                        id: id,
+                        id: imgUrl,
                         flipX:false,
                         flipY:false,
                         skewX:0,
@@ -2079,10 +2125,11 @@ export default {
                         top:  200,
                         scaleX: 0.3,
                         scaleY:0.3,
+                        removeColor: false
                     });
                 }else{
                     imgInstance = new fabric.Image(img, {
-                        id: id,
+                        id: imgUrl,
                         flipX:false,
                         flipY:false,
                         skewX:0,
@@ -2092,11 +2139,13 @@ export default {
                         top:  170,
                         scaleX: 0.1,
                         scaleY:0.1,
+                        removeColor: false
                     });
                 }
                 that.myCanvas.add(imgInstance);
                 that.myCanvas.setActiveObject(imgInstance);
                 that.myCanvas.requestRenderAll();
+                
                 that.liClick = 1;
                 that.visibletype = 10;
                 imgInstance.on("selected", function() {
@@ -2105,6 +2154,8 @@ export default {
                     that.visibletype = 10;
                     that.opacity = obj.opacity;
                     that.rotateNum = obj.angle;
+                    that.reImgColorurl = obj.id
+                    that.delWhite = obj.removeColor;
                 });
             };
         },
@@ -2240,7 +2291,7 @@ export default {
             let imgInstance;
             //设置图片跨域访问
             img.crossOrigin = 'anonymous';
-            img.src = that.bgimgs[i]+"?timeStamp="+new Date();
+            img.src = that.bgimgs[i]+"?timeStamp="+new Date().getTime();
             img.onload = function () {
                 imgInstance = new fabric.Image(img, {
                         opacity: 1,
@@ -2889,6 +2940,7 @@ export default {
                             max-height:95px;
                             min-width: 95px;
                             min-height: 95px;
+                            text-align: center;
                             cursor: pointer;
                             span{
                                 font-size: 30px;

@@ -1,17 +1,17 @@
 <template>
     <div id="compoents-com2">
-        <a-alert message="确认转帐后，资金将直接打入账户，无法退回。" banner style="margin: 20px 0;wi"/>
+        <a-alert message="All sales are final, no refunds or returns." banner style="margin: 20px 0;wi"/>
         <ul class="content">
             <li>
-                收款账户：<span>{{count}}</span>
+               Receiver's Account：<span>{{count}}</span>
             </li>
-            <li>收款人姓名：<span>{{ sname }}</span></li>
-            <li>提现金额：<span>￥{{ cash }}</span></li>
-            <li>手续费({{persent1}}%)：<span>￥{{sprice}}</span></li>
-            <li>地方税({{persent2}}%)：<span>￥{{dprice}}</span></li>
-            <li>到账金额：<h3>￥{{dmoney}}</h3></li>
+            <li>Recipient Name：<span>{{ sname }}</span></li>
+            <li>Withdrawal Amount：<span>${{ cash }}</span></li>
+            <li>Service Fee({{persent1}}%)：<span>${{sprice}}</span></li>
+            <li>Tax({{persent2}}%)：<span>${{dprice}}</span></li>
+            <li>Received Amount：<h3>${{dmoney}}</h3></li>
         </ul>
-        <p>登录密码：<a-input placeholder="请输入密码" style="width: 80%;" @change="inputEnter4" v-model="password" type="password"></a-input></p>
+        <p>Login password：<a-input placeholder="Please input a password" style="width: 80%;" @change="inputEnter4" v-model="password" type="password"></a-input></p>
     </div>
 </template>
 <script>

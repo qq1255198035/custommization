@@ -13,7 +13,7 @@
           <div class="step" style="color:#fff">Progress</div>
           <my-stpes :mycurrent="step">
             <p slot="p1">Select Size</p>
-            <p slot="p2">Please Confirm Payment</p>
+            <p slot="p2">Please Confirm Payment.</p>
             <p slot="p3">Waiting To Start Group Order</p>
             <p slot="p4">Completed</p>
           </my-stpes>
@@ -31,7 +31,7 @@
               </div>
               <div v-if="code === 0">
                 <h3>Payment Unsuccessful</h3>
-                <p>Please Re-submit Payment.</p>
+                <p>Pay Again</p>
               </div>
             </div>
             <div class="desc">
@@ -40,20 +40,20 @@
                 <h1 v-if="code === 1">${{price}}</h1>
                 <div class="pay-detail" v-if="code === 1">
                   <p>Payment Account：{{payName}}</p>
-                  <p>Order Number：{{orderId}}</p>
+                  <p>Order No{{orderId}}</p>
                   <share style="text-align:center"  class="share" :config="config">
               </share>
                 </div>
                 <div class="pay-detail" v-if="code === 0">
-                  <p>Order Number：{{orderId}}</p>
+                  <p>Order No{{orderId}}</p>
                 </div>
                 <!--<div class="pay-btn" v-if="code === 1">
                   <a-button class="buy-again" @click="alginBtn">Buy Again</a-button>
-                  <a-button class="back">返回</a-button>
+                  <a-button class="back">Back</a-button>
                 </div>-->
                 <div class="pay-btn" v-if="code === 0">
                   <a-button class="buy-again" @click="resetBtn">Pay Again</a-button>
-                  <a-button class="back" @click="backBtn">返回</a-button>
+                  <a-button class="back" @click="backBtn">Back</a-button>
                 </div>
               </div>
             </div>

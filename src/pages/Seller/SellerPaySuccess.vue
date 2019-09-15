@@ -31,7 +31,7 @@
               </div>
               <div v-if="code === 0">
                 <h3>Payment Unsuccessful</h3>
-                <p>Please Re-submit Payment.</p>
+                <p>Pay Again</p>
               </div>
             </div>
             <div class="desc">
@@ -45,15 +45,15 @@
               </share>
                 </div>
                 <div class="pay-detail" v-if="code === 0">
-                  <p>Order Number：{{orderId}}</p>
+                  <p>Order No{{orderId}}</p>
                 </div>
                 <!--<div class="pay-btn" v-if="code === 1">
                   <a-button class="buy-again" @click="alginBtn">Buy Again</a-button>
-                  <a-button class="back">返回</a-button>
+                  <a-button class="back">Back</a-button>
                 </div>-->
                 <div class="pay-btn" v-if="code === 0">
                   <a-button class="buy-again" @click="resetBtn">Pay Again</a-button>
-                  <a-button class="back" @click="backBtn">返回</a-button>
+                  <a-button class="back" @click="backBtn">Back</a-button>
                 </div>
               </div>
             </div>

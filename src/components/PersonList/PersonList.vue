@@ -143,7 +143,7 @@ export default {
       }
       /*switch (data) {
         case 0:
-          return "待付款";
+          return "Awaiting for Payment";
         case 101:
           return "订单已Cancel";
         case 102:

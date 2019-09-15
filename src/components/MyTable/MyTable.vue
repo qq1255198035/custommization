@@ -112,7 +112,7 @@ export default {
           scopedSlots: { customRender: "price" }
         },
         {
-          title: "action",
+          title: "Active",
           width: "25%",
           key: "action",
           align: "center",

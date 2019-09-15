@@ -11,7 +11,7 @@
                                     <a-icon type="search" />查看
                               </li>
                               <li>
-                                    <a-icon type="branches" />分享
+                                    <a-icon type="branches" />Share
                               </li>
                         </ul>
                   </div>
@@ -26,7 +26,7 @@
             </table-item>
             <card-header></card-header>
             <my-title :title="itemTitle">
-                  <a-button size="small">返回</a-button>
+                  <a-button size="small">Back</a-button>
             </my-title>
             <my-header></my-header>
             <my-stpes :mycurrent="2">

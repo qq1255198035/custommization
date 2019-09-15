@@ -7,8 +7,8 @@
           <User></User>
         </p>
       </header>
-      <my-title :title="'分享设置'" style="padding: 0 30px;margin-top: 10px;overflow:hidden;">
-        <a-button size="small" icon="rollback" @click="$router.go(-1)">返回</a-button>
+      <my-title :title="'Sharing Setting'" style="padding: 0 30px;margin-top: 10px;overflow:hidden;">
+        <a-button size="small" icon="rollback" @click="$router.go(-1)">Back</a-button>
       </my-title>
       <a-row type="flex" justify="space-between" align="top" style="height: calc(100% - 157px);">
         <a-col :span="7" class="scroll-box left-side">
@@ -26,7 +26,7 @@
                   <div>
                     <h3>{{item.name}}</h3>
                     <p>COLOR：{{item.product_color}}</p>
-                    <p>价格：${{item.price}}</p>
+                    <p>Price：${{item.price}}</p>
                     <p>Quantity：{{item.quantity}}</p>
                   </div>
                   <p>
@@ -42,24 +42,12 @@
           <ul class="forms">
             <a-form :form="myform">
               <li>
-                <h3>预期订货数量</h3>
-
+                <h3>Expected Order Quantity</h3>
                 <a-form-item label="Headings" :label-col="{ span: 3 }" :wrapper-col="{ span: 12 }">
-                  <a-input
-                    v-decorator="[
-                                    'note',
-                                    {rules: [{ required: true, message: 'Headings' }]}
-                                    ]"
-                  />
+                  <a-input v-decorator="[ 'note', {rules: [{ required: true, message: 'Headings' }]} ]"/>
                 </a-form-item>
                 <a-form-item label="Introduction" :label-col="{ span: 3}" :wrapper-col="{ span: 12 }">
-                  <a-textarea
-                    :rows="4"
-                    v-decorator="[
-                                    'desc',
-                                    {rules: [{ required: true, message: 'Introduction' }]}
-                                    ]"
-                  />
+                  <a-textarea :rows="4" v-decorator="[ 'desc', {rules: [{ required: true, message: 'Introduction' }]}]"/>
                 </a-form-item>
                 <a-form-item label="Upload photo" :label-col="{ span: 3 }" :wrapper-col="{ span: 12 }">
                   <a-upload
@@ -76,7 +64,7 @@
                     </div>
                   </a-upload>
                   <span @click="handImg">
-                    <a-icon type="eye" />预览图片
+                    <a-icon type="eye" />Preview Image
                   </span>
                   <a-modal class="show-details" v-model="imgChecked" width="50%" :footer="null">
                     <div style>
@@ -86,36 +74,30 @@
                 </a-form-item>
               </li>
               <li>
-                <h3>负责人联系方式</h3>
-
-                <a-form-item label="联系人" :label-col="{ span: 3 }" :wrapper-col="{ span: 12 }">
-                  <a-input
-                    v-decorator="[
-                                    'contanct',
-                                    {rules: [{ required: true, message: '联系人' }]}
-                                    ]"
-                  />
+                <h3>Contact method</h3>
+                <a-form-item label="Contacts" :label-col="{ span: 3 }" :wrapper-col="{ span: 12 }">
+                  <a-input v-decorator="['contanct',{rules: [{ required: true, message: 'Contacts' }]}]"/>
                 </a-form-item>
-                <a-form-item label="邮箱" :label-col="{ span: 3 }" :wrapper-col="{ span: 12 }">
+                <a-form-item label="Email" :label-col="{ span: 3 }" :wrapper-col="{ span: 12 }">
                   <a-input
                     v-decorator="[
                             'email',
-                            {rules: [{ required: true, message: '邮箱' }]}
+                            {rules: [{ required: true, message: 'Email' }]}
                             ]"
                   />
                 </a-form-item>
-                <a-form-item label="电话" :label-col="{ span: 3 }" :wrapper-col="{ span: 12 }">
+                <a-form-item label="Phone Number" :label-col="{ span: 3 }" :wrapper-col="{ span: 12 }">
                   <a-input
                     v-decorator="[
                                     'phone',
-                                    {rules: [{ required: true, message: '电话' }]}
+                                    {rules: [{ required: true, message: 'Phone Number' }]}
                                     ]"
                   />
                 </a-form-item>
               </li>
               <li>
                 <h3>
-                  选择付款截止日期
+                  Select Payment Cutoff Date
                   <!-- <span>描述1313213213213232</span> -->
                 </h3>
                 <a-form-item
@@ -129,7 +111,7 @@
                     :disabledTime="disabledDateTime"
                     format="YYYY-MM-DD"
                     style="margin-left: 30px;"
-                    v-decorator="['closingDate',{rules: [{ type: 'object', required: true, message: '请填写时间' }]}]"
+                    v-decorator="['closingDate',{rules: [{ type: 'object', required: true, message: 'Please fill in the time' }]}]"
                   />
                 </a-form-item>
                 <!--<div style="padding-left: 30px;">
@@ -152,10 +134,10 @@
               <div class="select-way">
                 <a-radio-group @change="onChangeOne" v-model="value">
                   <a-radio :value="1" style="display: flex; align-items: top;">
-                    <h4>统一地址发货</h4>
+                    <h4>Ship Order To One Address</h4>
                   </a-radio>
                   <div style="margin-left: 24px;">
-                    <p>After the user pays, we will send it to the unified address uniformly. Issued by the person receiving the package，我们会统一发送到同一地址，由收到包裹的人员一起发放。</p>
+                    <p>After the user pays, we will send it to the unified address uniformly. Issued by the person receiving the package，All items will be grouped and shipped to one address only。</p>
                     <h4>
                       Delivery address：
                       <span @click="addressManagement">
@@ -174,20 +156,20 @@
               </div>
             </li>
             <li>
-              <h3>付款方式</h3>
+              <h3>Payment Method</h3>
               <div class="select-way">
                 <a-radio-group @change="onChange" v-model="adressValue">
                   <a-radio :value="1" style="display: flex; align-items: top;">
-                    <h4>让选购的用户自己付款</h4>
+                    <h4>Individual Payments</h4>
                   </a-radio>
                   <div style="margin-left: 24px;">
-                    <p>用户查看分享链接后，自行付款</p>
+                    <p>User pays individually through this link</p>
                   </div>
                   <a-radio :value="2" style="display: flex; align-items: top;">
-                    <h4>统一为整个订单支付</h4>
+                    <h4>Pay for the Whole Order</h4>
                   </a-radio>
                   <div style="margin-left: 24px;">
-                    <p>立即为整个订单支付费用</p>
+                    <p>Pay Full Order Amount</p>
                   </div>
                 </a-radio-group>
               </div>
@@ -214,41 +196,41 @@
           </li>
         </ul>
         <div class="btn-box">
-          <a-button icon="plus" style="width: 200px;" @click="inputAdress">添加地址</a-button>
+          <a-button icon="plus" style="width: 200px;" @click="inputAdress">Add address</a-button>
         </div>
       </a-modal>
-      <a-modal v-model="modelShow2" :footer="null" :centered="true" title="添加地址">
+      <a-modal v-model="modelShow2" :footer="null" :centered="true" title="Add address">
         <div class="form-box">
           <a-form layout="vertical" :form="form">
-            <a-form-item label="地址别名：">
+            <a-form-item label="Address alias：">
               <a-input
-                v-decorator="['bm',{rules: [{ required: true, message: '请填写地址别名（如： 家、公司）！' }]}]"
+                v-decorator="['bm',{rules: [{ required: true, message: 'Please Fill In Address (Eg. Home, Company)！' }]}]"
               />
             </a-form-item>
-            <a-form-item label="国家/省/市：">
+            <a-form-item label="Country / Province / City：">
               <a-cascader
                 :options="options"
                 placeholder="Please select"
-                v-decorator="['country',{rules: [{ required: true, message: '请填写国家、省、市！' }]}]"
+                v-decorator="['country',{rules: [{ required: true, message: 'Please Fill In Country, Province, City' }]}]"
               />
             </a-form-item>
-            <a-form-item label="详细地址：">
+            <a-form-item label="Address：">
               <a-input
-                v-decorator="['adress',{rules: [{ required: true, message: '请填写国家、省、市！' }]}]"
+                v-decorator="['adress',{rules: [{ required: true, message: 'Please Fill In Country, Province, City' }]}]"
               />
             </a-form-item>
-            <a-form-item label="邮编：">
-              <a-input v-decorator="['email',{rules: [{ required: true, message: '请填写邮编！' }]}]" />
+            <a-form-item label="Postal Code：">
+              <a-input v-decorator="['email',{rules: [{ required: true, message: 'Please Fill In Postal Code！' }]}]" />
             </a-form-item>
-            <a-form-item label="联系人：">
+            <a-form-item label="Contact Person：">
               <a-input
-                v-decorator="['phonesome',{rules: [{ required: true, message: '请填写联系人！' }]}]"
+                v-decorator="['phonesome',{rules: [{ required: true, message: 'Please Fill In Conact Person' }]}]"
               />
             </a-form-item>
-            <a-form-item label="电话：">
+            <a-form-item label="Telephone Number：">
               <a-input
                 type="tel"
-                v-decorator="['tel',{rules: [{ required: true, message: '请填写电话！' }]}]"
+                v-decorator="['tel',{rules: [{ required: true, message: 'Please Fill In Telephone Number' }]}]"
               />
             </a-form-item>
           </a-form>
@@ -292,14 +274,14 @@
                 </div>
               </div>
               <div class="price-right">
-                预计代理价格：
-                <span>￥{{onePrice}}</span>
+                We will reply you within 3 working days
+                <span>${{onePrice}}</span>
               </div>
             </div>
-            <div class="font-color">最小起订量为{{designDetail.minOrder}}</div>
+            <div class="font-color">Minimum Order Quantity{{designDetail.minOrder}}</div>
             <div class="prices">
               <div class="price-box">
-                <div class="font-18">价格:</div>
+                <div class="font-18">Price:</div>
                 <div class="price-input">
                   <a-input
                     :value="prices"
@@ -308,14 +290,14 @@
                     style="width: 120px"
                   />
                 </div>
-                <div class="font-18">/件</div>
+                <div class="font-18">/piece</div>
               </div>
               <div class="price-right">
                 预计代理收益：
-                <span>￥{{twoPrice}}</span>
+                <span>${{twoPrice}}</span>
               </div>
             </div>
-            <div class="font-color">建议售价：￥{{designDetail.price}}/件</div>
+            <div class="font-color">建议售价：${{designDetail.price}}/件</div>
           </a-col>
         </a-row>
       </a-modal>
@@ -324,16 +306,16 @@
         class="show-details"
         v-model="shareChecked"
         @ok="handleOkShare"
-        okText="去分享"
-        cancelText="返回"
+        okText="Share"
+        cancelText="Back"
         width="50%"
       >
         <div class="share-box1">
           <div>
             <a-icon class="font-color" style="font-size:40px" type="check-circle" />
           </div>
-          <div class="success">操作成功</div>
-          <div>去Share to a Friend</div>
+          <div class="success">Successful</div>
+          <div>Share to a Friend</div>
         </div>
       </a-modal>
     </div>
@@ -451,7 +433,7 @@ export default {
       if (this.twoPrice < 0) {
         this.$notification.error({
           message: "预计代理价格为负数",
-          description: "请重新填写",
+          description: "Please fill in again.",
           duration: 4
         });
         return
@@ -468,7 +450,7 @@ export default {
             //window.location.reload();
             this.getTeamOrderDetails(this.id);
             this.showVisible = false;
-            this.$message.success('操作成功！')
+            this.$message.success('Successful！')
           }
         });
       }
@@ -517,7 +499,7 @@ export default {
             }
           } else {
             this.$notification["error"]({
-              message: "填写收货地址",
+              message: "Please Fill in the receiving address",
               description: "请填写收货地址后开始",
               duration: 4
             });
@@ -766,7 +748,7 @@ export default {
         item.addressName + item.detailInfo + item.userName + item.telNumber;
       this.addressId = item.id;
       this.modelShow1 = false;
-      this.$message.success("地址设置成功！");
+      this.$message.success("Address Successfully Updated!");
     },
     beforeUpload(file) {
       const isJPG = file.type === "image/jpeg";

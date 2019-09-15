@@ -40,7 +40,7 @@ export default {
   props: {},
   data() {
     return {
-      itemTitle: "Account settings",
+      itemTitle: "Account Settings",
       visible: false,
       listData,
       pagination: {

@@ -16,7 +16,7 @@
           </span>
           <div>
             <h3>Payment Unsuccessful</h3>
-            <p>Please Re-submit Payment.</p>
+            <p>Pay Again</p>
           </div>
         </div>
         <div class="desc">
@@ -27,7 +27,7 @@
             </div>
             <div class="pay-btn">
               <a-button class="buy-again">Pay Again</a-button>
-              <a-button class="back">返回</a-button>
+              <a-button class="back">Back</a-button>
             </div>
           </div>
         </div>

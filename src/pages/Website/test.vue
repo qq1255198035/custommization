@@ -1,7 +1,7 @@
 <template>
       <div id="main">
             <my-title :title="'新建订单'">
-                  <a-button size="small">返回</a-button>
+                  <a-button size="small">Back</a-button>
             </my-title>
             <a-row id="myrow">
                   <a-col :span="6">

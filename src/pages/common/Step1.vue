@@ -57,7 +57,7 @@ export default {
             this.code = res.code;
             if (res.code == 0) {
               this.$notification["success"]({
-                message: "Success",
+                message: "Successful",
                 description: "Successful",
                 duration: 4
               });

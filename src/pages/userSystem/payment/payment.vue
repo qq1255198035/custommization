@@ -175,7 +175,6 @@
 <script>
 import {
   payPal,
-  paymentInfos,
   status,
   wxPay,
   wxOrderQuery,
@@ -228,7 +227,7 @@ export default {
           dataIndex: "quantity"
         },
         {
-          title: "单价",
+          title: "Price",
           width: "25%",
           align: "center",
           dataIndex: "total_price"

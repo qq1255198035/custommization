@@ -23,8 +23,8 @@
             </div>
           </div>
           <template slot="action" slot-scope="text,record">
-            <a-button style="margin-right: 10px;" @click="editDesign(text,record)">编辑</a-button>
-            <a-button @click="delDesign(text,record)">删除</a-button>
+            <a-button style="margin-right: 10px;" @click="editDesign(text,record)">Edit</a-button>
+            <a-button @click="delDesign(text,record)">Delete</a-button>
           </template>
         </a-table>
       </div>
@@ -39,11 +39,10 @@
 </template>
 <script>
 import User from "@/components/Header/User";
-import img from "@/assets/black.jpg";
 import { designList,updateShow,delDesignList,handleDesignList } from "@/api/seller"
 const columns = [
   {
-    title: "图片",
+    title: "Image",
     dataIndex: "positivePicUrl",
     scopedSlots: { customRender: "positivePicUrl" },
     key: "positivePicUrl",
@@ -57,7 +56,7 @@ const columns = [
     width: "30%"
   },
   {
-    title: "操作",
+    title: "Active",
     dataIndex: "action",
     scopedSlots: { customRender: "action" },
     width: "10%",
@@ -116,9 +115,9 @@ export default {
       console.log(a,b)
       let that = this;
       that.$confirm({
-        title: "删除",
-        content: "确认删除吗？",
-        okText: "确认",
+        title: "Delete",
+        content: "Do you confirm deletion?",
+        okText: "Confirm",
         cancelText: "Cancel",
         onOk() {
             delDesignList(b.key).then(res => {

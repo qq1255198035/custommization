@@ -132,7 +132,7 @@ export default {
         },
 
         {
-          title: "action",
+          title: "Active",
           width: "20%",
           key: "action",
           algin: "center",

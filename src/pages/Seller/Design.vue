@@ -142,7 +142,7 @@
                                                 <span title="移动倒底层" @click="toBottomLayer"><i class="icon-last_layer"></i></span>
                                             </div>
                                         </div> -->
-                                        <h3>艺术插图：</h3>
+                                        <h3>Insert Clipart：</h3>
                                         <div  style="padding-bottom: 10px; border-bottom: 1px solid #ccc;">
                                             <a-input-search @search="onSearch"/>
                                         </div>
@@ -338,7 +338,7 @@
                                         </dl>
                                         <dl>
                                             <dt class="title">阴影</dt>
-                                            <dd @click="openChangeColorBox(4,'阴影颜色')">
+                                            <dd @click="openChangeColorBox(4,'Shadow Color')">
                                                 <span>颜色：</span>
                                                 <p>
                                                     <span>{{shadowColorName}} <i class="square" :style="{backgroundColor: shadowColor}"></i></span>

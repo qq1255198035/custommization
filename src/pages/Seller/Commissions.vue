@@ -1,13 +1,13 @@
 <template>
     <div id="Commissions">
-        <my-title :title="'佣金管理'" :fontsize="20"></my-title>
+        <my-title :title="'Commission Management'" :fontsize="20"></my-title>
         <order-total :num1="price1 | moneyFormat" :num2="price2 | moneyFormat" :num3="price3 | moneyFormat">
-            <p slot="a" style="margin: 0; color: #757575;">总佣金</p>
-            <p slot="b" style="margin: 0; color: #757575;">余额</p>
-            <p slot="c" style="margin: 0; color: #757575;">未到账金额</p>
+            <p slot="a" style="margin: 0; color: #757575;">Total Commission</p>
+            <p slot="b" style="margin: 0; color: #757575;">Balance</p>
+            <p slot="c" style="margin: 0; color: #757575;">Payment To Be Received</p>
         </order-total>
-        <my-title :title="'提现记录'" :fontsize="20" style="margin: 20px 0 ">
-            <a-button @click="show = true">申请提现</a-button>
+        <my-title :title="'Withdrawal Records'" :fontsize="20" style="margin: 20px 0 ">
+            <a-button @click="show = true">Apply for Withdrawal</a-button>
         </my-title>
         <a-table :columns="columns" :dataSource="data" :loading="loading" :pagination="pagination" @change="handleTableChange" :rowClassName="() => {return 'my-throw'}">
                 <span slot="status" slot-scope="text">
@@ -17,7 +17,7 @@
                     <a href="javascript:;" @click="checkOutPrice(record.id)"><a-icon type="file-search" style="font-size: 20px;"/></a>
                 </template>
         </a-table>
-        <a-modal v-model="show" :footer="null" title="申请提现" :width="768">
+        <a-modal v-model="show" :footer="null" title="Apply for Withdrawal" :width="768">
             <div class="commodal-box">
                 <a-steps :current="current">
                     <a-step v-for="item in steps" :key="item.title" :title="item.title" />
@@ -42,7 +42,6 @@
                         :name3="name3"
                         :price3="price4"
                     >
-                        
                     </component>
                 </div>
                 <div class="steps-action" style="text-align: center;">
@@ -69,17 +68,17 @@
                 </div>
             </div>
         </a-modal>
-        <a-modal v-model="show1" :footer="null" title="提现" :width="768">
+        <a-modal v-model="show1" :footer="null" title="Withdrawal" :width="768">
             <div class="commodal-box">
                 <ul class="content">
                     <li>
-                        收款账户：<span>{{count1}}</span>
+                        Receiver's Account：<span>{{count1}}</span>
                     </li>
-                    <li>收款人姓名：<span>{{ sname1 }}</span></li>
-                    <li>提现金额：<span>￥{{ cash1 }}</span></li>
-                    <li>手续费({{persent3}}%)：<span>￥{{sprice1}}</span></li>
-                    <li>地方税({{persent4}}%)：<span>￥{{dprice1}}</span></li>
-                    <li>到账金额：<h3>￥{{dmoney1}}</h3></li>
+                    <li>Recipient Name：<span>{{ sname1 }}</span></li>
+                    <li>Withdrawal Amount：<span>${{ cash1 }}</span></li>
+                    <li>Service Fee({{persent3}}%)：<span>${{sprice1}}</span></li>
+                    <li>Tax({{persent4}}%)：<span>${{dprice1}}</span></li>
+                    <li>Received Amount：<h3>${{dmoney1}}</h3></li>
                 </ul>
                
             </div>
@@ -96,19 +95,19 @@ import { commissionsData, withdrawalList, nextStptes, twoNext,comDetails } from 
 const statusMap = {
     4: {
         status: 'success',
-        text: '已到账'
+        text: 'Money Received'
     },
     1: {
         status: 'warning',
-        text: '申请中'
+        text: 'Applying'
     },
     3: {
         status: 'error',
-        text: '打款失败'
+        text: 'Payment Unsuccessful'
     },
     2: {
         status: 'processing',
-        text: '打款中'
+        text: 'Processing Payment'
     }
 }
 export default {
@@ -137,19 +136,19 @@ export default {
                 pagination:{showQuickJumper: true,pageSize: 7,total: 0},
                 columns: [
                     {
-                            title: '提现单号',
+                            title: 'Withdrawal Order',
                             dataIndex: 'order_id'
                     },
                     {
-                            title: '账号',
+                            title: 'Account',
                             dataIndex: 'account'
                     },
                     {
-                            title: '提交时间',
+                            title: 'Time Submitted',
                             dataIndex: 'created_time',
                     },
                     {
-                            title: '金额',
+                            title: 'Amount',
                             dataIndex: 'amount',
                     },
                     {
@@ -158,11 +157,11 @@ export default {
                             scopedSlots: { customRender: 'status' }
                     },
                     {
-                            title: '备注',
+                            title: 'Add Notes',
                             dataIndex: 'remark',
                     },
                     {
-                            title: '操作',
+                            title: 'Active',
                             dataIndex: 'operation',
                             scopedSlots: { customRender: 'operation' },
                     }
@@ -171,10 +170,10 @@ export default {
                 show: false,
                 current: 0,
                 steps: [{
-                    title: '填写账户信息',
+                    title: 'Fill In Account Details',
                     content: ComponentA,
                     }, {
-                    title: '确认信息',
+                    title: 'Please Confirm',
                     content: ComponentB,
                     }, {
                     title: 'Completed',
@@ -207,14 +206,14 @@ export default {
             console.log(id)
             comDetails(id).then(res => {
                 console.log(res)
-                this.count1 = res.result.account,
-                this.sname1 = res.result.name,
-                this.cash1 =  res.result.amount,
+                this.count1 = res.result.first.account,
+                this.sname1 = res.result.first.name,
+                this.cash1 =  res.result.first.amount,
                 this.persent3 = res.result.taxRate,
                 this.persent4 = res.result.proceduresRate,
-                this.dprice1 = res.result.procedures,
-                this.dmoney1 = res.result.arrival,
-                this.sprice1 = res.result.tax
+                this.dprice1 = res.result.first.procedures,
+                this.dmoney1 = res.result.first.arrival,
+                this.sprice1 = res.result.first.tax
             })
         },
         postTwoNext(params){
@@ -226,7 +225,7 @@ export default {
                     this.price4 = this.dmoney;
                     this.current++;
                 }else{
-                    this.$message.error('密码错误！')
+                    this.$message.error('Incorrect password！')
                 }
             })
         },
@@ -268,14 +267,14 @@ export default {
                             this.current++;
                             this.postNextStptes(this.count,this.name,this.price,this.paytype);
                         }else{
-                            this.$message.error('提现余额不足！')
+                            this.$message.error('The withdrawal balance is insufficient!')
                         }
                         
                     }else{
-                        this.$message.error('最小体现金额100元！')
+                        this.$message.error('Minimum Amount - $100！')
                     }
                 }else{
-                    this.$message.error('请选择收款账户！')
+                    this.$message.error("Please Select Receiver's Account Information !")
                 }
             }else{
                 let params = {account: this.count,name:this.name,amount:this.price,type:this.paytype,tax:this.dprice,procedures:this.sprice,arrival:this.dmoney,password:this.passWord}
