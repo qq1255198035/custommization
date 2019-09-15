@@ -14,6 +14,7 @@
       justify-items: center;
       text-align: center;
       padding-left: 5px;
+      margin-top: 10px;
       i{
             color: #fff;
       }
