@@ -1108,8 +1108,8 @@ export default {
             let that = this;
             let obj = that.myCanvas.getActiveObject();
             if(obj){
-                let scalex = obj.scaleX;
-                let scaley = obj.scaleY;
+                // let scalex = obj.scaleX;
+                // let scaley = obj.scaleY;
                 let left = obj.left;
                 let top = obj.top;
                 let id = obj.id
