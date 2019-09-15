@@ -128,7 +128,7 @@
                                                 <span class="icon-upload"></span>
                                                 Upload design
                                             </li>
-                                            <li @click="$router.push({path: '/neworder'})">
+                                            <li @click="changeProductType">
                                                 <span class="icon-change_product"></span>
                                                 Change Product
                                             </li>
@@ -409,16 +409,16 @@
                                                     <a-icon type="check" v-show="fontColorIcon2 == index"></a-icon>
                                                 </template>
                                                 <template v-if="colorList.key == 3">
-                                                    <a-icon type="check" v-show="fontColorIcon1 == index"></a-icon>
+                                                    <a-icon type="check" v-show="fontColorIcon3 == index"></a-icon>
                                                 </template>
                                                 <template v-if="colorList.key == 4">
-                                                    <a-icon type="check" v-show="fontColorIcon2 == index"></a-icon>
+                                                    <a-icon type="check" v-show="fontColorIcon4 == index"></a-icon>
                                                 </template>
                                                 <template v-if="colorList.key == 5">
-                                                    <a-icon type="check" v-show="fontColorIcon1 == index"></a-icon>
+                                                    <a-icon type="check" v-show="fontColorIcon5 == index"></a-icon>
                                                 </template>
                                                 <template v-if="colorList.key == 6">
-                                                    <a-icon type="check" v-show="fontColorIcon2 == index"></a-icon>
+                                                    <a-icon type="check" v-show="fontColorIcon6 == index"></a-icon>
                                                 </template>
                                             </li>
                                         </ul>
@@ -765,11 +765,11 @@
                         <div class="font-18">/件</div>
                     </div>
                     <div class="price-right">
-                        预计代理收益：
+                        Projected agency revenue：
                         <span>${{twoPrice}}</span>
                     </div>
                     </div>
-                    <div class="font-color">建议售价：${{designDetail.price}}/件</div>
+                    <div class="font-color">Suggested selling price：${{designDetail.price}}/件</div>
                 </a-col>
                 </a-row>
             </a-modal>
@@ -962,7 +962,7 @@ export default {
             fileList: [],
             filpx:false,
             filpy:false,
-            fontfamily:'Microsoft YaHei',
+            fontfamily:'FZCHYFW',
 
             // 旋转数值
             rotateNum:0,
@@ -1100,7 +1100,10 @@ export default {
     },
 
     methods:{
-       
+        // 更换衣服，保留设计
+        changeProductType(){
+            this.show = false;
+        },
         removeColor(){
             let that = this;
             let obj = that.myCanvas.getActiveObject();
@@ -1296,8 +1299,17 @@ export default {
             }
         },
         addNewPro(){
-            this.show = false;
-            this.saveEndDesign()
+            
+            this.saveImg();
+            this.downLoadImg();
+            let params = {
+                positivePicUrl: this.dataUrl1,backPicUrl: this.dataUrl2,leftPicUrl: this.dataUrl3,rightPicUrl: this.dataUrl4,
+                positiveDesignArea: this.dataPost1, backDesignArea: this.dataPost2, leftDesignArea: this.dataPost3, rightDesignArea: this.dataPost4,
+                goodsId: this.postId, id: this.picId,textFront: this.nameFontFamily, textColor: this.nameColor, textLocation: this.namePosition,textHeight: this.nameSize,
+                numberLocation: this.numberPosition,numberHeight: this.numberSize,numberFront:this.numberFontFamily, numberColor: this.numberColor, isPrintText: this.addNameData ? 1 : 0,isPrintNumber: this.addNumberData ? 1 : 0,
+                productColor: this.productColorName
+            }
+            this.postSaveDesign1(params)
         },
         loadFromJSON (canvas,json) {
             canvas.loadFromJSON(json, canvas.renderAll.bind(canvas), function (
@@ -1453,7 +1465,8 @@ export default {
                 positivePicUrl: this.dataUrl1,backPicUrl: this.dataUrl2,leftPicUrl: this.dataUrl3,rightPicUrl: this.dataUrl4,
                 positiveDesignArea: this.dataPost1, backDesignArea: this.dataPost2, leftDesignArea: this.dataPost3, rightDesignArea: this.dataPost4,
                 goodsId: this.postId, id: this.picId,textFront: this.nameFontFamily, textColor: this.nameColor, textLocation: this.namePosition,textHeight: this.nameSize,
-                numberLocation: this.numberPosition,numberHeight: this.numberSize,numberFront:this.numberFontFamily, numberColor: this.numberColor, isPrintText: this.addNameData ? 1 : 0,isPrintNumber: this.addNumberData ? 1 : 0
+                numberLocation: this.numberPosition,numberHeight: this.numberSize,numberFront:this.numberFontFamily, numberColor: this.numberColor, isPrintText: this.addNameData ? 1 : 0,isPrintNumber: this.addNumberData ? 1 : 0,
+                productColor: this.productColorName
             }
             this.postSaveDesign(params)
         },
@@ -1484,6 +1497,29 @@ export default {
                 }
             })
         },
+        postSaveDesign1(params){
+            saveDesign(params).then(res => {
+                console.log(res)
+                if(res.code == 200){
+                    this.visibletype = -1;
+                    this.liClick = -1;
+                    // this.$message.success('Successful preservation, please re-select the goods!',function(){
+                    //     window.location.reload();
+                    // })
+                    this.$success({
+                        title: 'Successful preservation',
+                        content: (  // JSX support
+                        <div>
+                            <p>please re-select the goods!</p>
+                        </div>
+                        ),
+                        onOk:function(){
+                            window.location.reload();
+                        }
+                    });
+                }
+            })
+        },
         onOpenChange (openKeys) {
             const latestOpenKey = openKeys.find(key => this.openKeys.indexOf(key) === -1)
             if (this.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
@@ -1497,6 +1533,8 @@ export default {
                 console.log(res);
                 this.sizePicUrl = res.result.sizePicUrl
                 this.bgimgs = res.result.imgs;
+                this.productColor = res.result.productColorValue;
+                this.productColorName = res.result.productColor;
                 this.bindCanvas(this.myCanvas1,0);
                 this.bindCanvas(this.myCanvas2,1);
                 this.bindCanvas(this.myCanvas3,2);
@@ -1519,9 +1557,12 @@ export default {
         },
         closeDesignBox(){
             let that = this;
-            if(that.liClick == -1 && that.visibletype == -1){
-                that.show = false;
-            }else{
+            let obj1 = that.myCanvas1.getObjects();
+            let obj2 = that.myCanvas2.getObjects();
+            let obj3 = that.myCanvas3.getObjects();
+            let obj4 = that.myCanvas4.getObjects();
+            //console.log(obj)
+            if(obj1 || obj2 || obj3 || obj4){
                 that.$confirm({
                     title: "Are you sure you want to leave?",
                     content: "Unsaved designs will be automatically deleted!",
@@ -1533,7 +1574,24 @@ export default {
                     },
                     onCancel() {}
                 });
+            }else{
+                that.show = false;
             }
+            // if(that.liClick == -1 && that.visibletype == -1){
+            //     that.show = false;
+            // }else{
+            //     that.$confirm({
+            //         title: "Are you sure you want to leave?",
+            //         content: "Unsaved designs will be automatically deleted!",
+            //         okText: "Confirm",
+            //         cancelText: "Cancel",
+            //         onOk() {
+            //             that.show = false;
+            //             window.location.reload();
+            //         },
+            //         onCancel() {}
+            //     });
+            // }
             
             
         },
@@ -1969,7 +2027,7 @@ export default {
             // myfont.load().then(function() {
                 // when font is loaded, use it.
                 that.exampleNumber = new fabric.Text("00", {
-                    id: 'Number',
+                    myId: 'Number',
                     fontFamily: font,
                     originX:'center',
                     originY:'center',
@@ -1997,7 +2055,7 @@ export default {
             // myfont.load().then(function() {
                 // when font is loaded, use it.
                 that.exampleName = new fabric.Text("EXAMPLE", {
-                    id: 'Name',
+                    myId: 'Name',
                     fontFamily: font,
                     originX:'center',
                     originY:'center',

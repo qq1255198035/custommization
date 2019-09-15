@@ -44,10 +44,10 @@
               <li>
                 <h3>Expected Order Quantity</h3>
                 <a-form-item label="Headings" :label-col="{ span: 3 }" :wrapper-col="{ span: 12 }">
-                  <a-input v-decorator="[ 'note', {rules: [{ required: true, message: 'Headings' }]} ]"/>
+                  <a-input v-decorator="[ 'note', {rules: [{ required: true, message: 'Please input your Headings' }]} ]"/>
                 </a-form-item>
                 <a-form-item label="Introduction" :label-col="{ span: 3}" :wrapper-col="{ span: 12 }">
-                  <a-textarea :rows="4" v-decorator="[ 'desc', {rules: [{ required: true, message: 'Introduction' }]}]"/>
+                  <a-textarea :rows="4" v-decorator="[ 'desc', {rules: [{ required: true, message: 'Please input your Introduction' }]}]"/>
                 </a-form-item>
                 <a-form-item label="Upload photo" :label-col="{ span: 3 }" :wrapper-col="{ span: 12 }">
                   <a-upload
@@ -76,13 +76,19 @@
               <li>
                 <h3>Contact method</h3>
                 <a-form-item label="Contacts" :label-col="{ span: 3 }" :wrapper-col="{ span: 12 }">
-                  <a-input v-decorator="['contanct',{rules: [{ required: true, message: 'Contacts' }]}]"/>
+                  <a-input v-decorator="['contanct',{rules: [{ required: true, message: 'Please input your Contacts' }]}]"/>
                 </a-form-item>
                 <a-form-item label="Email" :label-col="{ span: 3 }" :wrapper-col="{ span: 12 }">
                   <a-input
                     v-decorator="[
                             'email',
-                            {rules: [{ required: true, message: 'Email' }]}
+                              {
+                                rules: [{
+                                  type: 'email', message: 'The input is not valid E-mail!',
+                                }, {
+                                  required: true, message: 'Please input your E-mail!',
+                                }]
+                              }
                             ]"
                   />
                 </a-form-item>
@@ -90,7 +96,7 @@
                   <a-input
                     v-decorator="[
                                     'phone',
-                                    {rules: [{ required: true, message: 'Phone Number' }]}
+                                    {rules: [{ required: true, message: 'Please input your Phone Number' }]}
                                     ]"
                   />
                 </a-form-item>
@@ -293,11 +299,11 @@
                 <div class="font-18">/piece</div>
               </div>
               <div class="price-right">
-                预计代理收益：
+                Projected agency revenue：
                 <span>${{twoPrice}}</span>
               </div>
             </div>
-            <div class="font-color">建议售价：${{designDetail.price}}/件</div>
+            <div class="font-color">Suggested selling price：${{designDetail.price}}/件</div>
           </a-col>
         </a-row>
       </a-modal>

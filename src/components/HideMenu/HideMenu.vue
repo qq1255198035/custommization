@@ -6,7 +6,7 @@
                     <a-icon type="edit" />Edit
                 </li>
                 <li style="border-bottom: 1px solid #fff;" @click="handleClick">
-                    <a-icon type="search" />查看
+                    <a-icon type="search" />Check
                 </li>
                 <li @click="handleClick1">
                     <a-icon type="share-alt" />Share

@@ -27,6 +27,7 @@
                   type="password"
                   autocomplete="false"
                   placeholder="Please fill in the password."
+                  @keyup.enter.native="submitLogin"
                   v-decorator="[
                 'password',
                 {rules: [{ required: true, message: 'Please fill in the password.'}], validateTrigger: 'blur'}
