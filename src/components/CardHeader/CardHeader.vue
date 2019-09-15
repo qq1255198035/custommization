@@ -15,7 +15,7 @@
             <div class="title font-reset">{{detailList.topic}}</div>
             <div class="desc">{{detailList.introduction}}</div>
             <div class="contant">
-              <span class="font-reset">联系商家：</span>
+              <span class="font-reset">Contact Seller：</span>
               {{detailList.contact}}
             </div>
             <div class="contact">
@@ -36,23 +36,23 @@
             </div>
           </div>
         </a-col>
-        <a-col :xxl="4" :xl="2"></a-col>
-        <a-col :xxl="4" :xl="6">
+        <a-col :xxl="3" :xl="2"></a-col>
+        <a-col :xxl="5" :xl="6">
           <div class="right-desc">
             <div class="top" style="line-height:40px">
-              <span style="float:left">分享给朋友：</span>
+              <span style="float:left">Share to a Friend：</span>
               <share  class="share" :config="config">
               </share>
             </div>
             <div class="down">
               <div class="texts">
-                已支付数量
+                Paid Quantity
                 <br />
                 <span class="font-reset">{{detailList.payNum}}</span>
               </div>
               <a-divider type="vertical" class="my-divider" />
               <div class="texts">
-                订单关闭时间
+                Order Deadline
                 <br />
                 <span class="font-reset">{{detailList.payEndDate}}</span>
               </div>
@@ -80,9 +80,9 @@ export default {
           "https://hlx-1258407851.cos.ap-beijing.myqcloud.com/hlx/20181229/16144720457881.png", // 图片, 默认取网页中第一个img标签
         sites: ["facebook", "wechat", "weibo"], // 启用的站点
         //disabled: ['google', 'facebook', 'twitter'], // 禁用的站点
-        wechatQrcodeTitle: "微信扫一扫：分享", // 微信二维码提示文字
+        wechatQrcodeTitle: "WeChat Scan: Share", // 微信二维码提示文字
         wechatQrcodeHelper:
-          "<p>微信里点“发现”，扫一下</p><p>二维码便可将本文分享至朋友圈。</p>"
+          "Scan the two-dimensional code to share this article with friends."
       }
     };
   },
@@ -119,7 +119,7 @@ export default {
       }
     }
     .right-desc {
-      float: right;
+      //float: right;
       .top {
         text-align: right;
         position: relative;

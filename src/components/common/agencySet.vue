@@ -4,28 +4,28 @@
       <a-col :lg="14">
         <div>
           <a-form layout="vertical" :form="form">
-            <a-form-item label="公司名称">
+            <a-form-item label="Corporate Name">
               <a-input
-                placeholder="公司名称"
-                v-decorator="['corporateName',{rules: [{ required: true, message: '公司名称' }]}]"
+                placeholder="Corporate Name"
+                v-decorator="['corporateName',{rules: [{ required: true, message: 'Corporate Name' }]}]"
               />
             </a-form-item>
-            <a-form-item label="商业登记号">
+            <a-form-item label="Business Registration Number">
               <a-input
-                placeholder="商业登记号"
-                v-decorator="['business',{rules: [{ required: true, message: '商业登记号' }]}]"
+                placeholder="Business Registration Number"
+                v-decorator="['business',{rules: [{ required: true, message: 'Business Registration Number' }]}]"
               />
             </a-form-item>
-            <a-form-item label="预计销售额(年)">
+            <a-form-item label="Projected Sales(year)">
               <a-input
-                placeholder="销售额"
-                v-decorator="['salesVolume',{rules: [{ required: true, message: '销售额' }]}]"
+                placeholder="Sales Volume"
+                v-decorator="['salesVolume',{rules: [{ required: true, message: 'Sales Volume' }]}]"
               />
             </a-form-item>
-            <a-form-item label="员工数量">
+            <a-form-item label="Number of employees">
               <a-input
-                placeholder="员工数量"
-                v-decorator="['staff',{rules: [{ required: true, message: '员工数量' }]}]"
+                placeholder="Number of employees"
+                v-decorator="['staff',{rules: [{ required: true, message: 'Number of employees' }]}]"
               />
             </a-form-item>
           </a-form>
@@ -34,7 +34,7 @@
       <a-col :lg="10" style="text-align: center">
         <div class="upload">
           <div class="top">
-            <p style="color: #33b8b3">上传证件</p>
+            <p style="color: #33b8b3">Upload Documents</p>
             <img
               v-if="imgurl"
               :src="imgurl"
@@ -68,7 +68,7 @@
           :icon="'upload'"
           @submitPerson="submitPerson"
           :width="'100%'"
-          :title="'代理申请'"
+          :title="'Agent Application'"
           :height="'45px'"
           :padding="'10px'"
           :radio="'12px'"
@@ -150,8 +150,8 @@ export default {
             console.log(res);
             if (res.code == 200) {
               this.$notification.success({
-                message: '代理申请',
-                description: '代理申请以成功',
+                message: 'Agent Application',
+                description: 'The application for agency has been successful',
                 duration: 4
               });
               window.location.reload()
@@ -164,12 +164,12 @@ export default {
       const isJPG = file.type === "image/jpeg";
       const isPNG = file.type === "image/png";
       if (!isJPG && !isPNG) {
-        this.$message.error(this.$t("不支持此格式"));
+        this.$message.error(this.$t("Unsupported Format, Please Try Again."));
         return isJPG;
       }
       const isLt2M = file.size / 1024 / 1024 < 2;
       if (!isLt2M) {
-        this.$message.error(this.$t("图片超过2M"));
+        this.$message.error(this.$t("Image Size Over 2MB"));
         return isLt2M;
       }
       getBase64(file, imageUrl => {

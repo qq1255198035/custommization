@@ -16,8 +16,8 @@
         >
         </commonBtn>
         <a-radio-group defaultValue="9" style="margin-left: 10px;" @change="changeStatus">
-          <a-radio-button value="9">全部订单</a-radio-button>
-          <a-radio-button value="2">已支付</a-radio-button>
+          <a-radio-button value="9">All Orders</a-radio-button>
+          <a-radio-button value="2">Paid Quantity</a-radio-button>
           <a-radio-button value="0">未支付</a-radio-button>
         </a-radio-group>
       </li>

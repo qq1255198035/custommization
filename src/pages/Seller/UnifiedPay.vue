@@ -10,11 +10,11 @@
       <a-row>
         <a-col :span="2"></a-col>
         <a-col :span="20">
-          <div class="step font-reset">流程进度</div>
+          <div class="step font-reset">Progress</div>
           <MyPrimaryStpes :mycurrent="step">
-            <p slot="p1">选择尺码</p>
-            <p slot="p2">确认支付</p>
-            <p slot="p3">等待开团</p>
+            <p slot="p1">Select Size</p>
+            <p slot="p2">Please Confirm Payment</p>
+            <p slot="p3">Waiting To Start Group Order</p>
             <p slot="p4">Completed</p>
           </MyPrimaryStpes>
           <my-title :title="itemTitle" :fontsize="20" :paddingtop="'40px'" :paddingbottom="'20px'"></my-title>

@@ -1,6 +1,6 @@
 <template>
     <div style="text-algin:center">
-        加载中...
+        Loading...
     </div>
 </template>
 

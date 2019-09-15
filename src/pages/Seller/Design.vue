@@ -1076,7 +1076,7 @@ export default {
             setTimeout(() => {
                     // this.$intro().setOptions({
                     //     prevLabel: "上一步",
-                    //     nextLabel: "下一步",
+                    //     nextLabel: "Next",
                     //     skipLabel: "跳过",
                     //     doneLabel: "结束",
                     //     overlayOpacity: "0",

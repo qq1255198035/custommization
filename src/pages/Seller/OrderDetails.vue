@@ -333,7 +333,7 @@
             <a-icon class="font-color" style="font-size:40px" type="check-circle" />
           </div>
           <div class="success">操作成功</div>
-          <div>去分享给朋友</div>
+          <div>去Share to a Friend</div>
         </div>
       </a-modal>
     </div>
@@ -772,12 +772,12 @@ export default {
       const isJPG = file.type === "image/jpeg";
       const isPNG = file.type === "image/png";
       if (!isJPG && !isPNG) {
-        this.$message.error(this.$t("不支持此格式"));
+        this.$message.error(this.$t("Unsupported Format, Please Try Again."));
         return isJPG;
       }
       const isLt2M = file.size / 1024 / 1024 < 10;
       if (!isLt2M) {
-        this.$message.error(this.$t("图片超过2M"));
+        this.$message.error(this.$t("Image Size Over 2MB"));
         return isLt2M;
       }
       getBase64(file, imageUrl => {

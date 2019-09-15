@@ -11,7 +11,7 @@
     </div>
     <div>
       <a-button class="open-btn" type="primary" @click="showDrawer" icon="bars"></a-button>
-      <a-drawer title="服装设计" placement="left" :closable="false" @close="onClose" :visible="visible">
+      <a-drawer title="Clothing design" placement="left" :closable="false" @close="onClose" :visible="visible">
         <commonHeader></commonHeader>
       </a-drawer>
     </div>
@@ -40,7 +40,7 @@ export default {
   props: {},
   data() {
     return {
-      itemTitle: "账户设置",
+      itemTitle: "Account settings",
       visible: false,
       listData,
       pagination: {

@@ -13,13 +13,17 @@
           v-if="col == 'size'"
           :key="col"
           style="text-align: center;width: 100%;background:#fff"
-          placeholder="请选择尺码"
         >
-          <a-select-option v-for="(sitem,index) in targetList.sizess" :key="index" :value="sitem">{{sitem}}</a-select-option>
+          <a-select-option
+            v-for="(sitem,index) in targetList.sizess"
+            :key="index"
+            :value="sitem"
+          >{{sitem}}</a-select-option>
         </a-select>
         <!-- <Stepper :num="record.number" @onPropsChange="change(record.key,col,)" v-if="col == 'number'" :key="col"></Stepper> -->
         <a-input
           @change="e =>changeName(e.target.value, record.key, col)"
+          @keyup="e => changeEn(e.target.value)"
           v-if="col == 'printName'"
           :key="col"
           :value="record.printName"
@@ -32,6 +36,7 @@
           :key="col"
           :value="record.printNumber"
           :disabled="record.is_print_number === 0"
+          type="number"
           style="text-align: center;background-color: rgba(255,255,255,0);"
         />
         <a-input
@@ -53,16 +58,13 @@
       :icon="'plus'"
       @newMembers="newMembers"
       :width="'100%'"
-      :title="'添加'"
+      :title="'Add'"
       :height="'40px'"
       :padding="'10px'"
       :radio="'12px'"
       :fontsize="'18px'"
       :top="'20px'"
-
-    >
-    
-    </commonBtn>
+    ></commonBtn>
     <!--<a-button
       style="width: 100%; margin-top: 20px;height:45px"
       icon="plus"
@@ -74,18 +76,24 @@
 import commonBtn from "@/components/commonBtn/commonBtn";
 export default {
   props: {
-    dataName: {},
-
+    dataName: {}
   },
   components: {
     commonBtn
   },
   created() {
-    this._price1()
+    this._price1();
   },
   data() {
     return {
-      dataList1: ["size","printName", "printNumber", "is_print_text", "is_print_number", "total_price"],
+      dataList1: [
+        "size",
+        "printName",
+        "printNumber",
+        "is_print_text",
+        "is_print_number",
+        "total_price"
+      ],
       // table
       quantity: 1,
       memberLoading: false,
@@ -94,14 +102,14 @@ export default {
           title: "SIZE",
           dataIndex: "size",
           key: "size",
-          algin:"center",
+          algin: "center",
           width: "20%",
           scopedSlots: { customRender: "size" }
         },
         {
           title: "Name",
           dataIndex: "printName",
-          algin:"center",
+          algin: "center",
           key: "printName",
           width: "20%",
           scopedSlots: { customRender: "printName" }
@@ -110,30 +118,30 @@ export default {
           title: "Number",
           dataIndex: "printNumber",
           key: "printNumber",
-          algin:"center",
+          algin: "center",
           width: "20%",
           scopedSlots: { customRender: "printNumber" }
         },
         {
-          title: "合计价格",
+          title: "Total Price",
           dataIndex: "price",
           key: "price",
-          algin:"center",
+          algin: "center",
           width: "20%",
           scopedSlots: { customRender: "price" }
         },
 
         {
-          title: "操作",
+          title: "action",
           width: "20%",
           key: "action",
-          algin:"center",
+          algin: "center",
           scopedSlots: { customRender: "operation" }
         }
       ],
       data1: "",
       sizes: [],
-targetList: {},
+      targetList: {},
       errors: []
     };
   },
@@ -142,20 +150,27 @@ targetList: {},
       let dataList = [];
       dataList = this.dataName;
       this.data1 = dataList;
-      this.sizes = this.data1[0].sizes
-      console.log(this.dataName)
-      this.data1[0].total_price = this.data1[0].price
+      this.sizes = this.data1[0].sizes;
+      console.log(this.dataName);
+      this.data1[0].total_price = this.data1[0].price;
       this.targetList = {
         price: this.data1[0].price,
         number: this.data1[0].number,
         is_print_number: this.data1[0].is_print_number,
         is_print_text: this.data1[0].is_print_text,
-        printName:this.data1[0].printName,
-        printNumber:this.data1[0].printNumber,
+        printName: this.data1[0].printName,
+        printNumber: this.data1[0].printNumber,
         sizess: this.data1[0].sizes,
         goods_id: this.data1[0].goods_id,
-        des_id: this.data1[0].des_id
-      }
+        des_id: this.data1[0].des_id,
+        positive_pic_url: this.data1[0].positive_pic_url,
+        back_pic_url: this.data1[0].back_pic_url,
+        left_pic_url: this.data1[0].left_pic_url,
+        right_pic_url: this.data1[0].right_pic_url,
+        color: this.data1[0].color,
+        weight: this.data1[0].weight
+        
+      };
     },
     handleChange(key, column, value) {
       console.log(key, column, value);
@@ -168,15 +183,45 @@ targetList: {},
         target.price = target.number * target.total_price;
       }
       this.data = newData;
-      if(value) {
+      if (value) {
         this.$emit("getList", this.data1);
       }
+    },
+    // 检验字段
+    testLength(lengnum) {
+      let stringLength = 0;
+      let num = lengnum.length;
+      let charCode = -1;
+      for (let i = 0; i < num; i++) {
+        charCode = lengnum.charCodeAt(i);
+        if (charCode >= 0 && charCode <= 128) {
+          stringLength += 1;
+        } else {
+          stringLength += 2;
+        }
+      }
+      console.log(stringLength);
+      return stringLength;
+    },
+    changeEn(value) {
+      console.log(value);
       
     },
-
     changeName(value, key, column) {
-
-      console.log(value, key, column)
+      console.log(value);
+      console.log(value, key, column);
+      if (!/^[a-zA-Z]+$/.test(value)) {
+        console.log("请输入英文");
+        value = "";
+      }else{
+        value = value.toUpperCase()
+      }
+      if (this.testLength(value) >= 10) {
+        this.$notification.error({
+          message: "长度不能超过10"
+        });
+        value = value.substr(0, 9);
+      }
       let newData = [...this.data1];
       console.log(newData);
       let target = newData.filter(item => key == item.key)[0];
@@ -185,60 +230,74 @@ targetList: {},
         target.printName = value;
       }
       this.data1 = newData;
-      if(value) {
+      if (value) {
         this.$emit("getList", this.data1);
       }
-      
+      //callback(new Error('长度过长'))
+
+      //callback(new Error('请输入英文'))
     },
 
     changeNum(value, key, column) {
-      console.log(value, key, column)
-      let newData = [...this.data1];
-      console.log(newData);
-      let target = newData.filter(item => key == item.key)[0];
-      console.log(target);
-      if (target) {
-        target.printNumber = value;
+      if(!/^\d{2}$/.test(value) >= 2) {
+        this.$notification.error({
+          message: "输入两位数字"
+        });
+        value = value.substr(0, 1);
       }
-      this.data1 = newData;
-      if(value) {
-        this.$emit("getList", this.data1);
-      }
-      
+      value = value.substr(0, 9);
+        console.log(value, key, column);
+        let newData = [...this.data1];
+        console.log(newData);
+        let target = newData.filter(item => key == item.key)[0];
+        console.log(target);
+        if (target) {
+          target.printNumber = value;
+        }
+        this.data1 = newData;
+        if (value) {
+          this.$emit("getList", this.data1);
+        }
     },
     newMembers() {
       const length = this.data1.length;
-      console.log(length)
+      console.log(length);
       this.data1.push({
         key:
           length === 0
             ? "1"
-            : (parseInt(this.data1[length - 1].key) + 1).toString(),    
+            : (parseInt(this.data1[length - 1].key) + 1).toString(),
         price: this.targetList.price,
         is_print_number: this.targetList.is_print_number,
         is_print_text: this.targetList.is_print_text,
-        printName:this.targetList.printName,
-        printNumber:this.targetList.printNumber,
+        printName: this.targetList.printName,
+        printNumber: this.targetList.printNumber,
         number: this.targetList.number,
         size: this.targetList.sizess,
         goods_id: this.targetList.goods_id,
         des_id: this.targetList.des_id,
-        total_price: this.targetList.price
+        total_price: this.targetList.price,
+        positive_pic_url: this.targetList.positive_pic_url,
+        back_pic_url: this.targetList.back_pic_url,
+        left_pic_url: this.targetList.left_pic_url,
+        right_pic_url: this.targetList.right_pic_url,
+        color: this.targetList.color,
+        weight: this.targetList.weight
       });
-      console.log(this.data1)
+      console.log(this.data1);
     },
 
     remove(key) {
-      let newData = [...this.data1]
+      let newData = [...this.data1];
       newData = this.data1.filter(item => item.key !== key);
-      let newData2 = [...this.data]
+      let newData2 = [...this.data];
       this.data1 = newData;
       let target = newData2.filter(item => key == item.key)[0];
-      if(target) {
+      if (target) {
         target.price = 0;
       }
       this.data1 = newData;
-      this.data2 = newData2
+      this.data2 = newData2;
       this.$emit("getList", this.data2);
     }
   },

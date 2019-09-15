@@ -9,44 +9,44 @@
           <a-col :span="4"></a-col>
           <a-col :span="16">
             <a-form id="formLogin" class="user-layout-login" ref="formLogin" :form="form">
-              <a-form-item label="账户" class="margin-top-20">
+              <a-form-item label="Account" class="margin-top-20">
                 <a-input
                   size="large"
                   type="text"
-                  placeholder="账户"
+                  placeholder="Please fill in the account."
                   v-decorator="[
                 'username',
-                {rules: [{ required: true, message: '账户' }], validateTrigger: 'change'}
+                {rules: [{ required: true, message: 'Please fill in the account.' }], validateTrigger: 'change'}
               ]"
                 ></a-input>
               </a-form-item>
 
-              <a-form-item label="密码" class="margin-top-20">
+              <a-form-item label="Password" class="margin-top-20">
                 <a-input
                   size="large"
                   type="password"
                   autocomplete="false"
-                  placeholder="密码"
+                  placeholder="Please fill in the password."
                   v-decorator="[
                 'password',
-                {rules: [{ required: true, message: '密码'}], validateTrigger: 'blur'}
+                {rules: [{ required: true, message: 'Please fill in the password.'}], validateTrigger: 'blur'}
               ]"
                 ></a-input>
               </a-form-item>
               <a-form-item>
                 <p class="auto-login">
-                  <a-checkbox @change="onChange" :checked="formLogin.rememberMe">自动登录</a-checkbox>
+                  <a-checkbox @change="onChange" :checked="formLogin.rememberMe">Automatic logon</a-checkbox>
                 </p>
                 <div class="forget">
                   <router-link class="register" :to="{ name: 'passwordSet' }">
-                    <span class="font-18">忘记密码</span>
+                    <span class="font-18">Forget password</span>
                   </router-link>
                 </div>
               </a-form-item>
               <a-form-item style="margin-top:24px">
                 <commonBtn
                   :width="'100%'"
-                  :title="'登录'"
+                  :title="'Login'"
                   :height="'44px'"
                   :padding="'15px'"
                   :radio="'18px'"
@@ -64,7 +64,7 @@
 
               <div class="user-login-other">
                 <router-link class="register" :to="{ path: '/register' }">
-                  <span class="font-18">注册账户</span>
+                  <span class="font-18">Registered accounts</span>
                 </router-link>
               </div>
             </a-form>
@@ -174,21 +174,21 @@ export default {
       // 延迟 1 秒显示欢迎信息
       if (res.code != 200) {
         this.$notification["error"]({
-          message: "登录失败",
+          message: "Login failed",
           description: res.message,
           duration: 4
         });
       } else {
         this.$notification.success({
-          message: "登录成功"
+          message: "Login successfully"
         });
       }
     },
     requestFailed(err) {
       console.log(err);
       this.$notification["error"]({
-        message: "错误",
-        description: ((err.response || {}).data || {}).message || "失败",
+        message: "the error message",
+        description: ((err.response || {}).data || {}).message || "the error message",
         duration: 4
       });
     },

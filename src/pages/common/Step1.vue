@@ -1,31 +1,31 @@
 <template>
   <div>
     <a-form style="max-width: 500px; margin: 40px auto 0;" :form="form">
-      <a-form-item label="登录的账户" :labelCol="{span: 5}" :wrapperCol="{span: 19}">
+      <a-form-item label="Login account" :labelCol="{span: 5}" :wrapperCol="{span: 19}">
         <a-input
-          placeholder="邮箱"
-          v-decorator="['email',{rules: [{ required: true, message: '邮箱' }]}]"
+          placeholder="Email"
+          v-decorator="['email',{rules: [{ required: true, message: 'Email' }]}]"
         />
       </a-form-item>
-      <a-form-item label="验证码" :labelCol="{span: 5}" :wrapperCol="{span: 19}">
+      <a-form-item label="Verification Code" :labelCol="{span: 5}" :wrapperCol="{span: 19}">
         <a-row :gutter="32">
           <a-col :span="16">
             <a-input
               size="large"
               type="text"
-              placeholder="验证码"
+              placeholder="Verification Code"
               v-model="captcha"
             >
               <a-icon slot="prefix" type="mail" :style="{ color: 'rgba(0,0,0,.25)' }" />
             </a-input>
           </a-col>
           <a-col :span="6">
-            <a-button @click="setCode">获取验证码</a-button>
+            <a-button @click="setCode">Get the authentication code</a-button>
           </a-col>
         </a-row>
       </a-form-item>
       <a-form-item :wrapperCol="{span: 19, offset: 5}">
-        <a-button type="primary" @click="nextStep">下一步</a-button>
+        <a-button type="primary" @click="nextStep">Next</a-button>
       </a-form-item>
     </a-form>
   </div>
@@ -57,22 +57,22 @@ export default {
             this.code = res.code;
             if (res.code == 0) {
               this.$notification["success"]({
-                message: "成功",
-                description: "操作成功",
+                message: "Success",
+                description: "Successful",
                 duration: 4
               });
             }
             if (res.code == 500) {
               this.$notification["warn"]({
-                message: "邮箱未注册",
-                description: "邮箱未注册，请您先注册！",
+                message: "Email not yet registered",
+                description: "Email not yet registered, please sign up!",
                 duration: 4
               });
             }
             if (res.code == 300) {
               this.$notification["warn"]({
-                message: "验证码仍然有效",
-                description: "验证码10分钟内，仍然有效",
+                message: "Verification code is still valid",
+                description: "Verification code is still valid within 10 minutes",
                 duration: 4
               });
             }
@@ -98,7 +98,7 @@ export default {
               })
               //
             }else{
-              this.$message.error('请填写验证码！')
+              this.$message.error('Please fill in the verification code!')
             }
             
           }

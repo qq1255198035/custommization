@@ -10,7 +10,7 @@
           <a-icon type="user" :style="{color: usercolor}"/>
         </a>
         <a-menu slot="overlay" @click="onClick">
-          <a-menu-item key="1"><a-icon type="logout" />退出登录</a-menu-item>
+          <a-menu-item key="1"><a-icon type="logout" />Logout</a-menu-item>
         </a-menu>
       </a-dropdown>
     </span>
@@ -49,9 +49,9 @@ export default {
       console.log(key);
       const that = this;
       this.$confirm({
-        title: "退出登录",
-        content: "确认退出登录？",
-        okText: "确认",
+        title: "Logout",
+        content: "Confirm Logout？",
+        okText: "confirm",
         cancelText: "Cancel",
         onOk() {
           that.Logout();

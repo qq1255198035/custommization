@@ -39,7 +39,7 @@ export default {
             num:1,
             columns: [
                     {
-                            title: '订单号',
+                            title: 'Order Number',
                             dataIndex: 'orderSn'
                     },
                     {

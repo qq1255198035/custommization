@@ -20,11 +20,17 @@
             style="overflow-y: auto;overflow-x: hidden;height:560px;max-height:560px"
           >
             <table-item :datas="item" ref="myTable">
-              <a href style="font-size: 18px; color: #999; text-decoration: underline">View the size chart</a>
+              <a
+                @click="imgShow"
+                href="javascript:;"
+                style="font-size: 18px; color: #999; text-decoration: underline"
+              >View the size chart</a>
+              <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancelImg">
+                <img alt="example" style="width: 100%" :src="previewImage" />
+              </a-modal>
             </table-item>
             <div v-if="!item.is_print_numbe && !item.is_print_text">
               <my-table :dataSize="[item]" @getList="list" ref="mychild"></my-table>
-              
             </div>
 
             <div v-if="item.is_print_numbe || item.is_print_text">
@@ -40,7 +46,7 @@
           <a-col :span="18"></a-col>
           <a-col :span="4">
             <div class="left">
-              <div class="price-title">总价</div>
+              <div class="price-title">Total Amount</div>
               <div class="allprice">${{allPrice}}</div>
             </div>
             <div class="right">
@@ -48,7 +54,7 @@
               <commonBtn
                 @payTo="payTo"
                 :width="'100%'"
-                :title="'立即支付'"
+                :title="'Pay Now'"
                 :height="'56px'"
                 :padding="'15px'"
                 :radio="'18px'"
@@ -82,6 +88,7 @@ export default {
   props: {},
   data() {
     return {
+      previewVisible: false,
       showList: "",
       showTable: "",
       aPrice: "",
@@ -110,8 +117,8 @@ export default {
       newList: [],
       newListOld: [],
       newListOld1: [],
-      arrtyNew1:[],
-      arrtyNew2:[]
+      arrtyNew1: [],
+      arrtyNew2: []
     };
   },
   computed: {},
@@ -123,6 +130,12 @@ export default {
   mounted() {},
   watch: {},
   methods: {
+    imgShow() {
+      this.previewVisible = true
+    },
+    handleCancelImg() {
+      this.previewVisible = false
+    },
     check() {
       var userAgentInfo = navigator.userAgent;
       var Agents = new Array(
@@ -154,7 +167,7 @@ export default {
       for (var i = 0; i < data.length; i++) {
         this.newListOld.push(data[i]);
       }
-      console.log(this.newListOld)
+      console.log(this.newListOld);
       let newLists = [];
       for (var k = 0; k < this.newListOld.length; k++) {
         let count = 0;
@@ -169,14 +182,20 @@ export default {
           newLists[newLists.length] = this.newListOld[k];
         }
       }
-      this.arrtyNew1 = newLists
-      console.log(newLists)
-      this.arrtyAllList = this.arrtyNew1.concat(this.arrtyNew2)
-      this.allPrice = this._price(this.arrtyAllList)
-      this.listNoPay.data = this.arrtyAllList
+
+      this.arrtyNew1 = newLists;
+      console.log(this.arrtyNew1);
+      this.arrtyNew1 = this.arrtyNew1.filter(item => {
+        return item.price !== 0;
+      });
+      console.log(this.arrtyNew1);
+      this.arrtyAllList = this.arrtyNew1.concat(this.arrtyNew2);
+      console.log(this.arrtyAllList);
+      this.allPrice = this._price(this.arrtyAllList);
+      this.listNoPay.data = this.arrtyAllList;
     },
     lists(data) {
-      console.log(data)
+      console.log(data);
       for (var i = 0; i < data.length; i++) {
         this.newListOld1.push(data[i]);
       }
@@ -194,19 +213,25 @@ export default {
           newLists[newLists.length] = this.newListOld1[k];
         }
       }
-      
-      this.arrtyNew2 = newLists
-      this.arrtyAllList = this.arrtyNew2.concat(this.arrtyNew1)
-      this.allPrice=this._price(this.arrtyAllList)
-      this.listNoPay.data = this.arrtyAllList
+
+      this.arrtyNew2 = newLists;
+      this.arrtyNew2 = this.arrtyNew2.filter(item => {
+        return item.price !== 0;
+      });
+      console.log(this.arrtyNew2);
+      this.arrtyAllList = this.arrtyNew2.concat(this.arrtyNew1);
+      console.log(this.arrtyAllList);
+      this.allPrice = this._price(this.arrtyAllList);
+      this.listNoPay.data = this.arrtyAllList;
     },
     payTo() {
       const token = this.$ls.get(ACCESS_TOKEN);
       if (!token) {
         this.$error({
-          title: "未登录",
-          content: "您还没有登录，请先登录",
-          okText: "去登录",
+          title: "Not Signed In",
+          content:
+            "You are currently not signed in, please sign-in to continue",
+          okText: "Proceed to Sign-In",
           mask: false,
           onOk: () => {
             this.$router.push({
@@ -217,13 +242,14 @@ export default {
             });
           }
         });
-      } 
-      if(this.allPrice && token) {
+      }
+      if (this.allPrice && token) {
         const param = {
           //token: this.$ls.get("token"),
+          user_order_id: this.$route.query.user_order_id,
           order_id: this.$route.query.order_id,
           order_price: this.allPrice,
-          personOrderList: JSON.stringify(this.listNoPay),
+          personOrderList: JSON.stringify(this.listNoPay)
         };
         console.log(param);
         apiPay(param).then(res => {
@@ -232,7 +258,7 @@ export default {
             this.$router.push({
               path: "/payment",
               query: {
-                user_order_id: res.user_order_id
+                user_order_id: this.$route.query.order_id
               }
             });
           }
@@ -248,10 +274,10 @@ export default {
         pageSize: 10
       }).then(res => {
         console.log(res);
-        this.$ls.set("types",res.result.type);
-        
+        this.$ls.set("types", res.result.type);
+
         this.resultData = res.result.personOrderNoPrintList;
-        this.detailList = res.result
+        this.detailList = res.result;
       });
     }
   },

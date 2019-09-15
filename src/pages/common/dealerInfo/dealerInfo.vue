@@ -7,16 +7,16 @@
       <div class="content">
         <my-title :title="itemTitle" :fontsize="20"></my-title>
         <a-tabs defaultActiveKey="1" @change="callback">
-          <a-tab-pane tab="基本信息" key="1">
+          <a-tab-pane tab="Essential information" key="1">
             <perSet></perSet>
           </a-tab-pane>
-          <a-tab-pane tab="代理申请" key="2" forceRender><agencySet></agencySet></a-tab-pane>
+          <a-tab-pane tab="Agent application" key="2" forceRender><agencySet></agencySet></a-tab-pane>
         </a-tabs>
       </div>
     </div>
     <div>
       <a-button class="open-btn" type="primary" @click="showDrawer" icon="bars"></a-button>
-      <a-drawer title="服装设计" placement="left" :closable="false" @close="onClose" :visible="visible">
+      <a-drawer title="Clothing design" placement="left" :closable="false" @close="onClose" :visible="visible">
         <commonHeader></commonHeader>
       </a-drawer>
     </div>
@@ -46,7 +46,7 @@ export default {
   props: {},
   data() {
     return {
-      itemTitle: "账户设置",
+      itemTitle: "Account Settings",
       visible: false,
       listData,
       pagination: {

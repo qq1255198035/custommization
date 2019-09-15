@@ -408,7 +408,7 @@ export default {
             zzs: '贊助商',
             gs: '搞手',
             jjr: '經紀人',
-            xyb: '下一步',
+            xyb: 'Next',
             yyzh: '使用已有賬戶登錄',
             yx: '郵箱',
             qsryx: '請輸入郵箱地址',

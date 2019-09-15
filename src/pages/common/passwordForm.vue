@@ -2,8 +2,8 @@
   <div style="padding-top: 200px;">
     <a-card :bordered="false" style="display: block; width: 60%; background-color: #fff; margin: 0 auto; padding: 50px 0;">
       <a-steps class="steps" :current="currentTab">
-        <a-step title="确认账号信息" />
-        <a-step title="修改密码" />
+        <a-step title="Confirm account information" />
+        <a-step title="Change Password" />
         <a-step title="Completed" />
       </a-steps>
       <div class="content">

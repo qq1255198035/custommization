@@ -50,7 +50,7 @@
                         v-if="current < steps.length - 1"
                         type="primary" @click="next"
                     >
-                        下一步
+                        Next
                     </a-button>
                     <a-button
                         v-if="current == steps.length - 1"

@@ -34,7 +34,7 @@ export default {
       total: 0,
       pageNo: 1,
       pageSize: 10,
-      itemTitles: "个人订单",
+      itemTitles: "Your Order (s)",
       visible: false,
       listData: [],
       pagination: {
