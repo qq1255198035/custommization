@@ -6,9 +6,9 @@
         </div>
         <div class="box1">
             <my-stpes :mycurrent="1" stpesnum="3">
-                    <p slot="p1" style="color: #fff;">设计原稿</p>
-                    <p slot="p2" style="color: #fff;">打样确认</p>
-                    <p slot="p3" style="color: #fff;">Share purchase</p>
+                    <p slot="p1" style="color: #fff; text-align: center;">Original design</p>
+                    <p slot="p2" style="color: #fff; text-align: center;">Proofing confirmation</p>
+                    <p slot="p3" style="color: #fff; text-align: center;">Share purchase</p>
             </my-stpes>
         </div>
         <div class="content">
@@ -138,7 +138,6 @@ export default {
                     margin-top: 50px;
                     button{
                         margin: 0 20px;
-                        width: 88px;
                         &:nth-child(1){
                             color: #33b8b3;
                             border-color: #33b8b3;

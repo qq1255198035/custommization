@@ -506,7 +506,6 @@ export default {
           } else {
             this.$notification["error"]({
               message: "Please Fill in the receiving address",
-              description: "请填写收货地址后开始",
               duration: 4
             });
           }

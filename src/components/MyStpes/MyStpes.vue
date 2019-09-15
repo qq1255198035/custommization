@@ -107,6 +107,7 @@ export default {
             background-color: #fff;
             border-radius: 9px;
             display: block;
+            margin-top: 10px;
       }
       .line-active{
             background-color: #fff;

@@ -219,6 +219,7 @@ export default {
       display: flex;
       flex-direction: column;
       justify-content: space-around;
+      align-items: center;
       .ant-avatar {
         margin: 20px 0;
       }

@@ -218,7 +218,7 @@ export default {
                 sites: ["facebook", "wechat", "weibo"], // 启用的站点
                 //disabled: ['google', 'facebook', 'twitter'], // 禁用的站点
                 wechatQrcodeTitle: "WeChat Scan: Share", // 微信二维码提示文字
-                wechatQrcodeHelper: "Scan the two-dimensional code to share this article with friends."
+                wechatQrcodeHelper: "Scan and share this article with friends."
             },
             mycurrent: 3
         }
@@ -313,7 +313,7 @@ export default {
                 
         }
         p{
-            font-size: 18px;
+            font-size: 16px;
             color: #999;
             span{
                 color: #33b8b3;

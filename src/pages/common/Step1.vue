@@ -1,13 +1,13 @@
 <template>
   <div>
     <a-form style="max-width: 500px; margin: 40px auto 0;" :form="form">
-      <a-form-item label="Login account" :labelCol="{span: 5}" :wrapperCol="{span: 19}">
+      <a-form-item label="Login account" :labelCol="{span: 6}" :wrapperCol="{span: 18}">
         <a-input
           placeholder="Email"
           v-decorator="['email',{rules: [{ required: true, message: 'Email' }]}]"
         />
       </a-form-item>
-      <a-form-item label="Verification Code" :labelCol="{span: 5}" :wrapperCol="{span: 19}">
+      <a-form-item label="Verification Code" :labelCol="{span: 6}" :wrapperCol="{span: 18}">
         <a-row :gutter="32">
           <a-col :span="16">
             <a-input

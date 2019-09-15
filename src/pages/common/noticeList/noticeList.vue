@@ -53,7 +53,7 @@ export default {
   data() {
     return {
       itemTitle: "Notifications",
-      locale: lang[localStorage.getItem("lang")],
+      locale: 'enUS',
       loading: true,
       loadingMore: false,
       data: [

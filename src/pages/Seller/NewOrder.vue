@@ -685,7 +685,7 @@
                         </a-form-item>
                     </a-form>
                     <div class="btn-box">
-                        <a-button @click="clickOk">Submit </a-button>
+                        <a-button @click="clickOk">Submit</a-button>
                         <a-button style="color:#ccc;border-color: #ccc;" @click="closeUploadModal">Cancel</a-button>
                     </div>
                 </div>
@@ -1568,7 +1568,9 @@ export default {
                     cancelText: "Cancel",
                     onOk() {
                         that.show = false;
+                        that.$router.push({path: '/neworder'})
                         window.location.reload();
+                        
                     },
                     onCancel() {}
                 });
@@ -2108,6 +2110,7 @@ export default {
         beforeUploadEx(file){
             if(file.size / 1024 / 1024 < 10){
                 this.uploadA = true
+                console.log(file)
                 this.postSourceUpload(file)
 
             }else{
@@ -2116,8 +2119,11 @@ export default {
             }
         },
         postSourceUpload(file){
-            const formData = new FormData()
-            formData.append('file', file)
+            let formData = new FormData();
+            formData.append("file", file);
+            console.log(file)
+            console.log(formData.get("file"))
+            
             sourceUpload(formData).then(res => {
                 console.log(res)
                 this.preview_url = res.preview_url;

@@ -92,7 +92,7 @@ export default {
         //disabled: ['google', 'facebook', 'twitter'], // 禁用的站点
         wechatQrcodeTitle: "WeChat Scan: Share", // 微信二维码提示文字
         wechatQrcodeHelper:
-          "Scan the two-dimensional code to share this article with friends."
+          "Scan and share this article with friends."
       }
     };
   },
