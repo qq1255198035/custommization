@@ -262,8 +262,6 @@ export default {
       .login {
         padding-bottom: 20px;
         text-align: center;
-        img {
-        }
       }
       .user-layout-login {
         label {

@@ -119,7 +119,7 @@
       <a-col :lg="10" style="text-align: center">
         <div class="upload">
           <div class="top">
-            <p style="color: #fff">Head Portrait</p>
+            <p style="color: #33b8b3">Head Portrait</p>
             <img
               v-if="imgurl"
               :src="imgurl"
@@ -391,6 +391,7 @@ export default {
       display: flex;
       flex-direction: column;
       justify-content: space-around;
+      align-items: center;
       .ant-avatar {
         margin: 20px 0;
       }

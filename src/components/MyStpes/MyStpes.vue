@@ -98,15 +98,13 @@ export default {
             margin-bottom: 25px;
             min-width: 20px;
       }
-      .more-lang{
-
-      }
       .doct3{
             width: 18px;
             height: 18px;
             background-color: #fff;
             border-radius: 9px;
             display: block;
+            margin-top: 10px;
       }
       .line-active{
             background-color: #fff;

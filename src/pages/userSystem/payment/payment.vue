@@ -185,8 +185,6 @@ import {
   payPal,
   wxPay,
   wxOrderQuery,
-  apiPay,
-  toPaypal,
   payPalOrder,
   paymentSessionInfos
 } from "@/api/system";
@@ -558,8 +556,7 @@ export default {
       }
       .right {
         position: relative;
-        .ant-btn {
-        }
+        
       }
     }
   }

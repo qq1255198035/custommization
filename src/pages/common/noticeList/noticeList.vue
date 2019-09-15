@@ -37,14 +37,15 @@
 import { apiNotice } from "@/api/system";
 import MyTitle from "@/components/MyTitle/MyTitle";
 import { mixinsTitle } from "@/utils/mixin.js";
+/* eslint-disable */
 import enUS from "ant-design-vue/lib/locale-provider/en_US";
-import zhCN from "ant-design-vue/lib/locale-provider/zh_CN";
-import zhTW from "ant-design-vue/lib/locale-provider/zh_TW";
-const lang = {
-  "zh-TW": zhTW,
-  "zh-CN": zhCN,
-  "en-US": enUS
-};
+// import zhCN from "ant-design-vue/lib/locale-provider/zh_CN";
+// import zhTW from "ant-design-vue/lib/locale-provider/zh_TW";
+// const lang = {
+//   "zh-TW": zhTW,
+//   "zh-CN": zhCN,
+//   "en-US": enUS
+// };
 export default {
   mixins: [mixinsTitle],
   components: {
@@ -53,7 +54,7 @@ export default {
   data() {
     return {
       itemTitle: "Notifications",
-      locale: lang[localStorage.getItem("lang")],
+      locale: 'enUS',
       loading: true,
       loadingMore: false,
       data: [
