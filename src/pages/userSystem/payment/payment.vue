@@ -597,8 +597,7 @@ export default {
       }
       .right {
         position: relative;
-        .ant-btn {
-        }
+        
       }
     }
   }

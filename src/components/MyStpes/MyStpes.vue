@@ -98,9 +98,6 @@ export default {
             margin-bottom: 25px;
             min-width: 20px;
       }
-      .more-lang{
-
-      }
       .doct3{
             width: 18px;
             height: 18px;
