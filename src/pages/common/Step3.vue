@@ -1,8 +1,8 @@
 <template>
   <div style="text-align: center;">
-    <p style="margin: 20px 0; font-size: 18px;color: #33b8b3;">密码修改成功！</p>
+    <p style="margin: 20px 0; font-size: 18px;color: #33b8b3;">Password modification was successful!</p>
     <a-button type="primary">
-      <router-link class="login" :to="{ path: '/login' }">去登录</router-link>
+      <router-link class="login" :to="{ path: '/login' }">Proceed to Sign-In</router-link>
     </a-button>
   </div>
 </template>

@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from "./router";
-import i18n from './lang'
+//import i18n from './lang'
 import store from './store/'
 import './permission'
 import { VueAxios } from './utils/request'
@@ -33,6 +33,6 @@ Vue.config.productionTip = false;
 new Vue({
   router,
   store,
-  i18n,
+  //i18n,
   render: h => h(App),
 }).$mount('#app')

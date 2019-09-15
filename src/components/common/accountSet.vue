@@ -8,39 +8,39 @@
               <a-input
                 placeholder="Email"
                 :disabled="true"
-                v-decorator="['email',{rules: [{ required: true, message: 'Email' }]}]"
+                v-decorator="['email',{rules: [{ required: true, message: 'Please fill in the mailbox' }]}]"
               />
             </a-form-item>
 
             <a-row :gutter="32">
               <a-col :span="12">
-                <a-form-item label="姓">
+                <a-form-item label="Surname">
                   <a-input
-                    placeholder="姓"
-                    v-decorator="['surname',{rules: [{ required: true, message: '姓' }]}]"
+                    placeholder="Surname"
+                    v-decorator="['surname',{rules: [{ required: true, message: 'Surname' }]}]"
                   />
                 </a-form-item>
               </a-col>
               <a-col :span="12">
-                <a-form-item label="名">
+                <a-form-item label="Name">
                   <a-input
-                    placeholder="名"
-                    v-decorator="['monicker',{rules: [{ required: true, message: '名' }]}]"
+                    placeholder="Name"
+                    v-decorator="['monicker',{rules: [{ required: true, message: 'Name' }]}]"
                   />
                 </a-form-item>
               </a-col>
             </a-row>
-            <a-form-item label="About You">
+            <a-form-item label="Personal profile">
               <a-input
-                placeholder="About You"
-                v-decorator="['company',{rules: [{ required: true, message: 'About You' }]}]"
+                placeholder="Personal profile"
+                v-decorator="['company',{rules: [{ required: true, message: 'Personal profile' }]}]"
               />
             </a-form-item>
 
-            <a-form-item label="地点">
+            <a-form-item label="Place">
               <a-select
                 @change="countryBtn"
-                v-decorator="['countryName',{rules: [{ required: true, message: 'Email' }]}]"
+                v-decorator="['countryName',{rules: [{ required: true, message: 'Please fill in the location.' }]}]"
               >
                 <a-select-option
                   v-for="(item, index) in country"
@@ -51,12 +51,12 @@
             </a-form-item>
             <a-row :gutter="32">
               <a-col :span="12">
-                <a-form-item label="Province/State">
+                <a-form-item label="Province where">
                   <div class>
                     <a-select
                       @change="onProvince"
                       placeholder="Please choose"
-                      v-decorator="['province',{rules: [{ required: true, message: 'Email' }]}]"
+                      v-decorator="['province',{rules: [{ required: true, message: 'Please choose' }]}]"
                     >
                       <a-select-option
                         v-for="(item, index) in province"
@@ -68,12 +68,12 @@
                 </a-form-item>
               </a-col>
               <a-col :span="12">
-                <a-form-item label="所在市">
+                <a-form-item label="City where">
                   <div class>
                     <a-select
                       @change="onCity"
-                      placeholder="请选择"
-                      v-decorator="['city',{rules: [{ required: true, message: 'Email' }]}]"
+                      placeholder="Please choose"
+                      v-decorator="['city',{rules: [{ required: true, message: 'Please choose' }]}]"
                     >
                       <a-select-option
                         v-for="(item, index) in city"
@@ -86,15 +86,15 @@
               </a-col>
             </a-row>
 
-            <a-form-item label="街道地址">
+            <a-form-item label="Street address">
               <a-input
-                placeholder="街道地址"
+                placeholder="Street address"
                 :autosize="{ minRows: 6 }"
-                v-decorator="['streetName',{rules: [{ required: true, message: '街道地址' }]}]"
+                v-decorator="['streetName',{rules: [{ required: true, message: 'Street address' }]}]"
               />
             </a-form-item>
             <a-input-group compact>
-              <a-form-item label="Phone Number">
+              <a-form-item label="Telephone">
                 <a-row :gutter="32">
                   <a-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
                     <a-input
@@ -106,8 +106,8 @@
                   <a-col :xs="20" :sm="20" :md="20" :lg="20" :xl="20">
                     <a-input
                       @change="phoneLastBtn"
-                      placeholder="电话号"
-                      v-decorator="['phoneName2',{rules: [{ required: true, message: 'Phone Number' }]}]"
+                      placeholder="Telephone number"
+                      v-decorator="['phoneName2',{rules: [{ required: true, message: 'Telephone number' }]}]"
                     />
                   </a-col>
                 </a-row>
@@ -119,7 +119,7 @@
       <a-col :lg="10" style="text-align: center">
         <div class="upload">
           <div class="top">
-            <p style="color: #fff">头像</p>
+            <p style="color: #fff">Head Portrait</p>
             <img
               v-if="imgurl"
               :src="imgurl"
@@ -133,7 +133,7 @@
                 <commonBtn
                   :icon="'upload'"
                   :width="'100%'"
-                  :title="'更换头像'"
+                  :title="'Change Profile Picture'"
                   :height="'40px'"
                   :padding="'7px'"
                   :radio="'6px'"
@@ -153,7 +153,7 @@
           :icon="'upload'"
           @submitPerson="submitPerson"
           :width="'100%'"
-          :title="'更新'"
+          :title="'To Update'"
           :height="'45px'"
           :padding="'10px'"
           :radio="'12px'"
@@ -279,8 +279,8 @@ export default {
             console.log(res);
             if (res.code == 200) {
               this.$notification.success({
-                message: "更新成功",
-                description: "信息已经更新完成",
+                message: "Update Success",
+                description: "The information has been updated.",
                 duration: 4
               });
               window.location.reload();
@@ -339,7 +339,7 @@ export default {
       }
       const isLt2M = file.size / 1024 / 1024 < 2;
       if (!isLt2M) {
-        this.$message.error(this.$t("图片超过2M"));
+        this.$message.error(this.$t("Image Size Over 2MB"));
         return isLt2M;
       }
       getBase64(file, imageUrl => {

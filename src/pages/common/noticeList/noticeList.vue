@@ -52,7 +52,7 @@ export default {
   },
   data() {
     return {
-      itemTitle: "通知消息",
+      itemTitle: "Notifications",
       locale: lang[localStorage.getItem("lang")],
       loading: true,
       loadingMore: false,
@@ -90,7 +90,7 @@ export default {
         let page = parseInt(this.pages);
         if (res.pages <= page) {
           this.btnDsiable = true;
-          this.$message.warning("数据全部加载完成");
+          this.$message.warning("All Data Successfully Updated");
           this.loadingMore = false;
           this.loading = false;
           return;

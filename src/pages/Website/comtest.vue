@@ -31,7 +31,7 @@
             <my-header></my-header>
             <my-stpes :mycurrent="2">
                   <p slot="p1">Select Size</p>
-                  <p slot="p2">确认支付</p>
+                  <p slot="p2">Please Confirm Payment</p>
                   <p slot="p3">Waiting To Start Group Order</p>
                   <p slot="p4">Completed</p>
             </my-stpes>

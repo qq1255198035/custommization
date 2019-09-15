@@ -10,10 +10,10 @@
       <a-row>
         <a-col :span="2"></a-col>
         <a-col :span="20">
-          <div class="step font-reset">流程进度</div>
+          <div class="step font-reset">Progress</div>
           <MyPrimaryStpes :mycurrent="step">
             <p slot="p1">Select Size</p>
-            <p slot="p2">确认支付</p>
+            <p slot="p2">Please Confirm Payment</p>
             <p slot="p3">Waiting To Start Group Order</p>
             <p slot="p4">Completed</p>
           </MyPrimaryStpes>
@@ -56,7 +56,7 @@
                 </a-radio>
                 <a-radio :value="2">
                   <img style="width:50px" src="@assets/weixin_pay.png" alt />
-                  <span class="pay-font">微信支付</span>
+                  <span class="pay-font">WeChat Pay</span>
                 </a-radio>
               </a-radio-group>
             </div>
@@ -67,7 +67,7 @@
               <li>
                 <a-row>
                   <a-col :span="12">
-                    <h3 class="font-18">商品金额：</h3>
+                    <h3 class="font-18">Item Amount：</h3>
                   </a-col>
                   <a-col :span="12">
                     <p class="textRight font-color">${{pricess.order_price}}</p>
@@ -77,10 +77,10 @@
               <li>
                 <a-row>
                   <a-col :span="12">
-                    <h3 class="font-18">手续费：</h3>
+                    <h3 class="font-18">Service Fee：</h3>
                   </a-col>
                   <a-col :span="12">
-                    <p class="textRight font-color">${{pricess.commission}}</p>
+                    <p class="textRight font-color">${{pricess.commission.toFixed(2)}}</p>
                   </a-col>
                 </a-row>
               </li>
@@ -97,7 +97,7 @@
               <li style="padding-top:20px">
                 <a-row>
                   <a-col :span="12">
-                    <h3 class="font-color">合计总额：</h3>
+                    <h3 class="font-color">Total Amount：</h3>
                   </a-col>
                   <a-col :span="12">
                     <p class="textRight font-color">${{pricess.all_price}}</p>
@@ -121,14 +121,14 @@
         <a-col :span="4" :offset="18">
           <div class="paynum">
             <div class="left textRight">
-              <div class="font-18" style="padding-bottom:20px">总价</div>
-              <div class="font-reset">${{pricess.all_price}}</div>
+              <div class="font-18" style="padding-bottom:20px">Total Amount</div>
+              <div class="font-reset">${{pricess.all_price.toFixed(2)}}</div>
             </div>
             <div class="right">
               <commonBtn
                 @payBtn="payBtn"
                 :width="'100%'"
-                :title="'立即支付'"
+                :title="'Pay Now'"
                 :height="'56px'"
                 :padding="'10px'"
                 :radio="'12px'"
@@ -138,6 +138,19 @@
                 <span class="bg-box">
                   <span class="bg-image"></span>
                 </span>
+              </commonBtn>
+            </div>
+            <div class="right">
+              <commonBtn
+                @payBtn="payBtn"
+                :width="'100%'"
+                :title="'提交订单'"
+                :height="'56px'"
+                :padding="'10px'"
+                :radio="'12px'"
+                :fontsize="'18px'"
+                :top="'20px'"
+              >
               </commonBtn>
             </div>
           </div>
@@ -165,7 +178,10 @@ import {
   status,
   wxPay,
   wxOrderQuery,
-  apiPay
+  apiPay,
+  toPaypal,
+  payPalOrder,
+  paymentSessionInfos
 } from "@/api/system";
 import MyPrimaryStpes from "@/components/MyPrimaryStpes/MyPrimaryStpes";
 import MyTitle from "@/components/MyTitle/MyTitle";
@@ -179,7 +195,8 @@ export default {
   props: {},
   data() {
     return {
-      pricess: '',
+      personOrderList: {},
+      pricess: "",
       websocket: null,
       prepayId: "",
       show: false,
@@ -188,7 +205,7 @@ export default {
       listRight: {},
       value: 1,
       itemTitle: "Order Information",
-      payTitle: "支付信息",
+      payTitle: "Payment Details",
       allPrice: "",
       img1: {},
       img2: {},
@@ -216,7 +233,7 @@ export default {
           dataIndex: "total_price"
         },
         {
-          title: "总价",
+          title: "Total Amount",
           align: "center",
           dataIndex: "price"
         }
@@ -243,7 +260,7 @@ export default {
           dataIndex: "printNumber"
         },
         {
-          title: "Price",
+          title: "Order Price",
           width: "20%",
           align: "center",
           dataIndex: "total_price"
@@ -259,9 +276,9 @@ export default {
   },
   computed: {},
   created() {
-    this._paymentInfos();
+    //this._paymentInfos();
     this._status();
-    
+    this._paymentSessionInfos();
   },
   mounted() {},
   watch: {},
@@ -290,7 +307,7 @@ export default {
     },
     websocketonmessage(e) {
       let _this = this; //数据接收
-      console.log(e.data)
+      console.log(e.data);
       if (e.data == "连接成功") {
         //这个判断是我业务需求才加的
         return;
@@ -321,26 +338,6 @@ export default {
         this.step = parseInt(res.result.schedule);
       });
     },
-    toPayInfos() {
-      const param = {
-          //token: this.$ls.get("token"),
-          order_id: this.$route.query.order_id,
-          order_price: this.allPrice,
-          personOrderList: JSON.stringify(this.listNoPay),
-        };
-        console.log(param);
-        apiPay(param).then(res => {
-          console.log(res);
-          if (res.code == 1) {
-            this.$router.push({
-              path: "/payment",
-              query: {
-                user_order_id: res.user_order_id
-              }
-            });
-          }
-        });
-    },
     /*_paymentInfos() {
       const param = {
         user_order_id: this.$route.query.user_order_id
@@ -351,17 +348,33 @@ export default {
         this.dataList2 = response.confirmPrintPayList;
         this.listLeft = response.confirmNoPrintPayList[0];
         this.listRight = response.confirmPrintPayList[0];
-        this.pricess = response.userOrderId[0]
+        this.pricess = response.userOrderId[0];
         this.allPrice = response.userOrderId[0] ? response.userOrderId[0] : 0;
         this.userId = response.userOrderId[0].order_id;
       });
     },*/
+    _paymentSessionInfos() {
+      const param = {
+        user_order_id: this.$route.query.user_order_id
+      };
+      paymentSessionInfos().then(response => {
+        console.log(response);
+        this.dataList1 = response.confirmNoPrintPayList;
+        this.dataList2 = response.confirmPrintPayList;
+        this.listLeft = response.confirmNoPrintPayList[0];
+        this.listRight = response.confirmPrintPayList[0];
+        this.pricess = response.userOrderId[0];
+        this.allPrice = response.order_price ? response.order_price : 0;
+        this.userId = response.order_id;
+        this.personOrderList = response.personOrderList;
+      });
+    },
     resultPsot(data) {
       const that = this;
       console.log(data);
       wxOrderQuery(data).then(res => {
-        console.log(res)
-        console.log(res.wxPayStatus)
+        console.log(res);
+        console.log(res.wxPayStatus);
         console.log(!res.wxPayStatus == 0);
         if (res.wxPayStatus == 0) {
           this.$router.push({
@@ -379,53 +392,64 @@ export default {
       });
     },
     payBtn() {
-      console.log(this.value);
-      const param = {
-        order_id: this.userId,
-        user_order_id: this.$route.query.user_order_id,
-        price: this.allPrice.order_price,
-        type: this.$ls.get('types')
+      const pata = {
+        personOrderList: JSON.stringify(this.personOrderList),
+        order_id: this.$route.query.user_order_id,
+        order_price: this.pricess.all_price
       };
-      if (this.value == 1) {
-        console.log(param);
-        payPal(param).then(res => {
-          console.log(res);
-          let first = res.toPayHtml.indexOf("href") + 6;
-          let last = res.toPayHtml.lastIndexOf('"');
-          let url = res.toPayHtml.slice(first, last);
-          console.log(url);
-          this.$ls.set("userOrderId", res.user_order_id);
-          this.$ls.set("orderId", res.order_id);
-          this.$ls.set("price", res.price);
-          let routeData = this.$router.resolve({
-            path: "paylocal",
-            query: { url: url }
-          });
-          window.location.replace(routeData.href, "_blank");
-        });
-      }
-      if (this.value == 2) {
-        //this.initWebSocket();
-        wxPay(param).then(res => {
-          console.log(res);
-          this.prepayId = res.respData.prepay_id;
-
-          const url = res.respData.code_url;
-          this.show = true;
-          var canvas = document.getElementById("canvas");
-          QRCode.toCanvas(canvas, url, function(error) {
-            if (error) {
-              console.error(error);
-            }
-          });
-          const datas = {
-            prepay_id: res.respData.prepay_id,
-            user_order_id: res.payInfoList[0].user_order_id
+      console.log(pata)
+      payPalOrder(pata).then(res => {
+        console.log(res);
+        if (res.code == 1) {
+          const param = {
+            order_id: this.userId,
+            user_order_id: res.result.user_order_id,
+            price: this.pricess.all_price,
+            type: this.$ls.get("types")
           };
-          console.log();
-          this.resultPsot(datas);
-        });
-      }
+          if (this.value == 1) {
+            console.log(param);
+            payPal(param).then(res => {
+              console.log(res);
+              let first = res.toPayHtml.indexOf("href") + 6;
+              let last = res.toPayHtml.lastIndexOf('"');
+              let url = res.toPayHtml.slice(first, last);
+              console.log(url);
+              this.$ls.set("userOrderId", res.user_order_id);
+              this.$ls.set("orderId", res.order_id);
+              this.$ls.set("price", res.price);
+              let routeData = this.$router.resolve({
+                path: "paylocal",
+                query: { url: url }
+              });
+              window.location.replace(routeData.href, "_blank");
+            });
+          }
+          if (this.value == 2) {
+            //this.initWebSocket();
+            wxPay(param).then(res => {
+              console.log(res);
+              this.prepayId = res.respData.prepay_id;
+
+              const url = res.respData.code_url;
+              this.show = true;
+              var canvas = document.getElementById("canvas");
+              QRCode.toCanvas(canvas, url, function(error) {
+                if (error) {
+                  console.error(error);
+                }
+              });
+              const datas = {
+                //prepay_id: res.respData.prepay_id,
+                //user_order_id: res.payInfoList[0].user_order_id
+                user_order_id: res.userOrderId
+              };
+              console.log();
+              this.resultPsot(datas);
+            });
+          }
+        }
+      });
     },
 
     onChange(e) {

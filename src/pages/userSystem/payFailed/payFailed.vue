@@ -2,10 +2,10 @@
   <div class="share">
     <div class="share-box">
       <sys-header></sys-header>
-      <div class="step">流程进度</div>
+      <div class="step">Progress</div>
       <my-stpes :mycurrent="1">
         <p slot="p1">Select Size</p>
-        <p slot="p2">确认支付</p>
+        <p slot="p2">Please Confirm Payment</p>
         <p slot="p3">Waiting To Start Group Order</p>
         <p slot="p4">Completed</p>
       </my-stpes>
@@ -23,7 +23,7 @@
           <div class="border"></div>
           <div class="bg">
             <div class="pay-detail">
-              <p>订单编号：xxxx xxxx xxxx xxx</p>
+              <p>Order Number：xxxx xxxx xxxx xxx</p>
             </div>
             <div class="pay-btn">
               <a-button class="buy-again">Pay Again</a-button>

@@ -3,14 +3,14 @@
     <a-form style="max-width: 500px; margin: 40px auto 0;" :form="form">
       
       <a-form-item
-        label="新密码"
+        label="New password"
       >
         <a-input
           v-decorator="[
             'password',
             {
               rules: [{
-                required: true, message: '请填写您的密码！',
+                required: true, message: 'Please fill in your password!',
               }, {
                 validator: validateToNextPassword,
               }],
@@ -20,14 +20,14 @@
         />
       </a-form-item>
       <a-form-item
-        label="确认密码"
+        label="Confirm password"
       >
         <a-input
           v-decorator="[
             'confirm',
             {
               rules: [{
-                required: true, message: '请确认您的密码！',
+                required: true, message: 'Please confirm your password!',
               }, {
                 validator: compareToFirstPassword,
               }],
@@ -38,7 +38,7 @@
       </a-form-item>
       <a-form-item :wrapperCol="{span: 19, offset: 5}">
         <a-button :loading="loading" type="primary" @click="nextStep">Submit </a-button>
-        <a-button style="margin-left: 8px" @click="prevStep">上一步</a-button>
+        <a-button style="margin-left: 8px" @click="prevStep">Previous step</a-button>
       </a-form-item>
     </a-form>
   </div>
@@ -59,7 +59,7 @@ export default {
     compareToFirstPassword  (rule, value, callback) {
       const form = this.form;
       if (value && value !== form.getFieldValue('password')) {
-        callback('输入密码不一致！');
+        callback('Input password is inconsistent!');
       } else {
         callback();
       }

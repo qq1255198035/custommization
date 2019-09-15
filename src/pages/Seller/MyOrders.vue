@@ -216,8 +216,8 @@ export default {
                         "https://hlx-1258407851.cos.ap-beijing.myqcloud.com/hlx/20181229/16144720457881.png", // 图片, 默认取网页中第一个img标签
                 sites: ["facebook", "wechat", "weibo"], // 启用的站点
                 //disabled: ['google', 'facebook', 'twitter'], // 禁用的站点
-                wechatQrcodeTitle: "微信扫一扫：分享", // 微信二维码提示文字
-                wechatQrcodeHelper: "<p>微信里点“发现”，扫一下</p><p>二维码便可将本文分享至朋友圈。</p>"
+                wechatQrcodeTitle: "WeChat Scan: Share", // 微信二维码提示文字
+                wechatQrcodeHelper: "Scan the two-dimensional code to share this article with friends."
             }
         }
     },

@@ -52,6 +52,8 @@ export function apiNotice(parameter) {
     data: qs.stringify(parameter)
   })
 }
+//支付入口接口
+
 //
 export function apiPersonOrder(parameter) {
   return axios({
@@ -118,9 +120,32 @@ export function payPal(parameter) {
     data: qs.stringify(parameter)
   })
 }
+//支付入口
+export function toPaypal(parameter) {
+  return axios({
+    url: '/api1/paypal/toPay',
+    method: 'post',
+    data: qs.stringify(parameter)
+  })
+}
+//支付存
+export function payPalOrder(parameter) {
+  return axios({
+    url: '/apiPersonOrder/toPay',
+    method: 'post',
+    data: qs.stringify(parameter)
+  })
+}
 export function paymentInfos(parameter) {
   return axios({
     url: '/apiPersonOrder/toConfirmPayList',
+    method: 'post',
+    data: qs.stringify(parameter)
+  })
+}
+export function paymentSessionInfos(parameter) {
+  return axios({
+    url: '/apiPersonOrder/getPayInfoBySession',
     method: 'post',
     data: qs.stringify(parameter)
   })

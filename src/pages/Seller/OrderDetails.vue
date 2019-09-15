@@ -759,7 +759,7 @@ export default {
       }
       const isLt2M = file.size / 1024 / 1024 < 10;
       if (!isLt2M) {
-        this.$message.error(this.$t("图片超过2M"));
+        this.$message.error(this.$t("Image Size Over 2MB"));
         return isLt2M;
       }
       getBase64(file, imageUrl => {

@@ -41,7 +41,7 @@
           <a-col :span="18"></a-col>
           <a-col :span="4">
             <div class="left">
-              <div class="price-title">总价</div>
+              <div class="price-title">Total Amount</div>
               <div class="allprice">${{allPrice}}</div>
             </div>
             <div class="right">
@@ -49,15 +49,15 @@
               <commonBtn
                 @payTo="payTo"
                 :width="'100%'"
-                :title="'立即支付'"
+                :title="'Sure'"
                 :height="'56px'"
                 :padding="'15px'"
                 :radio="'18px'"
                 :fontsize="'18px'"
               >
-                <span class="bg-box">
+                <!--<span class="bg-box">
                   <span class="bg-image"></span>
-                </span>
+                </span>-->
               </commonBtn>
             </div>
           </a-col>
@@ -153,9 +153,9 @@ check() {
       const token = this.$ls.get(ACCESS_TOKEN);
       if (!token) {
         this.$error({
-          title: "未登录",
-          content: "您还没有登录，请先登录",
-          okText: "去登录",
+          title: "Not Signed In",
+          content: "You are currently not signed in, please sign-in to continue.",
+          okText: "Proceed to Sign-In",
           mask: false,
           onOk: () => {
             this.$router.push({

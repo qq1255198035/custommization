@@ -4,7 +4,7 @@
       <div class="left">
         <a-radio-group @change="onChange" v-model="value">
           <a-radio-button value="">All Orders</a-radio-button>
-          <a-radio-button value="2">Paid</a-radio-button>
+          <a-radio-button value="2">Paid Quantity</a-radio-button>
           <a-radio-button value="0">To Be Paid</a-radio-button>
         </a-radio-group>
       </div>
@@ -21,7 +21,7 @@
           <p>Order time：{{item.confirm_time}}</p>
         </a-col>
         <a-col :xs="24" :sm="6" :md="5">
-          <p>联系商家：{{item.contact}}</p>
+          <p>Contact Seller：{{item.contact}}</p>
         </a-col>
         <a-col :xs="24" :sm="6" :md="5">
           <p>Status：{{item.pay_status | status}}</p>
@@ -31,7 +31,7 @@
             <commonBtn
               :float="'right'"
               :width="'86px'"
-              :title="'去付款'"
+              :title="'Proceed to Payment'"
               :height="'34px'"
               :padding="'15px'"
               :radio="'6px'"
@@ -43,7 +43,7 @@
             <commonBtn
               :float="'right'"
               :width="'80px'"
-              :title="'退款'"
+              :title="'Refunded'"
               :height="'34px'"
               :padding="'15px'"
               :radio="'6px'"
@@ -61,14 +61,14 @@
               <div class>
                 <h3>{{items.name}}</h3>
                 <div class="desc">
-                  <p>COLOR：蓝色</p>
+                  <p>COLOR：{{items.color}}</p>
                   <p>SIZE：{{items.size}}</p>
                 </div>
               </div>
             </div>
           </div>
           <div class="listCol" v-if="items.print_name">
-            <p class="list-p">名称：{{items.print_name}}</p>
+            <p class="list-p">Name：{{items.print_name}}</p>
           </div>
           <div class="listCol" v-if="items.print_number">
             <p class="list-p">Number：{{items.print_number}}</p>
@@ -77,7 +77,7 @@
             <p class="list-p">Quantity：{{items.quantity}}</p>
           </div>
           <div class="listCol">
-            <p class="list-p" style="border: none;">合计：${{items.total_price}}</p>
+            <p class="list-p" style="border: none;">Total：${{items.total_price}}</p>
           </div>
         </li>
       </ul>

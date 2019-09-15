@@ -13,7 +13,6 @@
           @change="handleChange(record.key,col,$event)"
           v-if="col == 'size'"
           :key="col"
-          :placeholder="targetList.sizess[0]"
         >
           <a-select-option
             v-for="(sitem,index) in targetList.sizess"
@@ -47,7 +46,7 @@
       :icon="'plus'"
       @newMember="newMember"
       :width="'100%'"
-      :title="'添加'"
+      :title="'Add'"
       :height="'45px'"
       :padding="'10px'"
       :radio="'12px'"
@@ -105,7 +104,7 @@ export default {
           scopedSlots: { customRender: "number" }
         },
         {
-          title: "Total Price价格",
+          title: "Total Price",
           dataIndex: "price",
           key: "price",
           width: "25%",
@@ -139,7 +138,13 @@ export default {
         printNumber: this.data[0].printNumber,
         sizess: this.data[0].sizes,
         goods_id: this.data[0].goods_id,
-        des_id: this.data[0].des_id
+        des_id: this.data[0].des_id,
+        positive_pic_url: this.data[0].positive_pic_url,
+        back_pic_url: this.data[0].back_pic_url,
+        left_pic_url: this.data[0].left_pic_url,
+        right_pic_url: this.data[0].right_pic_url,
+        color: this.data[0].color,
+        weight: this.data[0].weight
       };
     },
     handleChange(key, column, value) {
@@ -164,10 +169,10 @@ export default {
       let target = newData.filter(item => key == item.key)[0];
       console.log(target);
       if (target) {
-        if (target[column] > 1) {
+        if (target[column] > 0) {
           target[column]--;
         } else {
-          target[column] = 1;
+          target[column] = 0;
         }
         target.price = target[column] * target.total_price;
       }
@@ -200,7 +205,13 @@ export default {
         size: this.targetList.sizess,
         goods_id: this.targetList.goods_id,
         des_id: this.targetList.des_id,
-        total_price: this.targetList.price
+        total_price: this.targetList.price,
+        positive_pic_url: this.targetList.positive_pic_url,
+        back_pic_url: this.targetList.back_pic_url,
+        left_pic_url: this.targetList.left_pic_url,
+        right_pic_url: this.targetList.right_pic_url,
+        color: this.targetList.color,
+        weight: this.targetList.weight
       });
     },
 

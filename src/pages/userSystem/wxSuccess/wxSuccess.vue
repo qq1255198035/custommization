@@ -10,10 +10,10 @@
       <a-row>
         <a-col :span="2"></a-col>
         <a-col :span="20">
-          <div class="step" style="color:#fff">流程进度</div>
+          <div class="step" style="color:#fff">Progress</div>
           <my-stpes :mycurrent="step">
             <p slot="p1">Select Size</p>
-            <p slot="p2">确认支付</p>
+            <p slot="p2">Please Confirm Payment.</p>
             <p slot="p3">Waiting To Start Group Order</p>
             <p slot="p4">Completed</p>
           </my-stpes>

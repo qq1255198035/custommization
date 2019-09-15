@@ -15,13 +15,13 @@
               <my-title :title="itemTitle" :fontsize="24"></my-title>
               <a-form ref="formRegister" :form="form" id="formRegister">
                 <a-form-item
-                  label="选择角色"
+                  label="Role selection"
                   :label-col="{ span: 3 }"
                   :wrapper-col="{ span: 12 ,offset: 1}"
                 >
                   <a-radio-group @change="onChangeRadio" v-model="valueRadio">
-                    <a-radio :value="1">用户</a-radio>
-                    <a-radio :value="2">经销商</a-radio>
+                    <a-radio :value="1">User</a-radio>
+                    <a-radio :value="2">Distributor</a-radio>
                   </a-radio-group>
                   <!--<a-select
                 @change="roleChange"
@@ -39,7 +39,7 @@
                     size="large"
                     type="text"
                     placeholder="Email"
-                    v-decorator="['email', {rules: [{ required: true, type: 'email', message: '请输入邮箱' }], validateTrigger: ['change', 'blur']}]"
+                    v-decorator="['email', {rules: [{ required: true, type: 'email', message: 'Please enter your mailbox' }], validateTrigger: ['change', 'blur']}]"
                   ></a-input>
                   <div v-if="formShow" class="font-splic">
                     <span>
@@ -50,22 +50,22 @@
                 </a-form-item>
                 <a-row :gutter="12">
                   <a-col :span="12">
-                    <a-form-item label="姓">
+                    <a-form-item label="Surname">
                       <a-input
                         size="large"
                         type="text"
-                        placeholder="姓"
-                        v-decorator="['surname', {rules: [{ required: true, message: '请填写姓' }], validateTrigger: ['change', 'blur']}]"
+                        placeholder="Surname"
+                        v-decorator="['surname', {rules: [{ required: true, message: 'Surname' }], validateTrigger: ['change', 'blur']}]"
                       ></a-input>
                     </a-form-item>
                   </a-col>
                   <a-col :span="12">
-                    <a-form-item label="名">
+                    <a-form-item label="Name">
                       <a-input
                         size="large"
                         type="text"
-                        placeholder="名"
-                        v-decorator="['monicker', {rules: [{ required: true, message: '请填写名' }], validateTrigger: ['change', 'blur']}]"
+                        placeholder="Name"
+                        v-decorator="['monicker', {rules: [{ required: true, message: 'Name' }], validateTrigger: ['change', 'blur']}]"
                       ></a-input>
                     </a-form-item>
                   </a-col>
@@ -78,7 +78,7 @@
                   <template slot="content">
                     <div :style="{ width: '240px'}">
                       <div :class="['user-register', passwordLevelClass]">
-                        密码强度
+                        Password strength
                         <span>{{ passwordLevelName }}</span>
                       </div>
                       <a-progress
@@ -87,41 +87,41 @@
                         :strokeColor=" passwordLevelColor "
                       />
                       <div style="margin-top: 10px;">
-                        <span>请至少输入6位密码，最好包含数字和字母</span>
+                        <span>Enter a 6-digit password, preferably containing numbers and letters</span>
                       </div>
                     </div>
                   </template>
-                  <a-form-item label="密码">
+                  <a-form-item label="Password">
                     <a-input
                       size="large"
                       type="password"
                       @keydown="insertDown"
                       @keyup="insertUp"
                       autocomplete="false"
-                      placeholder="密码"
-                      v-decorator="['password', {rules: [{ required: true, message: '请填写密码'}, { validator: this.handlePasswordLevel }], validateTrigger: ['change', 'blur']}]"
+                      placeholder="Please fill in the password"
+                      v-decorator="['password', {rules: [{ required: true, message: 'Please fill in the password'}, { validator: this.handlePasswordLevel }], validateTrigger: ['change', 'blur']}]"
                     ></a-input>
                   </a-form-item>
                 </a-popover>
-                <a-form-item label="确认密码">
+                <a-form-item label="Confirm password">
                   <a-input
                     size="large"
                     type="password"
                     @keydown="insertDown"
                     @keyup="insertUp"
                     autocomplete="false"
-                    placeholder="确认密码"
-                    v-decorator="['password2', {rules: [{ required: true, message: '请填写密码'}, { validator: this.handlePasswordCheck }], validateTrigger: ['change', 'blur']}]"
+                    placeholder="Confirm password"
+                    v-decorator="['password2', {rules: [{ required: true, message: 'Please fill in the password'}, { validator: this.handlePasswordCheck }], validateTrigger: ['change', 'blur']}]"
                   ></a-input>
                 </a-form-item>
                 <a-row :gutter="16" type="flex" align="bottom" style="align-items: center;">
                   <a-col class="gutter-row" :span="16">
-                    <a-form-item label="验证码">
+                    <a-form-item label="Verification code">
                       <a-input
                         size="large"
                         type="text"
-                        placeholder="验证码"
-                        v-decorator="['captcha', {rules: [{ required: true, message: '验证码' }], validateTrigger: 'blur'}]"
+                        placeholder="Verification code"
+                        v-decorator="['captcha', {rules: [{ required: true, message: 'Verification code' }], validateTrigger: 'blur'}]"
                       >
                         <a-icon slot="prefix" type="mail" :style="{ color: 'rgba(0,0,0,.25)' }" />
                       </a-input>
@@ -135,7 +135,7 @@
                       :disabled="state.smsSendBtn"
                       @click.stop.prevent="getCaptcha"
                       v-text="(state.time+' s')"
-                    >获取验证码</a-button>
+                    >Get verification code</a-button>
                     <a-button
                       v-if="!state.smsSendBtn"
                       class="getCaptcha"
@@ -143,21 +143,21 @@
                       :disabled="state.smsSendBtn"
                       @click.stop.prevent="getCaptcha"
                       v-text="getCode"
-                    >获取验证码</a-button>
+                    >Get verification code</a-button>
                   </a-col>
                 </a-row>
 
                 <a-form-item>
                   <a-row :gutter="16">
                     <a-col :span="16">
-                      <router-link class="login" :to="{ path: '/login' }">已有账户</router-link>
+                      <router-link class="login" :to="{ path: '/login' }">Existing accounts</router-link>
                     </a-col>
                     <a-col :span="8">
                       <commonBtn
                         :icon="'plus'"
                         @register="register"
                         :width="'100%'"
-                        :title="'注册'"
+                        :title="'Register'"
                         :height="'44px'"
                         :padding="'10px'"
                         :radio="'12px'"
@@ -193,10 +193,10 @@ import { register, registerSubmit } from "@/api/system";
 import MyTitle from "@/components/MyTitle/MyTitle";
 import commonBtn from "@/components/commonBtn/commonBtn";
 const levelNames = {
-  0: "至少6位密码，区分大小写 密码强度不够",
-  1: "密码强度不够",
-  2: "密码强度中级",
-  3: "密码强度高"
+  0: "At least 6-digit passwords, case-sensitive",
+  1: "Password strength is insufficient",
+  2: "Cryptographic Intensity Intermediate",
+  3: "High Password Intensity"
 };
 const levelClass = {
   0: "error",
@@ -227,13 +227,13 @@ export default {
       ],
       formShow: false,
       emailText: "",
-      itemTitle: "注册",
+      itemTitle: "Register",
       registerBtn: false,
       customActiveKey: "tab1",
       loginBtn: false,
       // login type: 0 email, 1 username, 2 telephone
       loginType: 0,
-      getCode: "获取验证码",
+      getCode: "Get the authentication code",
       // stepCaptchaVisible: false,
       form: this.$form.createForm(this),
       state: {
@@ -297,16 +297,16 @@ export default {
         if (level === 0) {
           this.state.percent = 10;
         }
-        callback(new Error("至少6位密码"));
+        callback(new Error("At least 6-digit password"));
       }
     },
     handlePasswordCheck(rule, value, callback) {
       const password = this.form.getFieldValue("password");
       if (value === undefined) {
-        callback(new Error("请再次填写确认密码"));
+        callback(new Error("Please fill in the confirmation password again."));
       }
       if (value && password && value.trim() !== password.trim()) {
-        callback(new Error("两次密码不相同"));
+        callback(new Error("Two passwords are different"));
       }
       callback();
     },
@@ -393,8 +393,8 @@ export default {
               if (res.status == 200) {
                 //setTimeout(hide, 1);
                 $notification["success"]({
-                  message: "登陆成功",
-                  description: "成功",
+                  message: "Landing successfully",
+                  description: "Success",
                   duration: 8
                 });
                 this.$route.push({
@@ -418,8 +418,8 @@ export default {
     },
     requestFailed(err) {
       this.$notification["error"]({
-        message: "失败",
-        description: ((err.response || {}).data || {}).message || "失败",
+        message: "Error",
+        description: ((err.response || {}).data || {}).message || "Error",
         duration: 4
       });
       this.registerBtn = false;

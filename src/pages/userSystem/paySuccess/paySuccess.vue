@@ -10,12 +10,12 @@
       <a-row>
         <a-col :span="2"></a-col>
         <a-col :span="20">
-          <div class="step" style="color:#fff">流程进度</div>
+          <div class="step" style="color:#fff">Progress</div>
           <my-stpes :mycurrent="step">
-            <p slot="p1">Select Size</p>
-            <p slot="p2">确认支付</p>
-            <p slot="p3">Waiting To Start Group Order</p>
-            <p slot="p4">Completed</p>
+            <p slot="p1" class="text-centers">Select Size</p>
+            <p slot="p2" class="text-centers">Please Confirm Payment</p>
+            <p slot="p3" class="text-centers">Waiting To Start Group Order</p>
+            <p slot="p4" class="text-centers">Completed</p>
           </my-stpes>
           <div class="content">
             <div class="title">
@@ -91,9 +91,9 @@ export default {
           "https://hlx-1258407851.cos.ap-beijing.myqcloud.com/hlx/20181229/16144720457881.png", // 图片, 默认取网页中第一个img标签
         sites: ["facebook", "wechat", "weibo"], // 启用的站点
         //disabled: ['google', 'facebook', 'twitter'], // 禁用的站点
-        wechatQrcodeTitle: "微信扫一扫：分享", // 微信二维码提示文字
+        wechatQrcodeTitle: "WeChat Pay", // 微信二维码提示文字
         wechatQrcodeHelper:
-          "<p>微信里点“发现”，扫一下</p><p>二维码便可将本文分享至朋友圈。</p>"
+          "<p>WeChat Scan: Share</p>"
       }
     };
   },
@@ -101,7 +101,7 @@ export default {
   created() {
     this._payBack();
     //this._status();
-    this.config.url = 'http://192.168.0.9/index#/sellerShare' + '?order_id='+this.$route.query.orderId
+    this.config.url = 'http://192.168.0.9/index#/share' + '?order_id='+this.$route.query.orderId
     //this.config.url = 'localhost:3000/#/sellerShare' + '?order_id='+this.userOrderId
   },
   mounted() {},
@@ -173,7 +173,9 @@ export default {
         this.$router.push({
           path: "/share",
           query: {
-            order_id: this.userOrderId
+            order_id: this.orderAgain,
+            //user_order_id: this.userOrderId
+            
           }
         });
       }
@@ -191,7 +193,9 @@ export default {
         this.$router.push({
           path: "/payment",
           query: {
+            order_id: this.orderAgain,
             user_order_id: this.userOrderId
+            
           }
         });
       }
@@ -199,7 +203,7 @@ export default {
         this.$router.push({
           path: "/unifiedpay",
           query: {
-            orderId: this.userOrderId
+            user_order_id: this.userOrderId
           }
         });
       }
@@ -214,6 +218,9 @@ export default {
 <style lang="less">
 @import url("./../../../components/index.less");
 @import url("./../../../assets/style.css");
+.text-centers {
+  text-align: center;
+}
 .shares {
   header {
     display: flex;
