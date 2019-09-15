@@ -186,8 +186,6 @@ import {
   status,
   wxPay,
   wxOrderQuery,
-  apiPay,
-  toPaypal,
   payPalOrder,
   paymentSessionInfos
 } from "@/api/system";
@@ -367,7 +365,7 @@ export default {
       const param = {
         user_order_id: this.$route.query.user_order_id
       };
-      paymentSessionInfos().then(response => {
+      paymentSessionInfos(param).then(response => {
         console.log(response);
         this.dataList1 = response.confirmNoPrintPayList;
         this.dataList2 = response.confirmPrintPayList;

@@ -39,8 +39,7 @@
 
 <script>
 import { payBack, status } from "@/api/system";
-//import { paypalSellerBack } from "@/api/seller";
-import MyStpes from "@/components/MyStpes/MyStpes";
+
 export default {
   props: {},
   data() {
@@ -187,7 +186,7 @@ export default {
     }
   },
   components: {
-    MyStpes
+    
   }
 };
 </script>
