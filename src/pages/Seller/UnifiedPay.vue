@@ -45,7 +45,7 @@
         <a-row :gutter="20">
           <a-col :span="2"></a-col>
           <a-col :span="8" style="display:flex">
-            <div class="pay-title font-18">支付方式:</div>
+            <div class="pay-title font-18">Payment method:</div>
             <div>
               <a-radio-group @change="onChange" v-model="value">
                 <a-radio :value="1">
@@ -53,7 +53,7 @@
                 </a-radio>
                 <a-radio :value="2">
                   <img style="width:50px" src="@assets/weixin_pay.png" alt />
-                  <span class="pay-font">微信支付</span>
+                  <span class="pay-font">WeChat payment</span>
                 </a-radio>
               </a-radio-group>
             </div>
@@ -64,7 +64,7 @@
               <li>
                 <a-row>
                   <a-col :span="12">
-                    <h3 class="font-18">商品金额：</h3>
+                    <h3 class="font-18">Commodity amount：</h3>
                   </a-col>
                   <a-col :span="12">
                     <p class="textRight font-color">${{goodsPrice}}</p>
@@ -74,7 +74,7 @@
               <li>
                 <a-row>
                   <a-col :span="12">
-                    <h3 class="font-18">手续费：</h3>
+                    <h3 class="font-18">Service Charge：</h3>
                   </a-col>
                   <a-col :span="12">
                     <p class="textRight font-color">${{procedureMoney}}</p>
@@ -199,13 +199,13 @@ export default {
       data1: [],
       columns: [
         {
-          title: "商品名",
+          title: "Trade name",
           width: "20%",
           align: "center",
           dataIndex: "name"
         },
         {
-          title: "图片",
+          title: "Picture",
           width: "20%",
           align: "center",
           dataIndex: "positivePicUrl",

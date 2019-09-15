@@ -34,7 +34,7 @@ export default {
       total: 0,
       pageNo: 1,
       pageSize: 10,
-      itemTitles: "Your Order (s)",
+      itemTitles: "Your Orders",
       visible: false,
       listData: [],
       pagination: {

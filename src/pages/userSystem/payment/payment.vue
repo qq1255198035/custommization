@@ -7,168 +7,176 @@
           <User></User>
         </p>
       </header>
-      <a-row>
-        <a-col :span="2"></a-col>
-        <a-col :span="20">
-          <div class="step font-reset">Progress</div>
-          <MyPrimaryStpes :mycurrent="step">
-            <p slot="p1">Select Size</p>
-            <p slot="p2">Please Confirm Payment</p>
-            <p slot="p3">Waiting To Start Group Order</p>
-            <p slot="p4">Completed</p>
-          </MyPrimaryStpes>
-          <my-title :title="itemTitle" :fontsize="20" :paddingtop="'40px'" :paddingbottom="'20px'"></my-title>
-        </a-col>
-        <a-col :span="2"></a-col>
-      </a-row>
-
-      <a-row :gutter="20" style="padding-top:20px">
-        <a-col :span="2"></a-col>
-        <!--list1-->
-        <a-col :xxl="8" :xl="20" v-if="dataList1.length>0">
-          <table-item :datas="listLeft"></table-item>
-          <table-list :columns="columns" :data="dataList1"></table-list>
-        </a-col>
-        <!--list2-->
-        <a-col :span="2" v-if="dataList1.length>0"></a-col>
-        <a-col :xxl="10" :xl="20" v-if="dataList2.length>0">
-          <table-item :datas="listRight"></table-item>
-          <table-list :columns="columns1" :data="dataList2"></table-list>
-        </a-col>
-        <a-col :span="2"></a-col>
-      </a-row>
-      <a-row>
-        <a-col :span="2"></a-col>
-        <a-col :span="20">
-          <my-title :title="payTitle" :fontsize="20" :paddingtop="'40px'" :paddingbottom="'20px'"></my-title>
-        </a-col>
-        <a-col :span="2"></a-col>
-      </a-row>
-      <div class="payment">
-        <a-row :gutter="20">
+        <a-row>
           <a-col :span="2"></a-col>
-          <a-col :span="8" style="display:flex">
-            <div class="pay-title font-18">支付方式:</div>
-            <div>
-              <a-radio-group @change="onChange" v-model="value">
-                <a-radio :value="1">
-                  <img src="@assets/paypal_pay.png" alt />
-                </a-radio>
-                <a-radio :value="2">
-                  <img style="width:50px" src="@assets/weixin_pay.png" alt />
-                  <span class="pay-font">WeChat Pay</span>
-                </a-radio>
-              </a-radio-group>
-            </div>
-          </a-col>
-          <a-col :span="2"></a-col>
-          <a-col :span="10">
-            <ul class="pay-list">
-              <li>
-                <a-row>
-                  <a-col :span="12">
-                    <h3 class="font-18">Item Amount：</h3>
-                  </a-col>
-                  <a-col :span="12">
-                    <p class="textRight font-color">${{pricess.order_price}}</p>
-                  </a-col>
-                </a-row>
-              </li>
-              <li>
-                <a-row>
-                  <a-col :span="12">
-                    <h3 class="font-18">Service Fee：</h3>
-                  </a-col>
-                  <a-col :span="12">
-                    <p class="textRight font-color">${{pricess.commission.toFixed(2)}}</p>
-                  </a-col>
-                </a-row>
-              </li>
-              <li style="border-bottom:solid 1px #eee;">
-                <a-row>
-                  <a-col :span="12">
-                    <h3 class="font-18">Shipping Fee：</h3>
-                  </a-col>
-                  <a-col :span="12">
-                    <p class="textRight font-color">${{pricess.shipping_fee}}</p>
-                  </a-col>
-                </a-row>
-              </li>
-              <li style="padding-top:20px">
-                <a-row>
-                  <a-col :span="12">
-                    <h3 class="font-color">Total Amount：</h3>
-                  </a-col>
-                  <a-col :span="12">
-                    <p class="textRight font-color">${{pricess.all_price}}</p>
-                  </a-col>
-                </a-row>
-              </li>
-            </ul>
+          <a-col :span="20">
+            <div class="step font-reset">Progress</div>
+            <MyPrimaryStpes :mycurrent="step">
+              <p slot="p1">Select Size</p>
+              <p slot="p2">Please Confirm Payment</p>
+              <p slot="p3">Waiting To Start Group Order</p>
+              <p slot="p4">Completed</p>
+            </MyPrimaryStpes>
+            <my-title
+              :title="itemTitle"
+              :fontsize="20"
+              :paddingtop="'40px'"
+              :paddingbottom="'20px'"
+            ></my-title>
           </a-col>
           <a-col :span="2"></a-col>
         </a-row>
-      </div>
-      <a-row>
-        <a-col :span="2"></a-col>
-        <a-col :span="20">
-          <my-title></my-title>
-        </a-col>
-        <a-col :span="2"></a-col>
-      </a-row>
-      <!--支付-->
-      <a-row :gutter="20">
-        <a-col :span="4" :offset="18">
-          <div class="paynum">
-            <div class="left textRight">
-              <div class="font-18" style="padding-bottom:20px">Total Amount</div>
-              <div class="font-reset">${{pricess.all_price.toFixed(2)}}</div>
-            </div>
-            <div class="right">
-              <commonBtn
-                @payBtn="payBtn"
-                :width="'100%'"
-                :title="'Pay Now'"
-                :height="'56px'"
-                :padding="'10px'"
-                :radio="'12px'"
-                :fontsize="'18px'"
-                :top="'20px'"
-              >
-                <span class="bg-box">
-                  <span class="bg-image"></span>
-                </span>
-              </commonBtn>
-            </div>
-            <div class="right">
-              <commonBtn
-                @payBtn="payBtn"
-                :width="'100%'"
-                :title="'提交订单'"
-                :height="'56px'"
-                :padding="'10px'"
-                :radio="'12px'"
-                :fontsize="'18px'"
-                :top="'20px'"
-              >
-              </commonBtn>
-            </div>
-          </div>
-        </a-col>
-      </a-row>
 
-      <!--展示码-->
-      <div>
-        <transition name="fade">
-          <div class="qrcode-wrapper" @click="isHide" v-show="show">
-            <div class="qrcode">
-              <canvas id="canvas"></canvas>
-              <div @click="isHide" class="close-vcode">x</div>
+        <a-row :gutter="40" type="flex" style="padding:20px 8%;"  justify="start">
+          <a-col
+            :xxl="12"
+            :xl="24"
+            v-for="(item,index) in tablesList"
+            :key="index"
+            style="margin:20px 0"
+          >
+            <div v-if="!item.is_print_numbe && !item.is_print_text">
+              <table-item :datas="item" ref="myTable"></table-item>
+              <table-list :columns="columns" :data="[item]"></table-list>
             </div>
-          </div>
-        </transition>
+            <div v-if="item.is_print_numbe || item.is_print_text">
+              <table-item :datas="item" ref="myTable"></table-item>
+              <table-list :columns="columns1" :data="[item]"></table-list>
+            </div>
+          </a-col>
+        </a-row>
+        <a-row>
+          <a-col :span="2"></a-col>
+          <a-col :span="20">
+            <my-title :title="payTitle" :fontsize="20" :paddingtop="'40px'" :paddingbottom="'20px'"></my-title>
+          </a-col>
+          <a-col :span="2"></a-col>
+        </a-row>
+        <div class="payment">
+          <a-row :gutter="20" v-if="!pay_mode == 1">
+            <a-col :span="2"></a-col>
+            <a-col :span="8" style="display:flex">
+              <div class="pay-title font-18">支付方式:</div>
+              <div>
+                <a-radio-group @change="onChange" v-model="value">
+                  <a-radio :value="1">
+                    <img src="@assets/paypal_pay.png" alt />
+                  </a-radio>
+                  <a-radio :value="2">
+                    <img style="width:50px" src="@assets/weixin_pay.png" alt />
+                    <span class="pay-font">WeChat Pay</span>
+                  </a-radio>
+                </a-radio-group>
+              </div>
+            </a-col>
+            <a-col :span="2"></a-col>
+            <a-col :span="10">
+              <ul class="pay-list">
+                <li>
+                  <a-row>
+                    <a-col :span="12">
+                      <h3 class="font-18">Item Amount：</h3>
+                    </a-col>
+                    <a-col :span="12">
+                      <p class="textRight font-color">${{pricess.order_price}}</p>
+                    </a-col>
+                  </a-row>
+                </li>
+                <li>
+                  <a-row>
+                    <a-col :span="12">
+                      <h3 class="font-18">Service Fee：</h3>
+                    </a-col>
+                    <a-col :span="12">
+                      <p class="textRight font-color">${{pricess.commission}}</p>
+                    </a-col>
+                  </a-row>
+                </li>
+                <li style="border-bottom:solid 1px #eee;">
+                  <a-row>
+                    <a-col :span="12">
+                      <h3 class="font-18">Shipping Fee：</h3>
+                    </a-col>
+                    <a-col :span="12">
+                      <p class="textRight font-color">${{pricess.shipping_fee}}</p>
+                    </a-col>
+                  </a-row>
+                </li>
+                <li style="padding-top:20px">
+                  <a-row>
+                    <a-col :span="12">
+                      <h3 class="font-color">Total Amount：</h3>
+                    </a-col>
+                    <a-col :span="12">
+                      <p class="textRight font-color">${{pricess.all_price}}</p>
+                    </a-col>
+                  </a-row>
+                </li>
+              </ul>
+            </a-col>
+            <a-col :span="2"></a-col>
+          </a-row>
+        </div>
+        <a-row v-if="!pay_mode == 1">
+          <a-col :span="2"></a-col>
+          <a-col :span="20">
+            <my-title></my-title>
+          </a-col>
+          <a-col :span="2"></a-col>
+        </a-row>
+        <!--支付-->
+        <a-row :gutter="20">
+          <a-col :span="4" :offset="18">
+            <div class="paynum">
+              <div class="left textRight" v-if="!pay_mode == 1">
+                <div class="font-18" style="padding-bottom:20px">Total Amount</div>
+                <div class="font-reset">${{pricess.all_price}}</div>
+              </div>
+              <div class="right" v-if="pay_mode == 2">
+                <commonBtn
+                  @payBtn="payBtn"
+                  :width="'100%'"
+                  :title="'Pay Now'"
+                  :height="'56px'"
+                  :padding="'10px'"
+                  :radio="'12px'"
+                  :fontsize="'18px'"
+                  :top="'20px'"
+                >
+                  <span class="bg-box">
+                    <span class="bg-image"></span>
+                  </span>
+                </commonBtn>
+              </div>
+              <div class="right" v-if="pay_mode == 1">
+                <commonBtn
+                  @payBtnOrder="payBtnOrder"
+                  :width="'100%'"
+                  :title="'提交订单'"
+                  :height="'56px'"
+                  :padding="'10px'"
+                  :radio="'12px'"
+                  :fontsize="'18px'"
+                  :top="'20px'"
+                ></commonBtn>
+              </div>
+            </div>
+          </a-col>
+        </a-row>
+
+        <!--展示码-->
+        <div>
+          <transition name="fade">
+            <div class="qrcode-wrapper" @click="isHide" v-show="show">
+              <div class="qrcode">
+                <canvas id="canvas"></canvas>
+                <div @click="isHide" class="close-vcode">x</div>
+              </div>
+            </div>
+          </transition>
+        </div>
       </div>
-    </div>
+
   </div>
 </template>
 
@@ -195,6 +203,8 @@ export default {
   props: {},
   data() {
     return {
+      tablesList: "",
+      pay_mode: "",
       personOrderList: {},
       pricess: "",
       websocket: null,
@@ -221,10 +231,10 @@ export default {
         },
         {
           title: "Quantity",
-          className: "quantity",
+          className: "number",
           width: "25%",
           align: "center",
-          dataIndex: "quantity"
+          dataIndex: "number"
         },
         {
           title: "Price",
@@ -330,7 +340,7 @@ export default {
     },
     _status() {
       const param = {
-        user_order_id: this.$route.query.user_order_id
+        user_order_id: this.userId
       };
       console.log(param);
       status(param).then(res => {
@@ -367,6 +377,8 @@ export default {
         this.allPrice = response.order_price ? response.order_price : 0;
         this.userId = response.order_id;
         this.personOrderList = response.personOrderList;
+        this.pay_mode = response.pay_mode;
+        this.tablesList = response.personOrderList.data;
       });
     },
     resultPsot(data) {
@@ -391,13 +403,33 @@ export default {
         }
       });
     },
+    payBtnOrder() {
+      const pata = {
+        personOrderList: JSON.stringify(this.personOrderList),
+        order_id: this.$route.query.user_order_id,
+        order_price: this.pricess.all_price,
+        pay_mode: this.pay_mode
+      };
+      console.log(pata);
+      payPalOrder(pata).then(res => {
+        console.log(res);
+        if (res.result.code == 1) {
+          this.$notification.success({
+            message: "Successful submission of orders"
+          });
+          this.$router.push({
+            path: '/orderSuccess'
+          })
+        }
+      });
+    },
     payBtn() {
       const pata = {
         personOrderList: JSON.stringify(this.personOrderList),
         order_id: this.$route.query.user_order_id,
         order_price: this.pricess.all_price
       };
-      console.log(pata)
+      console.log(pata);
       payPalOrder(pata).then(res => {
         console.log(res);
         if (res.code == 1) {
@@ -405,7 +437,8 @@ export default {
             order_id: this.userId,
             user_order_id: res.result.user_order_id,
             price: this.pricess.all_price,
-            type: this.$ls.get("types")
+            type: this.types,
+            pay_mode: this.pay_mode
           };
           if (this.value == 1) {
             console.log(param);
@@ -501,18 +534,29 @@ export default {
   display: block;
   background-size: 100%;
 }
+
 .share-box {
+  //position: relative;
   width: 100%;
   //height: 100%;
   padding: 40px;
+  //overflow: hidden;
+  //padding-top: 139px;
+
   .wrapper-box {
     width: 100%;
     height: 100%;
     background-color: #fff;
     border-radius: 10px;
+    //padding: 20px;
+
     //overflow: hidden;
     header {
+      width: 100%;
+      //position: fixed;
+      //z-index: 9;
       display: flex;
+      background: #fff;
       width: 100%;
       justify-content: space-between;
       border-bottom: 1px solid #5ba997;

@@ -100,7 +100,7 @@ export default {
   created() {
     this._wxBackPay();
     this._status();
-    this.config.url = 'http://192.168.0.9/index#/share' + '?order_id='+this.$route.query.orderId
+    
   },
   mounted() {},
   watch: {},

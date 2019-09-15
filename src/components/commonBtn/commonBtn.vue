@@ -52,6 +52,7 @@ export default {
             this.$emit('btnClick')
             this.$emit('handleLink')
             this.$emit('handleLink1')
+            this.$emit('payBtnOrder')
         }
     }
 };

@@ -144,7 +144,8 @@ export default {
         left_pic_url: this.data[0].left_pic_url,
         right_pic_url: this.data[0].right_pic_url,
         color: this.data[0].color,
-        weight: this.data[0].weight
+        weight: this.data[0].weight,
+        name: this.data[0].name
       };
     },
     handleChange(key, column, value) {
@@ -211,7 +212,8 @@ export default {
         left_pic_url: this.targetList.left_pic_url,
         right_pic_url: this.targetList.right_pic_url,
         color: this.targetList.color,
-        weight: this.targetList.weight
+        weight: this.targetList.weight,
+        name: this.targetList.name
       });
     },
 

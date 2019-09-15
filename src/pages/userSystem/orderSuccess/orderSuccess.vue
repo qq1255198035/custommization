@@ -10,51 +10,23 @@
       <a-row>
         <a-col :span="2"></a-col>
         <a-col :span="20">
-          <div class="step" style="color:#fff">Progress</div>
+          <!--<div class="step" style="color:#fff">Progress</div>
           <my-stpes :mycurrent="step">
             <p slot="p1" class="text-centers">Select Size</p>
             <p slot="p2" class="text-centers">Please Confirm Payment</p>
             <p slot="p3" class="text-centers">Waiting To Start Group Order</p>
             <p slot="p4" class="text-centers">Completed</p>
-          </my-stpes>
+          </my-stpes>-->
           <div class="content">
-            <div class="title">
-              <span v-if="code === 1">
-                <a-icon type="smile" />
-              </span>
-              <span v-if="code === 0">
-                <a-icon type="frown" />
-              </span>
-              <div v-if="code === 1">
-                <h3>Payment Successful</h3>
-                <p>Thank you for your payment.</p>
-              </div>
-              <div v-if="code === 0">
-                <h3>Payment Unsuccessful</h3>
-                <p>Pay Again</p>
-              </div>
-            </div>
+            
             <div class="desc">
-              <div class="border"></div>
+                
               <div class="bg">
-                <h1 v-if="code === 1">${{price}}</h1>
-                <div class="pay-detail" v-if="code === 1">
-                  <p>Payment Account：{{payName}}</p>
-                  <p>Order No{{orderId}}</p>
-                  <p v-if="type == 1"><share style="text-align:center"  class="share" :config="config"></share></p>
+                  <p><a-icon style="font-size:20px;padding-right:16px" type="smile" /><span>The order has been completed</span></p>
                   
-                </div>
-                <div class="pay-detail" v-if="code === 0">
-                  <p>Order No{{orderId}}</p>
-                </div>
-                <div class="pay-btn" v-if="code === 1 && type == 0">
-                  <a-button class="buy-again" @click="alginBtn">Buy Again</a-button>
-                  <a-button class="back" @click="backBtn">Back</a-button>
-                </div>
-                <div class="pay-btn" v-if="code === 0">
-                  <a-button class="buy-again" @click="resetBtn">Pay Again</a-button>
-                  <a-button class="back" @click="backBtn">Back</a-button>
-                </div>
+                <p>We will reply you within 3 working days</p>
+                        <p>We will provide a design mockup within 4 working days.</p>
+                <a-button class="back" @click="backBtn">Back</a-button>
               </div>
             </div>
           </div>
@@ -73,6 +45,7 @@ export default {
   props: {},
   data() {
     return {
+      float: '',
       order_ids: '',
       type: "",
       step: 1,
@@ -102,7 +75,7 @@ export default {
   created() {
     this._payBack();
     //this._status();
-    
+    this.float = this.$route.query.flaot
     //this.config.url = 'localhost:3000/#/sellerShare' + '?order_id='+this.userOrderId
   },
   mounted() {},
@@ -263,17 +236,17 @@ export default {
       margin-top: 16px;
       width: 70%;
       margin: 10px auto;
-      .border {
-        width: 100%;
-        height: 14px;
-        border-radius: 10px;
-        border: solid 1px #808080;
-        background: #808080;
-      }
+      
       .bg {
-        width: 96%;
+        width: 50%;
         margin: 0 auto;
+        padding: 40px;
         background: #ffffff;
+        text-align: center;
+        border-radius: 10px;
+        p{
+            padding-bottom: 16px;
+        }
 
         h1 {
           line-height: 70px;

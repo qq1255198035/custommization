@@ -3,7 +3,6 @@
     <my-title :title="'Group Order'"></my-title>
     <ul class="input-box">
       <li>
-        
         <commonBtn
             @handleLink="goNewOrder"
             :width="'130px'"
@@ -108,7 +107,7 @@ export default {
             console.log(res)
             if(res.code == 0){
               if(res.result == 1){
-                this.$router.push({path:'/grouporder'})
+                this.$router.push({path:'/neworder'})
               }else if(res.result == 0){
                 this.$message.error('Sorry,Not examined and approved')
               }else if(res.result == 1){

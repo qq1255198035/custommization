@@ -57,9 +57,12 @@
         <li v-for="items in item.interiorList" :key="items.index">
           <div class="listCol">
             <div class="avatar">
+              <!--<div v-for="itemk in items" :key="itemk.index">
+                <img :src="items.positive_pic_url" alt />
+              </div>-->
               <img :src="items.positive_pic_url" alt />
               <div class>
-                <h3>{{items.name}}</h3>
+                <h3 style="color:#33b8b3">{{items.name}}</h3>
                 <div class="desc">
                   <p>COLOR：{{items.color}}</p>
                   <p>SIZE：{{items.size}}</p>

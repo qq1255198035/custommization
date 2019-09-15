@@ -98,6 +98,11 @@ export const constantRouterMap = [
     component: () => import("@/pages/userSystem/paySuccess/paySuccess")
   },
   {
+    path: "/orderSuccess",
+    name: "orderSuccess",
+    component: () => import("@/pages/userSystem/orderSuccess/orderSuccess")
+  },
+  {
     path: "/wxSuccess",
     name: "wxSuccess",
     component: () => import("@/pages/userSystem/wxSuccess/wxSuccess")

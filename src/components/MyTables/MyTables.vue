@@ -168,7 +168,8 @@ export default {
         left_pic_url: this.data1[0].left_pic_url,
         right_pic_url: this.data1[0].right_pic_url,
         color: this.data1[0].color,
-        weight: this.data1[0].weight
+        weight: this.data1[0].weight,
+        name: this.data1[0].name
         
       };
     },
@@ -239,13 +240,10 @@ export default {
     },
 
     changeNum(value, key, column) {
-      if(!/^\d{2}$/.test(value) >= 2) {
-        this.$notification.error({
-          message: "输入两位数字"
-        });
-        value = value.substr(0, 1);
+      if(/^\d{3}$/.test(value)) {
+        this.$message.error("输入长度为2");
+        value = value.substr(0, 2);''
       }
-      value = value.substr(0, 9);
         console.log(value, key, column);
         let newData = [...this.data1];
         console.log(newData);
@@ -282,7 +280,8 @@ export default {
         left_pic_url: this.targetList.left_pic_url,
         right_pic_url: this.targetList.right_pic_url,
         color: this.targetList.color,
-        weight: this.targetList.weight
+        weight: this.targetList.weight,
+        name: this.targetList.name
       });
       console.log(this.data1);
     },
@@ -290,7 +289,7 @@ export default {
     remove(key) {
       let newData = [...this.data1];
       newData = this.data1.filter(item => item.key !== key);
-      let newData2 = [...this.data];
+      let newData2 = [...this.data1];
       this.data1 = newData;
       let target = newData2.filter(item => key == item.key)[0];
       if (target) {

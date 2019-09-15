@@ -26,7 +26,7 @@
                 style="font-size: 18px; color: #999; text-decoration: underline"
               >View the size chart</a>
               <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancelImg">
-                <img alt="example" style="width: 100%" :src="previewImage" />
+                <img alt="example" style="width: 100%" :src="item.size_chart_url" />
               </a-modal>
             </table-item>
             <div v-if="!item.is_print_numbe && !item.is_print_text">
@@ -88,6 +88,7 @@ export default {
   props: {},
   data() {
     return {
+      pay_mode: '',
       previewVisible: false,
       showList: "",
       showTable: "",
@@ -249,7 +250,8 @@ export default {
           user_order_id: this.$route.query.user_order_id,
           order_id: this.$route.query.order_id,
           order_price: this.allPrice,
-          personOrderList: JSON.stringify(this.listNoPay)
+          personOrderList: JSON.stringify(this.listNoPay),
+          pay_mode: this.pay_mode
         };
         console.log(param);
         apiPay(param).then(res => {
@@ -275,7 +277,7 @@ export default {
       }).then(res => {
         console.log(res);
         this.$ls.set("types", res.result.type);
-
+        this.pay_mode = res.result.pay_mode
         this.resultData = res.result.personOrderNoPrintList;
         this.detailList = res.result;
       });
