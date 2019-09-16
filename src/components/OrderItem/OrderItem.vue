@@ -115,17 +115,14 @@ export default {
           this.openShare = false;
     },
     checkOutDetails(id){
-          console.log(id);
           this.$router.push({path: '/myorder',query: {id: id}})
     },
     btnClick(id,status){
       this.$emit('handleMyClick',id,status)
     },
     openMyshareBox(id){
-          console.log(id)
           this.openShare = true;
           this.config.url = 'http://192.168.0.9/#/share' + '?order_id='+id
-          console.log(this.config.url)
     },
     statusFilter (type) {
       return statusMap[type].text

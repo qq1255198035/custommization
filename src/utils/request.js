@@ -15,10 +15,7 @@ const service = axios.create({
 const err = (error) => {
   if (error.response) {
     let data = error.response.data
-    console.log(error.response)
     const token = Vue.ls.get(ACCESS_TOKEN)
-    console.log(Vue.ls.get('order_id'))
-    console.log(token)
     console.log("------异常响应------",token)
     console.log("------异常响应------",error.response.status)
     switch (error.response.status) {
@@ -99,7 +96,6 @@ service.interceptors.request.use(config => {
 
 // response interceptor
 service.interceptors.response.use((response) => {
-  //console.log(response)
     return response.data
   },err)
 

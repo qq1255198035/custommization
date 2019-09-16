@@ -151,7 +151,6 @@ export default {
       dataList = this.dataName;
       this.data1 = dataList;
       this.sizes = this.data1[0].sizes;
-      console.log(this.dataName);
       this.data1[0].total_price = this.data1[0].price;
       this.targetList = {
         price: this.data1[0].price,
@@ -174,11 +173,8 @@ export default {
       };
     },
     handleChange(key, column, value) {
-      console.log(key, column, value);
       let newData = [...this.data1];
-      console.log(newData);
       let target = newData.filter(item => key == item.key)[0];
-      console.log(target);
       if (target) {
         target.size = value;
         target.price = target.number * target.total_price;
@@ -201,18 +197,14 @@ export default {
           stringLength += 2;
         }
       }
-      console.log(stringLength);
       return stringLength;
     },
     changeEn(value) {
       console.log(value);
       
     },
-    changeName(value, key, column) {
-      console.log(value);
-      console.log(value, key, column);
+    changeName(value, key) {
       if (!/^[a-zA-Z]+$/.test(value)) {
-        console.log("请输入英文");
         value = "";
       }else{
         value = value.toUpperCase()
@@ -224,9 +216,7 @@ export default {
         value = value.substr(0, 9);
       }
       let newData = [...this.data1];
-      console.log(newData);
       let target = newData.filter(item => key == item.key)[0];
-      console.log(target);
       if (target) {
         target.printName = value;
       }
@@ -239,15 +229,12 @@ export default {
       //callback(new Error('请输入英文'))
     },
 
-    changeNum(value, key, column) {
+    changeNum(value, key) {
       if(/^\d{3}$/.test(value)) {
         value = value.substr(0, 2);''
       }
-        console.log(value, key, column);
         let newData = [...this.data1];
-        console.log(newData);
         let target = newData.filter(item => key == item.key)[0];
-        console.log(target);
         if (target) {
           target.printNumber = value;
         }
@@ -258,7 +245,6 @@ export default {
     },
     newMembers() {
       const length = this.data1.length;
-      console.log(length);
       this.data1.push({
         key:
           length === 0
@@ -270,7 +256,7 @@ export default {
         printName: this.targetList.printName,
         printNumber: this.targetList.printNumber,
         number: this.targetList.number,
-        size: this.targetList.sizess,
+        size: '',
         goods_id: this.targetList.goods_id,
         des_id: this.targetList.des_id,
         total_price: this.targetList.price,
@@ -282,7 +268,6 @@ export default {
         weight: this.targetList.weight,
         name: this.targetList.name
       });
-      console.log(this.data1);
     },
 
     remove(key) {

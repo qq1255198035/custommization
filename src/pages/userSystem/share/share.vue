@@ -11,15 +11,15 @@
       </header>
       <card-header :detailList="detailList"></card-header>
       <my-title style="margin:40px 0;" :fontsize="20" :title="itemTitle"></my-title>
-      <a-row :gutter="40">
+      <a-row :gutter="40" style="padding:0 8%">
         <!--list1-->
-        <div style="padding:0 20px">
+        <div>
           <a-col
+            class="scroll-boxs"
             :xxl="12"
-            :xl="20"
+            :xl="24"
             v-for="(item,index) in resultData"
             :key="index"
-            style="overflow-y: auto;overflow-x: hidden;height:560px;max-height:560px"
           >
             <table-item :datas="item" ref="myTable">
               <a
@@ -52,7 +52,6 @@
               <div class="allprice">${{allPrice}}</div>
             </div>
             <div class="right">
-              <!--<a data-hover="立即支付" icon="dollar" class="btns" @click="payTo">立即支付</a>-->
               <commonBtn
                 @payTo="payTo"
                 :width="'100%'"
@@ -125,12 +124,11 @@ export default {
     };
   },
   computed: {},
-  created() {
+  created() {},
+  mounted() {
     this._apiPersonOrder();
-    console.log(this.check());
     this.check();
   },
-  mounted() {},
   watch: {},
   methods: {
     imgShow() {
@@ -158,7 +156,7 @@ export default {
       }
       return flag;
     },
-
+    //价格合计
     _price(datas) {
       let price = 0;
       for (var i = 0; i < datas.length; i++) {
@@ -170,7 +168,6 @@ export default {
       for (var i = 0; i < data.length; i++) {
         this.newListOld.push(data[i]);
       }
-      console.log(this.newListOld);
       let newLists = [];
       for (var k = 0; k < this.newListOld.length; k++) {
         let count = 0;
@@ -180,25 +177,20 @@ export default {
             break;
           }
         }
-        console.log(count);
         if (count == 0) {
           newLists[newLists.length] = this.newListOld[k];
         }
       }
 
       this.arrtyNew1 = newLists;
-      console.log(this.arrtyNew1);
       this.arrtyNew1 = this.arrtyNew1.filter(item => {
         return item.price !== 0;
       });
-      console.log(this.arrtyNew1);
       this.arrtyAllList = this.arrtyNew1.concat(this.arrtyNew2);
-      console.log(this.arrtyAllList);
       this.allPrice = this._price(this.arrtyAllList);
       this.listNoPay.data = this.arrtyAllList;
     },
     lists(data) {
-      console.log(data);
       for (var i = 0; i < data.length; i++) {
         this.newListOld1.push(data[i]);
       }
@@ -211,7 +203,6 @@ export default {
             break;
           }
         }
-        console.log(count);
         if (count == 0) {
           newLists[newLists.length] = this.newListOld1[k];
         }
@@ -221,12 +212,11 @@ export default {
       this.arrtyNew2 = this.arrtyNew2.filter(item => {
         return item.price !== 0;
       });
-      console.log(this.arrtyNew2);
       this.arrtyAllList = this.arrtyNew2.concat(this.arrtyNew1);
-      console.log(this.arrtyAllList);
       this.allPrice = this._price(this.arrtyAllList);
       this.listNoPay.data = this.arrtyAllList;
     },
+    // 立即支付
     payTo() {
       const token = this.$ls.get(ACCESS_TOKEN);
       if (!token) {
@@ -246,9 +236,30 @@ export default {
           }
         });
       }
+      //校验尺码，名字，号码
+      for (var i = 0; i < this.arrtyAllList.length; i++) {
+        console.log(!this.arrtyAllList[i].size);
+        if (!this.arrtyAllList[i].size) {
+          this.$message.error("Please choose the size.");
+          return;
+        }
+        if (
+          this.arrtyAllList[i].is_print_number == 1 &&
+          !this.arrtyAllList[i].printNumber
+        ) {
+          this.$message.error("Please choose the number.");
+          return;
+        }
+        if (
+          this.arrtyAllList[i].is_print_text == 1 &&
+          !this.arrtyAllList[i].printName
+        ) {
+          this.$message.error("Please choose your name.");
+          return;
+        }
+      }
       if (this.allPrice && token) {
         const param = {
-          //token: this.$ls.get("token"),
           user_order_id: this.$route.query.user_order_id,
           order_id: this.$route.query.order_id,
           order_price: this.allPrice,
@@ -260,15 +271,13 @@ export default {
           console.log(res);
           if (res.code == 1) {
             this.$router.push({
-              path: "/payment",
-              query: {
-                user_order_id: this.$route.query.order_id
-              }
+              path: "/payment"
             });
           }
         });
       }
     },
+    //初始订单查询
     _apiPersonOrder() {
       apiPersonOrder({
         //token: this.$ls.get("token"),
@@ -277,7 +286,6 @@ export default {
         pageNo: 1,
         pageSize: 10
       }).then(res => {
-        console.log(res);
         this.$ls.set("pay_mode", res.result.pay_mode);
         this.pay_mode = res.result.pay_mode;
         this.resultData = res.result.personOrderNoPrintList;
@@ -309,6 +317,24 @@ export default {
   left: 26px;
   margin-top: -17px;
   z-index: 9;
+}
+.scroll-boxs {
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 560px;
+  margin-bottom: 20px;
+  max-height: 560px;
+  &::-webkit-scrollbar {
+    /*滚动条整体样式*/
+    width: 4px; /*宽分别对应竖滚动条的尺寸*/
+    /*高分别对应横滚动条的尺寸*/
+    background-color: #fff;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #33b8b3;
+    border-radius: 4px;
+    height: 10%;
+  }
 }
 .right:hover {
   .bg-image {
@@ -369,8 +395,6 @@ export default {
       }
       .right {
         position: relative;
-        .ant-btn {
-        }
       }
     }
   }

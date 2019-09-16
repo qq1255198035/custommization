@@ -49,7 +49,6 @@ const user = {
             if (res.code == 200) {
               Vue.ls.set(ACCESS_TOKEN, res.result.token, 7 * 24 * 60 * 60 * 1000)
               commit('SET_TOKEN', res.result.token)
-              console.log(res)
               commit('SET_AVATAR', res.avatar)
               commit('SET_NAME', { name: res.result.username })
               commit('SET_INFO', res.user)
@@ -58,7 +57,6 @@ const user = {
           })
           .catch(error => {
             reject(error)
-            console.log(error)
           })
       })
     },

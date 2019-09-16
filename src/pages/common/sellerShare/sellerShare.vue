@@ -109,7 +109,6 @@ export default {
   computed: {},
   created() {
     this._apiPersonOrder();
-    console.log(this.check())
     this.check()
   },
   mounted() {},
@@ -137,14 +136,11 @@ check() {
       return price;
     },
     list(data) {
-      console.log(data);
       this.listNoPay.data = data;
       this.aPrice = this._price(data);
-      console.log(this.aPrice);
       this.allPrice = this.bPrice + this.aPrice;
     },
     lists(data) {
-      console.log(data);
       this.listPay.data = data;
       this.bPrice = this._price(data);
       this.allPrice = this.bPrice + this.aPrice;
@@ -174,9 +170,7 @@ check() {
           personOrderNoPrintList: JSON.stringify(this.listNoPay),
           personOrderPrintList: JSON.stringify(this.listPay)
         };
-        console.log(param);
         apiPay(param).then(res => {
-          console.log(res);
           if (res.code == 1) {
             this.$router.push({
               path: "/payment",
@@ -196,7 +190,6 @@ check() {
         pageNo: 1,
         pageSize: 10
       }).then(res => {
-        console.log(res);
         let result = res.result.personOrderNoPrintList[0];
         let result1 = res.result.personOrderPrintList[0];
         this.showList = result1;

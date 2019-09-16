@@ -219,9 +219,8 @@ export default {
   methods: {
     _personSet() {
       personSet().then(res => {
-        console.log(res);
+        console.log(res)
         const result = res.result;
-        console.log(result);
         const phone1 = result.phone ? result.phone.split(",")[0] : "86";
         const phone2 = result.phone ? result.phone.split(",")[1] : "";
         this.form.setFieldsValue({
@@ -245,7 +244,6 @@ export default {
     },
     _country() {
       country().then(res => {
-        console.log(res);
         this.country = res.result;
       });
     },
@@ -258,10 +256,8 @@ export default {
     },*/
     // 更新
     submitPerson() {
-      console.log(111);
       this.form.validateFields((err, values) => {
         if (!err) {
-          console.log(values.countryName);
           const params = {
             email: values.email,
             surname: values.surname,
@@ -274,9 +270,7 @@ export default {
             img: this.fileUrl,
             phone: values.phoneName1 + "," + values.phoneName2
           };
-          console.log(params);
           personEdit(params).then(res => {
-            console.log(res);
             if (res.code == 200) {
               this.$notification.success({
                 message: "Update Success",
@@ -291,33 +285,27 @@ export default {
     },
     commonCity() {},
     countryBtn(value) {
-      console.log(value);
       this.countryValue = value;
       const params = {
         areaId: value
       };
-      province(params).then(res => {
-        console.log(res);
-        
+      province(params).then(res => {     
         if (res.result.length == 0) {
           this.form.setFieldsValue({
             province: "",
             city: ""
           });
         }else{
-          console.log(22)
           this.province = res.result;
         }
       });
     },
     onProvince(value) {
-      console.log(value);
       this.provinceId = value;
       const params = {
         areaId: value
       };
       city(params).then(res => {
-        console.log(res);
         this.city = res.result;
       });
     },
@@ -347,9 +335,7 @@ export default {
       });
       const formData = new FormData();
       formData.append("file", file);
-      console.log(formData);
       upLoad(formData).then(res => {
-        console.log(res);
         this.fileUrl = res;
       });
     },

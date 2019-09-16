@@ -296,7 +296,6 @@
                     :value="prices"
                     type="number"
                     @change="onChangeValues"
-                    style="width: 120px"
                   />
                 </div>
                 <div class="font-18">/piece</div>
