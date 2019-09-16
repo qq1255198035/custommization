@@ -41,7 +41,7 @@
               <div class="bg">
                 <h1 v-if="code === 1">${{price}}</h1>
                 <div class="pay-detail" v-if="code === 1">
-                  <p>Payment Account：{{payName}}</p>
+                  <!--<p>Payment Account：{{payName}}</p>-->
                   <p>Order No{{orderId}}</p>
                 </div>
                 <div class="pay-detail" v-if="code === 0">
@@ -76,7 +76,7 @@ export default {
       value: 1,
       code: "",
       price: "",
-      payName: "",
+      //payName: "",
       orderId: "",
       orderAgain: "",
       userId: ""
@@ -99,9 +99,7 @@ export default {
       const param = {
         user_order_id: this.$route.query.user_order_id
       };
-      console.log(param);
       status(param).then(res => {
-        console.log(res);
         this.step = parseInt(res.result.schedule);
       });
     },
@@ -109,14 +107,12 @@ export default {
       const param = {
         user_order_id: this.$route.query.user_order_id
       };
-      console.log(param);
       wxPayBack(param).then(res => {
-        console.log(res);
         if (res.code == 1) {
           this.code = 1;
           let result = res.payInfoList[0];
           this.price = result.order_price;
-          this.payName = result.pay_name;
+          //this.payName = result.pay_name;
           this.orderId = result.order_sn;
           this.orderAgain = result.order_id;
           this.userOrderId = result.user_order_id;

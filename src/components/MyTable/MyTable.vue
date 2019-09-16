@@ -149,26 +149,19 @@ export default {
       };
     },
     handleChange(key, column, value) {
-      
-      console.log(key, column, value);
       let newData = [...this.data];
-      console.log(newData);
       let target = newData.filter(item => key == item.key)[0];
-      console.log(target);
       if (target) {
         target.size = value;
         target.price = target.number * target.total_price;
       }
       this.data = newData;
-      console.log(this.data);
       this.$emit("getList", this.data);
     },
     /** 减**/
     clickLeftbtn(key, column) {
       let newData = [...this.data];
-      console.log(newData);
       let target = newData.filter(item => key == item.key)[0];
-      console.log(target);
       if (target) {
         if (target[column] > 0) {
           target[column]--;
@@ -203,7 +196,7 @@ export default {
         number: this.targetList.number,
         printName:this.targetList.printName,
         printNumber:this.targetList.printNumber,
-        size: this.targetList.sizess,
+        size: '',
         goods_id: this.targetList.goods_id,
         des_id: this.targetList.des_id,
         total_price: this.targetList.price,
@@ -218,8 +211,6 @@ export default {
     },
 
     remove(key) {
-      
-      console.log(key);
       let newData = [...this.data]
       newData = this.data.filter(item => item.key !== key);
       let newData1 = [...this.data]
@@ -227,10 +218,8 @@ export default {
       if(target) {
         target.price = 0;
       }
-      console.log(newData);
       this.data = newData;
       this.data1 = newData1
-      console.log(this.data)
       this.$emit("getList", this.data1);
     }
   },

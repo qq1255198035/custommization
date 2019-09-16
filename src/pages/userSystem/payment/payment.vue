@@ -197,7 +197,6 @@ import TableList from "@/components/TableList/TableList";
 import commonBtn from "@/components/commonBtn/commonBtn";
 import User from "@/components/Header/User";
 import QRCode from "qrcode";
-//import MyTable from "@/components/MyTable/MyTable";
 export default {
   props: {},
   data() {
@@ -286,7 +285,7 @@ export default {
   mounted() {},
   watch: {},
   methods: {
-    initWebSocket() {
+    /*initWebSocket() {
       const wsuri = "ws://192.168.0.122:8080/jeecg-boot/api/wx/payBack";
       this.websocket = new WebSocket(wsuri);
       this.websocket.onopen = this.websocketonopen;
@@ -327,35 +326,29 @@ export default {
     websocketclose(e) {
       //关闭
       console.log("断开连接", e);
-    },
+    },*/
     isHide() {
       this.show = false;
     },
     //回调订单
     _paymentSessionInfos() {
-      let param = {}
-      if(this.$route.query.user_order_id) {
-        param.user_order_id= this.$route.query.user_order_id
+      const param = {
+        user_order_id: this.$route.query.user_order_id ? this.$route.query.user_order_id : ''
       }
-      console.log(param);
+      console.log(param)
       paymentSessionInfos(param).then(response => {
-        console.log(response);
         this.pricess = response;
         this.allPrice = response.order_price ? response.order_price : 0;
         this.userId = response.order_id;
         this.personOrderList.data = response.personOrderList;
         this.pay_mode = response.pay_mode;
-
         this.tablesList = response.personOrderList;
       });
     },
+    //微信轮询
     resultPsot(data) {
       const that = this;
-      console.log(data);
       wxOrderQuery(data).then(res => {
-        console.log(res);
-        console.log(res.wxPayStatus);
-        console.log(!res.wxPayStatus == 0);
         if (res.wxPayStatus == 0) {
           this.$router.push({
             path: "/wxSuccess",
@@ -371,16 +364,19 @@ export default {
         }
       });
     },
+    //提交订单
     payBtnOrder() {
       const pata = {
         personOrderList: JSON.stringify(this.personOrderList),
+        user_order_id: this.$route.query.user_order_id ? this.$route.query.user_order_id : '',
         order_id: this.pricess.order_id,
         order_price: this.pricess.all_price,
-        pay_mode: this.pay_mode
+        pay_mode: this.pay_mode,
+        shipping_fee: this.pricess.shipping_fee,
+        goods_price: this.pricess.order_price
       };
-      console.log(pata);
+      console.log(pata)
       payPalOrder(pata).then(res => {
-        console.log(res);
         if (res.result.code == 1) {
           this.$notification.success({
             message: "Successful submission of orders"
@@ -394,15 +390,19 @@ export default {
         }
       });
     },
+    //立即支付
     payBtn() {
       const pata = {
         personOrderList: JSON.stringify(this.personOrderList),
         order_id: this.pricess.order_id,
-        order_price: this.pricess.all_price
+        order_price: this.pricess.all_price,
+        shipping_fee: this.pricess.shipping_fee,
+        goods_price: this.pricess.order_price,
+        user_order_id: this.$route.query.user_order_id ? this.$route.query.user_order_id : ''
       };
-      console.log(pata);
+      console.log(pata)
       payPalOrder(pata).then(res => {
-        console.log(res);
+        console.log(res)
         if (res.code == 1) {
           const param = {
             order_id: this.pricess.order_id,
@@ -410,12 +410,10 @@ export default {
             price: this.pricess.all_price,
             pay_mode: this.pay_mode
           };
-          console.log(param);
-          if (this.value == 1) {
-            console.log(param);
-            payPal(param).then(res => {
-              console.log(res);
 
+          //paypal
+          if (this.value == 1) {
+            payPal(param).then(res => {
               let first = res.toPayHtml.indexOf("href") + 6;
               let last = res.toPayHtml.lastIndexOf('"');
               let url = res.toPayHtml.slice(first, last);
@@ -426,11 +424,10 @@ export default {
               window.location.replace(routeData.href, "_blank");
             });
           }
+          //weixin
           if (this.value == 2) {
             //this.initWebSocket();
             wxPay(param).then(res => {
-              console.log(res);
-
               const url = res.respData.code_url;
               this.show = true;
               var canvas = document.getElementById("canvas");
@@ -444,7 +441,6 @@ export default {
                 //user_order_id: res.payInfoList[0].user_order_id
                 user_order_id: res.userOrderId
               };
-              console.log();
               this.resultPsot(datas);
             });
           }

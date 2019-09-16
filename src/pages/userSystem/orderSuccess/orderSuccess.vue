@@ -52,6 +52,8 @@
 
 <script>
 import { sumbitOrder } from "@/api/system";
+import MyStpes from "@/components/MyStpes/MyStpes";
+import User from "@/components/Header/User";
 //import { paypalSellerBack } from "@/api/seller";
 export default {
   props: {},
@@ -86,12 +88,11 @@ export default {
         user_order_id: this.$route.query.user_order_id
       };
 
-      console.log(param);
       sumbitOrder(param).then(res => {
-        console.log(res);
-          this.price = res.order_price;
-          this.orderId = res.order_sn;
-          this.userOrderId = res.user_order_id;
+        debugger
+          this.price = res.result.order_price;
+          this.orderId = res.result.order_sn;
+          this.userOrderId = res.result.order_id;
       });
     },
     alginBtn() {
@@ -105,7 +106,8 @@ export default {
     }
   },
   components: {
-    MyStpes
+    MyStpes,
+    User
   }
 };
 </script>

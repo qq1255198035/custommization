@@ -39,7 +39,6 @@ const constantRouterComponents = {
   //orderdetails: () => import("@/pages/Seller/OrderDetails"),
   // ...more
 }
-console.log(constantRouterComponents)
 // 前端未找到页面路由（固定不用改）
 const notFoundRouter = {
   path: '*',
@@ -52,7 +51,6 @@ const notFoundRouter = {
  */
 
 export const getRouterByUser = () => {
-  console.log(Vue.ls.get(ACCESS_TOKEN))
   return axios({
     url: '/sys/permission/getUserPermissionByToken',
     method: 'get',
@@ -79,7 +77,6 @@ export const generatorDynamicRouter = () => {
   return new Promise((resolve, reject) => {
     // ajax
     getRouterByUser().then(res => {
-      console.log(res)
       const result = res.result.menu
       const resultList = [{
         component: "SellerLayout",

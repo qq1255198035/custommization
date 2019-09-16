@@ -263,15 +263,9 @@ export default {
   },
   methods: {
     onChangeRadio(e) {
-      console.log(e.target.value);
       this.valueRadio = e.target.value;
     },
-    roleChange(value) {
-      console.log(value);
-      this.valueRadio = value;
-    },
     handlePasswordLevel(rule, value, callback) {
-      console.log(value);
       let level = 0;
       // 判断这个字符串中有没有数字
       if (/[0-9]/.test(value)) {
@@ -287,7 +281,6 @@ export default {
       }
       this.state.passwordLevel = level;
       this.state.percent = level * 30;
-      console.log(level);
       if (level >= 2) {
         if (level >= 3) {
           this.state.percent = 100;
@@ -319,13 +312,11 @@ export default {
       }, 1500);
     },
     register() {
-      console.log(111);
       this.registerActor("/sys/user/register");
     },
     goRegister() {
       if (!this.activeIndex) {
         this.$message.error("ee");
-        console.log(this.current);
       } else {
         this.current = "1";
       }
@@ -337,7 +328,6 @@ export default {
         $notification
       } = this;
       validateFields((err, values) => {
-        console.log(values);
         if (!err) {
           registerSubmit(api, {
             username: values.email,
@@ -345,10 +335,9 @@ export default {
             smscode: values.captcha,
             surname: values.surname,
             monicker: values.monicker,
-            status: this.roleValue
+            status: this.valueRadio
             //internationalization: localStorage.lang
           }).then(res => {
-            console.log(res);
             if (res.code == 200) {
               $router.push({ path: "/login", params: { ...values } });
             } else {
@@ -370,7 +359,6 @@ export default {
         $notification
       } = this;
       validateFields(["email"], { force: true }, (err, values) => {
-        console.log(values, err);
         if (!err) {
           state.smsSendBtn = true;
           const interval = window.setInterval(() => {
@@ -386,7 +374,6 @@ export default {
             //internationalization: localStorage.lang
           })
             .then(res => {
-              console.log(res);
               if (res.code == 500) {
                 (this.formShow = true), (this.emailText = res.message);
               }

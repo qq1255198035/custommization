@@ -88,8 +88,8 @@ export default {
       config: {
         url: window.location.href, // 网址，默认使用 window.location.href
         source: "", // 来源（QQ空间会用到）, 默认读取head标签：<meta name="site" content="http://overtrue" />
-        title: "11", // 标题，默认读取 document.title 或者 <meta name="title" content="share.js" />
-        description: "222", // 描述, 默认读取head标签：<meta name="description" content="PHP弱类型的实现原理分析" />
+        title: "", // 标题，默认读取 document.title 或者 <meta name="title" content="share.js" />
+        description: "", // 描述, 默认读取head标签：<meta name="description" content="PHP弱类型的实现原理分析" />
         image:
           "https://hlx-1258407851.cos.ap-beijing.myqcloud.com/hlx/20181229/16144720457881.png", // 图片, 默认取网页中第一个img标签
         sites: ["facebook", "wechat", "weibo"], // 启用的站点
@@ -124,10 +124,8 @@ export default {
         token: this.$route.query.token,
         PayerID: this.$route.query.PayerID
       };
-
-      console.log(data);
+      // 成功
       payBack(data).then(res => {
-        console.log(res);
         this.pay_mode = res.pay_mode;
         if (res.code == 1) {
           this.code = 1;
@@ -135,8 +133,8 @@ export default {
           this.orderId = res.order_sn;
           this.orderAgain = res.userOrderId;
           this.userOrderId = res.order_id;
-          this.config.url =
-            "http://192.168.0.9/index#/share" + "?order_id=" + res.order_id;
+          this.config.url ="http://192.168.0.9/index#/share" + "?order_id=" + res.order_id;
+          //this.config.url = "http://magicfish1981.ngrok2.xiaomiqiu.cn" + "?order_id=" + res.order_id;
         }
         if (res.code == 0) {
           this.code = 0;

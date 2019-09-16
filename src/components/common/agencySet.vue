@@ -113,9 +113,7 @@ export default {
   methods: {
     _agencyInfo() {
       agencyInfo().then(res => {
-        console.log(res);
         const result = res.result;
-        console.log(result);
         this.form.setFieldsValue({
           corporateName: result.company,
           business: result.registration,
@@ -138,7 +136,6 @@ export default {
       console.log(111);
       this.form.validateFields((err, values) => {
         if (!err) {
-          console.log(values.countryName);
           const params = {
             company: values.corporateName,
             registration: values.business,
@@ -146,9 +143,7 @@ export default {
             employee: values.staff,
             papersImg: this.fileUrl,
           };
-          console.log(params);
           agencyEdit(params).then(res => {
-            console.log(res);
             if (res.code == 200) {
               this.$notification.success({
                 message: 'Agent Application',
@@ -178,9 +173,7 @@ export default {
       });
       const formData = new FormData();
       formData.append("file", file);
-      console.log(formData);
       upLoad(formData).then(res => {
-        console.log(res);
         this.fileUrl = res;
       });
     },

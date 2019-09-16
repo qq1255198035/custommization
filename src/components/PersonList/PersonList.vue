@@ -133,7 +133,6 @@ export default {
   },
   filters: {
     status(data) {
-      console.log(data);
       switch (data) {
         case 0:
           return "Awaiting for Payment";
@@ -166,7 +165,6 @@ export default {
   },
   methods: {
     toAlginPay(id) {
-      console.log(id);
       this.$router.push({
         path: "/payment",
         query: {
@@ -176,12 +174,10 @@ export default {
     },
     checkDetail() {},
     onSearch(value) {
-      console.log(value);
       this.seacher = value;
       this.$emit("search", this.seacher);
     },
     onChange(e) {
-      console.log(e.target.value);
       this.value = e.target.value;
       this.$emit("radios", this.value);
     },
@@ -191,12 +187,10 @@ export default {
       });
     },*/
     changeSize(current, size) {
-      console.log(current, size);
       this.pageSize = size
       this.$emit("page", current, size);
     },
     changeTotal(page,pageSize) {
-      console.log(page,pageSize);
       this.$emit("page", page, pageSize);
     }
   }

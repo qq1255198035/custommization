@@ -115,7 +115,6 @@ export default {
     ...mapActions(["Login", "Logout"]),
     onChange(e) {
       this.formLogin.rememberMe = e.target.checked
-      console.log(this.formLogin.rememberMe)
     },
     handleTabClick(key) {
       this.customActiveKey = key;
@@ -159,9 +158,7 @@ export default {
     },
 
     loginSuccess(res) {
-      console.log(res);
       if (this.$route.query.order_id) {
-        console.log(this.$route.query.order_id);
         this.$router.push({
           path: "/share",
           query: {
@@ -186,7 +183,6 @@ export default {
       }
     },
     requestFailed(err) {
-      console.log(err);
       this.$notification["error"]({
         message: "the error message",
         description: ((err.response || {}).data || {}).message || "the error message",

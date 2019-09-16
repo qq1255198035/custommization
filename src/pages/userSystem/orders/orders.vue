@@ -78,9 +78,8 @@ export default {
         pageNo: this.pageNo,
         pageSize: this.pageSize
       };
-      console.log(param);
       orders(param).then(res => {
-        console.log(res);
+        console.log(res)
         this.listData = res.records;
         this.total = res.total
       });
