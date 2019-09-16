@@ -58,7 +58,6 @@
 <script>
 import { payBack } from "@/api/system";
 //import { paypalSellerBack } from "@/api/seller";
-import MyStpes from "@/components/MyStpes/MyStpes";
 export default {
   props: {},
   data() {

@@ -68,6 +68,7 @@ export default {
                   text-align: center;
                   img{
                         width: 80%;
+                        height: 100%;
                   }
                   .desc{
                         margin-top: 15px;

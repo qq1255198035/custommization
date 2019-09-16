@@ -2,9 +2,10 @@
       <div id="header">
             <div class="header">
                   <div  class="logo">
-                        <img src="@/assets/logo.png" alt="LOGO">
+                        <router-link to="/index">
+                              <img src="@/assets/logo.png" alt="LOGO">
+                        </router-link>
                   </div>
-                  
             </div>
       </div>
 </template>
