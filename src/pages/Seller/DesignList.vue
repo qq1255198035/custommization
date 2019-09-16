@@ -2,7 +2,10 @@
   <div class="wrapper-design">
     <div style="position: relative; height: 100%">
       <header>
-        <p class="icon-logotxt"></p>
+        <router-link to="/index">
+          <p class="icon-logotxt"></p>
+        </router-link>
+        
         <p>
           <User></User>
         </p>

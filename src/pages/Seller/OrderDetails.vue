@@ -2,7 +2,10 @@
   <div id="OrderDetails">
     <div class="container">
       <header>
-        <p class="icon-logotxt"></p>
+        <router-link to="/index">
+          <p class="icon-logotxt"></p>
+        </router-link>
+        
         <p>
           <User></User>
         </p>

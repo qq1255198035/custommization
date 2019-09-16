@@ -1084,7 +1084,9 @@ export default {
                 this.loadFromJSON(this.myCanvas4,JSON.parse(this.$route.query.res.rightDesignArea))
                 this.bgimgs = this.$route.query.res.list;
                 this.postId = this.$route.query.res.goodsId;
-                this.picId = this.$route.query.res.picId
+                this.picId = this.$route.query.res.picId;
+                this.productColor = this.$route.query.res.productColorValue;
+                this.productColorName = this.this.$route.query.res.productColor;
                 console.log(this.bgimgs)
             }
         })
@@ -1344,6 +1346,8 @@ export default {
                                     lockUniScaling:true, // When `true`, object non-uniform scaling is locked
                                     left: left,
                                     top: top,
+                                    myId: 'Text',
+                                    crossOrigin: '*'
                                 });
                             }
                         }else{
@@ -1352,6 +1356,7 @@ export default {
                                 left: 200,
                                 top: 150,
                                 mytext:that.addText,
+                                myId: 'Text'
                             });
                         }
                         if(imgInstance.width > 200){
@@ -2193,7 +2198,9 @@ export default {
                         top:  200,
                         scaleX: 0.3,
                         scaleY:0.3,
-                        removeColor: false
+                        removeColor: false,
+                        myId: 'Img',
+                        crossOrigin: '*'
                     });
                 }else{
                     imgInstance = new fabric.Image(img, {
@@ -2207,7 +2214,9 @@ export default {
                         top:  170,
                         scaleX: 0.1,
                         scaleY:0.1,
-                        removeColor: false
+                        removeColor: false,
+                        myId: 'Img',
+                        crossOrigin: '*'
                     });
                 }
                 that.myCanvas.add(imgInstance);
@@ -2370,6 +2379,7 @@ export default {
                         originY: "center",
                         scaleX: 0.5,
                         scaleY: 0.5,
+                        crossOrigin: '*'
                     });
                 canvas.setBackgroundImage(imgInstance,canvas.renderAll.bind(canvas));
             }
