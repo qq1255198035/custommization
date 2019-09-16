@@ -99,6 +99,10 @@ export default {
       }
     };
   },
+  components: {
+    User,
+    MyStpes
+  },
   computed: {},
   created() {
     this._payBack();
@@ -179,10 +183,6 @@ export default {
         });
       }
     }
-  },
-  components: {
-    MyStpes,
-    User
   }
 };
 </script>

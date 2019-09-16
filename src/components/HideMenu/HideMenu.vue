@@ -6,7 +6,7 @@
                     <a-icon type="edit" />Edit
                 </li>
                 <li style="border-bottom: 1px solid #fff;" @click="handleClick">
-                    <a-icon type="search" />Check
+                    <a-icon type="search" />View
                 </li>
                 <li @click="handleClick1" v-if="isEdit == 3">
                     <a-icon type="share-alt" />Share

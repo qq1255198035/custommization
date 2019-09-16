@@ -2,7 +2,10 @@
   <div class="wrapper-design">
     <div style="position: relative; height: 100%">
       <header>
-        <p class="icon-logotxt"></p>
+        <router-link to="/index">
+          <p class="icon-logotxt"></p>
+        </router-link>
+        
         <p>
           <User></User>
         </p>
@@ -140,7 +143,7 @@ export default {
     posteDesignList(id){
       console.log(id)
       if(id.length > 0){
-        handleDesignList(id).then(res => {
+        handleDesignList(id.join(',')).then(res => {
           console.log(res)
           console.log(id)
           if(res.code == 200){

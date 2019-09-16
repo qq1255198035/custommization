@@ -1084,19 +1084,17 @@ export default {
                 this.loadFromJSON(this.myCanvas4,JSON.parse(this.$route.query.res.rightDesignArea))
                 this.bgimgs = this.$route.query.res.list;
                 this.postId = this.$route.query.res.goodsId;
-                this.picId = this.$route.query.res.picId
+                this.picId = this.$route.query.res.picId;
+                this.productColor = this.$route.query.res.productColorValue;
+                this.productColorName = this.this.$route.query.res.productColor;
                 console.log(this.bgimgs)
-                
             }
-            
-            //console.log(this.form)
         })
         //this.getWindowScreen();
         this.getArtFontList();
         this.show = this.$route.query.show ? this.$route.query.show : false
         this.handleGetPic('');
         console.log(this.boxSize1)
-        
     },
 
     methods:{
@@ -1136,7 +1134,8 @@ export default {
                                     top:  top,
                                     scaleY: 0.3,
                                     scaleX: 0.3,
-                                    removeColor: true
+                                    removeColor: true,
+                                    crossOrigin: '*'
                                 });
                                 that.myCanvas.add(imgInstance);
                                 that.myCanvas.setActiveObject(imgInstance);
@@ -1167,7 +1166,8 @@ export default {
                             top:  top,
                             scaleY: 0.3,
                             scaleX: 0.3,
-                            removeColor: false
+                            removeColor: false,
+                            crossOrigin: '*'
                         });
                         that.myCanvas.add(imgInstance);
                         that.myCanvas.setActiveObject(imgInstance);
@@ -1182,9 +1182,7 @@ export default {
                             that.delWhite = obj2.removeColor;
                         });
                     }
-                    
                 }
-                
             }
         },
         
@@ -1209,21 +1207,30 @@ export default {
         },
         changeNameFamily(e){
             console.log(e)
-            this.nameFontFamily = e;
             let obj = this.myCanvas.getActiveObject();
-            obj.set('fontFamily', e)
-            this.myCanvas.requestRenderAll();
+            if(obj){
+                this.nameFontFamily = e;
+                if(obj.myId == "Name"){
+                    obj.set('fontFamily', e)
+                    this.myCanvas.requestRenderAll();
+                }
+            }
+            
         },
         changeNumberFamily(e){
             console.log(e)
-            this.numberFontFamily = e;
             let obj = this.myCanvas.getActiveObject();
-            obj.set('fontFamily', e)
-            this.myCanvas.requestRenderAll();
+            if(obj){
+                this.numberFontFamily = e;
+                if(obj.myId == 'Number'){
+                    obj.set('fontFamily', e)
+                    this.myCanvas.requestRenderAll();
+                }
+            }
         },
         reStart(){
-            console.log(1)
-            
+            //console.log(1)
+            this.closeDesignBox()
         },
         minus(data) {
             console.log(data);
@@ -1341,6 +1348,8 @@ export default {
                                     lockUniScaling:true, // When `true`, object non-uniform scaling is locked
                                     left: left,
                                     top: top,
+                                    myId: 'Text',
+                                    crossOrigin: '*'
                                 });
                             }
                         }else{
@@ -1349,6 +1358,8 @@ export default {
                                 left: 200,
                                 top: 150,
                                 mytext:that.addText,
+                                myId: 'Text',
+                                crossOrigin: '*'
                             });
                         }
                         if(imgInstance.width > 200){
@@ -1668,7 +1679,7 @@ export default {
             if(this.addNameData){
                 let obj = this.myCanvas.getActiveObject();
                 console.log(obj)
-                if(obj.id === 'Name'){
+                if(obj.myId === 'Name'){
                     obj.set('fontSize',value);
                     this.myCanvas.requestRenderAll();
                 }
@@ -1679,7 +1690,7 @@ export default {
             this.numberSize = value;
             if(this.addNumberData){
                 let obj = this.myCanvas.getActiveObject();
-                if(obj.id === 'Number'){
+                if(obj.myId === 'Number'){
                     obj.set('fontSize',value);
                     this.myCanvas.requestRenderAll();
                 }
@@ -1866,11 +1877,11 @@ export default {
                 this.fontColorIcon4 = i
 
             }else if(this.colorKey == 5){
-                this.changeNumberColor(val,name)
+                this.changeNameColor(val,name)
                 this.fontColorIcon5 = i
 
             }else if(this.colorKey == 6){
-                this.changeFontColor(val,name,i)
+                this.changeNumberColor(val,name)
                 this.fontColorIcon6 = i
             }
             this.handleColorShow();
@@ -1879,19 +1890,24 @@ export default {
         changeNumberColor(val,name){
             let obj = this.myCanvas.getActiveObject();
             if (obj) {
-                obj.set("fill", val);
-                this.myCanvas.requestRenderAll();
-                this.numberColorName = name;
-                this.numberColor = val;
+                
+                if(obj.myId == 'Number'){
+                    obj.set("fill", val);
+                    this.myCanvas.requestRenderAll();
+                    this.numberColorName = name;
+                    this.numberColor = val;
+                }
             }
         },
         changeNameColor(val,name){
             let obj = this.myCanvas.getActiveObject();
             if (obj) {
-                obj.set("fill", val);
-                this.myCanvas.requestRenderAll();
-                this.nameColorName = name;
-                this.nameColor = val;
+                if(obj.myId == 'Name'){
+                    obj.set("fill", val);
+                    this.myCanvas.requestRenderAll();
+                    this.nameColorName = name;
+                    this.nameColor = val;
+                }
             }
         },
         changeTextBgColor(val,name,isAdd){
@@ -2185,7 +2201,9 @@ export default {
                         top:  200,
                         scaleX: 0.3,
                         scaleY:0.3,
-                        removeColor: false
+                        removeColor: false,
+                        myId: 'Img',
+                        crossOrigin: '*'
                     });
                 }else{
                     imgInstance = new fabric.Image(img, {
@@ -2199,7 +2217,9 @@ export default {
                         top:  170,
                         scaleX: 0.1,
                         scaleY:0.1,
-                        removeColor: false
+                        removeColor: false,
+                        myId: 'Img',
+                        crossOrigin: '*'
                     });
                 }
                 that.myCanvas.add(imgInstance);
@@ -2362,6 +2382,7 @@ export default {
                         originY: "center",
                         scaleX: 0.5,
                         scaleY: 0.5,
+                        crossOrigin: '*'
                     });
                 canvas.setBackgroundImage(imgInstance,canvas.renderAll.bind(canvas));
             }
