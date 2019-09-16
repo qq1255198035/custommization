@@ -2,7 +2,9 @@
   <div class="shares">
     <div class="share-boxs">
       <header>
-        <p class="icon-logotxt"></p>
+        <router-link :to="{name: 'index'}">
+          <p class="icon-logotxt"></p>
+        </router-link>
         <p>
           <User></User>
         </p>
@@ -41,8 +43,7 @@
                 <div class="pay-detail" v-if="code === 1">
                   <p>Payment Account：{{payName}}</p>
                   <p>Order Number：{{orderId}}</p>
-                  <share style="text-align:center"  class="share" :config="config">
-              </share>
+                  <share style="text-align:center" class="share" :config="config"></share>
                 </div>
                 <div class="pay-detail" v-if="code === 0">
                   <p>Order No{{orderId}}</p>
@@ -67,7 +68,7 @@
 
 <script>
 import { status } from "@/api/system";
-import { paypalSellerBack } from "@/api/seller"
+import { paypalSellerBack } from "@/api/seller";
 import MyStpes from "@/components/MyStpes/MyStpes";
 export default {
   props: {},
@@ -91,8 +92,7 @@ export default {
         sites: ["facebook", "wechat", "weibo"], // 启用的站点
         //disabled: ['google', 'facebook', 'twitter'], // 禁用的站点
         wechatQrcodeTitle: "WeChat Scan: Share", // 微信二维码提示文字
-        wechatQrcodeHelper:
-          "Scan and share this article with friends."
+        wechatQrcodeHelper: "Scan and share this article with friends."
       }
     };
   },
@@ -100,15 +100,16 @@ export default {
   created() {
     this._paypalSellerBack();
     this._status();
-    this.config.url = 'http://192.168.0.9/index#/share' + '?order_id='+this.userOrderId
+    this.config.url =
+      "http://192.168.0.9/index#/share" + "?order_id=" + this.userOrderId;
   },
   mounted() {},
   watch: {},
   methods: {
     backBtn() {
       this.$router.push({
-        path: '/index'
-      })
+        path: "/index"
+      });
     },
     _status() {
       const param = {
@@ -175,17 +176,17 @@ export default {
 @import url("./../../assets/style.css");
 .shares {
   header {
-      display: flex;
-      width: 100%;
-      justify-content: space-between;
-      border-bottom: 1px solid rgba(255,255,255,0.4);
-      padding: 30px;
-      p:nth-child(1) {
-        color: #fff;
-        font-size: 60px;
-        margin-bottom: 0;
-      }
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+    padding: 30px;
+    p:nth-child(1) {
+      color: #fff;
+      font-size: 60px;
+      margin-bottom: 0;
     }
+  }
   .step {
     padding: 16px 0;
   }
@@ -201,10 +202,10 @@ export default {
       span {
         font-size: 40px;
         padding-right: 16px;
-        color: #fff
+        color: #fff;
       }
-      p{
-        color: #fff
+      p {
+        color: #fff;
       }
     }
     .desc {

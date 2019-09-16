@@ -2,7 +2,9 @@
   <div class="shares">
     <div class="share-boxs">
       <header>
-        <p class="icon-logotxt"></p>
+        <router-link :to="{name:'index'}">
+          <p class="icon-logotxt"></p>
+        </router-link>
         <p>
           <User></User>
         </p>
@@ -22,9 +24,6 @@
               <span>
                 <a-icon type="smile" />
               </span>
-              <span v-if="code === 0">
-                <a-icon type="frown" />
-              </span>
               <div>
                 <h3>Payment Successful</h3>
                 <p>Thank you for your payment.</p>
@@ -33,12 +32,8 @@
             <div class="desc">
               <div class="border"></div>
               <div class="bg">
-                <h1 v-if="code === 1">${{price}}</h1>
+                <h1>${{price}}</h1>
                 <div class="pay-detail">
-                  <p>Payment Account：{{payName}}</p>
-                  <p>Order No{{orderId}}</p>
-                </div>
-                <div class="pay-detail" v-if="code === 0">
                   <p>Order No{{orderId}}</p>
                 </div>
                 <div class="pay-btn">
@@ -56,7 +51,7 @@
 </template>
 
 <script>
-import { payBack } from "@/api/system";
+import { sumbitOrder } from "@/api/system";
 //import { paypalSellerBack } from "@/api/seller";
 import MyStpes from "@/components/MyStpes/MyStpes";
 export default {
@@ -67,17 +62,14 @@ export default {
       pay_mode: "",
       step: 2,
       value: 1,
-      code: "",
       price: "",
-      payName: "",
       orderId: "",
-      orderAgain: "",
-      userId: ""
+      orderAgain: ""
     };
   },
   computed: {},
   created() {
-    this._payBack();
+    this._sumbitOrder();
     //this._status();
 
     //this.config.url = 'localhost:3000/#/sellerShare' + '?order_id='+this.userOrderId
@@ -90,23 +82,17 @@ export default {
         path: "/index"
       });
     },
-    _payBack() {
+    _sumbitOrder() {
       const param = {
-        paymentId: this.$route.query.paymentId,
-        token: this.$route.query.token,
-        PayerID: this.$route.query.PayerID
+        user_order_id: this.$route.query.user_order_id
       };
 
       console.log(param);
-      payBack(param).then(res => {
+      sumbitOrder(param).then(res => {
         console.log(res);
-        if (res.code == 1) {
-          this.code = 1;
           this.price = res.order_price;
           this.orderId = res.order_sn;
-          this.orderAgain = res.userOrderId;
-          this.userOrderId = res.order_id;
-        }
+          this.userOrderId = res.user_order_id;
       });
     },
     alginBtn() {
@@ -120,7 +106,7 @@ export default {
     }
   },
   components: {
-    
+    MyStpes
   }
 };
 </script>

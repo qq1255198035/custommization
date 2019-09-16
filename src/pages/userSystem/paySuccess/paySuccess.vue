@@ -2,7 +2,9 @@
   <div class="shares">
     <div class="share-boxs">
       <header>
-        <p class="icon-logotxt"></p>
+        <router-link :to="{name:'index'}">
+          <p class="icon-logotxt"></p>
+        </router-link>
         <p>
           <User></User>
         </p>
@@ -40,8 +42,9 @@
                 <h1 v-if="code === 1">${{price}}</h1>
                 <div class="pay-detail" v-if="code === 1">
                   <p>Order No{{orderId}}</p>
-                  <p v-if="pay_mode == 1"><share style="text-align:center"  class="share" :config="config"></share></p>
-                  
+                  <p v-if="pay_mode == 1">
+                    <share style="text-align:center" class="share" :config="config"></share>
+                  </p>
                 </div>
                 <div class="pay-detail" v-if="code === 0">
                   <p>Order No{{orderId}}</p>
@@ -68,12 +71,12 @@
 import { payBack } from "@/api/system";
 //import { paypalSellerBack } from "@/api/seller";
 import MyStpes from "@/components/MyStpes/MyStpes";
-import User from '@/components/Header/User'
+import User from "@/components/Header/User";
 export default {
   props: {},
   data() {
     return {
-      order_ids: '',
+      order_ids: "",
       pay_mode: "",
       step: 2,
       value: 1,
@@ -92,17 +95,15 @@ export default {
         sites: ["facebook", "wechat", "weibo"], // 启用的站点
         //disabled: ['google', 'facebook', 'twitter'], // 禁用的站点
         wechatQrcodeTitle: "WeChat Pay", // 微信二维码提示文字
-        wechatQrcodeHelper:
-          "<p>WeChat Scan: Share</p>"
+        wechatQrcodeHelper: "<p>WeChat Scan: Share</p>"
       }
     };
   },
-  components: {User},
   computed: {},
   created() {
     this._payBack();
     //this._status();
-    
+
     //this.config.url = 'localhost:3000/#/sellerShare' + '?order_id='+this.userOrderId
   },
   mounted() {},
@@ -110,32 +111,33 @@ export default {
   methods: {
     backBtn() {
       this.$router.push({
-        path: '/index'
-      })
+        path: "/index"
+      });
     },
     _payBack() {
       const data = {
         paymentId: this.$route.query.paymentId,
         token: this.$route.query.token,
-        PayerID: this.$route.query.PayerID,
+        PayerID: this.$route.query.PayerID
       };
 
       console.log(data);
       payBack(data).then(res => {
         console.log(res);
-        this.pay_mode = res.pay_mode
+        this.pay_mode = res.pay_mode;
         if (res.code == 1) {
           this.code = 1;
           this.price = res.order_price;
           this.orderId = res.order_sn;
           this.orderAgain = res.userOrderId;
           this.userOrderId = res.order_id;
-          this.config.url = 'http://192.168.0.9/index#/share' + '?order_id='+res.order_id
+          this.config.url =
+            "http://192.168.0.9/index#/share" + "?order_id=" + res.order_id;
         }
         if (res.code == 0) {
           this.code = 0;
           this.orderId = res.order_sn;
-          this.order_ids = res.userOrderId
+          this.order_ids = res.userOrderId;
         }
       });
     },
@@ -144,9 +146,8 @@ export default {
         this.$router.push({
           path: "/share",
           query: {
-            order_id: this.userOrderId,
+            order_id: this.userOrderId
             //user_order_id: this.userOrderId
-            
           }
         });
       }
@@ -166,11 +167,10 @@ export default {
           query: {
             order_id: this.orderAgain,
             user_order_id: this.userOrderId
-            
           }
         });
       }
-      if(this.pay_mode == 1) {
+      if (this.pay_mode == 1) {
         this.$router.push({
           path: "/unifiedpay",
           query: {
@@ -181,7 +181,8 @@ export default {
     }
   },
   components: {
-    MyStpes
+    MyStpes,
+    User
   }
 };
 </script>

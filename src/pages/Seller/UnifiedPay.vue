@@ -2,7 +2,9 @@
   <div class="share-boxs">
     <div class="wrapper-box">
       <header>
-        <p class="icon-logotxt"></p>
+        <router-link :to="{name: 'index'}">
+          <p class="icon-logotxt"></p>
+        </router-link>
         <p>
           <User></User>
         </p>
@@ -157,7 +159,12 @@
 </template>
 
 <script>
-import { orderFroms, teamPayBack, wxCheckPay ,paypalSeller} from "@/api/seller";
+import {
+  orderFroms,
+  teamPayBack,
+  wxCheckPay,
+  paypalSeller
+} from "@/api/seller";
 import MyPrimaryStpes from "@/components/MyPrimaryStpes/MyPrimaryStpes";
 import MyTitle from "@/components/MyTitle/MyTitle";
 import commonBtn from "@/components/commonBtn/commonBtn";
@@ -168,7 +175,7 @@ export default {
   props: {},
   data() {
     return {
-      pay_mode: '',
+      pay_mode: "",
       websocket: null,
       prepayId: "",
       show: false,
@@ -300,7 +307,7 @@ export default {
       }
       if (this.value == 2) {
         teamPayBack(param).then(res => {
-          console.log(res)
+          console.log(res);
           const url = res.respData.code_url;
           this.show = true;
           var canvas = document.getElementById("canvas");

@@ -95,6 +95,7 @@ import commonBtn from "@/components/commonBtn/commonBtn";
 export default {
   data() {
     return {
+      itemTitle: '',
       corporateName: '',
       business: '',
       salesVolume: '',

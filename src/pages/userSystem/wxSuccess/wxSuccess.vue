@@ -2,7 +2,9 @@
   <div class="shares">
     <div class="share-boxs">
       <header>
-        <p class="icon-logotxt"></p>
+        <router-link :to="{name:'index'}">
+          <p class="icon-logotxt"></p>
+        </router-link>
         <p>
           <User></User>
         </p>
@@ -90,8 +92,8 @@ export default {
   methods: {
     backBtn() {
       this.$router.push({
-        path: '/index'
-      })
+        path: "/index"
+      });
     },
     _status() {
       const param = {
@@ -105,7 +107,7 @@ export default {
     },
     _wxPayBack() {
       const param = {
-        user_order_id: this.$route.query.user_order_id,
+        user_order_id: this.$route.query.user_order_id
       };
       console.log(param);
       wxPayBack(param).then(res => {
@@ -153,17 +155,17 @@ export default {
 @import url("./../../../assets/style.css");
 .shares {
   header {
-      display: flex;
-      width: 100%;
-      justify-content: space-between;
-      border-bottom: 1px solid rgba(255,255,255,0.4);
-      padding: 30px;
-      p:nth-child(1) {
-        color: #fff;
-        font-size: 60px;
-        margin-bottom: 0;
-      }
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+    padding: 30px;
+    p:nth-child(1) {
+      color: #fff;
+      font-size: 60px;
+      margin-bottom: 0;
     }
+  }
   .step {
     padding: 16px 0;
   }
@@ -179,10 +181,10 @@ export default {
       span {
         font-size: 40px;
         padding-right: 16px;
-        color: #fff
+        color: #fff;
       }
-      p{
-        color: #fff
+      p {
+        color: #fff;
       }
     }
     .desc {

@@ -136,6 +136,14 @@ export function payPalOrder(parameter) {
     data: qs.stringify(parameter)
   })
 }
+//保存订单成功
+export function sumbitOrder(parameter) {
+  return axios({
+    url: '/system/jeecgOrder/userOrderInfo',
+    method: 'post',
+    data: qs.stringify(parameter)
+  })
+}
 export function paymentInfos(parameter) {
   return axios({
     url: '/apiPersonOrder/toConfirmPayList',

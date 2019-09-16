@@ -2,7 +2,9 @@
   <div class="share-boxs">
     <div class="wrapper-box">
       <header>
-        <p class="icon-logotxt"></p>
+        <router-link :to="{name:'index'}">
+          <p class="icon-logotxt"></p>
+        </router-link>
         <p>
           <User></User>
         </p>
@@ -88,7 +90,7 @@ export default {
   props: {},
   data() {
     return {
-      pay_mode: '',
+      pay_mode: "",
       previewVisible: false,
       showList: "",
       showTable: "",
@@ -132,10 +134,10 @@ export default {
   watch: {},
   methods: {
     imgShow() {
-      this.previewVisible = true
+      this.previewVisible = true;
     },
     handleCancelImg() {
-      this.previewVisible = false
+      this.previewVisible = false;
     },
     check() {
       var userAgentInfo = navigator.userAgent;
@@ -277,7 +279,7 @@ export default {
       }).then(res => {
         console.log(res);
         this.$ls.set("pay_mode", res.result.pay_mode);
-        this.pay_mode = res.result.pay_mode
+        this.pay_mode = res.result.pay_mode;
         this.resultData = res.result.personOrderNoPrintList;
         this.detailList = res.result;
       });
