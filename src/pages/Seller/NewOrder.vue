@@ -2329,7 +2329,6 @@ export default {
                 }
             });
         },
-
         handleObjectScale(object,x,y,width,height){
             object.on("object:scaling",function(e){
                 var scaledObject = e.target;

@@ -2,7 +2,7 @@
       <div id="home">
             <div class="homeBanner">
                   <img src="@/assets/banner.png">
-                  <a href="">Customize now</a>
+                  <router-link to="/login">Customize now</router-link>
             </div>
             <div class="whatTCK">
 			<h3 class="homeTitle01">What’s Custom King?</h3>
@@ -264,7 +264,7 @@ Our team consists of designers and artists that enjoys bringing creative ideas t
 		<div class="purchaseNow">
 			<a-row>
 				<a-col :span="10" class="purchaseText">To start your project with us</a-col>
-				<a-col :span="14" class="purchaseBtn txtRight"><a href="">Purchase Now</a></a-col>
+				<a-col :span="14" class="purchaseBtn txtRight"><router-link to="/login">Purchase Now</router-link></a-col>
 			</a-row>
 		</div>
 		<!-- //加入我们 -->
@@ -277,8 +277,8 @@ Our team consists of designers and artists that enjoys bringing creative ideas t
 					<video ></video>
 				</div>
 				<p class="wb_80">long established fact that a reader will be distracted by the readable content by the readable content established fact that.</p>
-				<input type="text" class="tckInput wb_80 mb_20" value="Your E-maill" onfocus="javascript:if(this.value=='Your E-maill')this.value='';">
-				<p class="wb_80"><a href="">Subscribe</a></p>
+				<input type="text" class="tckInput wb_80 mb_20" value="Your E-maill" onfocus="javascript:if(this.value=='Your E-maill')this.value='';" v-model="email">
+				<p class="wb_80"><a @click="handleSubmit">Subscribe</a></p>
 			</a-col>
 			<a-col :span="8" class="tckCenter">
 				<h3>QUICK LINK</h3>
@@ -327,18 +327,37 @@ Our team consists of designers and artists that enjoys bringing creative ideas t
       </div>
 </template>
 <script>
-
+import {
+    axios
+} from '@/utils/request'
 export default {
       components:{
       
       },
       data () {
             return {
-                  
+                  email: ''
             }
       },
       methods:{
-           
+            handleSubmit(){
+                  if(this.email){
+                        let reg = new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$");
+                        if(reg.test(this.email)){
+                              axios({
+                                    url: 're.php?mail=' + this.email+ '&' + window.location.search,
+                                    method: 'get'
+                              }).then(res => {
+                                    console.log(res)
+                                    this.modelShow = true
+                              })
+                        }else{
+                              alert('邮箱格式错误！')
+                        }
+                  }else{
+                        alert('请填写邮箱！')
+                  }
+           }
       }
 }
 </script>
