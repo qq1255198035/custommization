@@ -1134,7 +1134,8 @@ export default {
                                     top:  top,
                                     scaleY: 0.3,
                                     scaleX: 0.3,
-                                    removeColor: true
+                                    removeColor: true,
+                                    crossOrigin: '*'
                                 });
                                 that.myCanvas.add(imgInstance);
                                 that.myCanvas.setActiveObject(imgInstance);
@@ -1165,7 +1166,8 @@ export default {
                             top:  top,
                             scaleY: 0.3,
                             scaleX: 0.3,
-                            removeColor: false
+                            removeColor: false,
+                            crossOrigin: '*'
                         });
                         that.myCanvas.add(imgInstance);
                         that.myCanvas.setActiveObject(imgInstance);
@@ -1356,7 +1358,8 @@ export default {
                                 left: 200,
                                 top: 150,
                                 mytext:that.addText,
-                                myId: 'Text'
+                                myId: 'Text',
+                                crossOrigin: '*'
                             });
                         }
                         if(imgInstance.width > 200){
