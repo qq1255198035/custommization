@@ -140,7 +140,7 @@ export default {
     posteDesignList(id){
       console.log(id)
       if(id.length > 0){
-        handleDesignList(id).then(res => {
+        handleDesignList(id.join(',')).then(res => {
           console.log(res)
           console.log(id)
           if(res.code == 200){
