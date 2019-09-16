@@ -1108,6 +1108,12 @@ export default {
             if(obj){
                 // let scalex = obj.scaleX;
                 // let scaley = obj.scaleY;
+                // var filter = new fabric.Image.filters.RemoveWhite({
+                //     threshold: 40,
+                //     distance: 140
+                // });
+                // obj.filters.push(filter);
+                // obj.applyFilters(that.myCanvas.renderAll.bind(that.myCanvas));
                 let left = obj.left;
                 let top = obj.top;
                 let id = obj.id
@@ -1496,7 +1502,9 @@ export default {
             this.dataPost2 = JSON.stringify(json2)
             this.dataPost3 = JSON.stringify(json3)
             this.dataPost4 = JSON.stringify(json4)
-            console.log(json1)
+            let a = this.myCanvas1.getObjects();
+            console.log(json1.object);
+            console.log(a)
         },
         postSaveDesign(params){
             saveDesign(params).then(res => {

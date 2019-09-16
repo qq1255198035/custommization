@@ -110,8 +110,18 @@ export default {
                 this.$router.push({path:'/neworder'})
               }else if(res.result == 0){
                 this.$message.error('Sorry,Not examined and approved')
-              }else if(res.result == 1){
+              }else if(res.result == 2){
                 this.$message.error('Sorry,Failure to pass the examination and approval')
+              }else if(res.result == 3){
+                let that = this;
+                this.$error({
+                  title: 'Error',
+                  content: 'Sorry, please apply first.',
+                  onOk() {
+                    console.log(11);
+                    that.$router.push({path: '/dealerInfo'})
+                  },
+                });
               }
             }
           })
