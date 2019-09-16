@@ -51,39 +51,6 @@ export const constantRouterMap = [
 
         }
       },
-      {
-        path: "/test",
-        name: "test",
-        component: () => import("@/pages/Website/test"),
-        meta: {
-
-        }
-      },
-      {
-        path: "/test2",
-        name: "test2",
-        component: () => import("@/pages/Website/test2"),
-        meta: {
-
-        }
-      },
-      {
-        path: "/swiper",
-        name: "swiper",
-        component: () => import("@/pages/Website/Swiper"),
-        meta: {
-
-        }
-      },
-
-      {
-        path: "/comtest",
-        name: "comtest",
-        component: () => import("@/pages/Website/comtest"),
-        meta: {
-
-        }
-      }
     ],
   },
   
@@ -199,12 +166,6 @@ export const constantRouterMap = [
         component: () => import("@/pages/Seller/OrderResult"),
         meta: {  
         }
-      },
-      {
-        path: "/design",
-        name: "design",
-        hidden: true,
-        component: () => import("@/pages/Seller/Design")
       },
       {
         path: "/designList",

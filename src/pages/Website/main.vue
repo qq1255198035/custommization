@@ -104,7 +104,7 @@
 </template>
 <script>
 
-import img1 from '@/assets/0001.png'
+
 import img2 from '@/assets/0002.png'
 import img3 from '@/assets/0003.png'
 import img7 from '@/assets/0007.png'

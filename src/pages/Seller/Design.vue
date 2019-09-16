@@ -388,7 +388,7 @@
                                         <ul class="info-list">
                                             <li v-for="(item,index) in dataList" :key="index">
 
-                                                <img src="@/assets/0001.png" alt="" width="100" height="100">
+                                                <img src="" alt="" width="100" height="100">
                                                 <div>
                                                     <p>{{item.title}}</p>
                                                     <span>
@@ -722,12 +722,12 @@ import resize from '@/assets/icons/resize.svg';
 import remove from '@/assets/icons/remove.svg';
 import rotate from '@/assets/icons/rotate.svg';
 import diagonal from "@/assets/icons/repair-tools-cross.svg";
-import img1 from '@/assets/0001.png';
+
 
 
 
 import { listAll,categoryList,selectById,saveDesign } from "@/api/seller";
-import img00 from "./../../assets/front.png"
+
 
 export default {
     components:{

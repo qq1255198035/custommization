@@ -170,7 +170,7 @@ import MyTitle from "@/components/MyTitle/MyTitle";
 import commonBtn from "@/components/commonBtn/commonBtn";
 import User from "@/components/Header/User";
 import QRCode from "qrcode";
-import img from "@/assets/black.jpg";
+
 export default {
   props: {},
   data() {
@@ -187,22 +187,7 @@ export default {
       value: 1,
       itemTitle: "Order Information",
       payTitle: "Payment Details",
-      data: [
-        {
-          name: "短袖",
-          imgUrl: img,
-          quantity: 2,
-          price: 150,
-          money: 300
-        },
-        {
-          name: "裤衩",
-          imgUrl: img,
-          quantity: 2,
-          price: 150,
-          money: 300
-        }
-      ],
+      data: [],
       data1: [],
       columns: [
         {

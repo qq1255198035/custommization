@@ -36,7 +36,7 @@ export default {
 #About{
       height: 100%;
       width: 100%;
-      background-image: linear-gradient(-45deg, #11bbe8 10%, #4ac37a 100%);
+      background-image: linear-gradient(to right,#4bb377 , #01b6e1 );
       .content{
             height: 100%;
             width: 100%;

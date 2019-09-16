@@ -1,19 +1,28 @@
 <template>
       <div id="wheader">
-            <div class="header">
-                  <div  class="logo">
-                        <img src="@/assets/logo.png" alt="LOGO">
-                  </div>
-                  <nav-bar></nav-bar>
+            <div class="homeMenu">
+                  <a-row>
+                        <a-col :span="8">
+                        <h1><img src="@/assets/logoWhite.png"></h1>
+                        </a-col>
+                        <a-col :span="16">
+                        <nav class="txtRight">
+                              <router-link to="/home" class="anav a" :class="{'nav': $route.name == 'home'}">Home</router-link>
+                              <router-link to="/products" class="anav a" :class="{'nav': $route.name == 'products'}">Products</router-link>
+                              <router-link to="/about" class="anav a" :class="{'nav': $route.name == 'about'}">About Us</router-link>
+                              <router-link to="/register" class="anav a">Become A Seller</router-link>
+                        </nav>
+                        </a-col>
+                  </a-row>
             </div>
       </div>
 </template>
 <script>
-import NavBar from '@/components/Header/NavBar'
+
 
 export default {
       components:{
-            NavBar,
+           
             
       },
       props:{
@@ -37,9 +46,7 @@ export default {
 
 #wheader{
       width: 100%;
-      position: absolute;
-      top: 0;
-      left: 0;
+      
       z-index: 999;
       .header{
             width: 100%;

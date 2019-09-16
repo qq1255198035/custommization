@@ -173,7 +173,7 @@
                                         </dl>
                                         <div class="upload-box">
                                             <h4>PLEASE SELECT THE FILE TO UPLOAD</h4>
-                                            <a-upload-dragger name="file" class="my-upload" :beforeUpload="beforeUpload">
+                                            <a-upload-dragger name="file" class="my-upload" :beforeUpload="beforeUpload" accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif">
                                                     <p class="ant-upload-drag-icon">
                                                         <a-icon type="cloud-upload" />
                                                     </p>
@@ -181,8 +181,15 @@
                                             </a-upload-dragger>
                                             <p>ACCEPTED FILE TYPE(MAXIMUM SIZE: 10MB)</p>
                                             <p>
-                                                <span>.jpg</span>
-                                                <span>.png</span>
+                                                <span>.JPG</span>
+                                                <span>.JPEG</span>
+                                                <span>.GIF</span>
+                                                <span>.PNG</span>
+                                                <span>.BMP</span>
+                                                <span>.PDF</span>
+                                                <span>.AI</span>
+                                                <span>.PSD</span>
+                                                <span>.EPS</span>
                                             </p>
                                         </div>
 
@@ -656,6 +663,7 @@
                             :fileList="fileList"
                             :beforeUpload="beforeUploadEx"
                             @change="handleChange"
+                            accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif"
                             v-decorator="['img',{rules: [{ required: true, message: 'Please upload pictures！' }]}]"
                             >
                                 <div v-if="fileList.length < 1">
@@ -669,8 +677,15 @@
                             <div class="desc">
                                 <p>ACCEPTED FILE TYPE(MAXIMUM SIZE: 10MB)</p>
                                 <p>
-                                    <span>.jpg</span>
-                                    <span>.png</span>
+                                    <span>.JPG</span>
+                                    <span>.JPEG</span>
+                                    <span>.GIF</span>
+                                    <span>.PNG</span>
+                                    <span>.BMP</span>
+                                    <span>.PDF</span>
+                                    <span>.AI</span>
+                                    <span>.PSD</span>
+                                    <span>.EPS</span>
                                 </p>
                             </div>
 
@@ -1094,7 +1109,8 @@ export default {
         this.getArtFontList();
         this.show = this.$route.query.show ? this.$route.query.show : false
         this.handleGetPic('');
-        console.log(this.boxSize1)
+        
+
     },
 
     methods:{
@@ -1567,9 +1583,9 @@ export default {
                 this.handleObjectMove(this.myCanvas3,this.boxSize3.top,600 - this.boxSize3.top - this.boxSize3.height,this.boxSize3.left,600 - this.boxSize3.left - this.boxSize3.width);
                 this.handleObjectMove(this.myCanvas4,this.boxSize4.top,600 - this.boxSize4.top - this.boxSize4.height,this.boxSize4.left,600 - this.boxSize4.left - this.boxSize4.width);
                 this.handleObjectScale(this.myCanvas1,this.boxSize1.left,this.boxSize1.top,this.boxSize1.width,this.boxSize1.height);
-                // this.handleObjectScale(this.myCanvas2);
-                // this.handleObjectScale(this.myCanvas3);
-                // this.handleObjectScale(this.myCanvas4);
+                this.handleObjectScale(this.myCanvas2,this.boxSize2.left,this.boxSize2.top,this.boxSize2.width,this.boxSize2.height);
+                this.handleObjectScale(this.myCanvas3,this.boxSize3.left,this.boxSize3.top,this.boxSize3.width,this.boxSize3.height);
+                this.handleObjectScale(this.myCanvas4,this.boxSize4.left,this.boxSize4.top,this.boxSize4.width,this.boxSize4.height);
             })
         },
         closeDesignBox(){
@@ -2133,13 +2149,16 @@ export default {
         },
         beforeUploadEx(file){
             if(file.size / 1024 / 1024 < 10){
+                
                 this.uploadA = true
                 console.log(file)
                 this.postSourceUpload(file)
 
             }else{
+                
                 this.$message.error('Image Size Exceeds Limit');
                 this.uploadA = false
+                
             }
         },
         postSourceUpload(file){
@@ -2157,16 +2176,14 @@ export default {
         beforeUpload (file) {
             console.log(file)
             this.uploadId ++;
-            if(file.type == 'image/png' || file.type == 'image/jpeg'){
-                if(file.size / 1024 / 1024 < 10){
-                    this.getBase64(file,(imageUrl) => {
-                        this.selectImg(imageUrl,'upload' + this.uploadId);
-                    })
-                }else{
-                    this.$message.error('Image Size Exceeds Limit')
-                }
+            if(file.size / 1024 / 1024 < 10){
+                this.getBase64(file,(imageUrl) => {
+                    this.selectImg(imageUrl);
+                    console.log(imageUrl)
+                })
             }else{
-                this.$message.error('Invalid Format. Please try again.！')
+                this.$message.error('Image Size Exceeds Limit')
+                return false
             }
         },
         getBase64 (img, callback) {
@@ -2257,8 +2274,7 @@ export default {
                 var top = obj.top;
                 var left = obj.left;
                 var zoom = canvas.getZoom();
-                var pan_x = canvas.viewportTransform[4];
-                var pan_y = canvas.viewportTransform[5];
+               
                 // width & height we are constraining to must be calculated by applying the inverse of the current viewportTransform
                 var c_width = canvas.width / zoom;
                 var c_height = canvas.height / zoom;
@@ -2288,22 +2304,26 @@ export default {
                         left_margin = 70;
                         right_margin = 140;
                 }else{
-                    var top_bound = top_margin + top_adjust - pan_y;
-                    var bottom_bound = c_height - bottom_adjust - bottom_margin - pan_y;
-                    var left_bound = left_margin + left_adjust - pan_x;
-                    var right_bound = c_width - right_adjust - right_margin - pan_x;
+                    var top_bound = top_margin + top_adjust;
+                    var bottom_bound = c_height - bottom_adjust - bottom_margin;
+                    var left_bound = left_margin + left_adjust;
+                    var right_bound = c_width - right_adjust - right_margin;
                 }
 
                 
-
                 if( w > c_width ) {
                     obj.set('left',left_bound);
+                    console.log(left_bound,right_bound)
+
                 } else {
                     obj.set('left',Math.min(Math.max(left, left_bound), right_bound));
+                    console.log(left_bound,right_bound)
+
                 }
 
                 if( h > c_height ) {
                         obj.set('top',top_bound);
+                        
                 } else {
                         obj.set('top',Math.min(Math.max(top, top_bound), bottom_bound));
                 }
