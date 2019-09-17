@@ -11,6 +11,12 @@
                 <li @click="handleClick1" v-if="isEdit == 3">
                     <a-icon type="share-alt" />Share
                 </li>
+                <li @click="handleClick3" v-if="isEdit == 6 || isEdit == 7 || isEdit == 8">
+                    <a-icon type="delete" />Delete
+                </li>
+                <li @click="handleClick4" v-if="isEdit == 1 || isEdit == 2">
+                    <a-icon type="export" />Cancel
+                </li>
                 
         </ul>
     </div>
@@ -38,6 +44,12 @@ export default {
         },
         handleClick2(){
             this.$emit('myClick2')
+        },
+        handleClick3(){
+            this.$emit('handeDetelOrder')
+        },
+        handleClick4(){
+            this.$emit('handeCaleOrder')
         }
     }
 }
@@ -50,7 +62,7 @@ export default {
         color: #33b8b3;
     }
     ul{
-        width: 67px;
+        width: 74px;
         padding: 3px 10px;
         position: absolute;
         top: 20px;

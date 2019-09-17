@@ -305,7 +305,7 @@
                 <span>${{twoPrice}}</span>
               </div>
             </div>
-            <div class="font-color">Suggested selling price：${{designDetail.price}}/件</div>
+            <div class="font-color">Suggested selling price：${{designDetail.price}}/piece</div>
           </a-col>
         </a-row>
       </a-modal>
@@ -470,7 +470,9 @@ export default {
     startGroupBtn() {
       this.myform.validateFields((err, values) => {
         if (!err) {
-          if (this.adress) {
+          console.log(this.information.list)
+          if(this.information.list.length !== 0) {
+            if (this.adress) {
             const param = {
               topic: values.note,
               introduction: values.desc,
@@ -511,6 +513,13 @@ export default {
               duration: 4
             });
           }
+          }else{
+            this.$notification.error({
+              message: "Order list cannot be empty",
+              duration: 4
+            })
+          }
+          
           console.log(values);
         }
       });
@@ -585,7 +594,7 @@ export default {
     deletePro(id) {
       let that = this;
       that.$confirm({
-        title: "确定删除此信息?",
+        title: "Determine to delete this information?",
         okText: "CONFIRM",
         cancelText: "Cancel",
         class: "my-modal",
@@ -599,10 +608,12 @@ export default {
       });
     },
     postDelProducts(id) {
+      console.log(id)
       delProducts(id).then(res => {
         console.log(res);
         if (res.code == 200) {
-          this.getTeamOrderDetails();
+          this.information.list = this.information.list.filter(item => item.id !== id)
+          //this.getTeamOrderDetails(this.id);
           this.$message.success(res.message);
         }
       });

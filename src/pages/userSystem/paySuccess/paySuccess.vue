@@ -42,8 +42,17 @@
                 <h1 v-if="code === 1">${{price}}</h1>
                 <div class="pay-detail" v-if="code === 1">
                   <p>Order No{{orderId}}</p>
-                  <p v-if="pay_mode == 1">
-                    <share style="text-align:center" class="share" :config="config"></share>
+                  <p v-if="pay_mode == 1" style="display: flex;width: 18%;margin: 0 auto;">
+                    <share style="text-align:center;" class="share" :config="config"></share>
+                    <span>
+                      <a-button
+                        class="copys"
+                        icon="link"
+                        v-clipboard:copy="config.url"
+                        v-clipboard:success="onCopy"
+                        v-clipboard:error="onError"
+                      ></a-button>
+                    </span>
                   </p>
                 </div>
                 <div class="pay-detail" v-if="code === 0">
@@ -86,13 +95,13 @@ export default {
       orderAgain: "",
       userId: "",
       config: {
-        url: window.location.href, // 网址，默认使用 window.location.href
+        url: "", // 网址，默认使用 window.location.href
         source: "", // 来源（QQ空间会用到）, 默认读取head标签：<meta name="site" content="http://overtrue" />
-        title: "", // 标题，默认读取 document.title 或者 <meta name="title" content="share.js" />
-        description: "", // 描述, 默认读取head标签：<meta name="description" content="PHP弱类型的实现原理分析" />
-        image:
-          "https://hlx-1258407851.cos.ap-beijing.myqcloud.com/hlx/20181229/16144720457881.png", // 图片, 默认取网页中第一个img标签
-        sites: ["facebook", "wechat", "weibo"], // 启用的站点
+        title: "标题", // 标题，默认读取 document.title 或者 <meta name="title" content="share.js" />
+        description: "描述", // 描述, 默认读取head标签：<meta name="description" content="PHP弱类型的实现原理分析" />
+        image: "https://hlx-1258407851.cos.ap-beijing.myqcloud.com/hlx/20181229/16144720457881.png", // 图片, 默认取网页中第一个img标签
+        sites: ["facebook", "wechat"],
+        //sites: ["facebook", "wechat", "weibo"], // 启用的站点
         //disabled: ['google', 'facebook', 'twitter'], // 禁用的站点
         wechatQrcodeTitle: "WeChat Pay", // 微信二维码提示文字
         wechatQrcodeHelper: "<p>WeChat Scan: Share</p>"
@@ -133,7 +142,10 @@ export default {
           this.orderId = res.order_sn;
           this.orderAgain = res.userOrderId;
           this.userOrderId = res.order_id;
-          this.config.url ="http://192.168.0.9/index#/share" + "?order_id=" + res.order_id;
+          this.config.url =
+            "http://192.168.0.9/#/share" + "?order_id=" + res.order_id;
+          console.log(this.config.url);
+          //this.config.url ='http://192.168.0.9/index#/share' + "?order_id=" + res.order_id;
           //this.config.url = "http://magicfish1981.ngrok2.xiaomiqiu.cn" + "?order_id=" + res.order_id;
         }
         if (res.code == 0) {
@@ -142,6 +154,12 @@ export default {
           this.order_ids = res.userOrderId;
         }
       });
+    },
+    onCopy() {
+      this.$message.success("复制成功");
+    },
+    onError() {
+      this.$message.error("复制失败");
     },
     alginBtn() {
       if (this.pay_mode == 2) {
@@ -190,6 +208,13 @@ export default {
 @import url("./../../../assets/style.css");
 .text-centers {
   text-align: center;
+}
+.copys {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  box-shadow: none;
 }
 .shares {
   header {

@@ -122,6 +122,22 @@ export function paypalSellerBack(parameter) {
         data: qs.stringify(parameter)
     })
 }
+//团体订单删除
+export function sellerOrderDetel(parameter) {
+    return axios({
+        url: '/system/jeecgOrder/orderDel',
+        method: 'post',
+        data: qs.stringify(parameter)
+    })
+}
+//团体订单取消接口
+export function sellerOrderCale(parameter) {
+    return axios({
+        url: '/system/jeecgOrder/orderCancel',
+        method: 'post',
+        data: qs.stringify(parameter)
+    })
+}
 export function userInfo() {
     return axios({
         url: '/system/jeecgUser/userInfo',
