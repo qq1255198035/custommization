@@ -192,7 +192,7 @@ export const constantRouterMap = [
 
         }
       },
-      {
+      /*{
         path: "/grouporder",
         name: "grouporder",
         component: () => import("@/pages/Seller/GroupOrder"),
@@ -215,7 +215,7 @@ export const constantRouterMap = [
         meta: {
 
         }
-      },
+      },*/
       {
         path: "/myorder",
         name: "myorder",
