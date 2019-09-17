@@ -748,6 +748,7 @@
                 <a-row :gutter="20" style="padding:20px">
                 <a-col :span="8">
                     <a-row :gutter="20">
+                    <h3 style="color: #33b8b3;padding-left: 20px;">{{ designDetail.name }}</h3>
                     <a-col :span="12">
                         <img width="100%" :src="designDetail.positivePicUrl" alt />
                     </a-col>
@@ -778,7 +779,7 @@
                     <div class="font-color">Minimum Order Quantity{{designDetail.minOrder}}</div>
                     <div class="prices">
                     <div class="price-box">
-                        <div class="font-18">Price:</div>
+                        <div class="font-18">Selling Price:</div>
                         <div class="price-input">
                         <a-input :value="prices" type="number" @change="onChangeValues" style="width: 120px" />
                         </div>
