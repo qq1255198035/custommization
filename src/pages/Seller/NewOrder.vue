@@ -302,7 +302,7 @@
                                                 </p>
                                             </li>
                                             <li @click="visibletype = 12">
-                                                <span>Change Font</span>
+                                                <span>Font Shape</span>
                                                 <p>
                                                     <span>{{fontShape}}</span>
                                                     <a-icon type="right" />
@@ -345,6 +345,10 @@
                                                     <span>{{shadowColorName}} <i class="square" :style="{backgroundColor: shadowColor}"></i></span>
                                                     <a-icon type="right" />
                                                 </p>
+                                            </dd>
+                                            <dd>
+                                                <span>SIZE：</span>
+                                                <a-slider :min="0" :max="10" v-model="Shadow1" :step="1" @change="changeShadowWidth" style="width: 85%;margin:0;"/>
                                             </dd>
                                         </dl>
                                         
@@ -447,7 +451,7 @@
                                             >
                                                 <a-form-item v-for="k in form1.getFieldValue('keys')" :key="k" :required="false" style="width: 100%; margin: 0">
                                                     <a-input-group compact style="display: flex; align-items: center;width: 100%;">
-                                                        <a-form-item style="width: 40%; margin: 0;min-height: 58px;">
+                                                        <a-form-item style="width: 40%; margin: 0;min-height: 79px;">
                                                             <a-input v-decorator="[
                                                                 `names[${k}]`,
                                                                 {
@@ -464,7 +468,7 @@
                                                                 style="width: 100%;border-top-right-radius: 0px;border-bottom-right-radius: 0px; border-right: none;"/>
                                                             </a-form-item>
 
-                                                            <a-form-item style="width: 20%; margin: 0;min-height: 58px;">
+                                                            <a-form-item style="width: 20%; margin: 0;min-height: 79px;">
                                                                 <a-input v-decorator="[
                                                                 `number[${k}]`,
                                                                 {
@@ -479,7 +483,7 @@
                                                                 :disabled="!addNumberData"
                                                                 placeholder="Name" style="width: 100%;border-radius: 0;border-right: none"/>
                                                             </a-form-item>
-                                                            <a-form-item style="width: 30%; margin: 0;min-height: 58px;">
+                                                            <a-form-item style="width: 30%; margin: 0;min-height: 79px;">
                                                                 <a-select
                                                                     v-decorator="[
                                                                         `size[${k}]`,
@@ -871,8 +875,6 @@ export default {
             colorTitle:'',
             // 文字阴影样式开始
             Shadow1:0,
-            Shadow2:0,
-            Shadow3:0,
             shadowColorName: '',
             shadowColor: '',
             // 文字阴影样式结束
@@ -1385,7 +1387,7 @@ export default {
                             });
                         }
                         if(imgInstance.width > 200){
-                            imgInstance.set('width', 200)
+                            imgInstance.scaleToWidth(200)
                         }
                         that.myCanvas.add(imgInstance).setActiveObject(imgInstance);
                         that.myCanvas.requestRenderAll();
@@ -1403,7 +1405,7 @@ export default {
         },
         saveFontShapeDesign(fontShape,isAdd){
             //fontShape
-            let params = {text: this.addText,style:'outline',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: fontShape,backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1)}
+            let params = {text: this.addText,style:'outline',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: fontShape,backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1}
             this.handleChangeFont(params,isAdd)
             console.log(this.color)
         },
@@ -1820,59 +1822,7 @@ export default {
                 }
             });
         },
-        // 设置文字字重
-        setFontWeight(){
-            let obj = this.myCanvas.getActiveObject();
-            if (obj) {
-                if(obj.get("fontWeight") == 'normal'){
-                        obj.set("fontWeight", 'bold');
-                        this.myCanvas.requestRenderAll();
-                }else{
-                        obj.set("fontWeight", 'normal');
-                        this.myCanvas.requestRenderAll();
-                }
-            }
-        },
-        // 设置文字样式
-        setFontStyle(){
-                let obj = this.myCanvas.getActiveObject();
-                if (obj) {
-                    if(obj.get("fontStyle") == 'normal'){
-                            obj.set("fontStyle", 'italic');
-                            this.myCanvas.requestRenderAll();
-                    }else{
-                            obj.set("fontStyle", 'normal');
-                            this.myCanvas.requestRenderAll();
-                    }
-                }
-
-        },
-        // 设置文字下划线
-        setTextDown(){
-                let obj = this.myCanvas.getActiveObject();
-                if (obj) {
-                    if(obj.get("underline")){
-                            obj.set("underline", false);
-                            this.myCanvas.requestRenderAll();
-                    }else{
-                            obj.set("underline", true);
-                            this.myCanvas.requestRenderAll();
-                    }
-                }
-        },
-        // 设置文字删除线
-        setTextThrough(){
-            let obj = this.myCanvas.getActiveObject();
-            if (obj) {
-                if(obj.get("linethrough")){
-                        obj.set("linethrough", false);
-                        this.myCanvas.requestRenderAll();
-                }else{
-                        obj.set("linethrough", true);
-                        this.myCanvas.requestRenderAll();
-                }
-            }
-        },
+        
         /**
          * 1：改变字体颜色的
          * 2：改变字体背景颜色
@@ -1939,7 +1889,7 @@ export default {
                 text: this.addText,style:'outline',fontName:this.fontfamily,
                 fontHeight: 50, fontColor: this.color.substr(1), 
                 lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), 
-                effect: this.fontShape,backGround: val.substr(1),shadowColor: this.shadowColor.substr(1)}
+                effect: this.fontShape,backGround: val.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1}
             this.handleChangeFont(params,isAdd)
             
             this.fontBgColorName = name;
@@ -1950,32 +1900,19 @@ export default {
             let params = {
                     text: this.addText,style:'outline',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
                     lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,
-                    backGround: this.bgcolor.substr(1),shadowColor: val.substr(1)
+                    backGround: this.bgcolor.substr(1),shadowColor: val.substr(1),smudge: this.Shadow1
                 }
             this.handleChangeFont(params,isAdd)
             this.shadowColorName = name;
             this.shadowColor = val;
         },
-        changeShadowWidth1(){
-            let obj = this.myCanvas.getActiveObject()
-            if (obj) {
-                obj.set('shadow', this.shadowColor +' '+ this.Shadow1 +' '+ this.Shadow2 +' '+ this.Shadow3);
-                this.myCanvas.requestRenderAll();
-                }
-        },
-        changeShadowWidth2(){
-            let obj = this.myCanvas.getActiveObject()
-            if (obj) {
-                obj.set('shadow', this.shadowColor +' '+ this.Shadow1 +' '+ this.Shadow2 +' '+ this.Shadow3);
-                this.myCanvas.requestRenderAll();
+        changeShadowWidth(){
+            let params = {
+                text: this.addText,style:'outline',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
+                lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,
+                backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1
             }
-        },
-        changeShadowWidth3(){
-            let obj = this.myCanvas.getActiveObject()
-            if (obj) {
-                obj.set('shadow', this.shadowColor +' '+ this.Shadow1 +' '+ this.Shadow2 +' '+ this.Shadow3);
-                this.myCanvas.requestRenderAll();
-            }
+            this.handleChangeFont(params,true)
         },
         // 设置字体阴影结束
 
@@ -2075,6 +2012,7 @@ export default {
                 });
                 that.exampleNumber.lockScalingX = true;
                 that.exampleNumber.lockScalingY = true;
+                //that.exampleNumber.lockMovementX = true;
                 that.myCanvas.add(that.exampleNumber).setActiveObject(that.exampleNumber);
                 that.exampleNumber.on("selected", function() {
 
@@ -2105,6 +2043,7 @@ export default {
                 });
                 that.exampleName.lockScalingX = true;
                 that.exampleName.lockScalingY = true;
+                //that.exampleName.lockMovementX = true;
                 that.myCanvas.add(that.exampleName).setActiveObject(that.exampleName);
                 that.exampleName.on("selected", function() {
 
@@ -2268,95 +2207,43 @@ export default {
         // 添加图片结束
         handleObjectMove(object,top_margin,bottom_margin,left_margin,right_margin){
             let that = this;
-            object.on("object:moving", function(e) {
-                that.movingBox = true;
-                var obj = e.target;
-                var canvas = obj.canvas;
-                var top = obj.top;
-                var left = obj.left;
-                var zoom = canvas.getZoom();
-               
-                // width & height we are constraining to must be calculated by applying the inverse of the current viewportTransform
-                var c_width = canvas.width / zoom;
-                var c_height = canvas.height / zoom;
-                var w = obj.width * obj.scaleX
-                var left_adjust, right_adjust
-                if(obj.originX == "center") {
-                left_adjust = right_adjust = w / 2;
-                } else {
-                        left_adjust = 0;
-                        right_adjust = w;
-                }
-                var h = obj.height * obj.scaleY;
-                var top_adjust, bottom_adjust;
-                if(obj.originY == "center") {
-                        top_adjust = bottom_adjust = h / 2;
-                } else {
-                        top_adjust = 0;
-                        bottom_adjust = h;
-                }
-
-                // if you need margins set them here
-
-                
-                if(zoom > 1){
-                        top_margin = 0;
-                        bottom_margin = 40;
-                        left_margin = 70;
-                        right_margin = 140;
-                }else{
-                    var top_bound = top_margin + top_adjust;
-                    var bottom_bound = c_height - bottom_adjust - bottom_margin;
-                    var left_bound = left_margin + left_adjust;
-                    var right_bound = c_width - right_adjust - right_margin;
-                }
-
-                
-                if( w > c_width ) {
-                    obj.set('left',left_bound);
-                    console.log(left_bound,right_bound)
-
-                } else {
-                    obj.set('left',Math.min(Math.max(left, left_bound), right_bound));
-                    console.log(left_bound,right_bound)
-
-                }
-
-                if( h > c_height ) {
-                        obj.set('top',top_bound);
-                        
-                } else {
-                        obj.set('top',Math.min(Math.max(top, top_bound), bottom_bound));
-                }
+            object.on('object:moving', function (e) {
+                    var obj = e.target;
+                    that.movingBox = true;
+                    // if object is too big ignore
+                    if(obj.currentHeight > obj.canvas.height || obj.currentWidth > obj.canvas.width){
+                        return;
+                    }        
+                    obj.setCoords();        
+                    // top-left  corner
+                    if(obj.getBoundingRect().top < top_margin || obj.getBoundingRect().left < left_margin){
+                        obj.top = Math.max(obj.top, obj.top-obj.getBoundingRect().top + top_margin);
+                        obj.left = Math.max(obj.left, obj.left-obj.getBoundingRect().left + left_margin);
+                    }
+                    // bot-right corner
+                    if(obj.getBoundingRect().top+obj.getBoundingRect().height  > 600 - bottom_margin || obj.getBoundingRect().left+obj.getBoundingRect().width  > 600 - right_margin){
+                        obj.top = Math.min(obj.top, obj.canvas.height-obj.getBoundingRect().height+obj.top-obj.getBoundingRect().top - bottom_margin);
+                        obj.left = Math.min(obj.left, obj.canvas.width-obj.getBoundingRect().width+obj.left-obj.getBoundingRect().left - right_margin);
+                    } 
             });
         },
         handleObjectScale(object,x,y,width,height){
             object.on("object:scaling",function(e){
                 var scaledObject = e.target;
-                console.log(x,y,width,height)
                 scaledObject.lockScalingFlip = true;
-                var startX =scaledObject.getPointByOrigin("left","top").x.toFixed();
-                var startY =scaledObject.getPointByOrigin("left","top").y.toFixed();
+                var startX = scaledObject.getBoundingRect().left;
+                var startY = scaledObject.getBoundingRect().top;
                 var maxWidth = width - startX;// scaledObject.aCoords.tl.x;
                 var maxHeight = height -startY;
                 scaledObject.setCoords();
-                
                 var isOnScreen = scaledObject.isContainedWithinRect({x:x,y:y},{x:width + x,y:height + y},true,true);
-                // console.log("onscreen:",isOnScreen);
                 if(!isOnScreen) {
-                    // console.log("xy:",startX,startY);
-                    // console.log("max:",maxWidth,maxHeight);
-                    var w = scaledObject.width;
-                    var h = scaledObject.height;
-                    // console.log("wh:",w,h);
-                    // console.log("obj:",maxWidth-w,maxHeight-h);
-                    // console.log("obj:",Math.min(maxWidth,w),Math.min(maxHeight,h));
+                    var w = scaledObject.getBoundingRect().width;
+                    var h = scaledObject.getBoundingRect().height;
                     if( (maxHeight-h) < (maxWidth-w)){
-
-                        scaledObject.scaleToHeight(Math.min(maxHeight,h),true);
-
+                        scaledObject.scaleToHeight(height + y - startY - 1);
                     } else{
-                        scaledObject.scaleToWidth(Math.min(maxWidth,w),true);
+                        scaledObject.scaleToWidth(width + x - startX - 1);
                     }
                 }
                 return true;
@@ -2473,7 +2360,7 @@ export default {
             let params = {
                     text: text,style:'outline',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
                     lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,
-                    backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1)
+                    backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1
                 }
             this.handleChangeFont(params,isAdd)
 
@@ -2610,7 +2497,7 @@ export default {
             let params = {
                     text:  this.addText,style:'outline',fontName: value,fontHeight: 50, fontColor: this.color.substr(1), 
                     lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,
-                    backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1)
+                    backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1
                 }
             this.handleChangeFont(params,true)
         },
@@ -2620,7 +2507,7 @@ export default {
             let params = {
                     text:  this.addText,style:'outline',fontName:this.fontfamily,fontHeight: 50, fontColor: val.substr(1), 
                     lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,
-                    backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1)
+                    backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1
                 }
             this.handleChangeFont(params,isAdd)
             this.colorName = name;
@@ -2634,7 +2521,7 @@ export default {
             let params = {
                     text:  this.addText,style:'outline',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1),
                     lineweight: this.strokeWidth, outLineColor: val.substr(1), effect: this.fontShape,
-                    backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1)
+                    backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1
                 }
             this.handleChangeFont(params,isAdd)
             this.strokeColorName = name;
@@ -2644,7 +2531,7 @@ export default {
             let params = {
                     text:  this.addText,style:'outline',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1),
                     lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,
-                    backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1)
+                    backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1
                 }
             this.handleChangeFont(params,true)
         },
