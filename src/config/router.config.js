@@ -22,8 +22,7 @@ import SellerLayout from "@/layouts/SellerLayout.vue";
 ];*/
 export const constantRouterMap = [
   {
-    path: "/basic",
-    name: "basic",
+    path: "/",
     component: BasicLayout,
     redirect: "/home",
     children: [

@@ -13,7 +13,7 @@
       <div class="wrapper-box">
       
       <div style="padding: 30px;">
-        <a-table :columns="columns" :dataSource="dataDesign" :rowSelection="rowSelection" :pagination="false">
+        <a-table :columns="columns" :dataSource="dataDesign" :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}" :pagination="false">
           <div slot="positivePicUrl" slot-scope="text" style="display: flex;">
             <div v-for="item in text" :key="item.index" style="width: 25%;">
               <img :src="item" alt style="width: 100%;"/>
@@ -33,7 +33,7 @@
       </div>
       <div style="text-align: center; padding: 20px 0;">
         <a-button type="primary" icon="plus" @click="$router.push({path: '/neworder'})">ADDING DESIGN</a-button>
-        <a-button style="margin-left: 10px;" @click="posteDesignList(idArr)">Submit </a-button>
+        <a-button style="margin-left: 10px;" @click="posteDesignList(selectedRowKeys)">Submit </a-button>
       </div>
     </div>
     </div>
@@ -68,33 +68,16 @@ const columns = [
 ];
 
 
-let idArr = [];
-const rowSelection = {
-  onChange: (selectedRowKeys, selectedRows) => {
-    console.log(
-      `selectedRowKeys: ${selectedRowKeys}`,
-      "selectedRows: ",
-      selectedRows
-    );
-  },
-  onSelect: (record, selected, selectedRows) => {
-    console.log(record, selected, selectedRows);
-    idArr.push(record.key)
-    console.log(idArr)
-  },
-  onSelectAll: (selected, selectedRows, changeRows) => {
-    console.log(selected, selectedRows, changeRows);
-  }
-};
+
+
 
 export default {
   data() {
     return {
       dataDesign:[],
       columns,
-      rowSelection,
       list:[],
-      idArr
+      selectedRowKeys: [],
     };
   },
   components: {
@@ -104,6 +87,10 @@ export default {
     this.getDesignList();
   },
   methods:{
+    onSelectChange (selectedRowKeys) {
+      console.log('selectedRowKeys changed: ', selectedRowKeys);
+      this.selectedRowKeys = selectedRowKeys
+    },
     editDesign(a,b){
       console.log(a,b)
       updateShow(b.id).then(res => {
@@ -141,12 +128,13 @@ export default {
       })
     },
     posteDesignList(id){
-      console.log(id)
+      console.log(id.join(','))
       if(id.length > 0){
         handleDesignList(id.join(',')).then(res => {
           console.log(res)
           console.log(id)
           if(res.code == 200){
+            this.getDesignList();
             this.$router.push({path: '/orderres'})
           }
         })

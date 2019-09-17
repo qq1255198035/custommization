@@ -2166,7 +2166,6 @@ export default {
             formData.append("file", file);
             console.log(file)
             console.log(formData.get("file"))
-            
             sourceUpload(formData).then(res => {
                 console.log(res)
                 this.preview_url = res.preview_url;
@@ -2177,9 +2176,11 @@ export default {
             console.log(file)
             this.uploadId ++;
             if(file.size / 1024 / 1024 < 10){
-                this.getBase64(file,(imageUrl) => {
-                    this.selectImg(imageUrl);
-                    console.log(imageUrl)
+                let formData = new FormData();
+                formData.append("file", file);
+                sourceUpload(formData).then(res => {
+                    console.log(res)
+                    this.selectImg(res.preview_url);
                 })
             }else{
                 this.$message.error('Image Size Exceeds Limit')
@@ -2329,7 +2330,6 @@ export default {
                 }
             });
         },
-
         handleObjectScale(object,x,y,width,height){
             object.on("object:scaling",function(e){
                 var scaledObject = e.target;
