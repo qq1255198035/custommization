@@ -1463,8 +1463,6 @@ export default {
                         this.designId = res.result
                     }
                 }
-
-
             })
         },
         postDeleteEXimg(id){
@@ -2364,8 +2362,7 @@ export default {
                     lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,
                     backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1
                 }
-            this.handleChangeFont(params,isAdd)
-
+            this.handleChangeFont(params,isAdd);
         },
         // 加载资源字体
         loadAndUse(font) {
