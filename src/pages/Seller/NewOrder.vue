@@ -61,11 +61,11 @@
                             </li>
                             <li @click="handleChangePRO">
                                 <span class="icon-change_product"></span>
-                                Replace the product
+                                Replace product
                             </li>
                         </ul>
                         <div class="container">
-                            <h2>CUSTOM KING T-Shirt<span @click="sizeList = true">View the size chart</span></h2>
+                            <h2>CUSTOM KING T-Shirt<span @click="sizeList = true">View Size Chart</span></h2>
                             <div class="canvas-container"  v-show="designModel == 0">
                                 <canvas id="canvas1" :width="screenWidth" :height="screenWidth"></canvas>
                                 <div class="moving-box" :style="{width: boxSize1.width + 'px',height: boxSize1.height + 'px',top: boxSize1.top + 'px', left: boxSize1.left + 'px'}" v-show="movingBox">
@@ -150,7 +150,7 @@
                                             Add text
                                         </h2>
                                         <div class="add-text">
-                                            <p>Add Text</p>
+                                            <p>ADD TO DESIGN</p>
                                             <a-input v-model="addText"></a-input>
                                             <a-button type="primary" @click="addItext(addText,false)" :disabled="!addText" style="border-radius: 12px;">ADDING DESIGN</a-button>
                                         </div>
@@ -284,7 +284,7 @@
                                     </div>
 
                                     <div class="tool-box9" v-show="visibletype == 3">
-                                        <my-title :title="'Edit Font'"></my-title>
+                                        <my-title :title="'Edit Text'"></my-title>
                                         <div class="second">
                                             <div class="text-tool">
                                                 <a-input v-model="addText" style="width: 70%"></a-input>
@@ -302,7 +302,7 @@
                                                 </p>
                                             </li>
                                             <li @click="visibletype = 12">
-                                                <span>Font Shape</span>
+                                                <span>Text Shape</span>
                                                 <p>
                                                     <span>{{fontShape}}</span>
                                                     <a-icon type="right" />
@@ -316,7 +316,7 @@
                                                 </p>
                                             </li>
                                             <li @click="openChangeColorBox(2,'Font Highlight colour')">
-                                                <span>Font Highlight colour</span>
+                                                <span>Text Background Colour</span>
                                                 <p>
                                                     <span>{{fontBgColorName}} <i class="square" :style="{backgroundColor:bgcolor}"></i></span>
                                                     <a-icon type="right" />
@@ -610,6 +610,7 @@
                                     <div class="tool-box3" v-show="visibletype == 12">
                                         <h2 style="color: #333;text-align: left; border-bottom: 1px solid #333; padding-bottom: 5px;">
                                             <a-icon type="left" style="cursor: pointer;" @click="visibletype = 3"/>
+                                            Text Shape
                                         </h2>
                                         <ul class="font-family-list">
                                             <li v-for="(item,index) in fontShapeArr" :key="item.itemText" @click="changeFontShape(item.itemText,index)" :class="{active: shapeActive == index}">
@@ -631,17 +632,17 @@
                         <li style="display: flex; align-item">
                             <commonBtn
                                 @handleLink1="addNewPro"
-                                :width="'130px'"
+                                :width="'143px'"
                                 :height="'32px'"
                                 :padding="'15px'"
                                 :radio="'12px'"
                                 :fontsize="'16px'"
-                                :title="'Add product'"
+                                :title="'Add Product'"
                                 :icon="'plus'"
                                 v-intro="'Here will take you to new miles'" v-intro-step="2"
                             >
                             </commonBtn>
-                            <a-button type="primary" v-intro="'Here is the attribution of your design.'" v-intro-step="3"><span class="icon-save" style="margin-right: 10px;vertical-align: middle"></span><a @click="saveEndDesign"> Save the design</a></a-button>
+                            <a-button type="primary" v-intro="'Here is the attribution of your design.'" v-intro-step="3"><span class="icon-save" style="margin-right: 10px;vertical-align: middle"></span><a @click="saveEndDesign"> Save Design</a></a-button>
                         </li>
                     </ul>
                 </div>
@@ -770,7 +771,7 @@
                         </div>
                     </div>
                     <div class="price-right">
-                        Expected Agent Pricing：
+                        Your Price：
                         <span>${{onePrice}}</span>
                     </div>
                     </div>
@@ -781,14 +782,14 @@
                         <div class="price-input">
                         <a-input :value="prices" type="number" @change="onChangeValues" style="width: 120px" />
                         </div>
-                        <div class="font-18">/件</div>
+                        <div class="font-18">/PC</div>
                     </div>
                     <div class="price-right">
-                        Projected agency revenue：
+                        Your Profit：
                         <span>${{twoPrice}}</span>
                     </div>
                     </div>
-                    <div class="font-color">Suggested selling price：${{designDetail.price}}/件</div>
+                    <div class="font-color">Suggested selling price：${{designDetail.price}}/PC</div>
                 </a-col>
                 </a-row>
             </a-modal>
@@ -993,7 +994,7 @@ export default {
                 {
                     key:0,
                     className: 'icon-txt',
-                    text: 'Font'
+                    text: 'Text'
                 },
                 {
                     key:1,
