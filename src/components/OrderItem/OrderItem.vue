@@ -8,7 +8,7 @@
           <span>Order Deadline： {{items.payEndDate}}</span>
           <span>Status：{{items.orderStatus | statusFilter1}}</span>
         </p>
-        <hide-menu @myClick="checkOutDetails(items.id)" @myClick1="openMyshareBox(items.id)" @myClick2="goEditing(items.id)" :isEdit="items.orderStatus"></hide-menu>
+        <hide-menu @handeDetelOrder="handeDetelOrder(items.id)" @handeCaleOrder="handeCaleOrder(items.id)" @myClick="checkOutDetails(items.id)" @myClick1="openMyshareBox(items.id)" @myClick2="goEditing(items.id)" :isEdit="items.orderStatus"></hide-menu>
       </div>
       <div class="order-content">
         <div class="order-item" v-for="(item,index) in items.interiorList" :key="index + items.id">
@@ -71,7 +71,7 @@ const statusMap1 = {
     text: "Share purchase"
   },
   '4': {
-    text: "生产中"
+    text: "In production"
   },
   '5': {
     text: "In Transit"
@@ -79,6 +79,12 @@ const statusMap1 = {
   '6': {
     text: "Completed"
   },
+  '7': {
+    text: 'Cancelled'
+  },
+  '8': {
+    text: 'Failed'
+  }
 };
 export default {
   props: {
@@ -108,6 +114,14 @@ export default {
     commonBtn
   },
   methods: {
+    handeDetelOrder(id) {
+      console.log('删除')
+      this.$emit('childDelte', id)
+    },
+    handeCaleOrder(id) {
+      console.log('取消')
+      this.$emit('childCale', id)
+    },
     goEditing(id){
           this.$router.push({path: '/orderdetails',query:{id: id}})
     },

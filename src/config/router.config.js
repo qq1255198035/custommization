@@ -108,7 +108,7 @@ export const constantRouterMap = [
         component: () => import("@/pages/userSystem/share/share"),
         meta: {
           login:true,
-          keepAlive: true
+         // keepAlive: true
         }
       },
       {
@@ -192,7 +192,7 @@ export const constantRouterMap = [
 
         }
       },
-      {
+      /*{
         path: "/grouporder",
         name: "grouporder",
         component: () => import("@/pages/Seller/GroupOrder"),
@@ -215,7 +215,7 @@ export const constantRouterMap = [
         meta: {
 
         }
-      },
+      },*/
       {
         path: "/myorder",
         name: "myorder",

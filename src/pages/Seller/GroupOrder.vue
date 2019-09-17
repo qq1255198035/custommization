@@ -31,7 +31,7 @@
     </ul>
     <div class="content">
       <template v-if="orderList">
-        <order-item :orderArr="orderList" @handleMyClick="openConfirmBox" style="margin-bottom: "></order-item>
+        <order-item ref="hideMenu" @childDelte="childDelte" @childCale="childCale" :orderArr="orderList" @handleMyClick="openConfirmBox" style="margin-bottom: "></order-item>
       </template>
       <p v-else>No Data</p>
     </div>
@@ -76,7 +76,7 @@
 import MyTitle from "@/components/MyTitle/MyTitle";
 import OrderItem from "@/components/OrderItem/OrderItem";
 import commonBtn from "@/components/commonBtn/commonBtn"
-import { groupOrderList, exampleConfirm, texts, programme, newScheme,queryByIdA } from "@/api/seller";
+import {sellerOrderCale,sellerOrderDetel, groupOrderList, exampleConfirm, texts, programme, newScheme,queryByIdA } from "@/api/seller";
 
 export default {
   components: {
@@ -102,6 +102,30 @@ export default {
     };
   },
   methods: {
+    //取消
+    childCale(data) {
+      const param = {
+        order_id:data
+      }
+      sellerOrderCale(param).then(res => {
+        console.log(res)
+        if(res.code == 200) {
+          this.getGroupOrderList(this.num, this.status, this.content);
+        }
+      })
+    },
+    //删除
+    childDelte(data) {
+      const param = {
+        order_id:data
+      }
+      sellerOrderDetel(param).then(res => {
+        console.log(res)
+        if(res.code == 200) {
+          this.getGroupOrderList(this.num, this.status, this.content);
+        }
+      })
+    },
       goNewOrder(){
           queryByIdA().then(res => {
             console.log(res)

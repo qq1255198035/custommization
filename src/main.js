@@ -21,7 +21,8 @@ const options = {
   name: 'ls', // name variable Vue.[ls] or this.[$ls],
   storage: 'session', // storage name session, local, memory
 };
-
+import VueClipboard from 'vue-clipboard2'
+Vue.use(VueClipboard)
 Vue.use(Storage, options);
 Vue.use(SocialSharing);
 import 'vue-social-share/dist/client.css'

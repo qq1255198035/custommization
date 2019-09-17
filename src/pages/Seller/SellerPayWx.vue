@@ -41,9 +41,19 @@
               <div class="bg">
                 <h1 v-if="code === 1">${{price}}</h1>
                 <div class="pay-detail" v-if="code === 1">
-                  <p>Payment Account：{{payName}}</p>
                   <p>Order No{{orderId}}</p>
-                  <share style="text-align:center" class="share" :config="config"></share>
+                  <p style="display: flex;width: 18%;margin: 0 auto;">
+                    <share style="text-align:center;" class="share" :config="config"></share>
+                    <span>
+                      <a-button
+                        class="copys"
+                        icon="link"
+                        v-clipboard:copy="config.url"
+                        v-clipboard:success="onCopy"
+                        v-clipboard:error="onError"
+                      ></a-button>
+                    </span>
+                  </p>
                 </div>
                 <div class="pay-detail" v-if="code === 0">
                   <p>Order No{{orderId}}</p>
@@ -67,29 +77,28 @@
 </template>
 
 <script>
-import { status } from "@/api/system";
 import { wxBackPay } from "@/api/seller";
 import MyStpes from "@/components/MyStpes/MyStpes";
 export default {
   props: {},
   data() {
     return {
-      step: 1,
+      step: 2,
       value: 1,
       code: "",
       price: "",
-      payName: "",
       orderId: "",
       orderAgain: "",
       userId: "",
       config: {
         url: window.location.href, // 网址，默认使用 window.location.href
         source: "", // 来源（QQ空间会用到）, 默认读取head标签：<meta name="site" content="http://overtrue" />
-        title: "11", // 标题，默认读取 document.title 或者 <meta name="title" content="share.js" />
-        description: "222", // 描述, 默认读取head标签：<meta name="description" content="PHP弱类型的实现原理分析" />
+        title: "标题", // 标题，默认读取 document.title 或者 <meta name="title" content="share.js" />
+        description: "描述", // 描述, 默认读取head标签：<meta name="description" content="PHP弱类型的实现原理分析" />
         image:
           "https://hlx-1258407851.cos.ap-beijing.myqcloud.com/hlx/20181229/16144720457881.png", // 图片, 默认取网页中第一个img标签
-        sites: ["facebook", "wechat", "weibo"], // 启用的站点
+        //sites: ["facebook", "wechat", "weibo"], // 启用的站点
+        sites: ["facebook", "wechat"],
         //disabled: ['google', 'facebook', 'twitter'], // 禁用的站点
         wechatQrcodeTitle: "WeChat Scan: Share", // 微信二维码提示文字
         wechatQrcodeHelper: "Scan and share this article with friends."
@@ -99,24 +108,19 @@ export default {
   computed: {},
   created() {
     this._wxBackPay();
-    this._status();
   },
   mounted() {},
   watch: {},
   methods: {
+    onCopy() {
+      this.$message.success("复制成功");
+    },
+    onError() {
+      this.$message.error("复制失败");
+    },
     backBtn() {
       this.$router.push({
         path: "/index"
-      });
-    },
-    _status() {
-      const param = {
-        user_order_id: this.$route.query.user_order_id
-      };
-      console.log(param);
-      status(param).then(res => {
-        console.log(res);
-        this.step = parseInt(res.result.schedule);
       });
     },
     _wxBackPay() {
@@ -128,9 +132,10 @@ export default {
         console.log(res);
         if (res.successCode == 1) {
           this.code = 1;
-          this.payName = res.username;
           this.orderId = res.orderSn;
           this.price = res.price;
+          this.config.url =
+            "http://192.168.0.9/#/share" + "?order_id=" + this.$route.query.orderId;
         }
         if (res.successCode == 0) {
           this.code = 0;
@@ -164,6 +169,13 @@ export default {
 <style lang="less">
 @import url("./../../components/index.less");
 @import url("./../../assets/style.css");
+.copys {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  box-shadow: none;
+}
 .shares {
   header {
     display: flex;

@@ -28,7 +28,7 @@
                 </a-col>
                 <a-col :span="12">
                   <span>
-                    <a-icon class="font-color" type="mail" style="padding-right:6px;"/>
+                    <a-icon class="font-color" type="mail" style="padding-right:6px;" />
                     {{detailList.email}}
                   </span>
                 </a-col>
@@ -39,10 +39,18 @@
         <a-col :xxl="3" :xl="2"></a-col>
         <a-col :xxl="5" :xl="6">
           <div class="right-desc">
-            <div class="top" style="line-height:40px">
-              <span style="float:left">Share to a Friend：</span>
-              <share  class="share" :config="config">
-              </share>
+            <div class="top" style="line-height:40px;display: flex;">
+              <span>Share to a Friend：</span>
+              <share v-if="share" class="share" :config="config"></share>
+              <span>
+                <a-button
+                  class="copys"
+                  icon="link"
+                  v-clipboard:copy="config.url"
+                  v-clipboard:success="onCopy"
+                  v-clipboard:error="onError"
+                ></a-button>
+              </span>
             </div>
             <div class="down">
               <div class="texts">
@@ -71,31 +79,57 @@ export default {
   },
   data() {
     return {
+      share: false,
       config: {
         url: window.location.href, // 网址，默认使用 window.location.href
         source: "", // 来源（QQ空间会用到）, 默认读取head标签：<meta name="site" content="http://overtrue" />
-        title: "11", // 标题，默认读取 document.title 或者 <meta name="title" content="share.js" />
-        description: "222", // 描述, 默认读取head标签：<meta name="description" content="PHP弱类型的实现原理分析" />
+        title: "标题", // 标题，默认读取 document.title 或者 <meta name="title" content="share.js" />
+        description: "描述", // 描述, 默认读取head标签：<meta name="description" content="PHP弱类型的实现原理分析" />
         image:
           "https://hlx-1258407851.cos.ap-beijing.myqcloud.com/hlx/20181229/16144720457881.png", // 图片, 默认取网页中第一个img标签
-        sites: ["facebook", "wechat", "weibo"], // 启用的站点
+        //sites: ["facebook", "wechat", "weibo"], // 启用的站点
+        sites: ["facebook", "wechat"],
         //disabled: ['google', 'facebook', 'twitter'], // 禁用的站点
         wechatQrcodeTitle: "WeChat Scan: Share", // 微信二维码提示文字
-        wechatQrcodeHelper:
-          "Scan and share this article with friends."
+        wechatQrcodeHelper: "Scan and share this article with friends."
       }
     };
   },
   computed: {},
   created() {},
+  beforeUpdate() {
+    this._detailList();
+  },
   mounted() {},
   watch: {},
-  methods: {},
+  methods: {
+    _detailList() {
+      this.share = true;
+      if (this.share) {
+        this.config.image = this.detailList.topic_url;
+        this.config.title = this.detailList.topic;
+        this.config.description = this.detailList.introduction;
+      }
+    },
+    onCopy() {
+      this.$message.success("复制成功");
+    },
+    onError() {
+      this.$message.error("复制失败");
+    }
+  },
   components: {}
 };
 </script>
 
 <style lang="less">
+.copys {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  box-shadow: none;
+}
 .wrappers {
   margin-top: 40px;
   .wrappers-box {
@@ -111,7 +145,6 @@ export default {
     }
     .content {
       .title {
-        
         padding: 20px 0;
       }
       .contant {
@@ -142,5 +175,4 @@ export default {
     }
   }
 }
-
 </style>
