@@ -217,7 +217,7 @@ export default {
           dataIndex: "price"
         },
         {
-          title: "合计",
+          title: "Total",
           align: "center",
           width: "20%",
           dataIndex: "amount"

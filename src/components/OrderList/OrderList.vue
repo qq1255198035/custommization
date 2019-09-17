@@ -47,7 +47,7 @@ export default {
                   if(status == 1 || status == 2){
                         this.$router.push({path:'/orderdetails',query:{id: id}})
                   }else{
-                        this.$message.error('The order has been put into production.')
+                        this.$message.error('Your order has been confirmed.')
                   }
                   
             }

@@ -108,7 +108,7 @@ export const constantRouterMap = [
         component: () => import("@/pages/userSystem/share/share"),
         meta: {
           login:true,
-          keepAlive: true
+         // keepAlive: true
         }
       },
       {

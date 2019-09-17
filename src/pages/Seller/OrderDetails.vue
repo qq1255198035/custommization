@@ -760,7 +760,7 @@ export default {
       adressList().then(res => {
         console.log(res);
         this.adressList = res.result;
-        this.adress = res.result[0].detailInfo;
+        //this.adress = res.result[0].addressName + res.result[0].detailInfo +res.result[0].userName+res.result[0].telNumber;
       });
     },
     setDefaultAdress(item) {
