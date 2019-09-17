@@ -67,7 +67,7 @@
           <a-button @click="programmeBtn(item.id,item.pic_id)" v-show="item.status == 1" disabled="disabled">Campaign has been selected</a-button>
         </li>
 
-        <a-button @click="newSchemeBtn" type="primary" :disabled="astatus == 2">Apply for New Case</a-button>
+        <a-button @click="newSchemeBtn" type="primary" :disabled="astatus == 2 || exList.length == 0">Apply for New Case</a-button>
       </ul>
     </a-modal>
   </div>
@@ -133,7 +133,8 @@ export default {
           newScheme(param).then(res => {
               console.log(res)
               if(res.code == 200) {
-                  window.location.reload()
+                  this.modelShow = false;
+                  this.$message.success('Successful application');
               } 
           })
       },
