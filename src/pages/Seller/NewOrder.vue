@@ -2287,94 +2287,24 @@ export default {
                         obj.left = Math.min(obj.left, obj.canvas.width-obj.getBoundingRect().width+obj.left-obj.getBoundingRect().left - right_margin);
                     } 
             });
-            // object.on("object:moving", function(e) {
-            //     that.movingBox = true;
-            //     var obj = e.target;
-            //     var canvas = obj.canvas;
-            //     var top = obj.top;
-            //     var left = obj.left;
-            //     var zoom = canvas.getZoom();
-            //     // width & height we are constraining to must be calculated by applying the inverse of the current viewportTransform
-            //     var c_width = canvas.width / zoom;
-            //     var c_height = canvas.height / zoom;
-            //     var w = obj.width * obj.scaleX
-            //     var left_adjust, right_adjust
-            //     if(obj.originX == "center") {
-            //     left_adjust = right_adjust = w / 2;
-            //     } else {
-            //             left_adjust = 0;
-            //             right_adjust = w;
-            //     }
-            //     var h = obj.height * obj.scaleY;
-            //     var top_adjust, bottom_adjust;
-            //     if(obj.originY == "center") {
-            //             top_adjust = bottom_adjust = h / 2;
-            //     } else {
-            //             top_adjust = 0;
-            //             bottom_adjust = h;
-            //     }
-
-            //     // if you need margins set them here
-
-                
-            //     if(zoom > 1){
-            //             top_margin = 0;
-            //             bottom_margin = 40;
-            //             left_margin = 70;
-            //             right_margin = 140;
-            //     }else{
-            //         var top_bound = top_margin + top_adjust;
-            //         var bottom_bound = c_height - bottom_adjust - bottom_margin;
-            //         var left_bound = left_margin + left_adjust;
-            //         var right_bound = c_width - right_adjust - right_margin;
-            //     }
-
-                
-            //     if( w > c_width ) {
-            //         obj.set('left',left_bound);
-            //         console.log(left_bound,right_bound)
-
-            //     } else {
-            //         obj.set('left',Math.min(Math.max(left, left_bound), right_bound));
-            //         console.log(left_bound,right_bound)
-
-            //     }
-
-            //     if( h > c_height ) {
-            //             obj.set('top',top_bound);
-                        
-            //     } else {
-            //             obj.set('top',Math.min(Math.max(top, top_bound), bottom_bound));
-            //     }
-            // });
         },
         handleObjectScale(object,x,y,width,height){
             object.on("object:scaling",function(e){
                 var scaledObject = e.target;
-                console.log(x,y,width,height)
                 scaledObject.lockScalingFlip = true;
                 var startX =scaledObject.getPointByOrigin("left","top").x.toFixed();
                 var startY =scaledObject.getPointByOrigin("left","top").y.toFixed();
                 var maxWidth = width - startX;// scaledObject.aCoords.tl.x;
                 var maxHeight = height -startY;
                 scaledObject.setCoords();
-                
                 var isOnScreen = scaledObject.isContainedWithinRect({x:x,y:y},{x:width + x,y:height + y},true,true);
-                // console.log("onscreen:",isOnScreen);
                 if(!isOnScreen) {
-                    // console.log("xy:",startX,startY);
-                    // console.log("max:",maxWidth,maxHeight);
                     var w = scaledObject.width;
                     var h = scaledObject.height;
-                    // console.log("wh:",w,h);
-                    // console.log("obj:",maxWidth-w,maxHeight-h);
-                    // console.log("obj:",Math.min(maxWidth,w),Math.min(maxHeight,h));
                     if( (maxHeight-h) < (maxWidth-w)){
-
-                        scaledObject.scaleToHeight(Math.min(maxHeight,h),true);
-
+                        scaledObject.scaleToHeight(height + y - scaledObject.top);
                     } else{
-                        scaledObject.scaleToWidth(Math.min(maxWidth,w),true);
+                        scaledObject.scaleToWidth(width + x - scaledObject.left);
                     }
                 }
                 return true;
