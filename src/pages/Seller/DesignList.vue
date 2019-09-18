@@ -114,6 +114,9 @@ export default {
               console.log(res)
               if(res.code == 200){
                 that.getDesignList();
+                if(that.selectedRowKeys.indexOf(b.key) >= 0){
+                  that.selectedRowKeys.splice(that.selectedRowKeys.indexOf(b.key),1)
+                }
               }
             })
         },

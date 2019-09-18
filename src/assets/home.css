@@ -67,12 +67,12 @@ nav a:hover,nav a.nav{text-shadow: gray 3px 3px 2px; }
 	position:relative;/*相对定位*/
 	cursor:pointer;/*手指形状*/
 }
-.info{
+.box_1 .info{
 	width:100%;
 	background:url(~@/assets/images/products-img1.png);
 	position:relative;/*相对定位*/
 }
-.info .sm_img{
+.box_1 .info .sm_img{
 	width:100%;
 	border:0px solid #fff;
 	position:absolute;/*移动元素 绝对定位*/
@@ -175,8 +175,8 @@ nav a:hover,nav a.nav{text-shadow: gray 3px 3px 2px; }
 		
 	/* 产品 */
 	.box_1{	width:96%;height:540px;	margin:20px auto;}
-	.info{height:540px;}
-	.info .sm_img{height:540px;}
+	.box_1 .info{height:540px;}
+	.box_1 .info .sm_img{height:540px;}
 	.ingo_fm{height:480px;left:30px;top:30px;}
 	.ingo_fm h3{line-height:35px;padding:10px 10px 40px;margin:30% 10px 0 10px;	font:24px/18px 'microsoft yahei';}
 	.ingo_fm h4{font:28px/24px 'microsoft yahei';}
@@ -246,8 +246,8 @@ nav a:hover,nav a.nav{text-shadow: gray 3px 3px 2px; }
 		
 	/* 产品 */
 	.box_1{	width:96%;height:160px;	margin:8px auto;}
-	.info{height:160px;}
-	.info .sm_img{height:160px;}
+	.box_1 .info{height:160px;}
+	.box_1 .info .sm_img{height:160px;}
 	.ingo_fm{height:138px;left:12px;top:10px;}
 	.ingo_fm h3{line-height:138px;padding:10px;margin:42px 10px 0 10px;	font:14px/12px 'microsoft yahei';}
 	.ingo_fm h4{font:18px/16px 'microsoft yahei';}

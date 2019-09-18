@@ -61,11 +61,11 @@
                             </li>
                             <li @click="handleChangePRO">
                                 <span class="icon-change_product"></span>
-                                Replace the product
+                                Replace product
                             </li>
                         </ul>
                         <div class="container">
-                            <h2>CUSTOM KING T-Shirt<span @click="sizeList = true">View the size chart</span></h2>
+                            <h2>CUSTOM KING T-Shirt<span @click="sizeList = true">View Size Chart</span></h2>
                             <div class="canvas-container"  v-show="designModel == 0">
                                 <canvas id="canvas1" :width="screenWidth" :height="screenWidth"></canvas>
                                 <div class="moving-box" :style="{width: boxSize1.width + 'px',height: boxSize1.height + 'px',top: boxSize1.top + 'px', left: boxSize1.left + 'px'}" v-show="movingBox">
@@ -150,7 +150,7 @@
                                             Add text
                                         </h2>
                                         <div class="add-text">
-                                            <p>Add Text</p>
+                                            <p>ADD TO DESIGN</p>
                                             <a-input v-model="addText"></a-input>
                                             <a-button type="primary" @click="addItext(addText,false)" :disabled="!addText" style="border-radius: 12px;">ADDING DESIGN</a-button>
                                         </div>
@@ -268,10 +268,10 @@
                                                 <span>COLOR：</span>
                                                 <div class="color-picker">
                                                     <p>
-                                                        {{numberColorName}}<span :style="{backgroundColor: numberColor}" @click="openChangeColorBox(5,'Name Color')"></span>
+                                                        {{nameColorName}}<span :style="{backgroundColor: nameColor}" @click="openChangeColorBox(5,'Name Color')"></span>
                                                     </p>
                                                     <p>
-                                                        {{nameColorName}}<span :style="{backgroundColor: nameColor}" @click="openChangeColorBox(6,'Number Color')"></span>
+                                                        {{numberColorName}}<span :style="{backgroundColor: numberColor}" @click="openChangeColorBox(6,'Number Color')"></span>
                                                     </p>
                                                 </div>
                                             </dd>
@@ -284,7 +284,8 @@
                                     </div>
 
                                     <div class="tool-box9" v-show="visibletype == 3">
-                                        <my-title :title="'Edit Font'"></my-title>
+                                        <!-- 文字编辑栏 -->
+                                        <my-title :title="'Edit Text'"></my-title>
                                         <div class="second">
                                             <div class="text-tool">
                                                 <a-input v-model="addText" style="width: 70%"></a-input>
@@ -302,7 +303,7 @@
                                                 </p>
                                             </li>
                                             <li @click="visibletype = 12">
-                                                <span>Font Shape</span>
+                                                <span>Text Shape</span>
                                                 <p>
                                                     <span>{{fontShape}}</span>
                                                     <a-icon type="right" />
@@ -315,43 +316,28 @@
                                                     <a-icon type="right" />
                                                 </p>
                                             </li>
-                                            <li @click="openChangeColorBox(2,'Font Highlight colour')">
-                                                <span>Font Highlight colour</span>
+                                            <li @click="openChangeColorBox(2,'Text Background Colour')">
+                                                <span>Text Background Colour</span>
                                                 <p>
                                                     <span>{{fontBgColorName}} <i class="square" :style="{backgroundColor:bgcolor}"></i></span>
                                                     <a-icon type="right" />
                                                 </p>
                                             </li>
-                                        </ul>
-                                        <dl class="stroke-style">
-                                            <dt class="title">Outline</dt>
-                                            <dd @click="openChangeColorBox(3,'Outline Color')">
-                                                <span>COLOR：</span>
+                                            <li @click="openChangeColorBox(3,'Outline Color')">
+                                                <span>Outline Color:</span>
                                                 <p>
-                                                        <span>{{strokeColorName}} <i class="square" :style="{backgroundColor: strokeColor}"></i></span>
-                                                        <a-icon type="right" />
+                                                    <span>{{strokeColorName}} <i class="square" :style="{backgroundColor: strokeColor}"></i></span>
+                                                    <a-icon type="right" />
                                                 </p>
-                                            </dd>
-                                            <dd>
-                                                <span>SIZE：</span>
-                                                <a-slider :min="0" :max="10" v-model="strokeWidth" :step="1" @change="changestrokeWidth" style="width: 85%;margin:0;"/>
-                                            </dd>
-                                        </dl>
-                                        <dl>
-                                            <dt class="title">Shadow</dt>
-                                            <dd @click="openChangeColorBox(4,'Shadow Color')">
-                                                <span>COLOR：</span>
+                                            </li>
+                                            <li @click="openChangeColorBox(4,'Shadow Color')">
+                                                <span>Shadow：</span>
                                                 <p>
                                                     <span>{{shadowColorName}} <i class="square" :style="{backgroundColor: shadowColor}"></i></span>
                                                     <a-icon type="right" />
                                                 </p>
-                                            </dd>
-                                            <dd>
-                                                <span>SIZE：</span>
-                                                <a-slider :min="0" :max="10" v-model="Shadow1" :step="1" @change="changeShadowWidth" style="width: 85%;margin:0;"/>
-                                            </dd>
-                                        </dl>
-                                        
+                                            </li>
+                                        </ul>
                                     </div>
                                     <div class="tool-box10" v-show="visibletype == 4">
                                         <h2>COLOR：</h2>
@@ -397,18 +383,33 @@
                                         <h2 style="color: #333;text-align: left; border-bottom: 1px solid #333; padding-bottom: 5px;">
                                             <a-icon type="left" style="cursor: pointer;" @click="visibletype = 3"/>
                                         </h2>
-                                        <ul class="font-family-list">
+                                        <ul class="font-family-list1">
                                             <li v-for="(item,index) in fontFamilyArr" :key="item.id" @click="changeFontFamily(item.name,index)" :style="{backgroundColor: fontfamilydata == index ? '#33b8b3' : '',color: fontfamilydata == index ? '#fff' : '#666'}">
                                                 <span :style="{fontFamily: item.name}" >ABCDEFGHIJKLMN</span>
                                                 <span>{{item.name}}</span>
                                             </li>
                                         </ul>
+                                        <p class="bottom-btn-box">
+                                            <a-button style="margin-right: 10px;" @click="removeFontFamily">Remove Font Family</a-button>
+                                            <a-button type="primary" @click="PostChangeFontFamily">Change</a-button>
+                                        </p>
+                                        
                                     </div>
                                     <div class="tool-box4" v-show="visibletype == 8">
                                         <h2 style="color: #33b8b3;text-align: left; border-bottom: 1px solid #999; padding-bottom: 5px; font-size: 18px;">
                                             <a-icon type="left" style="cursor: pointer;" @click="goBackPage"/>
                                             {{colorTitle}}
                                         </h2>
+                                        <dl>
+                                            <dd style="padding: 0 10px;" v-if="changeWidthShow == 3">
+                                                <span style="margin-bottom: 5px;">SIZE：</span>
+                                                <a-slider :min="0" :max="10" v-model="strokeWidth" :step="1" @change="changestrokeWidth" style="width: 95%;margin:10px auto;"/>
+                                            </dd>
+                                            <dd style="padding: 0 10px;" v-if="changeWidthShow == 4">
+                                                <span>SIZE：</span>
+                                                <a-slider :min="0" :max="10" v-model="Shadow1" :step="1" @change="changeShadowWidth" style="width: 95%;margin:10px auto;"/>
+                                            </dd>
+                                        </dl>
                                         <!-- <my-title :title="colorTitle"></my-title> -->
                                         <p style="display:flex;align-items: center;margin-top: 20px; font-size: 18px;color: #999;">Choose Color： <span :style="{backgroundColor: colorShow}" style="width: 20px;height: 20px;display: inline-block;margin:0 10px;border:1px solid #ccc;"></span>{{colorShowName}}</p>
                                         <ul class="color-list-box">
@@ -433,6 +434,30 @@
                                                 </template>
                                             </li>
                                         </ul>
+                                        <p class="bottom-btn-box" v-if="changeWidthShow == 1">
+                                            <a-button style="margin-right: 10px;" @click="removeFontColor">Remove Font Color</a-button>
+                                            <a-button type="primary" @click="changeFillColor(color,colorName,true)">Change</a-button>
+                                        </p>
+                                        <p class="bottom-btn-box" v-if="changeWidthShow == 2">
+                                            <a-button style="margin-right: 10px;" @click="removeFontBgColor">Remove FontBg Color</a-button>
+                                            <a-button type="primary" @click="changeTextBgColor(bgcolor,fontBgColorName,true)">Change</a-button>
+                                        </p>
+                                        <p class="bottom-btn-box" v-if="changeWidthShow == 3">
+                                            <a-button style="margin-right: 10px;" @click="removeStrokeColor">Remove Stroke</a-button>
+                                            <a-button type="primary" @click="changestrokeColor(strokeColor,strokeColorName,true)">Change</a-button>
+                                        </p>
+                                        <p class="bottom-btn-box" v-if="changeWidthShow == 4">
+                                            <a-button style="margin-right: 10px;" @click="removeShadowColor">Remove Shadow</a-button>
+                                            <a-button type="primary" @click="changeShadowColor(shadowColor,shadowColorName,true)">Change</a-button>
+                                        </p>
+                                        <p class="bottom-btn-box" v-if="changeWidthShow == 5">
+                                            <a-button style="margin-right: 10px;" @click="removeNameColor">Remove Name Color</a-button>
+                                            <a-button type="primary" @click="changeNameColor(nameColor)">Change</a-button>
+                                        </p>
+                                        <p class="bottom-btn-box" v-if="changeWidthShow == 6">
+                                            <a-button style="margin-right: 10px;" @click="removeNumberColor">Remove Number Color</a-button>
+                                            <a-button type="primary" @click="changeNumberColor(numberColor)">Change</a-button>
+                                        </p>
                                     </div>
                                     <div class="tool-box5" v-show="visibletype == 9">
                                         <h2 style="color: #333;text-align: left; border-bottom: 1px solid #333; padding-bottom: 5px;">
@@ -610,6 +635,7 @@
                                     <div class="tool-box3" v-show="visibletype == 12">
                                         <h2 style="color: #333;text-align: left; border-bottom: 1px solid #333; padding-bottom: 5px;">
                                             <a-icon type="left" style="cursor: pointer;" @click="visibletype = 3"/>
+                                            Text Shape
                                         </h2>
                                         <ul class="font-family-list">
                                             <li v-for="(item,index) in fontShapeArr" :key="item.itemText" @click="changeFontShape(item.itemText,index)" :class="{active: shapeActive == index}">
@@ -619,7 +645,8 @@
                                             </li>
                                         </ul>
                                         <div style="text-align: center;padding-top: 20px;">
-                                            <a-button type="primary" @click="saveFontShapeDesign(fontShape,true)"> Save the design</a-button>
+                                            <a-button style="margin-right: 10px;" @click="removeShape">Remove Shape</a-button>
+                                            <a-button type="primary" @click="saveFontShapeDesign(fontShape,true)">Change</a-button>
                                         </div>
                                     </div>
                                 </div>
@@ -631,17 +658,17 @@
                         <li style="display: flex; align-item">
                             <commonBtn
                                 @handleLink1="addNewPro"
-                                :width="'130px'"
+                                :width="'143px'"
                                 :height="'32px'"
                                 :padding="'15px'"
                                 :radio="'12px'"
                                 :fontsize="'16px'"
-                                :title="'Add product'"
+                                :title="'Add Product'"
                                 :icon="'plus'"
                                 v-intro="'Here will take you to new miles'" v-intro-step="2"
                             >
                             </commonBtn>
-                            <a-button type="primary" v-intro="'Here is the attribution of your design.'" v-intro-step="3"><span class="icon-save" style="margin-right: 10px;vertical-align: middle"></span><a @click="saveEndDesign"> Save the design</a></a-button>
+                            <a-button type="primary" v-intro="'Here is the attribution of your design.'" v-intro-step="3"><span class="icon-save" style="margin-right: 10px;vertical-align: middle"></span><a @click="saveEndDesign"> Save Design</a></a-button>
                         </li>
                     </ul>
                 </div>
@@ -747,6 +774,7 @@
                 <a-row :gutter="20" style="padding:20px">
                 <a-col :span="8">
                     <a-row :gutter="20">
+                    <h3 style="color: #33b8b3;padding-left: 20px;">{{ designDetail.name }}</h3>
                     <a-col :span="12">
                         <img width="100%" :src="designDetail.positivePicUrl" alt />
                     </a-col>
@@ -770,25 +798,25 @@
                         </div>
                     </div>
                     <div class="price-right">
-                        Expected Agent Pricing：
+                        Your Price：
                         <span>${{onePrice}}</span>
                     </div>
                     </div>
                     <div class="font-color">Minimum Order Quantity{{designDetail.minOrder}}</div>
                     <div class="prices">
                     <div class="price-box">
-                        <div class="font-18">Price:</div>
+                        <div class="font-18">Selling Price:</div>
                         <div class="price-input">
                         <a-input :value="prices" type="number" @change="onChangeValues" style="width: 120px" />
                         </div>
-                        <div class="font-18">/件</div>
+                        <div class="font-18">/PC</div>
                     </div>
                     <div class="price-right">
-                        Projected agency revenue：
+                        Your Profit：
                         <span>${{twoPrice}}</span>
                     </div>
                     </div>
-                    <div class="font-color">Suggested selling price：${{designDetail.price}}/件</div>
+                    <div class="font-color">Suggested selling price：${{designDetail.price}}/PC</div>
                 </a-col>
                 </a-row>
             </a-modal>
@@ -993,7 +1021,7 @@ export default {
                 {
                     key:0,
                     className: 'icon-txt',
-                    text: 'Font'
+                    text: 'Text'
                 },
                 {
                     key:1,
@@ -1057,7 +1085,8 @@ export default {
             boxSize2: [],
             boxSize3: [],
             boxSize4: [],
-            sizeList: false
+            sizeList: false,
+            changeWidthShow:0
         }
     },
     created(){
@@ -1405,9 +1434,13 @@ export default {
         },
         saveFontShapeDesign(fontShape,isAdd){
             //fontShape
-            let params = {text: this.addText,style:'outline',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: fontShape,backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1}
+            let params = {text: this.addText,style:'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: fontShape,backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1}
             this.handleChangeFont(params,isAdd)
-            console.log(this.color)
+        },
+        removeShape(){
+            this.fontShape = ''
+            let params = {text: this.addText,style:'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1}
+            this.handleChangeFont(params,true)
         },
         getArtFontList(){
             artFontList().then(res => {
@@ -1417,6 +1450,7 @@ export default {
         },
         changeFontShape(item,index){
             this.fontShape = item;
+            console.log(this.fontShape)
             this.shapeActive = index
         },
         getWindowScreen(){
@@ -1440,9 +1474,6 @@ export default {
             })
         },
 
-        PostChangeFontFamily(){
-
-        },
         getColorList(status){
             colorList(status).then(res => {
                 console.log(res)
@@ -1461,8 +1492,6 @@ export default {
                         this.designId = res.result
                     }
                 }
-
-
             })
         },
         postDeleteEXimg(id){
@@ -1835,84 +1864,124 @@ export default {
         */
         changeAllColor(val,name,i){
             if(this.colorKey == 1){
-                this.changeFillColor(val,name,true)
+                this.colorName = name;
+                this.color = val;
                 this.fontColorIcon1 = i
 
             }else if(this.colorKey == 2){
-                this.changeTextBgColor(val,name,true)
+                this.fontBgColorName = name;
+                this.bgcolor = val;
                 this.fontColorIcon2 = i
-
             }else if(this.colorKey == 3){
-                this.changestrokeColor(val,name,true)
+                this.strokeColorName = name;
+                this.strokeColor = val;
                 this.fontColorIcon3 = i
 
             }else if(this.colorKey == 4){
-                this.changeShadowColor(val,name,true)
+                this.shadowColorName = name;
+                this.shadowColor = val;
                 this.fontColorIcon4 = i
 
             }else if(this.colorKey == 5){
-                this.changeNameColor(val,name)
+                this.nameColorName = name;
+                this.nameColor = val;
                 this.fontColorIcon5 = i
 
             }else if(this.colorKey == 6){
-                this.changeNumberColor(val,name)
+                this.numberColorName = name;
+                this.numberColor = val;
                 this.fontColorIcon6 = i
             }
             this.handleColorShow();
         },
         
-        changeNumberColor(val,name){
+        changeNumberColor(val){
             let obj = this.myCanvas.getActiveObject();
             if (obj) {
                 
                 if(obj.myId == 'Number'){
                     obj.set("fill", val);
                     this.myCanvas.requestRenderAll();
-                    this.numberColorName = name;
-                    this.numberColor = val;
+                    
                 }
             }
         },
-        changeNameColor(val,name){
+        removeNumberColor(){
+            this.numberColor = '#000';
+            this.numberColorName = 'BLACK';
+            this.fontColorIcon6 = -1;
+            let obj = this.myCanvas.getActiveObject();
+            if (obj) {
+                if(obj.myId == 'Number'){
+                    obj.set("fill", this.numberColor);
+                    this.myCanvas.requestRenderAll();
+                }
+            }
+        },
+        changeNameColor(val){
             let obj = this.myCanvas.getActiveObject();
             if (obj) {
                 if(obj.myId == 'Name'){
                     obj.set("fill", val);
                     this.myCanvas.requestRenderAll();
-                    this.nameColorName = name;
-                    this.nameColor = val;
+                }
+            }
+        },
+        removeNameColor(){
+            this.nameColorName = 'BLACK';
+            this.nameColor = '#000';
+            this.fontColorIcon5 = -1;
+            let obj = this.myCanvas.getActiveObject();
+            if (obj) {
+                if(obj.myId == 'Name'){
+                    obj.set("fill", this.nameColor);
+                    this.myCanvas.requestRenderAll();
                 }
             }
         },
         changeTextBgColor(val,name,isAdd){
             let params = {
-                text: this.addText,style:'outline',fontName:this.fontfamily,
+                text: this.addText,style:'softshadow',fontName:this.fontfamily,
                 fontHeight: 50, fontColor: this.color.substr(1), 
                 lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), 
                 effect: this.fontShape,backGround: val.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1}
             this.handleChangeFont(params,isAdd)
-            
-            this.fontBgColorName = name;
-            this.bgcolor = val;
+        },
+        removeFontBgColor(){
+            this.fontBgColorName = '';
+            this.bgcolor = '';
+            this.fontColorIcon2 = -1;
+            let params = {
+                text: this.addText,style:'softshadow',fontName:this.fontfamily,
+                fontHeight: 50, fontColor: this.color.substr(1), 
+                lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), 
+                effect: this.fontShape,backGround: this.bgcolor,shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1}
+            this.handleChangeFont(params,true)
         },
         // 设置字体阴影开始
         changeShadowColor(val,name,isAdd){
             let params = {
-                    text: this.addText,style:'outline',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
+                    text: this.addText,style:'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
                     lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,
                     backGround: this.bgcolor.substr(1),shadowColor: val.substr(1),smudge: this.Shadow1
                 }
             this.handleChangeFont(params,isAdd)
-            this.shadowColorName = name;
-            this.shadowColor = val;
         },
-        changeShadowWidth(){
+        removeShadowColor(){
+            this.shadowColorName = '';
+            this.shadowColor = '';
+            this.fontColorIcon4 = -1;
+            this.Shadow1 = 0;
             let params = {
-                text: this.addText,style:'outline',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
-                lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,
-                backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1
-            }
+                    text: this.addText,style:'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
+                    lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,
+                    backGround: this.bgcolor.substr(1),shadowColor: this.shadowColorName,smudge: this.Shadow1
+                }
             this.handleChangeFont(params,true)
+        },
+        
+        changeShadowWidth(e){
+            this.Shadow1 = e;
         },
         // 设置字体阴影结束
 
@@ -2358,12 +2427,11 @@ export default {
         addItext(text,isAdd) {
             
             let params = {
-                    text: text,style:'outline',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
+                    text: text,style:'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
                     lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,
                     backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1
                 }
-            this.handleChangeFont(params,isAdd)
-
+            this.handleChangeFont(params,isAdd);
         },
         // 加载资源字体
         loadAndUse(font) {
@@ -2419,6 +2487,7 @@ export default {
         },
         openChangeColorBox(key,title){
             console.log(key)
+            this.changeWidthShow = key;
             if(key == 5){
                 if(this.addNameData){
                     this.visibletype = 8;
@@ -2491,49 +2560,71 @@ export default {
         //     }
         // },
         changeFontFamily(value,index){
-            console.log(`selected ${value}`);
             this.fontfamily = value;
             this.fontfamilydata = index
+            
+        },
+        PostChangeFontFamily(){
             let params = {
-                    text:  this.addText,style:'outline',fontName: value,fontHeight: 50, fontColor: this.color.substr(1), 
+                    text:  this.addText,style:'softshadow',fontName: this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
+                    lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,
+                    backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1
+                }
+            this.handleChangeFont(params,true)
+        },
+        removeFontFamily(){
+            this.fontfamily = 'FZCHYFW';
+            this.fontfamilydata = -1;
+            let params = {
+                    text:  this.addText,style:'softshadow',fontName: this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
                     lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,
                     backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1
                 }
             this.handleChangeFont(params,true)
         },
         changeFillColor(val,name,isAdd){
-            //let obj = this.myCanvas.getActiveObject();
-            
             let params = {
-                    text:  this.addText,style:'outline',fontName:this.fontfamily,fontHeight: 50, fontColor: val.substr(1), 
+                    text:  this.addText,style:'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: val.substr(1), 
                     lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,
                     backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1
                 }
             this.handleChangeFont(params,isAdd)
-            this.colorName = name;
-            this.color = val;
-            
-
         },
-        // 改变描边样式开始
-        changestrokeColor(val,name,isAdd){
-            
+        removeFontColor(){
+            this.color = '#000';
+            this.colorName = 'BLACK';
+            this.fontColorIcon1 = -1;
             let params = {
-                    text:  this.addText,style:'outline',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1),
-                    lineweight: this.strokeWidth, outLineColor: val.substr(1), effect: this.fontShape,
-                    backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1
-                }
-            this.handleChangeFont(params,isAdd)
-            this.strokeColorName = name;
-            this.strokeColor = val;
-        },
-        changestrokeWidth(){
-            let params = {
-                    text:  this.addText,style:'outline',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1),
+                    text:  this.addText,style:'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
                     lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,
                     backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1
                 }
             this.handleChangeFont(params,true)
+        },
+        // 改变描边样式开始
+        changestrokeColor(val,name,isAdd){
+            let params = {
+                    text:  this.addText,style:'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1),
+                    lineweight: this.strokeWidth, outLineColor: val.substr(1), effect: this.fontShape,
+                    backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1
+                }
+            this.handleChangeFont(params,isAdd)
+        },
+        removeStrokeColor(){
+            this.strokeColor = '';
+            this.strokeColorName = '';
+            this.fontColorIcon3 = -1;
+            this.strokeWidth = 0;
+            let params = {
+                    text:  this.addText,style:'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1),
+                    lineweight: this.strokeWidth, outLineColor: this.strokeColor, effect: this.fontShape,
+                    backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1
+                }
+            this.handleChangeFont(params,true);
+        },
+        changestrokeWidth(e){
+            console.log(e)
+            this.strokeWidth = e;
         },
         // 改变描边样式结束
         setEditPointer(){
@@ -2877,7 +2968,13 @@ export default {
                 width: 100%;
                 border-radius: 10px;
                 padding: 20px 10px;
-
+                .bottom-btn-box{
+                    display: flex; 
+                    justify-content: center; 
+                    margin-top: 10px; 
+                    border-top: 1px solid #ccc;
+                    padding-top: 20px;
+                }
                 .controlers{
                         display: flex;
                         align-items: center;
@@ -2983,6 +3080,7 @@ export default {
                             justify-content: space-between;
                             padding: 5px 0;
                             border-bottom: 1px solid #ccc;
+                            
                         }
                     }
                     dl{
@@ -3037,24 +3135,61 @@ export default {
                 }
                 .tool-box3{
                         .font-family-list{
-                            margin-top: 20px;
+                            margin-top: 2px;
+                            display: flex;
+                            flex-wrap: wrap;
+                            justify-content: space-between;
+                            padding:0 30px;
                             li{
                                 display: flex;
                                 flex-direction: column;
                                 align-items: center;
                                 justify-content: center;
-                                margin: 10px 0;
+                                margin: 4px 0;
+                                width: 32%;
+                                box-sizing: border-box;
+                                transition: 0.3s;
                                 cursor: pointer;
+                                img{
+                                    width: 100%;
+                                }
                                 span:nth-child(1){
                                     font-size: 18px;
                                 }
                                 &:hover{
-                                    background-color: #33b8b3;
-                                    color: #fff;
+                                    transform: scale(1.1);
+                                    box-shadow: 1px 2px 3px #ccc;
                                 }
                             }
                             .active{
-                                background-color: #33b8b3 !important;
+                                border: 1px solid #33b8b3;
+                                img{
+                                    width: calc(100% - 2px);
+                                }
+                            }
+                        }
+                        .font-family-list1{
+                            margin-top: 2px;
+                            
+                            padding:0 30px;
+                            li{
+                                display: flex;
+                                flex-direction: column;
+                                align-items: center;
+                                justify-content: center;
+                                margin: 4px 0;
+                                box-sizing: border-box;
+                                cursor: pointer;
+                                &:hover{
+                                    background-color: #33b8b3;
+                                    color: #fff !important;
+                                }
+                                span:nth-child(1){
+                                    font-size: 18px;
+                                }
+                            }
+                            .active{
+                                border: 1px solid #33b8b3;
                             }
                         }
                 }
@@ -3062,7 +3197,6 @@ export default {
                         margin-top: 20px;
                         .color-list-box{
                             display: flex;
-                            border-bottom: 1px solid #ccc;
                             flex-wrap: wrap;
                             margin-bottom: 20px;
                             padding: 10px 0;
@@ -3256,41 +3390,7 @@ export default {
                                     }
                                 }
                             }
-                            // .font-style{
-                            //     span{
-                            //         border: 1px solid #33b8b3;
-                            //         border-radius: 4px;
-                            //         display: inline-block;
-                            //         padding: 4px 10px;
-                            //         margin: 0;
-                            //         cursor: pointer;
-                            //         &:nth-child(1){
-                            //             border-top-right-radius: 0;
-                            //             border-bottom-right-radius: 0;
-                            //         }
-                            //         &:nth-child(2){
-                            //             border-radius: 0;
-                            //             border-left: none;
-                            //             border-right: none;
-                            //         }
-                            //         &:nth-child(3){
-                            //             border-radius: 0;
-
-                            //             border-right: none;
-                            //         }
-                            //         &:nth-child(4){
-                            //             border-top-left-radius: 0;
-                            //             border-bottom-left-radius: 0;
-                            //         }
-                            //         i{
-                            //             color: #33b8b3;
-                            //             font-size: 20px;
-                            //         }
-                            //     }
-                            //     > p{
-                            //         color: #33b8b3;
-                            //     }
-                            // }
+                            
                             .active{
                                 background-color: #33b8b3 !important;
                                 i{
@@ -3354,11 +3454,16 @@ export default {
                                 margin-left: 5px;
                         }
                         li{
-                            padding: 10px 0;
+                            padding: 10px 5px;
                             border-bottom:1px solid #ccc;
                             display: flex;
                             justify-content: space-between;
                             align-items: center;
+                            transition: 0.3s;
+                            &:hover{
+                                background-color: #fff;
+                                box-shadow: 1px 2px 3px #ccc;
+                            }
                             cursor: pointer;
                             > span{
                                 color: #33b8b3;
