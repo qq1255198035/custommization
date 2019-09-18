@@ -4,7 +4,7 @@ import store from './store'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
 import notification from 'ant-design-vue/es/notification'
-//import {queryByIdA} from './api/seller'
+import {queryByIdA} from './api/seller'
 import {
   setDocumentTitle,
   domTitle
@@ -30,30 +30,38 @@ router.beforeEach((to, from, next) => {
         next()
         console.log(999)
         // 未通過審批，禁止進入
-        // queryByIdA().then(res => {
-        //   console.log(res)
-        //   if(res.code == 0){
-        //     if(res.result == 1){
-        //       next()
-        //     }else if(res.result == 0){
-        //       notification.error({
-        //         message: 'Error',
-        //         description: 'Sorry,Not examined and approved'
-        //       })
-        //       next({
-        //         path: from.path,
-        //       })
-        //     }else if(res.result == 2){
-        //       notification.error({
-        //         message: 'Error',
-        //         description: 'Sorry,Failure to pass the examination and approval'
-        //       });
-        //       next({
-        //         path: from.path,
-        //       })
-        //     }
-        //   }
-        // })
+        queryByIdA().then(res => {
+          console.log(res)
+          if(res.code == 0){
+            if(res.result == 1){
+              next()
+            }else if(res.result == 0){
+              notification.error({
+                message: 'Error',
+                description: 'Sorry,Not examined and approved'
+              })
+              next({
+                path: from.path,
+              })
+            }else if(res.result == 2){
+              notification.error({
+                message: 'Error',
+                description: 'Sorry,Failure to pass the examination and approval'
+              });
+              next({
+                path: from.path,
+              })
+            }else if(res.result == 3){
+              notification.error({
+                message: 'Error',
+                description: 'Sorry, please apply first.'
+              });
+              next({
+                path: from.path,
+              })
+            }
+          }
+        })
       } else {
         if (store.getters.roles.length === 0) {
           console.log(store.getters.roles.length)

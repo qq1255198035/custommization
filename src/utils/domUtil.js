@@ -16,4 +16,4 @@ export const setDocumentTitle = function (title) {
   }
 }
 
-export const domTitle = 'Sponsor Cube'
+export const domTitle = 'The Custom King'
