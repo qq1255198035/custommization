@@ -41,7 +41,7 @@
               <div class="bg">
                 <h1 v-if="code === 1">${{price}}</h1>
                 <div class="pay-detail" v-if="code === 1">
-                  <p>Order No{{orderId}}</p>
+                  <p>Order No: {{orderId}}</p>
                   <p style="display: flex;width: 18%;margin: 0 auto;">
                     <share style="text-align:center;" class="share" :config="config"></share>
                     <span>
@@ -56,7 +56,7 @@
                   </p>
                 </div>
                 <div class="pay-detail" v-if="code === 0">
-                  <p>Order No{{orderId}}</p>
+                  <p>Order No: {{orderId}}</p>
                 </div>
                 <!--<div class="pay-btn" v-if="code === 1">
                   <a-button class="buy-again" @click="alginBtn">Buy Again</a-button>

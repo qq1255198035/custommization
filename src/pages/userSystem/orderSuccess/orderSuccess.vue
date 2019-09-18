@@ -34,7 +34,7 @@
               <div class="bg">
                 <h1>${{price}}</h1>
                 <div class="pay-detail">
-                  <p>Order No{{orderId}}</p>
+                  <p>Order No: {{orderId}}</p>
                 </div>
                 <div class="pay-btn">
                   <a-button class="buy-again" @click="alginBtn">Buy Again</a-button>
