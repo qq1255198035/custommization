@@ -383,7 +383,7 @@
                                         <h2 style="color: #333;text-align: left; border-bottom: 1px solid #333; padding-bottom: 5px;">
                                             <a-icon type="left" style="cursor: pointer;" @click="visibletype = 3"/>
                                         </h2>
-                                        <ul class="font-family-list">
+                                        <ul class="font-family-list1">
                                             <li v-for="(item,index) in fontFamilyArr" :key="item.id" @click="changeFontFamily(item.name,index)" :style="{backgroundColor: fontfamilydata == index ? '#33b8b3' : '',color: fontfamilydata == index ? '#fff' : '#666'}">
                                                 <span :style="{fontFamily: item.name}" >ABCDEFGHIJKLMN</span>
                                                 <span>{{item.name}}</span>
@@ -3080,6 +3080,7 @@ export default {
                             justify-content: space-between;
                             padding: 5px 0;
                             border-bottom: 1px solid #ccc;
+                            
                         }
                     }
                     dl{
@@ -3134,24 +3135,61 @@ export default {
                 }
                 .tool-box3{
                         .font-family-list{
-                            margin-top: 20px;
+                            margin-top: 2px;
+                            display: flex;
+                            flex-wrap: wrap;
+                            justify-content: space-between;
+                            padding:0 30px;
                             li{
                                 display: flex;
                                 flex-direction: column;
                                 align-items: center;
                                 justify-content: center;
-                                margin: 10px 0;
+                                margin: 4px 0;
+                                width: 32%;
+                                box-sizing: border-box;
+                                transition: 0.3s;
                                 cursor: pointer;
+                                img{
+                                    width: 100%;
+                                }
                                 span:nth-child(1){
                                     font-size: 18px;
                                 }
                                 &:hover{
-                                    background-color: #33b8b3;
-                                    color: #fff;
+                                    transform: scale(1.1);
+                                    box-shadow: 1px 2px 3px #ccc;
                                 }
                             }
                             .active{
-                                background-color: #33b8b3 !important;
+                                border: 1px solid #33b8b3;
+                                img{
+                                    width: calc(100% - 2px);
+                                }
+                            }
+                        }
+                        .font-family-list1{
+                            margin-top: 2px;
+                            
+                            padding:0 30px;
+                            li{
+                                display: flex;
+                                flex-direction: column;
+                                align-items: center;
+                                justify-content: center;
+                                margin: 4px 0;
+                                box-sizing: border-box;
+                                cursor: pointer;
+                                &:hover{
+                                    background-color: #33b8b3;
+                                    color: #fff !important;
+                                }
+                                span:nth-child(1){
+                                    font-size: 18px;
+                                }
+                            }
+                            .active{
+                                border: 1px solid #33b8b3;
                             }
                         }
                 }
@@ -3352,41 +3390,7 @@ export default {
                                     }
                                 }
                             }
-                            // .font-style{
-                            //     span{
-                            //         border: 1px solid #33b8b3;
-                            //         border-radius: 4px;
-                            //         display: inline-block;
-                            //         padding: 4px 10px;
-                            //         margin: 0;
-                            //         cursor: pointer;
-                            //         &:nth-child(1){
-                            //             border-top-right-radius: 0;
-                            //             border-bottom-right-radius: 0;
-                            //         }
-                            //         &:nth-child(2){
-                            //             border-radius: 0;
-                            //             border-left: none;
-                            //             border-right: none;
-                            //         }
-                            //         &:nth-child(3){
-                            //             border-radius: 0;
-
-                            //             border-right: none;
-                            //         }
-                            //         &:nth-child(4){
-                            //             border-top-left-radius: 0;
-                            //             border-bottom-left-radius: 0;
-                            //         }
-                            //         i{
-                            //             color: #33b8b3;
-                            //             font-size: 20px;
-                            //         }
-                            //     }
-                            //     > p{
-                            //         color: #33b8b3;
-                            //     }
-                            // }
+                            
                             .active{
                                 background-color: #33b8b3 !important;
                                 i{
@@ -3450,11 +3454,16 @@ export default {
                                 margin-left: 5px;
                         }
                         li{
-                            padding: 10px 0;
+                            padding: 10px 5px;
                             border-bottom:1px solid #ccc;
                             display: flex;
                             justify-content: space-between;
                             align-items: center;
+                            transition: 0.3s;
+                            &:hover{
+                                background-color: #fff;
+                                box-shadow: 1px 2px 3px #ccc;
+                            }
                             cursor: pointer;
                             > span{
                                 color: #33b8b3;
