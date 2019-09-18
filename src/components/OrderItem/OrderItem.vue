@@ -8,7 +8,14 @@
           <span>Order Deadline： {{items.payEndDate}}</span>
           <span>Status：{{items.orderStatus | statusFilter1}}</span>
         </p>
-        <hide-menu @handeDetelOrder="handeDetelOrder(items.id)" @handeCaleOrder="handeCaleOrder(items.id)" @myClick="checkOutDetails(items.id)" @myClick1="openMyshareBox(items.id)" @myClick2="goEditing(items.id)" :isEdit="items.orderStatus"></hide-menu>
+        <hide-menu
+          @handeDetelOrder="handeDetelOrder(items.id)"
+          @handeCaleOrder="handeCaleOrder(items.id)"
+          @myClick="checkOutDetails(items.id)"
+          @myClick1="openMyshareBox(items)"
+          @myClick2="goEditing(items.id)"
+          :isEdit="items.orderStatus"
+        ></hide-menu>
       </div>
       <div class="order-content">
         <div class="order-item" v-for="(item,index) in items.interiorList" :key="index + items.id">
@@ -20,14 +27,13 @@
                 <p>COLOUR： {{item.productColor}}</p>
               </div>
             </div>
-            
+
             <div>
               <span style="margin-right: 20px;">{{item.buyNum}}/{{item.quantity}}</span>
               <span>Status: {{item.status | statusFilter}}</span>
             </div>
           </div>
           <div class="right">
-            
             <commonBtn
               @btnClick="btnClick(item.id,item.status)"
               :width="'100%'"
@@ -42,10 +48,25 @@
         </div>
       </div>
     </div>
-    <a-modal :visible="openShare" :footer="null" @cancel="closeShareBox" title="Share to a Friend" :centered="true">
-          <div class="share-box1">
-                <share class="share" :config="config"></share>
-          </div>
+    <a-modal
+      :visible="openShare"
+      :footer="null"
+      @cancel="closeShareBox"
+      title="Share to a Friend"
+      :centered="true"
+    >
+      <div class="share-box1">
+        <share class="share" :config="config"></share>
+        <div>
+          <a-button
+            class="copys"
+            icon="link"
+            v-clipboard:copy="config.url"
+            v-clipboard:success="onCopy"
+            v-clipboard:error="onError"
+          ></a-button>
+        </div>
+      </div>
     </a-modal>
   </div>
 </template>
@@ -53,37 +74,37 @@
 import commonBtn from "@/components/commonBtn/commonBtn";
 import HideMenu from "@/components/HideMenu/HideMenu";
 const statusMap = {
-  '1': {
+  "1": {
     text: "To Be Confirmed"
   },
-  '2': {
+  "2": {
     text: "Confirmed"
-  },
+  }
 };
 const statusMap1 = {
-  '1': {
+  "1": {
     text: "Submit Order"
   },
-  '2': {
+  "2": {
     text: "Confirm draft"
   },
-  '3': {
+  "3": {
     text: "Share purchase"
   },
-  '4': {
+  "4": {
     text: "In production"
   },
-  '5': {
+  "5": {
     text: "In Transit"
   },
-  '6': {
+  "6": {
     text: "Completed"
   },
-  '7': {
-    text: 'Cancelled'
+  "7": {
+    text: "Cancelled"
   },
-  '8': {
-    text: 'Failed'
+  "8": {
+    text: "Failed"
   }
 };
 export default {
@@ -92,63 +113,72 @@ export default {
       type: Array
     }
   },
-  data(){
-    return{
-      openShare:false,
-        config: {
-              url: '', // 网址，默认使用 window.location.href
-              source: "", // 来源（QQ空间会用到）, 默认读取head标签：<meta name="site" content="http://overtrue" />
-              title: "11", // 标题，默认读取 document.title 或者 <meta name="title" content="share.js" />
-              description: "222", // 描述, 默认读取head标签：<meta name="description" content="PHP弱类型的实现原理分析" />
-              image:
-                    "https://hlx-1258407851.cos.ap-beijing.myqcloud.com/hlx/20181229/16144720457881.png", // 图片, 默认取网页中第一个img标签
-              sites: ["facebook", "wechat", "weibo"], // 启用的站点
-              //disabled: ['google', 'facebook', 'twitter'], // 禁用的站点
-              wechatQrcodeTitle: "WeChat Scan: Share", // 微信二维码提示文字
-              wechatQrcodeHelper: "Scan and share this article with friends."
-        }
+  data() {
+    return {
+      openShare: false,
+      config: {
+        url: "", // 网址，默认使用 window.location.href
+        source: "", // 来源（QQ空间会用到）, 默认读取head标签：<meta name="site" content="http://overtrue" />
+        title: "标题", // 标题，默认读取 document.title 或者 <meta name="title" content="share.js" />
+        description: "描述", // 描述, 默认读取head标签：<meta name="description" content="PHP弱类型的实现原理分析" />
+        image:
+          "https://hlx-1258407851.cos.ap-beijing.myqcloud.com/hlx/20181229/16144720457881.png", // 图片, 默认取网页中第一个img标签
+        //sites: ["facebook", "wechat", "weibo"], // 启用的站点
+        sites: ["facebook", "wechat"],
+        //disabled: ['google', 'facebook', 'twitter'], // 禁用的站点
+        wechatQrcodeTitle: "WeChat Scan: Share", // 微信二维码提示文字
+        wechatQrcodeHelper: "Scan and share this article with friends."
       }
+    };
   },
   components: {
     HideMenu,
     commonBtn
   },
   methods: {
+    onCopy() {
+      this.$message.success("复制成功");
+    },
+    onError() {
+      this.$message.error("复制失败");
+    },
     handeDetelOrder(id) {
-      console.log('删除')
-      this.$emit('childDelte', id)
+      console.log("删除");
+      this.$emit("childDelte", id);
     },
     handeCaleOrder(id) {
-      console.log('取消')
-      this.$emit('childCale', id)
+      console.log("取消");
+      this.$emit("childCale", id);
     },
-    goEditing(id){
-          this.$router.push({path: '/orderdetails',query:{id: id}})
+    goEditing(id) {
+      this.$router.push({ path: "/orderdetails", query: { id: id } });
     },
-    closeShareBox(){
-          this.openShare = false;
+    closeShareBox() {
+      this.openShare = false;
     },
-    checkOutDetails(id){
-          this.$router.push({path: '/myorder',query: {id: id}})
+    checkOutDetails(id) {
+      this.$router.push({ path: "/myorder", query: { id: id } });
     },
-    btnClick(id,status){
-      this.$emit('handleMyClick',id,status)
+    btnClick(id, status) {
+      this.$emit("handleMyClick", id, status);
     },
-    openMyshareBox(id){
-          this.openShare = true;
-          this.config.url = 'http://192.168.0.9/#/share' + '?order_id='+id
+    openMyshareBox(item) {
+      console.log(item);
+      this.openShare = true;
+      this.config.url = "http://192.168.0.9/#/share" + "?order_id=" + item.id;
+      this.config.image = item.interiorList[0].positivePicUrl;
     },
-    statusFilter (type) {
-      return statusMap[type].text
-    },
+    statusFilter(type) {
+      return statusMap[type].text;
+    }
   },
-  filters:{
-    statusFilter (type) {
-      return statusMap[type].text
+  filters: {
+    statusFilter(type) {
+      return statusMap[type].text;
     },
-    statusFilter1 (type) {
-      return statusMap1[type].text
-    },
+    statusFilter1(type) {
+      return statusMap1[type].text;
+    }
   }
 };
 </script>
@@ -245,10 +275,22 @@ export default {
 }
 .share-box1 {
   padding: 30px;
-  p{
+  padding: 30px;
+  display: flex;
+  justify-content: center;
+  .copys {
+    font-size: 30px;
+    margin: 0 20px;
+    border: 1px solid #33b8b3 !important;
+    height: 60px;
+    width: 60px;
+    color: #33b8b3;
+    border-radius: 50%;
+  }
+  p {
     font-size: 12px !important;
   }
-  .qrcode{
+  .qrcode {
     margin: 3px auto !important;
   }
   .share {

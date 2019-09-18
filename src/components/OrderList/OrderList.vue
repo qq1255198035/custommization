@@ -16,7 +16,7 @@
                                           <span>
                                                 <a-icon type="edit" @click="goEdit(item.id,item.order_status)"/>
                                                 <a-icon type="file-search" @click="$router.push({path:'/myorder',query:{id: item.id}})"/>
-                                                <a-icon type="share-alt" @click="open(item.id,item.order_status)" />
+                                                <a-icon type="share-alt" @click="open(item,item.order_status)" />
                                           </span>
                                     </p>
                               </div>
@@ -33,9 +33,9 @@ export default {
             }
       },
       methods:{
-            open(id,status){
+            open(item,status){
                   if(status == 3){
-                        this.$emit('openShareBox', id)
+                        this.$emit('openShareBox', item)
                   }else if(status < 3){
                         this.$message.error('The order has not been confirmed yet.')
                   }else{

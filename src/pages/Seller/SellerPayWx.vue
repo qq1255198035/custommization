@@ -96,7 +96,7 @@ export default {
         title: "标题", // 标题，默认读取 document.title 或者 <meta name="title" content="share.js" />
         description: "描述", // 描述, 默认读取head标签：<meta name="description" content="PHP弱类型的实现原理分析" />
         image:
-          "https://hlx-1258407851.cos.ap-beijing.myqcloud.com/hlx/20181229/16144720457881.png", // 图片, 默认取网页中第一个img标签
+          "", // 图片, 默认取网页中第一个img标签
         //sites: ["facebook", "wechat", "weibo"], // 启用的站点
         sites: ["facebook", "wechat"],
         //disabled: ['google', 'facebook', 'twitter'], // 禁用的站点

@@ -81,7 +81,7 @@ export function getAction(url, parameter) {
 //
 export function upLoad(parameter) {
   return axios({
-    url: '/sys/oss/upload',
+    url: '/sys/oss/sourceUpload',
     headers: {
       "Content-Type": "multipart/form-data"
     },

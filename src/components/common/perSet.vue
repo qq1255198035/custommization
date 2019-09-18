@@ -335,7 +335,7 @@ export default {
       const formData = new FormData();
       formData.append("file", file);
       upLoad(formData).then(res => {
-        this.fileUrl = res;
+        this.fileUrl = res.preview_url;
       });
     },
     onChange(value) {

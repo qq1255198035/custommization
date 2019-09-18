@@ -323,7 +323,6 @@
             <a-icon class="font-color" style="font-size:40px" type="check-circle" />
           </div>
           <div class="success">Successful</div>
-          <div>Share to a Friend</div>
         </div>
       </a-modal>
     </div>
@@ -791,7 +790,7 @@ export default {
       console.log(formData);
       upLoad(formData).then(res => {
         console.log(res);
-        this.fileUrl = res;
+        this.fileUrl = res.preview_url;
       });
     }
   },
