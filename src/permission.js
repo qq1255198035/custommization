@@ -4,7 +4,7 @@ import store from './store'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
 import notification from 'ant-design-vue/es/notification'
-import {queryByIdA} from './api/seller'
+//import {queryByIdA} from './api/seller'
 import {
   setDocumentTitle,
   domTitle
@@ -16,7 +16,7 @@ NProgress.configure({
   showSpinner: false
 })
 
-const whiteList = ['login', 'register', 'home', 'passwordSet', 'share', 'products', 'about','design'] // no redirect whitelist
+const whiteList = ['login', 'register', 'home', 'passwordSet', 'products', 'about','design'] // no redirect whitelist
 console.log(router)
 router.beforeEach((to, from, next) => {
   NProgress.start()

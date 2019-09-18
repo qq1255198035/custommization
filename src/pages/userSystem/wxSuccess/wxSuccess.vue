@@ -42,10 +42,10 @@
                 <h1 v-if="code === 1">${{price}}</h1>
                 <div class="pay-detail" v-if="code === 1">
                   <!--<p>Payment Account：{{payName}}</p>-->
-                  <p>Order No{{orderId}}</p>
+                  <p>Order No: {{orderId}}</p>
                 </div>
                 <div class="pay-detail" v-if="code === 0">
-                  <p>Order No{{orderId}}</p>
+                  <p>Order No: {{orderId}}</p>
                 </div>
                 <div class="pay-btn" v-if="code === 1">
                   <a-button class="buy-again" @click="alginBtn">Buy Again</a-button>

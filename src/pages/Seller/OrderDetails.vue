@@ -54,6 +54,7 @@
                 </a-form-item>
                 <a-form-item label="Upload photo" :label-col="{ span: 3 }" :wrapper-col="{ span: 12 }">
                   <a-upload
+                  accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif"
                     name="avatar"
                     listType="picture-card"
                     class="avatar-uploader"

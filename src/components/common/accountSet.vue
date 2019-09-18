@@ -129,7 +129,7 @@
             />
             <a-avatar v-else style="backgroundColor:#23C6C8" :size="130">Sponsor Cube</a-avatar>
             <template>
-              <a-upload name="avatar" :showUploadList="false" :beforeUpload="beforeUpload">
+              <a-upload  accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif" name="avatar" :showUploadList="false" :beforeUpload="beforeUpload">
                 <commonBtn
                   :icon="'upload'"
                   :width="'100%'"
