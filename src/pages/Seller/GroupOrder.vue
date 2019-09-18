@@ -5,7 +5,7 @@
       <li>
         <commonBtn
             @handleLink="goNewOrder"
-            :width="'130px'"
+            :width="'131px'"
             :height="'32px'"
             :padding="'15px'"
             :radio="'12px'"

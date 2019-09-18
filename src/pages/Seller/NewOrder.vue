@@ -268,10 +268,10 @@
                                                 <span>COLOR：</span>
                                                 <div class="color-picker">
                                                     <p>
-                                                        {{numberColorName}}<span :style="{backgroundColor: numberColor}" @click="openChangeColorBox(5,'Name Color')"></span>
+                                                        {{nameColorName}}<span :style="{backgroundColor: nameColor}" @click="openChangeColorBox(5,'Name Color')"></span>
                                                     </p>
                                                     <p>
-                                                        {{nameColorName}}<span :style="{backgroundColor: nameColor}" @click="openChangeColorBox(6,'Number Color')"></span>
+                                                        {{numberColorName}}<span :style="{backgroundColor: numberColor}" @click="openChangeColorBox(6,'Number Color')"></span>
                                                     </p>
                                                 </div>
                                             </dd>
@@ -284,6 +284,7 @@
                                     </div>
 
                                     <div class="tool-box9" v-show="visibletype == 3">
+                                        <!-- 文字编辑栏 -->
                                         <my-title :title="'Edit Text'"></my-title>
                                         <div class="second">
                                             <div class="text-tool">
@@ -315,43 +316,28 @@
                                                     <a-icon type="right" />
                                                 </p>
                                             </li>
-                                            <li @click="openChangeColorBox(2,'Font Highlight colour')">
+                                            <li @click="openChangeColorBox(2,'Text Background Colour')">
                                                 <span>Text Background Colour</span>
                                                 <p>
                                                     <span>{{fontBgColorName}} <i class="square" :style="{backgroundColor:bgcolor}"></i></span>
                                                     <a-icon type="right" />
                                                 </p>
                                             </li>
-                                        </ul>
-                                        <dl class="stroke-style">
-                                            <dt class="title">Outline</dt>
-                                            <dd @click="openChangeColorBox(3,'Outline Color')">
-                                                <span>COLOR：</span>
+                                            <li @click="openChangeColorBox(3,'Outline Color')">
+                                                <span>Outline Color:</span>
                                                 <p>
-                                                        <span>{{strokeColorName}} <i class="square" :style="{backgroundColor: strokeColor}"></i></span>
-                                                        <a-icon type="right" />
+                                                    <span>{{strokeColorName}} <i class="square" :style="{backgroundColor: strokeColor}"></i></span>
+                                                    <a-icon type="right" />
                                                 </p>
-                                            </dd>
-                                            <dd>
-                                                <span>SIZE：</span>
-                                                <a-slider :min="0" :max="10" v-model="strokeWidth" :step="1" @change="changestrokeWidth" style="width: 85%;margin:0;"/>
-                                            </dd>
-                                        </dl>
-                                        <dl>
-                                            <dt class="title">Shadow</dt>
-                                            <dd @click="openChangeColorBox(4,'Shadow Color')">
-                                                <span>COLOR：</span>
+                                            </li>
+                                            <li @click="openChangeColorBox(4,'Shadow Color')">
+                                                <span>Shadow：</span>
                                                 <p>
                                                     <span>{{shadowColorName}} <i class="square" :style="{backgroundColor: shadowColor}"></i></span>
                                                     <a-icon type="right" />
                                                 </p>
-                                            </dd>
-                                            <dd>
-                                                <span>SIZE：</span>
-                                                <a-slider :min="0" :max="10" v-model="Shadow1" :step="1" @change="changeShadowWidth" style="width: 85%;margin:0;"/>
-                                            </dd>
-                                        </dl>
-                                        
+                                            </li>
+                                        </ul>
                                     </div>
                                     <div class="tool-box10" v-show="visibletype == 4">
                                         <h2>COLOR：</h2>
@@ -403,12 +389,27 @@
                                                 <span>{{item.name}}</span>
                                             </li>
                                         </ul>
+                                        <p class="bottom-btn-box">
+                                            <a-button style="margin-right: 10px;" @click="removeFontFamily">Remove Font Family</a-button>
+                                            <a-button type="primary" @click="PostChangeFontFamily">Change</a-button>
+                                        </p>
+                                        
                                     </div>
                                     <div class="tool-box4" v-show="visibletype == 8">
                                         <h2 style="color: #33b8b3;text-align: left; border-bottom: 1px solid #999; padding-bottom: 5px; font-size: 18px;">
                                             <a-icon type="left" style="cursor: pointer;" @click="goBackPage"/>
                                             {{colorTitle}}
                                         </h2>
+                                        <dl>
+                                            <dd style="padding: 0 10px;" v-if="changeWidthShow == 3">
+                                                <span style="margin-bottom: 5px;">SIZE：</span>
+                                                <a-slider :min="0" :max="10" v-model="strokeWidth" :step="1" @change="changestrokeWidth" style="width: 95%;margin:10px auto;"/>
+                                            </dd>
+                                            <dd style="padding: 0 10px;" v-if="changeWidthShow == 4">
+                                                <span>SIZE：</span>
+                                                <a-slider :min="0" :max="10" v-model="Shadow1" :step="1" @change="changeShadowWidth" style="width: 95%;margin:10px auto;"/>
+                                            </dd>
+                                        </dl>
                                         <!-- <my-title :title="colorTitle"></my-title> -->
                                         <p style="display:flex;align-items: center;margin-top: 20px; font-size: 18px;color: #999;">Choose Color： <span :style="{backgroundColor: colorShow}" style="width: 20px;height: 20px;display: inline-block;margin:0 10px;border:1px solid #ccc;"></span>{{colorShowName}}</p>
                                         <ul class="color-list-box">
@@ -433,6 +434,30 @@
                                                 </template>
                                             </li>
                                         </ul>
+                                        <p class="bottom-btn-box" v-if="changeWidthShow == 1">
+                                            <a-button style="margin-right: 10px;" @click="removeFontColor">Remove Font Color</a-button>
+                                            <a-button type="primary" @click="changeFillColor(color,colorName,true)">Change</a-button>
+                                        </p>
+                                        <p class="bottom-btn-box" v-if="changeWidthShow == 2">
+                                            <a-button style="margin-right: 10px;" @click="removeFontBgColor">Remove FontBg Color</a-button>
+                                            <a-button type="primary" @click="changeTextBgColor(bgcolor,fontBgColorName,true)">Change</a-button>
+                                        </p>
+                                        <p class="bottom-btn-box" v-if="changeWidthShow == 3">
+                                            <a-button style="margin-right: 10px;" @click="removeStrokeColor">Remove Stroke</a-button>
+                                            <a-button type="primary" @click="changestrokeColor(strokeColor,strokeColorName,true)">Change</a-button>
+                                        </p>
+                                        <p class="bottom-btn-box" v-if="changeWidthShow == 4">
+                                            <a-button style="margin-right: 10px;" @click="removeShadowColor">Remove Shadow</a-button>
+                                            <a-button type="primary" @click="changeShadowColor(shadowColor,shadowColorName,true)">Change</a-button>
+                                        </p>
+                                        <p class="bottom-btn-box" v-if="changeWidthShow == 5">
+                                            <a-button style="margin-right: 10px;" @click="removeNameColor">Remove Name Color</a-button>
+                                            <a-button type="primary" @click="changeNameColor(nameColor)">Change</a-button>
+                                        </p>
+                                        <p class="bottom-btn-box" v-if="changeWidthShow == 6">
+                                            <a-button style="margin-right: 10px;" @click="removeNumberColor">Remove Number Color</a-button>
+                                            <a-button type="primary" @click="changeNumberColor(numberColor)">Change</a-button>
+                                        </p>
                                     </div>
                                     <div class="tool-box5" v-show="visibletype == 9">
                                         <h2 style="color: #333;text-align: left; border-bottom: 1px solid #333; padding-bottom: 5px;">
@@ -620,7 +645,8 @@
                                             </li>
                                         </ul>
                                         <div style="text-align: center;padding-top: 20px;">
-                                            <a-button type="primary" @click="saveFontShapeDesign(fontShape,true)"> Save the design</a-button>
+                                            <a-button style="margin-right: 10px;" @click="removeShape">Remove Shape</a-button>
+                                            <a-button type="primary" @click="saveFontShapeDesign(fontShape,true)">Change</a-button>
                                         </div>
                                     </div>
                                 </div>
@@ -1059,7 +1085,8 @@ export default {
             boxSize2: [],
             boxSize3: [],
             boxSize4: [],
-            sizeList: false
+            sizeList: false,
+            changeWidthShow:0
         }
     },
     created(){
@@ -1407,9 +1434,13 @@ export default {
         },
         saveFontShapeDesign(fontShape,isAdd){
             //fontShape
-            let params = {text: this.addText,style:'outline',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: fontShape,backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1}
+            let params = {text: this.addText,style:'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: fontShape,backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1}
             this.handleChangeFont(params,isAdd)
-            console.log(this.color)
+        },
+        removeShape(){
+            this.fontShape = ''
+            let params = {text: this.addText,style:'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1}
+            this.handleChangeFont(params,true)
         },
         getArtFontList(){
             artFontList().then(res => {
@@ -1419,6 +1450,7 @@ export default {
         },
         changeFontShape(item,index){
             this.fontShape = item;
+            console.log(this.fontShape)
             this.shapeActive = index
         },
         getWindowScreen(){
@@ -1442,9 +1474,6 @@ export default {
             })
         },
 
-        PostChangeFontFamily(){
-
-        },
         getColorList(status){
             colorList(status).then(res => {
                 console.log(res)
@@ -1835,84 +1864,124 @@ export default {
         */
         changeAllColor(val,name,i){
             if(this.colorKey == 1){
-                this.changeFillColor(val,name,true)
+                this.colorName = name;
+                this.color = val;
                 this.fontColorIcon1 = i
 
             }else if(this.colorKey == 2){
-                this.changeTextBgColor(val,name,true)
+                this.fontBgColorName = name;
+                this.bgcolor = val;
                 this.fontColorIcon2 = i
-
             }else if(this.colorKey == 3){
-                this.changestrokeColor(val,name,true)
+                this.strokeColorName = name;
+                this.strokeColor = val;
                 this.fontColorIcon3 = i
 
             }else if(this.colorKey == 4){
-                this.changeShadowColor(val,name,true)
+                this.shadowColorName = name;
+                this.shadowColor = val;
                 this.fontColorIcon4 = i
 
             }else if(this.colorKey == 5){
-                this.changeNameColor(val,name)
+                this.nameColorName = name;
+                this.nameColor = val;
                 this.fontColorIcon5 = i
 
             }else if(this.colorKey == 6){
-                this.changeNumberColor(val,name)
+                this.numberColorName = name;
+                this.numberColor = val;
                 this.fontColorIcon6 = i
             }
             this.handleColorShow();
         },
         
-        changeNumberColor(val,name){
+        changeNumberColor(val){
             let obj = this.myCanvas.getActiveObject();
             if (obj) {
                 
                 if(obj.myId == 'Number'){
                     obj.set("fill", val);
                     this.myCanvas.requestRenderAll();
-                    this.numberColorName = name;
-                    this.numberColor = val;
+                    
                 }
             }
         },
-        changeNameColor(val,name){
+        removeNumberColor(){
+            this.numberColor = '#000';
+            this.numberColorName = 'BLACK';
+            this.fontColorIcon6 = -1;
+            let obj = this.myCanvas.getActiveObject();
+            if (obj) {
+                if(obj.myId == 'Number'){
+                    obj.set("fill", this.numberColor);
+                    this.myCanvas.requestRenderAll();
+                }
+            }
+        },
+        changeNameColor(val){
             let obj = this.myCanvas.getActiveObject();
             if (obj) {
                 if(obj.myId == 'Name'){
                     obj.set("fill", val);
                     this.myCanvas.requestRenderAll();
-                    this.nameColorName = name;
-                    this.nameColor = val;
+                }
+            }
+        },
+        removeNameColor(){
+            this.nameColorName = 'BLACK';
+            this.nameColor = '#000';
+            this.fontColorIcon5 = -1;
+            let obj = this.myCanvas.getActiveObject();
+            if (obj) {
+                if(obj.myId == 'Name'){
+                    obj.set("fill", this.nameColor);
+                    this.myCanvas.requestRenderAll();
                 }
             }
         },
         changeTextBgColor(val,name,isAdd){
             let params = {
-                text: this.addText,style:'outline',fontName:this.fontfamily,
+                text: this.addText,style:'softshadow',fontName:this.fontfamily,
                 fontHeight: 50, fontColor: this.color.substr(1), 
                 lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), 
                 effect: this.fontShape,backGround: val.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1}
             this.handleChangeFont(params,isAdd)
-            
-            this.fontBgColorName = name;
-            this.bgcolor = val;
+        },
+        removeFontBgColor(){
+            this.fontBgColorName = '';
+            this.bgcolor = '';
+            this.fontColorIcon2 = -1;
+            let params = {
+                text: this.addText,style:'softshadow',fontName:this.fontfamily,
+                fontHeight: 50, fontColor: this.color.substr(1), 
+                lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), 
+                effect: this.fontShape,backGround: this.bgcolor,shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1}
+            this.handleChangeFont(params,true)
         },
         // 设置字体阴影开始
         changeShadowColor(val,name,isAdd){
             let params = {
-                    text: this.addText,style:'outline',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
+                    text: this.addText,style:'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
                     lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,
                     backGround: this.bgcolor.substr(1),shadowColor: val.substr(1),smudge: this.Shadow1
                 }
             this.handleChangeFont(params,isAdd)
-            this.shadowColorName = name;
-            this.shadowColor = val;
         },
-        changeShadowWidth(){
+        removeShadowColor(){
+            this.shadowColorName = '';
+            this.shadowColor = '';
+            this.fontColorIcon4 = -1;
+            this.Shadow1 = 0;
             let params = {
-                text: this.addText,style:'outline',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
-                lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,
-                backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1
-            }
+                    text: this.addText,style:'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
+                    lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,
+                    backGround: this.bgcolor.substr(1),shadowColor: this.shadowColorName,smudge: this.Shadow1
+                }
             this.handleChangeFont(params,true)
+        },
+        
+        changeShadowWidth(e){
+            this.Shadow1 = e;
         },
         // 设置字体阴影结束
 
@@ -2358,7 +2427,7 @@ export default {
         addItext(text,isAdd) {
             
             let params = {
-                    text: text,style:'outline',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
+                    text: text,style:'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
                     lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,
                     backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1
                 }
@@ -2418,6 +2487,7 @@ export default {
         },
         openChangeColorBox(key,title){
             console.log(key)
+            this.changeWidthShow = key;
             if(key == 5){
                 if(this.addNameData){
                     this.visibletype = 8;
@@ -2490,49 +2560,71 @@ export default {
         //     }
         // },
         changeFontFamily(value,index){
-            console.log(`selected ${value}`);
             this.fontfamily = value;
             this.fontfamilydata = index
+            
+        },
+        PostChangeFontFamily(){
             let params = {
-                    text:  this.addText,style:'outline',fontName: value,fontHeight: 50, fontColor: this.color.substr(1), 
+                    text:  this.addText,style:'softshadow',fontName: this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
+                    lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,
+                    backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1
+                }
+            this.handleChangeFont(params,true)
+        },
+        removeFontFamily(){
+            this.fontfamily = 'FZCHYFW';
+            this.fontfamilydata = -1;
+            let params = {
+                    text:  this.addText,style:'softshadow',fontName: this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
                     lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,
                     backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1
                 }
             this.handleChangeFont(params,true)
         },
         changeFillColor(val,name,isAdd){
-            //let obj = this.myCanvas.getActiveObject();
-            
             let params = {
-                    text:  this.addText,style:'outline',fontName:this.fontfamily,fontHeight: 50, fontColor: val.substr(1), 
+                    text:  this.addText,style:'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: val.substr(1), 
                     lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,
                     backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1
                 }
             this.handleChangeFont(params,isAdd)
-            this.colorName = name;
-            this.color = val;
-            
-
         },
-        // 改变描边样式开始
-        changestrokeColor(val,name,isAdd){
-            
+        removeFontColor(){
+            this.color = '#000';
+            this.colorName = 'BLACK';
+            this.fontColorIcon1 = -1;
             let params = {
-                    text:  this.addText,style:'outline',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1),
-                    lineweight: this.strokeWidth, outLineColor: val.substr(1), effect: this.fontShape,
-                    backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1
-                }
-            this.handleChangeFont(params,isAdd)
-            this.strokeColorName = name;
-            this.strokeColor = val;
-        },
-        changestrokeWidth(){
-            let params = {
-                    text:  this.addText,style:'outline',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1),
+                    text:  this.addText,style:'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
                     lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,
                     backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1
                 }
             this.handleChangeFont(params,true)
+        },
+        // 改变描边样式开始
+        changestrokeColor(val,name,isAdd){
+            let params = {
+                    text:  this.addText,style:'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1),
+                    lineweight: this.strokeWidth, outLineColor: val.substr(1), effect: this.fontShape,
+                    backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1
+                }
+            this.handleChangeFont(params,isAdd)
+        },
+        removeStrokeColor(){
+            this.strokeColor = '';
+            this.strokeColorName = '';
+            this.fontColorIcon3 = -1;
+            this.strokeWidth = 0;
+            let params = {
+                    text:  this.addText,style:'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1),
+                    lineweight: this.strokeWidth, outLineColor: this.strokeColor, effect: this.fontShape,
+                    backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1
+                }
+            this.handleChangeFont(params,true);
+        },
+        changestrokeWidth(e){
+            console.log(e)
+            this.strokeWidth = e;
         },
         // 改变描边样式结束
         setEditPointer(){
@@ -2876,7 +2968,13 @@ export default {
                 width: 100%;
                 border-radius: 10px;
                 padding: 20px 10px;
-
+                .bottom-btn-box{
+                    display: flex; 
+                    justify-content: center; 
+                    margin-top: 10px; 
+                    border-top: 1px solid #ccc;
+                    padding-top: 20px;
+                }
                 .controlers{
                         display: flex;
                         align-items: center;
@@ -3061,7 +3159,6 @@ export default {
                         margin-top: 20px;
                         .color-list-box{
                             display: flex;
-                            border-bottom: 1px solid #ccc;
                             flex-wrap: wrap;
                             margin-bottom: 20px;
                             padding: 10px 0;
