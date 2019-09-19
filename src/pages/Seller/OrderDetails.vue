@@ -630,7 +630,7 @@ export default {
           email: formList.email,
           closingDate: formList.payEndDate
             ? moment(formList.payEndDate, "YYYY-MM-DD")
-            : {}
+            : ''
         });
         this.orderPid = formList.id;
         this.addressId = formList.addressId;
