@@ -5,7 +5,8 @@
         <a-col :span="6" style="height: 100%;">
           <div class="left-menu" ref="left">
             <My-Header :showNav="false"></My-Header>
-            <a-drawer
+            <div class="menu-scroll">
+              <a-drawer
               style="margin-top: 50px;"
               v-if="isMobile()"
               placement="left"
@@ -31,6 +32,8 @@
               :collapsed="collapsed"
               :collapsible="true"
             ></side-menu>
+            </div>
+            
           </div>
         </a-col>
         <a-col :span="18" style="height: 100%;">
@@ -147,6 +150,22 @@ export default {
 
 <style lang="less">
 @import url("./../components/index.less");
+.menu-scroll{
+  overflow-y: scroll;
+                height: 100%;
+                
+                &::-webkit-scrollbar {  /*滚动条整体样式*/
+                    width: 6px;  /*宽分别对应竖滚动条的尺寸*/
+                    /*高分别对应横滚动条的尺寸*/
+                    background-color: #fff;
+                    
+                }
+                &::-webkit-scrollbar-thumb {
+                    background-color: #33b8b3;
+                    border-radius:4px;
+                    height: 10%;
+                }
+}
 #SellerLayout {
   width: 100%;
   height: 100%;
@@ -159,6 +178,9 @@ export default {
       border-bottom-left-radius: 10px;
       padding-top: 50px;
       min-height: 100%;
+      padding-bottom: 120px;
+      height: 100%;
+      overflow: hidden;
     }
     .right-menu {
       background-color: #fff;

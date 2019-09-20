@@ -36,6 +36,10 @@ import {
   InputNumber,
   Alert,
   Cascader,
+  Popconfirm,
+  Tree,
+  Tooltip,
+  Spin
 } from "ant-design-vue";
 Vue.use(Alert);
 Vue.use(Button);
@@ -72,6 +76,10 @@ Vue.use(Tabs);
 Vue.use(Dropdown);
 Vue.use(InputNumber);
 Vue.use(Cascader);
+Vue.use(Popconfirm);
+Vue.use(Tree);
+Vue.use(Tooltip);
+Vue.use(Spin);
 Vue.prototype.$message = Message;
 Vue.prototype.$notification = notification;
 Vue.prototype.$confirm = Modal.confirm

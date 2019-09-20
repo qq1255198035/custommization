@@ -228,7 +228,7 @@ export default {
 @import url("./../../components/index.less");
 @import url("./../../assets/style.css");
 .share {
-  width: 100%;
+  //width: 100%;
   height: 100%;
   //background-image: linear-gradient(-45deg, #11bbe8 10%, #4ac37a 100%);
 
