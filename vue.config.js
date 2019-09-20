@@ -68,6 +68,6 @@ module.exports = {
                 changeOrigin: true
               },
             }
-          },
-          lintOnSave: undefined
+      },
+      lintOnSave: undefined
 }
