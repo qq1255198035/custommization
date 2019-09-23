@@ -61,12 +61,12 @@ module.exports = {
       devServer: {
             port: 3000,
             proxy: {
-                  '/jeecg-boot': {
-                        //target: process.env.NODE_ENV == 'production' ? 'http://192.168.0.9:8080' : 'http://192.168.0.105:8082',
-                        target: 'http://192.168.0.9:8080',
-                        ws: false,
-                        changeOrigin: true
-                  },
+              '/jeecg-boot': {
+                 //target: process.env.NODE_ENV == 'production' ? 'http://192.168.0.9:8080' : 'http://192.168.0.105:8080',
+                target: 'http://192.168.0.9:8080',
+                ws: false,
+                changeOrigin: true
+              },
             }
       },
       lintOnSave: undefined

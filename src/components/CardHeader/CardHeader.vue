@@ -42,6 +42,15 @@
             <div class="top" style="line-height:40px;display: flex;">
               <span>Share to a Friend：</span>
               <share v-if="share" class="share" :config="config"></share>
+              <span @mouseover="shareWx" @mouseout="shareWxOut">
+                <a-icon type="wechat" class="wx-font"/>
+                <div v-show="shareWxs" class="newWx">
+                  <div>扫一扫分享</div>
+                  <canvas id="canvas"></canvas>
+                  <div>微信扫一扫分享给好友</div>
+                </div>
+              </span>
+
               <span>
                 <a-button
                   class="copys"
@@ -73,12 +82,15 @@
 </template>
 
 <script>
+import QRCode from "qrcode";
 export default {
   props: {
     detailList: {}
   },
   data() {
     return {
+      shareWxs: false,
+      newUrl: '',
       share: false,
       config: {
         url: window.location.href, // 网址，默认使用 window.location.href
@@ -100,9 +112,29 @@ export default {
   beforeUpdate() {
     this._detailList();
   },
-  mounted() {},
+  mounted() {
+    this.codeSet()
+  },
   watch: {},
   methods: {
+    codeSet() {
+      var canvas = document.getElementById("canvas");
+      const url = this.config.url
+      QRCode.toCanvas(canvas, url,{
+        width: 120,
+        height:120
+      }, function(error) {
+          if (error) {
+            console.error(error);
+          }
+        });
+    },
+    shareWx() {
+      this.shareWxs = true;
+    },
+    shareWxOut() {
+      this.shareWxs = false;
+    },
     _detailList() {
       this.share = true;
       if (this.share) {
@@ -123,6 +155,21 @@ export default {
 </script>
 
 <style lang="less">
+.wx-font {
+  font-size: 20px;
+  color: #33b8b3;
+  line-height: 0
+}
+.newWx{
+  position: absolute;
+  bottom: 40px;
+  margin-left: -60px;
+  text-align: center;
+  padding: 10px;
+  background: #fff;
+  box-shadow: 0 1px 2px #eee;
+  line-height: 16px;
+}
 .copys {
   width: 32px;
   height: 32px;
