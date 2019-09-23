@@ -722,18 +722,10 @@ import resize from '@/assets/icons/resize.svg';
 import remove from '@/assets/icons/remove.svg';
 import rotate from '@/assets/icons/rotate.svg';
 import diagonal from "@/assets/icons/repair-tools-cross.svg";
-
-
-
-
 import { listAll,categoryList,selectById,saveDesign } from "@/api/seller";
-
-
 export default {
     components:{
         MyTitle,
-      
-       
         commonBtn
     },
     data () {
@@ -747,7 +739,6 @@ export default {
             pageNum: 1,
             id:'',
             btnable:false,
-            
             nameSize:20,
             numberSize:150,
             namePosition:0,
@@ -890,18 +881,7 @@ export default {
                 img00,
                 img00
             ],
-            imgs:[
-                {
-                    className: '图片',
-                    imgURL:[img1]
-                },
-                {
-                    className: '剪贴画',
-                    imgURL:[
-                        img1,img1,img1,img1,img1,
-                    ]
-                }
-            ],
+            imgs:[],
             list:[
                 {
                     key:0,
