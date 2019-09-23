@@ -50,8 +50,8 @@
 </template>
 
 <script>
-  import { filterObj } from '@/utils/util'
-  import { getAction,putAction } from '@/api/manage'
+  
+  import { putAction } from '@/api/manage'
   import ShowAnnouncement from '@/components/tools/ShowAnnouncement'
   import {JeecgListMixin} from '@/mixins/JeecgListMixin'
 
@@ -124,7 +124,7 @@
           align:"center",
           scopedSlots: { customRender: 'action' },
         }],
-		    url: {
+        url: {
           list: "/system/sysAnnouncementSend/getMyAnnouncementSend",
           editCementSend:"system/sysAnnouncementSend/editByAnntIdAndUserId",
           readAllMsg:"system/sysAnnouncementSend/readAll",

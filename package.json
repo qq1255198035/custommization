@@ -20,6 +20,7 @@
     "core-js": "^2.6.5",
     "dayjs": "^1.8.0",
     "enquire.js": "^2.1.6",
+    "extract-text-webpack-plugin": "^3.0.2",
     "fabric": "2.6.0",
     "fabric-customise-controls": "^2.0.6-beta",
     "fontfaceobserver": "^2.1.0",

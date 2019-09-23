@@ -46,7 +46,7 @@ const wxApi = {
     })
     wx.ready((res) => {
       // 如果需要定制ready回调方法
-      console.log(14)
+      console.log(res)
       console.log(this.queryData.title)
       var shareData = { 
         title: this.queryData.title, 

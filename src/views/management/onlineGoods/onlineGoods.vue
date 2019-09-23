@@ -77,7 +77,6 @@
         </span>
         <a-table
           slot="expandedRowRender"
-          slot-scope="record"
           :columns="innerColumns"
           :dataSource="dataSource"
           size="middle"

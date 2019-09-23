@@ -528,3 +528,28 @@ export function queryByIdA() {
         method: 'post',
     })
 }
+
+// 系统接口
+export function checkOutOrders(pageNo,content,status) {
+    return axios({
+        url: '/system/jeecgAdministrator/administratorOrderList',
+        method: 'post',
+        data:qs.stringify({pageNo:pageNo, content:content, pageSize: 12,status: status})
+    })
+}
+
+export function startDesign(orderId) {
+    return axios({
+        url: '/system/jeecgAdministrator/employeeStartDesign',
+        method: 'post',
+        data:qs.stringify({orderId:orderId})
+    })
+}
+
+export function sendSample(orderId) {
+    return axios({
+        url: '/system/jeecgAdministrator/employeeSendSample',
+        method: 'post',
+        data:qs.stringify({orderId:orderId})
+    })
+}

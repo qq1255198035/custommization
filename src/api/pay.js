@@ -1,5 +1,4 @@
 import axios from 'axios'
-import qs from 'qs'
 axios.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded;charset=UTF-8";
 export function ajaxPost(url, params,config) {
   return new Promise((resolve, reject) => {
@@ -16,8 +15,7 @@ export function ajaxPost(url, params,config) {
 }
 export function httpRequest(paramObj,fun,errFun) {
 	var xmlhttp = null;
-	//创建XMLHttpRequest对象，老版本的 Internet Explorer（IE5 和 IE6）使用 ActiveX 对象：new ActiveXObject("Microsoft.XMLHTTP")
-	 
+	//创建XMLHttpRequest对象，老版本的 Internet Explorer（IE5 和 IE6）使用 ActiveX 对象：new ActiveXObject("Microsoft.XMLHTTP") 
 	if(window.XMLHttpRequest) {
 		xmlhttp = new XMLHttpRequest();
 	}else if(window.ActiveXObject) {
@@ -31,7 +29,7 @@ export function httpRequest(paramObj,fun,errFun) {
 	//请求方式，并且转换为大写
 	var httpType = (paramObj.type || 'GET').toUpperCase();
 	//数据类型
-	var dataType = paramObj.dataType || 'json';
+	//var dataType = paramObj.dataType || 'json';
 	//请求接口
 	var httpUrl = paramObj.httpUrl || '';
 	//是否异步请求
@@ -51,8 +49,8 @@ export function httpRequest(paramObj,fun,errFun) {
       //成功回调函数
       fun(xmlhttp.responseText);
     }else{
-    	//失败回调函数
-    	errFun;
+		//失败回调函数
+		errFun;
     }
 	}			
 	

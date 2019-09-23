@@ -27,17 +27,16 @@
 
 <script>
 import { httpAction } from '@/api/manage'
-import JDate from '@/components/jeecg/JDate'
 import onlineGoodsLista from './onlineGoodsLista'
 import onlineGoodsListb from './onlineGoodsListb'
 import onlineGoodsListc from './onlineGoodsListc'
 import pick from 'lodash.pick'
+// eslint-disable-next-line
 import moment from 'moment'
 
 export default {
   name: 'JeecgOrderDMainModal',
   components: {
-    JDate,
     onlineGoodsLista,
     onlineGoodsListb,
     onlineGoodsListc

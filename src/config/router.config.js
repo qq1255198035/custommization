@@ -184,38 +184,7 @@ export const constantRouterMap = [
     name: "seller",
     component: SellerLayout,
     redirect: "/dashbored",
-    children: [{
-        path: "/dashbored",
-        name: "dashbored",
-        component: () => import("@/pages/Seller/DashBored"),
-        meta: {
-
-        }
-      },
-      /*{
-        path: "/grouporder",
-        name: "grouporder",
-        component: () => import("@/pages/Seller/GroupOrder"),
-        meta: {
-
-        }
-      },
-      {
-        path: "/commissions",
-        name: "commissions",
-        component: () => import("@/pages/Seller/Commissions"),
-        meta: {
-
-        }
-      },
-      {
-        path: "/commissionsdetails",
-        name: "commissionsdetails",
-        component: () => import("@/pages/Seller/CommissionsDeatils"),
-        meta: {
-
-        }
-      },*/
+    children: [
       {
         path: "/myorder",
         name: "myorder",

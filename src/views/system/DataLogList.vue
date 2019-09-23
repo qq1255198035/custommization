@@ -14,12 +14,11 @@
               <a-input placeholder="请输入ID" v-model="queryParam.dataId"></a-input>
             </a-form-item>
           </a-col>
-
           <span style="float: left;overflow: hidden;" class="table-page-search-submitButtons">
-               <a-col :md="6" :sm="24">
-                  <a-button type="primary" @click="searchQuery">查询</a-button>
-                  <a-button style="margin-left: 8px" @click="searchReset">重置</a-button>
-               </a-col>
+            <a-col :md="6" :sm="24">
+              <a-button type="primary" @click="searchQuery">查询</a-button>
+              <a-button style="margin-left: 8px" @click="searchReset">重置</a-button>
+            </a-col>
             </span>
         </a-row>
       </a-form>

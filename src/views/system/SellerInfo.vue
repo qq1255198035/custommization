@@ -1,6 +1,6 @@
 <template>
     <div>
-        <a-row :gutter="40" style="padding: 0 40px;">
+        <a-row>
             <a-col :span="8">
                 <div class="info-left">
                     <img src="" alt="">

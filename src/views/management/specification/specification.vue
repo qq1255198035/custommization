@@ -91,10 +91,9 @@
 
 <script>
 import QRCode from 'qrcode'
-import { getAction } from '@/api/manage'
 import specificationModal from '@/views/jeecg/specificationModal/specificationModal'
 import { JeecgListMixin } from '@/mixins/JeecgListMixin'
-import { ajaxPost, httpRequest } from '@/api/pay'
+import { ajaxPost } from '@/api/pay'
 import wxapi from '@/common/config.js'
 export default {
   name: 'TableDemo',

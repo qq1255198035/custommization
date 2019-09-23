@@ -36,7 +36,7 @@
     </div>
 
     <!-- 操作按钮区域 -->
-    <div class="table-operator" style="border-top: 5px">
+    <div class="table-operator" style="margin-top: 5px">
       <a-dropdown v-if="selectedRowKeys.length > 0">
         <a-menu slot="overlay" @click="handleMenuClick">
           <a-menu-item key="1">
@@ -53,7 +53,6 @@
       </a-dropdown>
       
     </div>
-
     <!-- table区域-begin -->
     <div>
       <div class="ant-alert ant-alert-info" style="margin-bottom: 16px;">
@@ -61,7 +60,6 @@
         <a style="font-weight: 600">{{ selectedRowKeys.length }}</a>项&nbsp;&nbsp;
         <a style="margin-left: 24px" @click="onClearSelected">清空</a>
       </div>
-
       <a-table
         ref="table"
         bordered
@@ -74,7 +72,7 @@
         :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
         @change="handleTableChange"
       >
-        <template slot="avatarslot" slot-scope="text, record, index">
+        <template slot="avatarslot" slot-scope="text, record">
           <div class="anty-img-wrap">
             <a-avatar shape="square" :src="getAvatarView(record.avatar)" icon="user" />
           </div>
@@ -108,7 +106,7 @@
 <script>
 import UserModal from "./modules/UserModal";
 import PasswordModal from "./modules/PasswordModal";
-import { putAction } from "@/api/manage";
+
 import { frozenBatch } from "@/api/api";
 import { JeecgListMixin } from "@/mixins/JeecgListMixin";
 import SysUserAgentModal from "./modules/SysUserAgentModal";
@@ -159,7 +157,6 @@ export default {
         {
           title: "状态",
           align: "center",
-          width: 80,
           dataIndex: "status",
           key: "status",
           width: 100,
@@ -218,6 +215,7 @@ export default {
       this.visibleNoPast = false
     },
     handleDetail(data) {
+      console.log(data)
       this.$router.push({
         path: "/sellerInfo"
       });

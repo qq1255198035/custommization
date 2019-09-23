@@ -16,19 +16,12 @@ const constantRouterComponents = {
   BlankLayout: () => import('@/layouts/BlankLayout'),
   SellerLayout: () => import('@/layouts/SellerLayout'),
   RouteView: () => import('@/layouts/RouteView'),
-
-  //CountdownTime: () => import("@/pages/Website/CountdownTime"),
-
   dashbored: () => import("@/pages/Seller/DashBored"),
   grouporder: () => import("@/pages/Seller/GroupOrder"),
   commissions: () => import("@/pages/Seller/Commissions"),
   commissionsdetails: () => import("@/pages/Seller/CommissionsDeatils"),
-  //design: () => import("@/pages/Seller/Design"),
-  myorder: () => import("@/pages/Seller/MyOrders"),
-  //
-  //share: () => import("@/pages/userSystem/share/share"),
-  //payment: () => import("@/pages/userSystem/payment/payment"),
-  //paysuccess: () => import("@/pages/userSystem/paySuccess/paySuccess"),
+  
+  
   orders: () => import("@/pages/userSystem/orders/orders"),
   personSet: () => import("@/pages/person/person"),
   dealerInfo: () => import("@/pages/common/dealerInfo/dealerInfo"),
@@ -50,12 +43,9 @@ const constantRouterComponents = {
   sellerUserList: () => import("@/views/system/customer"), //经销商审批
   sellerInfo: () => import("@/views/system/SellerInfo"),
   OrderManagement: () => import("@/views/system/OrderManagement"), //订单管理
-  orderListDetails: () => import("@/views/system/orderDetails") //订单详情
-  // 
-  //neworder: () => import("@/pages/Seller/NewOrder"),
-  //orderres: () => import("@/pages/Seller/OrderResult"),
-  //orderdetails: () => import("@/pages/Seller/OrderDetails"),
-  // ...more
+  orderListDetails: () => import("@/views/system/orderDetails"), //订单详情
+  
+  
 }
 // 前端未找到页面路由（固定不用改）
 const notFoundRouter = {

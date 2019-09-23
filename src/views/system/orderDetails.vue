@@ -1,186 +1,201 @@
 <template>
-  <div>
-    <div class="order-details">
-      <h1>单号：255421212</h1>
-      <p>创建人：丽丽</p>
-      <a-row :gutter="20" class="downs">
-        <a-col :span="12" class="details-left">
+  <div id="my-order">
+    <my-title :title="'Order details'" :fontsize="20">
+      <a-button size="small" icon="rollback" style="font-size: 14px;" @click="$router.go(-1)">Back</a-button>
+    </my-title>
+    <div class="side">
+      <p>
+        <span>
+          <a-icon type="file-text" />Single number:
+        </span>
+        {{orderId}}
+      </p>
+    </div>
+    <div class="title">
+      <ul>
+        <li>
           <p>
-            创建时间:
-            <span>2019-10-09</span>
+            <span>Founder：</span>
+            {{ contact }}
           </p>
-          <p class="bezu">备注：梵蒂冈梵蒂冈电饭锅的</p>
-        </a-col>
-        <a-col :span="12" class="details-right">
-          <div class="dowmflex">
-            <div>
-              付款关闭时间
-              <br />
-              <span>2019/10/15</span>
-            </div>
-
-            <a-divider type="vertical" class="my-divider" />
-            <div>
-              状态
-              <br />
-              <span>待审批</span>
-            </div>
-
-            <a-divider type="vertical" class="my-divider" />
-            <div>
-              订单金额
-              <br />
-              <span>￥524.01</span>
-            </div>
+          <p>
+            <span>Creation time:</span>
+            {{ createTime }}
+          </p>
+        </li>
+        <li>
+          <p>
+            <span>Add Notes：</span>
+            {{ introduction }}
+          </p>
+        </li>
+      </ul>
+      <div class="status">
+        <div>
+          <div>
+            <p>Standby Closing Time</p>
+            <span>{{payEndDate}}</span>
           </div>
-        </a-col>
-      </a-row>
-      <!---->
-      <div>
-        <a-tabs defaultActiveKey="1">
-          <a-tab-pane tab="详情" key="1">
-            <div class="details">
-              <h3>订单进度</h3>
-              <my-stpes :mycurrent="1" stpesnum="6">
-                <p slot="p1" style="color: #33b8b3;">提交订单</p>
-                <p slot="p2" style="color: #33b8b3;">样稿确认</p>
-                <p slot="p3">分享购买</p>
-                <p slot="p4">生产中</p>
-                <p slot="p5">运输中</p>
-                <p slot="p6">完成</p>
-              </my-stpes>
-              <my-title :title="'商品信息'" :fontsize="16" style="margin-top: 20px;"></my-title>
-              <a-row type="flex" class="content" v-for="item in infoList" :key="item.id">
-                <a-col :span="10">
-                  <div class="left">
-                    <h3>{{item.name}}</h3>
-                    <ul class="img-box">
-                      <li>
-                        <img :src="item.positivePicUrl" alt />
-                        <span>正面</span>
-                      </li>
-                      <li>
-                        <img :src="item.backPicUrl" alt />
-                        <span>背面</span>
-                      </li>
-                    </ul>
-                    <p>
-                      价格：
-                      <span>$ {{item.price}}</span>
-                    </p>
-                    <p>
-                      <span>颜色：{{item.productColor}}</span>
-                      <span style="margin-left: 10px;">
-                        数量：
-                        <i>{{item.buyNum}}</i>
-                        /{{item.quantity}}
-                      </span>
-                    </p>
-                  </div>
-                </a-col>
-                <a-col :span="14">
-                  <div class="right">
-                    <h3>已付款信息</h3>
-                    <a-table
-                      :columns="columns"
-                      :dataSource="data"
-                      size="middle"
-                      :pagination="false"
-                    >
-                      <span slot="status" slot-scope="text">
-                        <a-badge :status="text | statusTypeFilter" :text="text | statusFilter" />
-                      </span>
-                      <span slot="userName" slot-scope="text">
-                        <div @click="contactInfo(text.id)">{{text}}</div>
-                      </span>
-                    </a-table>
-                  </div>
-                </a-col>
-              </a-row>
-            </div>
-          </a-tab-pane>
-          <a-tab-pane tab="物流信息" key="2" forceRender>
-            <div class="info">
-              <h3>订单进度</h3>
-              <ul class="perInfo">
-                <li>
-                  收货人:
-                  <span>曲丽丽</span>
-                </li>
-                <li>
-                  邮编:
-                  <span>123456</span>
-                </li>
-                <li>
-                  电子邮件:
-                  <span>曲丽丽</span>
-                </li>
-                <li>
-                  收货地址:
-                  <span>紧邻生长处是此时此刻</span>
-                </li>
-              </ul>
-              <h3>物流轨迹</h3>
-              <ul class="perInfo">
-                <li>
-                  物流公司：
-                  <span>申通快递</span>
-                </li>
-                <li>
-                  运单号：
-                  <span>1444554</span>
-                </li>
-              </ul>
-              <ul class="logistics-info">
-                <li>cddcdcddddccdcdcdcdcdccdcd</li>
-                <li>cddcdcddddccdcdcdcdcdccdcd</li>
-                <li>cddcdcddddccdcdcdcdcdccdcd</li>
-              </ul>
-            </div>
-          </a-tab-pane>
-        </a-tabs>
+          <a-divider type="vertical" style="height: 40px; margin: 0 50px;" />
+          <div>
+            <p>Status</p>
+            <span>Pending approval</span>
+          </div>
+          <a-divider type="vertical" style="height: 40px; margin: 0 50px;" />
+          <div>
+            <p>Order amount</p>
+            <span>$ {{orderPrice}}</span>
+          </div>
+        </div>
       </div>
     </div>
+    <a-tabs defaultActiveKey="1">
+      <a-tab-pane tab="Details" key="1">
+        <div class="details">
+          <h3>Order progress</h3>
+          <!-- <my-stpes :mycurrent="mycurrent" stpesnum="4">
+            <p slot="p1" style="color: #33b8b3;">Submit order</p>
+            <p slot="p2" style="color: #33b8b3;">Confirm draft</p>
+            <p slot="p3">Share purchase</p>
+            <p slot="p4">Completed</p>
+          </my-stpes> -->
+          <my-stpes :mycurrent="mycurrent - 1" stpesnum="6">
+            <p slot="p1">提交订单</p>
+            <p slot="p2">样稿确认</p>
+            <p slot="p3">分享购买</p>
+            <p slot="p4">生产中</p>
+            <p slot="p5">运输中</p>
+            <p slot="p6">完成</p>
+          </my-stpes>
+          <my-title :title="'Product Information'" :fontsize="16" style="margin-top: 20px;"></my-title>
+          <a-row type="flex" class="content" v-for="item in infoList" :key="item.id">
+            <a-col :span="10">
+              <div class="left">
+                <h3>{{item.name}}</h3>
+                <ul class="img-box">
+                  <li>
+                    <img :src="item.positivePicUrl" alt />
+                    <span>Front</span>
+                  </li>
+                  <li>
+                    <img :src="item.backPicUrl" alt />
+                    <span>Back</span>
+                  </li>
+                </ul>
+                <p>
+                  Price：
+                  <span>$ {{item.price}}</span>
+                </p>
+                <p>
+                  <span>COLOR：{{item.productColor}}</span>
+                  <span style="margin-left: 10px;">
+                    Quantity：
+                    <i>{{item.buyNum}}</i>
+                    /{{item.quantity}}
+                  </span>
+                </p>
+              </div>
+            </a-col>
+            <a-col :span="14">
+              <div class="right">
+                <h3>Payment information</h3>
+                <a-table
+                  :columns="columns"
+                  :dataSource="item.interiorList"
+                  size="middle"
+                  :pagination="false"
+                >
+                  <span slot="status" slot-scope="text">
+                    <a-badge :status="text | statusTypeFilter" :text="text | statusFilter" />
+                  </span>
+                </a-table>
+              </div>
+            </a-col>
+          </a-row>
+        </div>
+      </a-tab-pane>
+      <a-tab-pane tab="Logistics information" key="2">
+        <div class="info">
+          <h3>Order progress</h3>
+          <ul class="perInfo">
+            <li>
+              Consignee:
+              <span>曲丽丽</span>
+            </li>
+            <li>
+              Zip code:
+              <span>123456</span>
+            </li>
+            <li>
+              Email:
+              <span>曲丽丽</span>
+            </li>
+            <li>
+              Delivery address:
+              <span>紧邻生长处是此时此刻</span>
+            </li>
+          </ul>
+          <h3>Logistics track</h3>
+          <ul class="perInfo">
+            <li>
+              Logistics company：
+              <span>申通快递</span>
+            </li>
+            <li>
+              Reference number：
+              <span>1444554</span>
+            </li>
+          </ul>
+          <ul class="logistics-info">
+            <li>cddcdcddddccdcdcdcdcdccdcd</li>
+            <li>cddcdcddddccdcdcdcdcdccdcd</li>
+            <li>cddcdcddddccdcdcdcdcdccdcd</li>
+          </ul>
+        </div>
+      </a-tab-pane>
+    </a-tabs>
   </div>
 </template>
-
 <script>
-import MyStpes from "@/components/systemSteps/systemSteps";
 import MyTitle from "@/components/MyTitle/MyTitle";
+import MyStpes from "@/components/systemSteps/systemSteps";
+import { orderDetailUp, orderDetailDown } from "@/api/seller";
+const statusMap = {
+  0: {
+    status: "success",
+    text: "Money Received"
+  },
+  1: {
+    status: "warning",
+    text: "Applying"
+  },
+  3: {
+    status: "error",
+    text: "Payment Unsuccessful"
+  },
+  2: {
+    status: "processing",
+    text: "Processing Payment"
+  }
+};
 export default {
-  props: {},
+  components: {
+    MyTitle,
+    MyStpes
+  },
   data() {
     return {
-      mycurrent: 3,
-      infoList: [
-        {
-          backPicUrl:
-            "https://wxmall-1253858660.cos.ap-beijing.myqcloud.com/wxmall/20190906/145350178eca49.png",
-          buyNum: 0,
-          id: 3344,
-          interiorList: [],
-          leftPic:
-            "https://wxmall-1253858660.cos.ap-beijing.myqcloud.com/wxmall/20190906/145459344bf76d.png",
-          name: "T-shirt",
-          positivePicUrl:
-            "https://wxmall-1253858660.cos.ap-beijing.myqcloud.com/wxmall/20190906/14520094634c3f.png",
-          price: 80,
-          productColor: "pantone 1685",
-          quantity: 53,
-          rightPicUrl:
-            "https://wxmall-1253858660.cos.ap-beijing.myqcloud.com/wxmall/20190906/14552075187e27.png"
-        }
-      ],
+      hidemenu: false,
+      id: "",
+      orderStatus: "",
+      orderId: "",
+      contact: "",
+      createTime: "",
+      topic: "",
+      orderPrice: "",
+      introduction: "",
+      payEndDate: "",
       columns: [
-        {
-          title: "NAME",
-          dataIndex: "userName",
-          scopedSlots: { customRender: "userName" }
-        },
-        {
-          title: "EMAIL",
-          dataIndex: "email"
-        },
         {
           title: "SIZE",
           dataIndex: "size"
@@ -199,65 +214,128 @@ export default {
           scopedSlots: { customRender: "status" }
         }
       ],
-      data: [
-        {
-          userName: '张三',
-          email: '11595437@qq.com',
-          size: 'M',
-          number: 2,
-          pay_time: '2019-8-1',
-          pay_status: 0,
-          id:1
-        }
-      ]
+      data: [],
+      infoList: [],
+      mycurrent: 3
     };
   },
-  computed: {},
-  created() {},
-  mounted() {},
-  watch: {},
+  mounted() {
+    this.id = this.$route.query.id;
+    this.getOrderDetailUp(this.id);
+    this.getOrderDetailDown(this.id);
+  },
   methods: {
-    contactInfo(id) {
-      console.log(id)
+    getOrderDetailDown(id) {
+      orderDetailDown(id).then(res => {
+        console.log(res);
+        this.infoList = res.result;
+      });
+    },
+
+    getOrderDetailUp(id) {
+      orderDetailUp(id).then(res => {
+        console.log(res);
+        if (res.code == 0) {
+          this.orderId = res.result.orderSn;
+          this.contact = res.result.contact;
+          this.createTime = res.result.createTime;
+          this.topic = res.result.topic;
+          this.orderPrice = res.result.orderPrice;
+          this.introduction = res.result.introduction;
+          this.payEndDate = res.result.payEndDate;
+          this.mycurrent = res.result.orderStatus;
+          
+        }
+      });
     }
   },
-  components: {
-    MyStpes,
-    MyTitle
+  filters: {
+    statusFilter(type) {
+      return statusMap[type].text;
+    },
+    statusTypeFilter(type) {
+      return statusMap[type].status;
+    }
   }
 };
 </script>
-
 <style lang="less">
-.order-details {
-  background: #fff;
-  padding: 20px;
-  .downs {
-    padding: 10px 0;
+@import url("./../../components/index.less");
+#my-order {
+  padding: 0 20px;
+  .side {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+    position: relative;
+    ul {
+      width: 67px;
+      padding: 3px 10px;
+      position: absolute;
+      top: 25px;
+      right: 0;
+      background-color: #33b8b3;
+      border-radius: 4px;
+      li {
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+        margin: 2px 0;
+        i {
+          margin-right: 5px;
+          color: #fff;
+        }
+      }
+    }
+    p {
+      font-size: 16px;
+      color: #999;
+      span {
+        color: #33b8b3;
+        i {
+          color: #33b8b3;
+        }
+      }
+    }
   }
-}
-.my-divider {
-  margin: 0 30px;
-  height: 30px;
-}
-.dowmflex {
-  display: flex;
-  align-items: center;
-  justify-items: center;
-  text-align: center;
-  justify-content: flex-end;
-}
-.details-left {
-  display: flex;
-  .bezu {
-    padding-left: 120px;
+  .title {
+    display: flex;
+    justify-content: space-between;
+    ul {
+      display: flex;
+      width: 48%;
+      justify-content: space-between;
+      padding-left: 20px;
+      li {
+        width: 50%;
+        color: #999;
+        p {
+          font-size: 14px;
+          margin: 10px 0;
+        }
+        span {
+          color: #666;
+        }
+      }
+    }
+    .status {
+      display: flex;
+      align-items: flex-start;
+      > div {
+        display: flex;
+        align-items: center;
+        > div {
+          text-align: center;
+          span {
+            font-size: 18px;
+            color: #33b8b3;
+          }
+        }
+      }
+    }
   }
-}
-.details-right {
-  
-}
-
-
   .details {
     padding: 0 40px;
     h3 {
@@ -340,5 +418,36 @@ export default {
     background-color: #eee;
     padding: 20px 20px 100px;
   }
-
+}
+.share-box1 {
+  padding: 30px;
+  display: flex;
+  justify-content: center;
+  .copys {
+    font-size: 30px;
+    margin: 0 20px;
+    border: 1px solid #33b8b3 !important;
+    height: 60px;
+    width: 60px;
+    color: #33b8b3;
+    border-radius: 50%;
+  }
+  p {
+    font-size: 12px !important;
+  }
+  .qrcode {
+    margin: 3px auto !important;
+  }
+  .share {
+    text-align: center;
+    a {
+      font-size: 30px;
+      margin: 0 20px;
+      border: 1px solid #33b8b3 !important;
+      height: 60px;
+      width: 60px;
+      padding-top: 14px;
+    }
+  }
+}
 </style>

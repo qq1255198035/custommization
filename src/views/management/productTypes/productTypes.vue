@@ -78,7 +78,6 @@
 
 <script>
   import PermissionModal from '@/views/jeecg/productTypesModal/productTypesModal'
-  import { getPermissionList } from '@/api/api'
   import { JeecgListMixin } from '@/mixins/JeecgListMixin'
   //import PermissionDataRuleList from './PermissionDataRuleList'
   import JEllipsis from '@/components/jeecg/JEllipsis'

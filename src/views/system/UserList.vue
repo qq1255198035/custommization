@@ -110,7 +110,7 @@
         :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
         @change="handleTableChange">
 
-        <template slot="avatarslot" slot-scope="text, record, index">
+        <template slot="avatarslot" slot-scope="text, record">
           <div class="anty-img-wrap">
             <a-avatar shape="square" :src="getAvatarView(record.avatar)" icon="user"/>
           </div>
@@ -175,7 +175,7 @@
 <script>
   import UserModal from './modules/UserModal'
   import PasswordModal from './modules/PasswordModal'
-  import {putAction} from '@/api/manage';
+  
   import {frozenBatch} from '@/api/api'
   import {JeecgListMixin} from '@/mixins/JeecgListMixin'
   import SysUserAgentModal from "./modules/SysUserAgentModal";

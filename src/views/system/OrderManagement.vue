@@ -5,17 +5,22 @@
       <a-form layout="inline">
         <a-row :gutter="24">
           <a-col :md="6" :sm="12">
-            <a-form-item label="名称">
-              <a-input placeholder="请输入名称" v-model="queryParam.username"></a-input>
+            <a-form-item label="订单号">
+              <a-input placeholder="请输入名称" v-model="queryParam.name"></a-input>
             </a-form-item>
           </a-col>
-
           <a-col :md="6" :sm="8">
             <a-form-item label="状态">
-              <a-select v-model="queryParam.sex" placeholder="请选择状态">
+              <a-select placeholder="请选择状态" v-model="queryParam.status">
                 <a-select-option value>请选择状态</a-select-option>
-                <a-select-option value="1">状态1</a-select-option>
-                <a-select-option value="2">状态2</a-select-option>
+                <a-select-option value="1">订单提交</a-select-option>
+                <a-select-option value="2">样稿确认</a-select-option>
+                <a-select-option value="3">分享购买</a-select-option>
+                <a-select-option value="4">生产中</a-select-option>
+                <a-select-option value="5">运输中</a-select-option>
+                <a-select-option value="6">完成</a-select-option>
+                <a-select-option value="7">已取消</a-select-option>
+                <a-select-option value="8">已失败</a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
@@ -33,33 +38,9 @@
         </a-row>
       </a-form>
     </div>
-
     <!-- 操作按钮区域 -->
-    <div class="table-operator" style="border-top: 5px">
-      <a-dropdown v-if="selectedRowKeys.length > 0">
-        <a-menu slot="overlay" @click="handleMenuClick">
-          <a-menu-item key="1">
-            <a-icon type="delete" @click="batchDel" />批量通过
-          </a-menu-item>
-          <a-menu-item key="1">
-            <a-icon type="delete" @click="batchDel" />批量拒绝
-          </a-menu-item>
-        </a-menu>
-        <a-button style="margin-left: 8px">
-          批量操作
-          <a-icon type="down" />
-        </a-button>
-      </a-dropdown>
-    </div>
-
     <!-- table区域-begin -->
-    <div>
-      <div class="ant-alert ant-alert-info" style="margin-bottom: 16px;">
-        <i class="anticon anticon-info-circle ant-alert-icon"></i>已选择&nbsp;
-        <a style="font-weight: 600">{{ selectedRowKeys.length }}</a>项&nbsp;&nbsp;
-        <a style="margin-left: 24px" @click="onClearSelected">清空</a>
-      </div>
-
+    <div style="margin-top: 16px">
       <a-table
         ref="table"
         bordered
@@ -69,17 +50,20 @@
         :dataSource="dataSource"
         :pagination="ipagination"
         :loading="loading"
-        :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
         @change="handleTableChange"
       >
-        <template slot="avatarslot" slot-scope="text, record, index">
+        <template slot="orderStatus" slot-scope="text">
           <div class="anty-img-wrap">
-            <a-avatar shape="square" :src="getAvatarView(record.avatar)" icon="user" />
+            {{ text | statusFilter }}
           </div>
         </template>
-
+        <template slot="payStatus" slot-scope="text">
+          <div class="anty-img-wrap">
+            {{ text | statusPayFilter }}
+          </div>
+        </template>
         <span slot="action" slot-scope="text, record">
-          <a @click="handleList">查看详情</a>
+          <a @click="handleList(record.id)">查看详情</a>
           <a-divider type="vertical" />
           <a-dropdown>
             <a class="ant-dropdown-link">
@@ -87,135 +71,123 @@
             </a>
             <a-menu slot="overlay">
               <a-menu-item>
-                <a href="javascript:;" @click="handleDetail(record)">详情</a>
+                <a href="javascript:;" @click="startToDesign(record.id)">开始设计</a>
               </a-menu-item>
-
               <a-menu-item>
-                <a href="javascript:;" @click="handleChangePassword(record.username)">密码</a>
+                <a href="javascript:;">设计需求</a>
               </a-menu-item>
-
               <a-menu-item>
-                <a-popconfirm title="确定删除吗?" @confirm="() => handleDelete(record.id)">
-                  <a>删除</a>
-                </a-popconfirm>
+                <a href="javascript:;" @click="sendExample(record.id)">发送样稿</a>
               </a-menu-item>
-
-              <a-menu-item v-if="record.status==1">
-                <a-popconfirm title="确定冻结吗?" @confirm="() => handleFrozen(record.id,2)">
-                  <a>冻结</a>
-                </a-popconfirm>
-              </a-menu-item>
-
-              <a-menu-item v-if="record.status==2">
-                <a-popconfirm title="确定解冻吗?" @confirm="() => handleFrozen(record.id,1)">
-                  <a>解冻</a>
-                </a-popconfirm>
-              </a-menu-item>
-
               <a-menu-item>
-                <a href="javascript:;" @click="handleAgentSettings(record.username)">代理人</a>
+                <a href="javascript:;">确认发货</a>
               </a-menu-item>
-
             </a-menu>
           </a-dropdown>
         </span>
       </a-table>
     </div>
     <!-- table区域-end -->
-
-    <user-modal ref="modalForm" @ok="modalFormOk"></user-modal>
-
-    <password-modal ref="passwordmodal" @ok="passwordModalOk"></password-modal>
-
-    <sys-user-agent-modal ref="sysUserAgentModal"></sys-user-agent-modal>
+    
   </a-card>
 </template>
-
 <script>
-import UserModal from './modules/UserModal'
-import PasswordModal from './modules/PasswordModal'
-import { putAction } from '@/api/manage'
-import { frozenBatch } from '@/api/api'
-import { JeecgListMixin } from '@/mixins/JeecgListMixin'
-import SysUserAgentModal from './modules/SysUserAgentModal'
-
+const statusMap = {
+    4: {
+        text: '生产中'
+    },
+    1: {
+        text: '订单提交'
+    },
+    3: {
+        text: '分享购买'
+    },
+    2: {
+        text: '样稿确认'
+    },
+    5: {
+        text: '运输中'
+    },
+    6: {
+        text: '完成'
+    },
+    7: {
+        text: '已取消'
+    },
+    8: {
+        text: '已失败'
+    }
+}
+const statusPayMap = {
+    0: {
+        text: '待付款 '
+    },
+    1: {
+        text: '付款中'
+    },
+    3: {
+        text: '退款'
+    },
+    2: {
+        text: '已付款'
+    }
+}
+import { checkOutOrders,startDesign,sendSample } from '@/api/seller'
 export default {
-  name: 'UserList',
-  mixins: [JeecgListMixin],
   components: {
-    SysUserAgentModal,
-    UserModal,
-    PasswordModal
   },
   data() {
     return {
-      description: '这是用户管理页面',
-      queryParam: {},
       columns: [
         {
           title: '订单号',
           align: 'center',
-          dataIndex: 'username',
+          dataIndex: 'orderSn',
           width: 120
         },
         {
           title: '邮箱',
           align: 'center',
           width: 100,
-          dataIndex: 'realname'
+          dataIndex: 'email'
         },
         {
-          title: '种类/数量',
+          title: '已购买数量',
+          align: 'center',
+          width: 80,
+          dataIndex: 'buyCount',
+        },
+        {
+          title: '总商品数',
+          align: 'center',
+          width: 80,
+          dataIndex: 'allCount',
+        },
+        {
+          title: '订单截止日期',
           align: 'center',
           width: 120,
-          dataIndex: 'avatar',
-          sorter: true,
-          scopedSlots: { customRender: 'avatarslot' }
+          dataIndex: 'payEndDate',
         },
-
         {
-          title: '金额/目标',
+          title: '订单状态',
           align: 'center',
           width: 80,
-          dataIndex: 'sex_dictText',
-          sorter: true
+          dataIndex: 'orderStatus',
+          scopedSlots: { customRender: "orderStatus" }
         },
         {
-          title: '状态',
+          title: '支付状态',
           align: 'center',
-          width: 80,
-          dataIndex: 'status',
-          key: 'status',
           width: 100,
-          filters: [
-            {
-              text: 'Joe',
-              value: 'Joe'
-            },
-            {
-              text: 'John',
-              value: 'John'
-            }
-          ],
-          onFilter: (value, record) => record.status.indexOf(value) === 0
+          dataIndex: 'payStatus',
+          scopedSlots: { customRender: "payStatus" }
         },
         {
-          title: '付款状态',
+          title: '订单创建日期',
           align: 'center',
           width: 100,
-          dataIndex: 'phone'
-        },
-        {
-          title: '截止时间',
-          align: 'center',
-          width: 100,
-          dataIndex: 'phone'
-        },
-        {
-          title: '订单时间',
-          align: 'center',
-          width: 100,
-          dataIndex: 'phone'
+          dataIndex: 'createTime'
         },
         {
           title: '操作',
@@ -225,88 +197,111 @@ export default {
           width: 170
         }
       ],
-      url: {
-        imgerver: window._CONFIG['domianURL'] + '/sys/common/view',
-        syncUser: '/process/extActProcess/doSyncUser',
-        list: '/sys/user/list',
-        delete: '/sys/user/delete',
-        deleteBatch: '/sys/user/deleteBatch',
-        exportXlsUrl: '/sys/user/exportXls',
-        importExcelUrl: 'sys/user/importExcel'
-      }
+      dataSource:[],
+      queryParam: {
+        name: '',
+        status: ''
+      },
+      /* 分页参数 */
+      ipagination:{
+        current: 1,
+        pageSize: 12,
+        showTotal: (total, range) => {
+          return range[0] + "-" + range[1] + " 共" + total + "条"
+        },
+        showQuickJumper: true,
+        total: 0
+      },
+      loading:false,
+      current: 0
     }
   },
-  computed: {
-    importExcelUrl: function() {
-      return `${window._CONFIG['domianURL']}/${this.url.importExcelUrl}`
-    }
+  mounted(){
+    this.loading = true;
+    this.getCheckOutOrders(1,'','');
+  },
+  filters:{
+    statusFilter (type){
+      return statusMap[type].text || ''
+    },
+    statusPayFilter (type){
+      return statusPayMap[type].text || ''
+    },
   },
   methods: {
-    handleList(data) {
-      this.$router.push({
-        path: '/orderListDetails'
-      })
-    },
-    getAvatarView: function(avatar) {
-      return this.url.imgerver + '/' + avatar
-    },
-
-    batchFrozen: function(status) {
-      if (this.selectedRowKeys.length <= 0) {
-        this.$message.warning('请选择一条记录！')
-        return false
-      } else {
-        let ids = ''
-        let that = this
-        that.selectedRowKeys.forEach(function(val) {
-          ids += val + ','
-        })
-        that.$confirm({
-          title: '确认操作',
-          content: '是否' + (status == 1 ? '解冻' : '冻结') + '选中账号?',
-          onOk: function() {
-            frozenBatch({ ids: ids, status: status }).then(res => {
-              if (res.success) {
-                that.$message.success(res.message)
-                that.loadData()
-                that.onClearSelected()
-              } else {
-                that.$message.warning(res.message)
-              }
-            })
-          }
-        })
-      }
-    },
-    handleMenuClick(e) {
-      if (e.key == 1) {
-        this.batchDel()
-      } else if (e.key == 2) {
-        this.batchFrozen(2)
-      } else if (e.key == 3) {
-        this.batchFrozen(1)
-      }
-    },
-    handleFrozen: function(id, status) {
-      let that = this
-      frozenBatch({ ids: id, status: status }).then(res => {
-        if (res.success) {
-          that.$message.success(res.message)
-          that.loadData()
-        } else {
-          that.$message.warning(res.message)
+    startToDesign(id){
+      this.loading = true;
+      startDesign(id).then(res => {
+        console.log(res)
+        if(res.code == 0){
+          this.$notification.success({
+            duration: 3,
+            message: '订单状态更改成功！',
+            description: '订单设计已经开始，请于2个工作日内提供样稿设计，并在平台内上传。'
+          });
+          this.getCheckOutOrders(this.current,this.queryParam.name,this.queryParam.status);
         }
       })
     },
-    handleChangePassword(username) {
-      this.$refs.passwordmodal.show(username)
+    searchReset(){
+      this.queryParam = {};
+      this.loading = true;
+      this.getCheckOutOrders(1,'','');
     },
-    handleAgentSettings(username) {
-      this.$refs.sysUserAgentModal.agentSettings(username)
-      this.$refs.sysUserAgentModal.title = '用户代理人设置'
+    searchQuery(){
+      this.loading = true;
+      console.log(this.queryParam.name)
+      this.getCheckOutOrders(1,this.queryParam.name,this.queryParam.status);
+    },
+    handleTableChange(pagination) {
+      console.log(pagination)
+      this.ipagination = pagination;
+      this.current = pagination.current;
+      this.loading = true;
+      this.getCheckOutOrders(pagination.current,this.queryParam.name,this.queryParam.status);
+    },
+    handleList(data) {
+      console.log(data)
+      this.$router.push({
+        path: '/orderListDetails',
+        query: {id: data}
+      })
     },
     passwordModalOk() {
       //TODO 密码修改完成 不需要刷新页面，可以把datasource中的数据更新一下
+    },
+    getCheckOutOrders(pageNo,content,status){
+      checkOutOrders(pageNo,content,status).then(res => {
+        console.log(res)
+        this.ipagination.total = res.total;
+        this.dataSource = res.records;
+        this.loading = false;
+      })
+    },
+    sendExample(id){
+      let that = this;
+      that.$confirm({
+        title: "您确认要发送设计样稿给用户吗？",
+        content: "确认请点击继续",
+        okText: "继续",
+        cancelText: "取消",
+        onOk() {
+          sendSample(id).then(res => {
+            console.log(res)
+            if(res.code == 0){
+              console.log(111)
+              that.$notification.success({
+                duration: 3,
+                message: '订单状态更改成功！',
+                description: '样稿已发送成功！'
+              });
+              that.getCheckOutOrders(that.current,that.queryParam.name,that.queryParam.status);
+            }
+          })
+        },
+        onCancel() {}
+      });
+      
     }
   }
 }
