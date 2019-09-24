@@ -1,7 +1,7 @@
 <template>
-  <div class="share">
-    <div class="share-box">
-      <div class="main">
+  <div class="share" id="Login">
+    <div class="share-box" style="padding: 0 40px;">
+      <div class="main" v-if="mobileShow">
         <header>
           <p class="icon-logotxt"></p>
         </header>
@@ -73,6 +73,78 @@
           <a-col :span="4"></a-col>
         </a-row>
       </div>
+      <div class="phone-main" v-else>
+        <h1>
+          <img src="@/assets/logoWhite.png" alt="">
+        </h1>
+        <a-form id="formLogin" class="user-layout-login" ref="formLogin" :form="form">
+              <a-form-item class="margin-top-20">
+                <a-input
+                  size="large"
+                  type="text"
+                  placeholder="Please fill in the account."
+                  v-decorator="[
+                'username',
+                {rules: [{ required: true, message: 'Please fill in the account.' }], validateTrigger: 'change'}
+              ]"
+                >
+                  <a-icon
+                    slot="prefix"
+                    type="user"
+                    style="color:rgba(255,255,255,1)"
+                  />
+                </a-input>
+              </a-form-item>
+
+              <a-form-item class="margin-top-20">
+                <a-input
+                  size="large"
+                  type="password"
+                  autocomplete="false"
+                  placeholder="Please fill in the password."
+                  @keyup.enter.native="submitLogin"
+                  v-decorator="[
+                'password',
+                {rules: [{ required: true, message: 'Please fill in the password.'}], validateTrigger: 'blur'}
+              ]"
+                >
+                  <a-icon
+                    slot="prefix"
+                    type="lock"
+                    style="color:rgba(255,255,255,1)"
+                  />
+                </a-input>
+              </a-form-item>
+              
+              <a-form-item style="margin-top:24px">
+                <commonBtn
+                  :width="'100%'"
+                  :title="'Login'"
+                  :height="'44px'"
+                  :padding="'15px'"
+                  :radio="'18px'"
+                  :fontsize="'18px'"
+                  @submitLogin="submitLogin"
+                ></commonBtn>
+              </a-form-item>
+
+              <div class="user-login-other" style="text-align: center;">
+                <router-link class="register" :to="{ path: '/register' }">
+                  <span class="font-18" style="color: #fff">Creat New User</span>
+                </router-link>
+              </div>
+              <a-form-item style="margin-top: 30px;">
+                <p class="auto-login">
+                  <a-checkbox @change="onChange" :checked="formLogin.rememberMe" style="color: #fff;">Automatic logon</a-checkbox>
+                </p>
+                <div class="forget">
+                  <router-link class="register" :to="{ name: 'passwordSet' }">
+                    <span class="font-18" style="color: #fff;">Forget password</span>
+                  </router-link>
+                </div>
+              </a-form-item>
+            </a-form>
+      </div>
     </div>
   </div>
 </template>
@@ -101,7 +173,8 @@ export default {
       },
       formLogin: {
         rememberMe: true
-      }
+      },
+      mobileShow: false
     };
   },
   components: {
@@ -110,8 +183,18 @@ export default {
   created() {},
   mounted() {
     this.getCookie();
+    this.getWindowScreen();
   },
   methods: {
+    getWindowScreen(){
+      let screenWidths = window.screen.width;
+      console.log(screenWidths)
+      if(screenWidths > 768){
+        this.mobileShow = true;
+      }else{
+        this.mobileShow = false;
+      }
+    },
     ...mapActions(["Login", "Logout"]),
     onChange(e) {
       this.formLogin.rememberMe = e.target.checked
@@ -231,7 +314,6 @@ export default {
   //width: 100%;
   height: 100%;
   //background-image: linear-gradient(-45deg, #11bbe8 10%, #4ac37a 100%);
-
   .share-box {
     padding: 0px 40px;
     .main {
@@ -313,5 +395,29 @@ export default {
 }
 .forget {
   float: right;
+}
+@media screen and (max-width: 768px) and (min-width: 325px){
+  #Login{
+    .share-box{
+      .phone-main{
+        .margin-top-20{
+          input{
+            background-color: rgba(255, 255, 255, 0.2) !important;
+            border-radius: 20px;
+          }
+        }
+        h1{
+          width: 90%;
+          margin: 0 auto;
+          padding: 100px 0 50px;
+          img{
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+  
+  
 }
 </style>

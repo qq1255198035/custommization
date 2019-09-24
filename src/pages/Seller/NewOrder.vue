@@ -1432,15 +1432,7 @@ export default {
             console.log(this.fontShape)
             this.shapeActive = index
         },
-        getWindowScreen(){
-            let screenWidths = window.screen.width;
-            console.log(screenWidths)
-            if(screenWidths > 1366){
-                this.screenWidth = 600;
-            }else if(screenWidths <= 1366){
-                this.screenWidth = 550;
-            }
-        },
+        
         PostChangeGoodsColor(id,color){
             changeGoodsColor(id,color).then(res => {
                 console.log(res);

@@ -1,13 +1,7 @@
 <template>
-  <div class="share">
+  <div class="share" id="Register">
     <div class="share-box">
-      <div class="main">
-        <header>
-          <p class="icon-logotxt"></p>
-          <p>
-            <User></User>
-          </p>
-        </header>
+      <div class="main" v-if="mobileShow">
         <div class="user-layout-register">
           <a-row>
             <a-col :span="4"></a-col>
@@ -16,30 +10,20 @@
               <a-form ref="formRegister" :form="form" id="formRegister">
                 <a-form-item
                   label="Role selection"
-                  :label-col="{ span: 3 }"
+                  :label-col="{ span: 4 }"
                   :wrapper-col="{ span: 12 ,offset: 1}"
                 >
                   <a-radio-group @change="onChangeRadio" v-model="valueRadio">
                     <a-radio :value="1">User</a-radio>
                     <a-radio :value="2">Distributor</a-radio>
                   </a-radio-group>
-                  <!--<a-select
-                @change="roleChange"
-                v-decorator="['namerole',{rules: [{ required: true, message: '选择角色' }]}]"
-              >
-                <a-select-option
-                  v-for="(item, index) in role"
-                  :key="index"
-                  :value="item.key"
-                >{{item.name}}</a-select-option>
-                  </a-select>-->
                 </a-form-item>
                 <a-form-item label="Email">
                   <a-input
                     size="large"
                     type="text"
                     placeholder="Email"
-                    v-decorator="['email', {rules: [{ required: true, type: 'email', message: 'Please enter your mailbox' }], validateTrigger: ['change', 'blur']}]"
+                    v-decorator="['email', {rules: [{ required: true, message: 'Please enter your mailbox' },{ type: 'email', message: 'The input is not valid E-mail!' }], validateTrigger: ['change', 'blur']}]"
                   ></a-input>
                   <div v-if="formShow" class="font-splic">
                     <span>
@@ -71,7 +55,7 @@
                   </a-col>
                 </a-row>
                 <a-popover
-                  placement="rightTop"
+                  placement="rightBottom"
                   trigger="click"
                   :visible="state.passwordLevelChecked"
                 >
@@ -84,7 +68,7 @@
                       <a-progress
                         :percent="state.percent"
                         :showInfo="false"
-                        :strokeColor=" passwordLevelColor "
+                        :strokeColor="passwordLevelColor "
                       />
                       <div style="margin-top: 10px;">
                         <span>Enter a 6-digit password, preferably containing numbers and letters</span>
@@ -166,21 +150,153 @@
                       ></commonBtn>
                     </a-col>
                   </a-row>
-
-                  <!--<a-button
-                size="large"
-                htmlType="submit"
-                class="register-button"
-                :loading="registerBtn"
-                @click.stop.prevent="handleSubmit"
-                :disabled="registerBtn"
-                  >注册</a-button>-->
                 </a-form-item>
               </a-form>
             </a-col>
             <a-col :span="4"></a-col>
           </a-row>
         </div>
+      </div>
+      <div class="phone-main-reg" v-else>
+        <h2 style="width: 100%; color: #33b8b3;text-align: left; padding:10px 20px;">
+            <a-icon type="left" style="cursor: pointer;" @click="$router.go(-1)"/>
+        </h2>
+        <a-form ref="formRegister" :form="form" id="formRegister">
+                <a-form-item label="Role selection" :label-col="{ span: 7 }" :wrapper-col="{ span: 15 ,offset: 1}" style="display: flex;align-items: center;">
+                  <a-radio-group @change="onChangeRadio" v-model="valueRadio">
+                    <a-radio :value="1">User</a-radio>
+                    <a-radio :value="2">Distributor</a-radio>
+                  </a-radio-group>
+                  </a-form-item>
+                <a-form-item>
+                  <a-input
+                    size="large"
+                    type="email"
+                    placeholder="Please Enter Your E-mail"
+                    v-decorator="['email', {rules: [{ required: true, message: 'Please enter your mailbox' },{ type: 'email', message: 'The input is not valid E-mail!' }], validateTrigger: ['change', 'blur']}]"
+                  >
+                    <a-icon slot="prefix" type="mail" style="color:#33b8b3;font-size: 15px;"/>
+                  </a-input>
+                  <div v-if="formShow" class="font-splic">
+                    <span>
+                      <a-icon type="close-circle" />
+                    </span>
+                    <span>{{emailText}}</span>
+                  </div>
+                </a-form-item>
+                <a-row type="flex" >
+                  <a-col class="gutter-row" :span="24">
+                    <a-form-item>
+                      <a-input
+                        style="width: 50%;"
+                        size="large"
+                        type="text"
+                        placeholder="Verification code"
+                        v-decorator="['captcha', {rules: [{ required: true, message: 'Verification code' }], validateTrigger: 'blur'}]"
+                      >
+                        <a-icon slot="prefix" type="key" style="color:#33b8b3;font-size: 15px;" />
+                      </a-input>
+                      <a-button
+                        v-if="state.smsSendBtn"
+                        class="getCaptcha"
+                        size="small"
+                        :disabled="state.smsSendBtn"
+                        @click.stop.prevent="getCaptcha"
+                        v-text="(state.time+' s')"
+                        style="border-radius: 0; border: none; border-left: 1px solid #33b8b3"
+                      ></a-button>
+                      <a-button
+                        v-if="!state.smsSendBtn"
+                        class="getCaptcha"
+                        size="small"
+                        :disabled="state.smsSendBtn"
+                        @click.stop.prevent="getCaptcha"
+                        v-text="getCode"
+                        style="border-radius: 0; border: none; border-left: 1px solid #33b8b3"
+                      ></a-button>
+                    </a-form-item>
+                  </a-col>
+                  
+                </a-row>
+                <a-row>
+                  <a-col :span="12">
+                    <a-form-item>
+                      <a-input
+                        size="large"
+                        type="text"
+                        placeholder="Last Name"
+                        v-decorator="['surname', {rules: [{ required: true, message: 'Your Last Name' }], validateTrigger: ['change', 'blur']}]"
+                      >
+                        <a-icon slot="prefix" type="user-delete" style="color:#33b8b3;font-size: 15px;" />
+                      </a-input>
+                    </a-form-item>
+                  </a-col>
+                  <a-col :span="12">
+                    <a-form-item>
+                      <a-input
+                        size="large"
+                        type="text"
+                        placeholder="First Name"
+                        v-decorator="['monicker', {rules: [{ required: true, message: 'Your First Name' }], validateTrigger: ['change', 'blur']}]"
+                      ></a-input>
+                    </a-form-item>
+                  </a-col>
+                </a-row>
+                <a-popover
+                  placement="topRight"
+                  trigger="click"
+                  :visible="state.passwordLevelChecked"
+                >
+                  <template slot="content">
+                    <div :style="{ width: '240px'}">
+                      <div :class="['user-register', passwordLevelClass]">
+                        Password strength
+                        <span>{{ passwordLevelName }}</span>
+                      </div>
+                      <a-progress
+                        :percent="state.percent"
+                        :showInfo="false"
+                        :strokeColor=" passwordLevelColor "
+                      />
+                      <div style="margin-top: 10px;">
+                        <span>Enter a 6-digit password, preferably containing numbers and letters</span>
+                      </div>
+                    </div>
+                  </template>
+                  <a-form-item>
+                    <a-input
+                      size="large"
+                      type="password"
+                      @keydown="insertDown"
+                      @keyup="insertUp"
+                      autocomplete="false"
+                      placeholder="Please fill in the password"
+                      v-decorator="['password', {rules: [{ required: true, message: 'Please fill in the password'}, { validator: this.handlePasswordLevel }], validateTrigger: ['change', 'blur']}]"
+                    >
+                      <a-icon slot="prefix" type="lock" style="color:#33b8b3;font-size: 15px;" />
+                    </a-input>
+                  </a-form-item>
+                </a-popover>
+                <a-form-item>
+                  <a-input
+                    size="large"
+                    type="password"
+                    @keydown="insertDown"
+                    @keyup="insertUp"
+                    autocomplete="false"
+                    placeholder="Confirm password"
+                    v-decorator="['password2', {rules: [{ required: true, message: 'Please fill in the password'}, { validator: this.handlePasswordCheck }], validateTrigger: ['change', 'blur']}]"
+                  >
+                    <a-icon slot="prefix" type="lock" style="color:#33b8b3;font-size: 15px;" />
+                  </a-input>
+                </a-form-item>
+              </a-form>
+              <p style="text-align: right;padding: 10px 20px;">
+                <router-link class="login" :to="{ path: '/login' }" style="color: #33b8b3;text-decoration: underline;">Use An Existing Account</router-link>
+              </p>      
+              <div style="width: 80%;margin: 10px auto;">
+                <a-button type="primary" @register="register" block style="border-radius: 20px;height: 40px;">REGISTER</a-button>
+              </div>  
       </div>
     </div>
   </div>
@@ -233,7 +349,7 @@ export default {
       loginBtn: false,
       // login type: 0 email, 1 username, 2 telephone
       loginType: 0,
-      getCode: "Get the authentication code",
+      getCode: "Get Verification Code",
       // stepCaptchaVisible: false,
       form: this.$form.createForm(this),
       state: {
@@ -243,8 +359,9 @@ export default {
         passwordLevelChecked: false,
         percent: 10,
         progressColor: "#FF0000"
-      }
-    };
+      },
+      mobileShow: false
+    }
   },
   components: {
     MyTitle,
@@ -261,7 +378,19 @@ export default {
       return levelColor[this.state.passwordLevel];
     }
   },
+  mounted(){
+    this.getWindowScreen();
+  },
   methods: {
+    getWindowScreen(){
+      let screenWidths = window.screen.width;
+      console.log(screenWidths)
+      if(screenWidths > 768){
+        this.mobileShow = true;
+      }else{
+        this.mobileShow = false;
+      }
+    },
     onChangeRadio(e) {
       this.valueRadio = e.target.value;
     },
@@ -360,7 +489,7 @@ export default {
       } = this;
       validateFields(["email"], { force: true }, (err, values) => {
         if (!err) {
-          state.smsSendBtn = true;
+          //state.smsSendBtn = true;
           const interval = window.setInterval(() => {
             if (state.time-- <= 0) {
               state.time = 60;
@@ -420,8 +549,6 @@ export default {
 .share {
   width: 100%;
   height: 100%;
-  //background-image: linear-gradient(-45deg, #11bbe8 10%, #4ac37a 100%);
-
   .share-box {
     padding: 0px 40px;
     .main {
@@ -433,12 +560,9 @@ export default {
       top: 50%;
       left: 50%;
       transform: translate3d(-50%, -50%, 0);
-
       .login {
         padding-bottom: 20px;
         text-align: center;
-        img {
-        }
       }
       .user-layout-login {
         label {
@@ -508,6 +632,35 @@ export default {
 
   &.success {
     color: #52c41a;
+  }
+}
+@media screen and (max-width: 768px) and (min-width: 325px){
+  #Register{
+    .share-box{
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      .phone-main-reg{
+        width: 100%;
+        height: 100%;
+        background-color: #fff;
+        #formRegister{
+          padding: 0 20px;
+          .ant-form-item{
+            border-top: 1px solid #ccc;
+            border-bottom: 1px solid #ccc;
+            margin: 10px 0;
+            .ant-form-item-label{
+              padding: 0;
+            }
+          }
+          input{
+            border: none;
+            background-color: rgba(0, 0, 0, 0)
+          }
+        }
+      }
+    }
   }
 }
 </style>
