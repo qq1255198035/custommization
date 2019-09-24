@@ -1,7 +1,10 @@
 <template>
-    <div>
-        <a-row>
-            <a-col :span="8">
+    <div class="mycontent">
+        <my-title :title="'销售商详情'" :fontsize="20" style="width: 100%;background-color: #fff;padding: 10px 20px;border-top: 1px solid #ccc">
+            <a-button size="small" icon="rollback" style="font-size: 14px;" @click="$router.go(-1)">Back</a-button>
+        </my-title>
+        <a-row type="flex" justify="space-between" style="padding: 0 10px;">
+            <a-col :span="7">
                 <div class="info-left">
                     <img src="" alt="">
                     <h2>JOJO</h2>
@@ -27,6 +30,7 @@
 </template>
 
 <script>
+import MyTitle from "@/components/MyTitle/MyTitle";
 export default {
     props: {
 
@@ -39,28 +43,31 @@ export default {
     computed: {
 
     },
-    created() {
-
-    },
+  
     mounted() {
 
     },
-    watch: {
-
-    },
+  
     methods: {
 
     },
     components: {
-
+        MyTitle
     },
 };
 </script>
 
 <style scoped lang="less">
+.mycontent{
+    width: 100%;
+    height: 100%;
+    background-color: #f1f1f1;
+   
     .info-left,.info-right{
         padding: 20px;
         background: #fff;
         box-shadow: 2px 4px 4px #eee;
     }
+}
+
 </style>

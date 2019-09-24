@@ -1,9 +1,6 @@
 <template>
   <div>
     <div class="layout-box">
-      <!--<div class="menu block">
-          <commonHeader></commonHeader>
-      </div>-->
       <div class="content">
         <my-title :title="itemTitle" :fontsize="20"></my-title>
         <a-tabs defaultActiveKey="1" @change="callback">

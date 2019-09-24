@@ -539,16 +539,15 @@
                                                             />
 
                                                     </a-input-group>
-
                                                 </a-form-item>
                                                 <a-form-item>
-                                                <a
-                                                    type="dashed"
-                                                    style="width: 60%;color: #33b8b3"
-                                                    @click="add"
-                                                >
-                                                    <a-icon type="plus" /> Add more
-                                                </a>
+                                                    <a
+                                                        type="dashed"
+                                                        style="width: 60%;color: #33b8b3"
+                                                        @click="add"
+                                                    >
+                                                        <a-icon type="plus" /> Add more
+                                                    </a>
                                                 </a-form-item>
                                                 <a-form-item style="text-align: center;">
                                                 <a-button

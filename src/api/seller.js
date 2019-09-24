@@ -561,10 +561,22 @@ export function logistics() {
     })
 }
 
-export function confirmLogistics(orderId,shippingNo,transportMode) {
+export function confirmLogistics(orderId,shippingNo,transportMode,senderName,senderPhone,senderAddress,senderProvince,senderCity,senderDistrict) {
     return axios({
         url: '/system/jeecgAdministrator/confirmLogistics',
         method: 'post',
-        data:qs.stringify({orderId:orderId,shippingNo:shippingNo,transportMode:transportMode})
+        data:qs.stringify({
+            orderId:orderId,shippingNo:shippingNo,transportMode:transportMode,
+            senderName:senderName,senderPhone:senderPhone,senderAddress:senderAddress,senderProvince:senderProvince,
+            senderCity:senderCity,senderDistrict:senderDistrict
+        })
+    })
+}
+
+export function dealerList(name,status,pageNo) {
+    return axios({
+        url: '/system/jeecgAdministrator/getDealerList',
+        method: 'post',
+        data:qs.stringify({pageSize: 12,pageNo:pageNo,name:name,status:status,})
     })
 }

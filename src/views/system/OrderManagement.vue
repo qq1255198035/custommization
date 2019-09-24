@@ -88,7 +88,7 @@
       </a-table>
     </div>
     <!-- table区域-end -->
-    <a-modal title="物流信息" v-model="visible" @ok="beConfirmed" okText="确认" cancelText="取消">
+    <a-modal title="物流信息" v-model="visible" @ok="beConfirmed" okText="确认" cancelText="取消" :width="600">
       <a-form :form="form">
       <a-form-item
           label="物流公司"
@@ -120,6 +120,77 @@
             placeholder="请填写物流单号"
           />
         </a-form-item>
+        <a-form-item
+          label="发件人姓名"
+          :label-col="{ span: 5 }"
+          :wrapper-col="{ span: 12 }"
+        >
+          <a-input
+            v-decorator="[
+              'name',
+              {rules: [{ required: true, message: '请填写发件人姓名!' }]}
+            ]"
+            placeholder="请填写发件人姓名"
+          />
+        </a-form-item>
+        <a-form-item
+          label="发件人电话"
+          :label-col="{ span: 5 }"
+          :wrapper-col="{ span: 12 }"
+        >
+          <a-input
+            v-decorator="[
+              'phone',
+              {rules: [{ required: true, message: '请填写发件人电话!' }]}
+            ]"
+            placeholder="请填写发件人电话"
+          />
+        </a-form-item>
+        <a-input-group compact style="display: flex;align-items: flex-end;">
+          <a-form-item
+            label="地址："
+            :label-col="{ span: 6 }"
+            :wrapper-col="{ span: 18 }" class="my-form-item-1"
+          >
+            <a-input
+              style="width: 95%;"
+              v-decorator="[
+                'province',
+                {rules: [{ required: true, message: '请填写省!' }]}
+              ]"
+              placeholder="请填写省"
+            />
+          </a-form-item>
+          <a-form-item class="my-form-item-2">
+            <a-input
+              style="width: 95%;"
+              v-decorator="[
+                'city',
+                {rules: [{ required: true, message: '请填写市!' }]}
+              ]"
+              placeholder="请填写市"
+            />
+          </a-form-item>
+          <a-form-item class="my-form-item-3">
+            <a-input
+              style="width: 95%;"
+              v-decorator="[
+                'quire',
+                {rules: [{ required: true, message: '请填写区!' }]}
+              ]"
+              placeholder="请填写区"
+            />
+          </a-form-item>
+        </a-input-group>
+        <a-form-item style="padding-left: 55px;margin-top: -10px;">
+        <a-input
+          v-decorator="[
+            'details',
+            {rules: [{ required: true, message: '请填写详细地址!' }]}
+          ]"
+          placeholder="请填写详细地址"
+        />
+      </a-form-item>
       </a-form>
     </a-modal>
   </a-card>
@@ -284,16 +355,17 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           console.log('Received values of form: ', values);
-          this.postConfirmLogistics(this.postId,values.gender,values.note)
+          this.postConfirmLogistics(this.postId,values.note,values.gender,values.name,values.phone,values.details,values.province,values.city,values.quire)
         }
       });
     },
-    postConfirmLogistics(orderId,shippingNo,transportMode){
-      confirmLogistics(orderId,shippingNo,transportMode).then(res => {
+    postConfirmLogistics(orderId,shippingNo,transportMode,senderName,senderPhone,senderAddress,senderProvince,senderCity,senderDistrict){
+      confirmLogistics(orderId,shippingNo,transportMode,senderName,senderPhone,senderAddress,senderProvince,senderCity,senderDistrict).then(res => {
         console.log(res)
         if(res.code == 0){
           this.visible = false;
-          this.$message.success('发货成功！')
+          this.$message.success('发货成功！');
+          this.getCheckOutOrders(this.current,this.queryParam.name,this.queryParam.status);
         }
       })
     },
@@ -374,9 +446,10 @@ export default {
   }
 }
 </script>
-<style scoped>
+<style scoped lang="less">
 @import '~@assets/less/common.less';
 .table-page-search-wrapper a:hover{
   color: #666;
 }
+
 </style>

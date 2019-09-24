@@ -6,17 +6,17 @@
         <a-row :gutter="24">
           <a-col :md="6" :sm="12">
             <a-form-item label="名称">
-              <a-input placeholder="请输入名称" v-model="queryParam.username"></a-input>
+              <a-input placeholder="请输入名称" v-model="queryParam.name"></a-input>
             </a-form-item>
           </a-col>
 
           <a-col :md="6" :sm="8">
             <a-form-item label="状态">
-              <a-select style="width: 100%" v-model="queryParam.sex" placeholder="请选择状态">
+              <a-select style="width: 100%" v-model="queryParam.status" placeholder="请选择状态">
                 <a-select-option value>请选择状态</a-select-option>
-                <a-select-option value="1">失败</a-select-option>
-                <a-select-option value="2">成功</a-select-option>
-                <a-select-option value="3">未开始</a-select-option>
+                <a-select-option value="0">未审批</a-select-option>
+                <a-select-option value="1">通过</a-select-option>
+                <a-select-option value="2">未通过</a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
@@ -36,7 +36,7 @@
     </div>
 
     <!-- 操作按钮区域 -->
-    <div class="table-operator" style="margin-top: 5px">
+    <div class="table-operator" style="margin-top: 5px;margin-left: 30px;">
       <a-dropdown v-if="selectedRowKeys.length > 0">
         <a-menu slot="overlay" @click="handleMenuClick">
           <a-menu-item key="1">
@@ -72,115 +72,108 @@
         :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
         @change="handleTableChange"
       >
-        <template slot="avatarslot" slot-scope="text, record">
+        <template slot="status" slot-scope="text">
           <div class="anty-img-wrap">
-            <a-avatar shape="square" :src="getAvatarView(record.avatar)" icon="user" />
+            {{ text | statusFilter }}
           </div>
         </template>
-
         <span slot="action" slot-scope="text, record">
-          <a @click="handleEdit(record)">审批</a>
+          <a-popconfirm
+            title="确定操作吗?"
+            :visible="popvisible == record.id"
+            @confirm="confirm"
+            @cancel="cancel"
+            okText="通过"
+            cancelText="拒绝"
+          >
+            <a @click="popvisible = record.id">审批</a>
+          </a-popconfirm>
           <a-divider type="vertical" />
-          <a @click="handleDetail(record)">查看详情</a>
+          <a @click="handleDetail(record.id)">查看详情</a>
         </span>
       </a-table>
     </div>
     <!-- table区域-end -->
-
-    <user-modal ref="modalForm" @ok="modalFormOk"></user-modal>
-
-    <password-modal ref="passwordmodal" @ok="passwordModalOk"></password-modal>
-
-    <sys-user-agent-modal ref="sysUserAgentModal"></sys-user-agent-modal>
     <a-modal title="审批通过" v-model="visiblePast" @ok="handleOkPast">
-        <p>折扣比例</p>
-        <p><a-input></a-input></p>
-      </a-modal>
-      <a-modal title="审批不通过" v-model="visibleNoPast" @ok="handleNoPast">
-        <p>原因</p>
-        <p><a-textarea>原因</a-textarea></p>
-      </a-modal>
+      <p>折扣比例</p>
+      <p><a-input></a-input></p>
+    </a-modal>
+    <a-modal title="审批不通过" v-model="visibleNoPast" @ok="handleNoPast">
+      <p>原因</p>
+      <p><a-textarea>原因</a-textarea></p>
+    </a-modal>
   </a-card>
 </template>
 
 <script>
-import UserModal from "./modules/UserModal";
-import PasswordModal from "./modules/PasswordModal";
-
-import { frozenBatch } from "@/api/api";
-import { JeecgListMixin } from "@/mixins/JeecgListMixin";
-import SysUserAgentModal from "./modules/SysUserAgentModal";
-
+import { dealerList } from '@/api/seller';
+const statusMap = {
+    0: {
+        text: '未审批'
+    },
+    1: {
+        text: '通过'
+    },
+    2: {
+        text: '未通过'
+    }
+}
 export default {
   name: "UserList",
-  mixins: [JeecgListMixin],
+ 
   components: {
-    SysUserAgentModal,
-    UserModal,
-    PasswordModal
+   
   },
   data() {
     return {
+      loading:false,
+      popvisible: -1,
       visiblePast: false,
       visibleNoPast: false,
-      description: "这是用户管理页面",
-      queryParam: {},
+      queryParam: {
+        name: '',
+        status: ''
+      },
       columns: [
         {
           title: "名称",
           align: "center",
-          dataIndex: "username",
+          dataIndex: "name",
           width: 120
         },
         {
           title: "邮箱",
           align: "center",
           width: 100,
-          dataIndex: "realname"
+          dataIndex: "email"
         },
         {
           title: "员工",
           align: "center",
           width: 120,
-          dataIndex: "avatar",
-          sorter: true,
-          scopedSlots: { customRender: "avatarslot" }
+          dataIndex: "employee",
+         
         },
 
         {
           title: "销售额",
           align: "center",
           width: 80,
-          dataIndex: "sex_dictText",
-          sorter: true
+          dataIndex: "sale",
+      
         },
         {
           title: "状态",
           align: "center",
           dataIndex: "status",
-          key: "status",
           width: 100,
-          filters: [
-            {
-              text: "失败",
-              value: "1"
-            },
-            {
-              text: "成功",
-              value: "2"
-            },
-            {
-              text: "未开始",
-              value: "3"
-            }
-          ],
-          onFilter: (value, record) => record.status.indexOf(value) === 0
+          scopedSlots: { customRender: "status" }
         },
         {
           title: "备注",
           align: "center",
           width: 100,
-          dataIndex: "phone"
+          dataIndex: "remark"
         },
 
         {
@@ -191,23 +184,80 @@ export default {
           width: 170
         }
       ],
-      url: {
-        imgerver: window._CONFIG["domianURL"] + "/sys/common/view",
-        syncUser: "/process/extActProcess/doSyncUser",
-        list: "/sys/user/list",
-        delete: "/sys/user/delete",
-        deleteBatch: "/sys/user/deleteBatch",
-        exportXlsUrl: "/sys/user/exportXls",
-        importExcelUrl: "sys/user/importExcel"
-      }
+      dataSource:[],
+      selectedRowKeys: [],
+      selectionRows: [],
+      ipagination:{
+        current: 1,
+        pageSize: 12,
+        showTotal: (total, range) => {
+          return range[0] + "-" + range[1] + " 共" + total + "条"
+        },
+        showQuickJumper: true,
+        total: 0
+      },
+      current:1
     };
   },
-  computed: {
-    importExcelUrl: function() {
-      return `${window._CONFIG["domianURL"]}/${this.url.importExcelUrl}`;
-    }
+  filters:{
+    statusFilter (type){
+      return statusMap[type].text || ''
+    },
+  },
+  mounted(){
+    this.getDealerList('','',1)
   },
   methods: {
+    handleTableChange(pagination) {
+      console.log(pagination)
+      this.loading = true;
+      this.ipagination = pagination;
+      this.current = this.ipagination.current;
+      this.getDealerList(this.queryParam.name,this.queryParam.status,this.current)
+    },
+    onClearSelected() {
+      this.selectedRowKeys = [];
+      this.selectionRows = [];
+    },
+    onSelectChange(selectedRowKeys, selectionRows) {
+      this.selectedRowKeys = selectedRowKeys;
+      this.selectionRows = selectionRows;
+    },
+    handleMenuClick(e) {
+      if (e.key == 1) {
+        this.batchDel()
+      } else if (e.key == 2) {
+        this.batchFrozen(2)
+      } else if (e.key == 3) {
+        this.batchFrozen(1)
+      }
+    },
+    batchDel(){
+
+    },
+    searchQuery(){
+      this.loading = true;
+      this.getDealerList(this.queryParam.name,this.queryParam.status,1)
+    },
+    searchReset(){
+      this.queryParam.name = '';
+      this.queryParam.status = '';
+      this.getDealerList('','',1)
+    },
+    getDealerList(name,status,pageNo){
+      dealerList(name,status,pageNo).then(res => {
+        console.log(res)
+        this.dataSource = res.records
+        this.ipagination.total = res.total
+        this.loading = false;
+      })
+    },
+    confirm () {
+      
+    },
+    cancel () {
+      
+    },
     handleOkPast() {
       this.visiblePast = false;
     },
@@ -217,73 +267,15 @@ export default {
     handleDetail(data) {
       console.log(data)
       this.$router.push({
-        path: "/sellerInfo"
+        path: "/sellerInfo",
+        query: {id: data}
       });
     },
-    getAvatarView: function(avatar) {
-      return this.url.imgerver + "/" + avatar;
-    },
-
-    batchFrozen: function(status) {
-      if (this.selectedRowKeys.length <= 0) {
-        this.$message.warning("请选择一条记录！");
-        return false;
-      } else {
-        let ids = "";
-        let that = this;
-        that.selectedRowKeys.forEach(function(val) {
-          ids += val + ",";
-        });
-        that.$confirm({
-          title: "确认操作",
-          content: "是否" + (status == 1 ? "解冻" : "冻结") + "选中账号?",
-          onOk: function() {
-            frozenBatch({ ids: ids, status: status }).then(res => {
-              if (res.success) {
-                that.$message.success(res.message);
-                that.loadData();
-                that.onClearSelected();
-              } else {
-                that.$message.warning(res.message);
-              }
-            });
-          }
-        });
-      }
-    },
-    handleMenuClick(e) {
-      if (e.key == 1) {
-        this.batchDel();
-      } else if (e.key == 2) {
-        this.batchFrozen(2);
-      } else if (e.key == 3) {
-        this.batchFrozen(1);
-      }
-    },
-    handleFrozen: function(id, status) {
-      let that = this;
-      frozenBatch({ ids: id, status: status }).then(res => {
-        if (res.success) {
-          that.$message.success(res.message);
-          that.loadData();
-        } else {
-          that.$message.warning(res.message);
-        }
-      });
-    },
-    handleChangePassword(username) {
-      this.$refs.passwordmodal.show(username);
-    },
-    handleAgentSettings(username) {
-      this.$refs.sysUserAgentModal.agentSettings(username);
-      this.$refs.sysUserAgentModal.title = "用户代理人设置";
-    },
-    passwordModalOk() {
-      //TODO 密码修改完成 不需要刷新页面，可以把datasource中的数据更新一下
-    }
+   
+   
   }
 };
 </script>
-<style scoped>
+<style scoped lang="less">
 @import "~@assets/less/common.less";
 </style>
