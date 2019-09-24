@@ -379,9 +379,10 @@
                                             </li>
                                         </ul>
                                     </div>
-                                    <div class="tool-box3" v-show="visibletype == 7">
-                                        <h2 style="color: #333;text-align: left; border-bottom: 1px solid #333; padding-bottom: 5px;">
+                                    <div class="tool-box3" v-show="visibletype == 7" style="padding-bottom: 70px;padding-top: 20px;">
+                                        <h2 style="width: 100%;background-color:#eee; color: #333;text-align: left; border-bottom: 1px solid #333; padding: 5px;position: absolute;top: 0;left: 0">
                                             <a-icon type="left" style="cursor: pointer;" @click="visibletype = 3"/>
+                                            Font Family
                                         </h2>
                                         <ul class="font-family-list1">
                                             <li v-for="(item,index) in fontFamilyArr" :key="item.id" @click="changeFontFamily(item.name,index)" :style="{backgroundColor: fontfamilydata == index ? '#33b8b3' : '',color: fontfamilydata == index ? '#fff' : '#666'}">
@@ -389,7 +390,7 @@
                                                 <span>{{item.name}}</span>
                                             </li>
                                         </ul>
-                                        <p class="bottom-btn-box">
+                                        <p class="bottom-btn-box" style="position: absolute;bottom: 0;left: 0;width: 100%;padding-bottom: 20px;background-color: #eee;">
                                             <a-button style="margin-right: 10px;" @click="removeFontFamily">Remove Font Family</a-button>
                                             <a-button type="primary" @click="PostChangeFontFamily">Change</a-button>
                                         </p>
@@ -522,8 +523,11 @@
                                                                         style="width: 100%; border-top-left-radius: 0;border-bottom-left-radius: 0;"
                                                                         placeholder="Size"
                                                                 >
-                                                                    <a-select-option value="Zhejiang">Zhejiang</a-select-option>
-                                                                    <a-select-option value="Jiangsu">Jiangsu</a-select-option>
+                                                                    <a-select-option value="S">S</a-select-option>
+                                                                    <a-select-option value="M">M</a-select-option>
+                                                                    <a-select-option value="L">L</a-select-option>
+                                                                    <a-select-option value="XL">XL</a-select-option>
+                                                                    <a-select-option value="XXL">XXL</a-select-option>
                                                                 </a-select>
                                                             </a-form-item>
                                                             <a-icon
@@ -591,36 +595,6 @@
                                                 <a-switch v-model="delWhite" @change='removeColor'/>
                                             </li>
                                         </ul>
-
-                                        <!-- <dl>
-                                                <dt>
-                                                    透明度：
-                                                </dt>
-                                                <dd>
-                                                    <a-slider :min="0" :max="1" v-model="opacity" :step="0.1" @change="changeOpacity"/>
-                                                </dd>
-                                        </dl> -->
-                                        <!-- <ul style="display: flex;justify-content: space-around;margin:20px 0">
-                                            <li>
-                                                X轴翻转：
-                                                <a-switch @change='changeFilPx' v-model="filpx"/>
-                                            </li>
-                                            <li>
-                                                Y轴翻转：
-                                                <a-switch @change='changeFilPy' v-model="filpy"/>
-                                            </li>
-                                        </ul>          -->
-                                        <!-- <ul>
-                                                <li>
-                                                    X轴斜切：
-                                                    <a-slider :min="0" :max="80" :step="1" @change='changeSkewX' v-model="skewx"/>
-                                                </li>
-                                                <li>
-                                                    Y轴斜切：
-                                                    <a-slider :min="0" :max="80" :step="1" @change='changeSkewY' v-model="skewy"/>
-                                                </li>
-                                        </ul> -->
-
                                     </div>
                                     <div class="tool-box7" v-show="visibletype == 11">
                                         <h2 style="color: #333;text-align: left; border-bottom: 1px solid #333; padding-bottom: 5px;">
@@ -638,7 +612,7 @@
                                             Text Shape
                                         </h2>
                                         <ul class="font-family-list">
-                                            <li v-for="(item,index) in fontShapeArr" :key="item.itemText" @click="changeFontShape(item.itemText,index)" :class="{active: shapeActive == index}">
+                                            <li v-for="(item,index) in fontShapeArr" :key="index" @click="changeFontShape(item.itemText,index)" :class="{active: shapeActive == index}">
                                                 <span>
                                                     <img :src="item.itemValue" alt="">
                                                 </span>
@@ -1091,7 +1065,6 @@ export default {
     },
     created(){
         this.getAllList();
-
     },
     beforeCreate () {
         this.form1 = this.$form.createForm(this);
@@ -1140,8 +1113,6 @@ export default {
         this.getArtFontList();
         this.show = this.$route.query.show ? this.$route.query.show : false
         this.handleGetPic('');
-        
-
     },
 
     methods:{
@@ -1163,7 +1134,8 @@ export default {
                 // obj.applyFilters(that.myCanvas.renderAll.bind(that.myCanvas));
                 let left = obj.left;
                 let top = obj.top;
-                let id = obj.id
+                let id = obj.id;
+                let width = obj.getBoundingRect().width;
                 let img = new Image();
                 let imgInstance;
                 console.log(obj)
@@ -1190,6 +1162,7 @@ export default {
                                     removeColor: true,
                                     crossOrigin: '*'
                                 });
+                                imgInstance.scaleToWidth(width);
                                 that.myCanvas.add(imgInstance);
                                 that.myCanvas.setActiveObject(imgInstance);
                                 that.myCanvas.requestRenderAll();
@@ -1222,6 +1195,8 @@ export default {
                             removeColor: false,
                             crossOrigin: '*'
                         });
+                        that.myCanvas.remove(obj);
+                        imgInstance.scaleToWidth(width);
                         that.myCanvas.add(imgInstance);
                         that.myCanvas.setActiveObject(imgInstance);
                         that.myCanvas.requestRenderAll();
@@ -1381,6 +1356,7 @@ export default {
         },
         handleChangeFont(params,isAdd){
             let that = this;
+            
             changeFont(params).then(res => {
                 console.log(res)
                 if(res.code == 0){
@@ -1391,19 +1367,24 @@ export default {
                     img.src = res.result+"?timeStamp="+new Date().getTime();
                     img.onload = function () {
                         if(isAdd){
-                            if(that.myCanvas.getActiveObject()){
-                                let obj = that.myCanvas.getActiveObject();
+                            let obj = that.myCanvas.getActiveObject();
+                            if(obj){
                                 let left = obj.left;
                                 let top = obj.top;
+                                let width = obj.getBoundingRect().width;
+                        
                                 that.myCanvas.remove(obj)
                                 imgInstance = new fabric.Image(img, {
                                     mytext:that.addText,
                                     lockUniScaling:true, // When `true`, object non-uniform scaling is locked
                                     left: left,
                                     top: top,
+                                    // width: width,
+                                    // height: height,
                                     myId: 'Text',
                                     crossOrigin: '*'
                                 });
+                                imgInstance.scaleToWidth(width)
                             }
                         }else{
                             imgInstance = new fabric.Image(img, {
@@ -1415,9 +1396,7 @@ export default {
                                 crossOrigin: '*'
                             });
                         }
-                        if(imgInstance.width > 200){
-                            imgInstance.scaleToWidth(200)
-                        }
+                        
                         that.myCanvas.add(imgInstance).setActiveObject(imgInstance);
                         that.myCanvas.requestRenderAll();
                         that.liClick = 0;
@@ -1755,6 +1734,7 @@ export default {
             let that = this;
             object.on('mouse:down',function(obj){
                 console.log(obj.target)
+                console.log(obj.target.getBoundingRect())
                 if(!obj.target){
                     that.visibletype = -1;
                     that.liClick = -1;
@@ -1898,11 +1878,9 @@ export default {
         changeNumberColor(val){
             let obj = this.myCanvas.getActiveObject();
             if (obj) {
-                
                 if(obj.myId == 'Number'){
                     obj.set("fill", val);
                     this.myCanvas.requestRenderAll();
-                    
                 }
             }
         },
@@ -2507,7 +2485,7 @@ export default {
             }
             console.log(key,title);
             this.getColorList(key);
-            this.handleColorShow();
+            //this.handleColorShow();
 
         },
         // 打开改变描边样式盒子
@@ -2705,7 +2683,21 @@ export default {
             }else if(this.colorKey == 2){
                 this.colorShow = this.bgcolor;
                 this.colorShowName = this.fontBgColorName;
-            }else{
+            }else if(this.colorKey == 3){
+                this.colorShow = this.strokeColor;
+                this.colorShowName = this.strokeColorName;
+            }else if(this.colorKey == 4){
+                this.colorShow = this.shadowColor;
+                this.colorShowName = this.shadowColorName;
+            }
+            else if(this.colorKey == 5){
+                this.colorShow = this.nameColor;
+                this.colorShowName = this.nameColorName;
+            }else if(this.colorKey == 6){
+                this.colorShow = this.numberColor;
+                this.colorShowName = this.numberColorName;
+            }
+            else{
                 this.colorShow = '#000';
                 this.colorShowName = 'BLACK';
             }
@@ -2946,6 +2938,7 @@ export default {
             background-color: #eee;
             overflow: hidden;
             border-radius:  0 0 10px 0;
+            position: relative;
             .scroll-box{
                 width: 100%;
                 height: 100%;

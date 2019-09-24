@@ -553,3 +553,18 @@ export function sendSample(orderId) {
         data:qs.stringify({orderId:orderId})
     })
 }
+
+export function logistics() {
+    return axios({
+        url: '/system/jeecgAdministrator/logistics',
+        method: 'post',
+    })
+}
+
+export function confirmLogistics(orderId,shippingNo,transportMode) {
+    return axios({
+        url: '/system/jeecgAdministrator/confirmLogistics',
+        method: 'post',
+        data:qs.stringify({orderId:orderId,shippingNo:shippingNo,transportMode:transportMode})
+    })
+}

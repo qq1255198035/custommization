@@ -80,7 +80,7 @@
                 <a href="javascript:;" @click="sendExample(record.id)">发送样稿</a>
               </a-menu-item>
               <a-menu-item>
-                <a href="javascript:;">确认发货</a>
+                <a href="javascript:;" @click="confirmSend(record.id)">确认发货</a>
               </a-menu-item>
             </a-menu>
           </a-dropdown>
@@ -88,7 +88,40 @@
       </a-table>
     </div>
     <!-- table区域-end -->
-    
+    <a-modal title="物流信息" v-model="visible" @ok="beConfirmed" okText="确认" cancelText="取消">
+      <a-form :form="form">
+      <a-form-item
+          label="物流公司"
+          :label-col="{ span: 5 }"
+          :wrapper-col="{ span: 12 }"
+        >
+          <a-select
+            v-decorator="[
+              'gender',
+              {rules: [{ required: true, message: '请选择物流公司!' }]}
+            ]"
+            placeholder="请选择物流公司"
+          >
+            <a-select-option v-for="item in componyList" :key="item.itemText" :value="item.itemValue">
+              {{item.itemText}}
+            </a-select-option>
+          </a-select>
+        </a-form-item>
+        <a-form-item
+          label="物流单号"
+          :label-col="{ span: 5 }"
+          :wrapper-col="{ span: 12 }"
+        >
+          <a-input
+            v-decorator="[
+              'note',
+              {rules: [{ required: true, message: '请填写物流单号!' }]}
+            ]"
+            placeholder="请填写物流单号"
+          />
+        </a-form-item>
+      </a-form>
+    </a-modal>
   </a-card>
 </template>
 <script>
@@ -132,12 +165,14 @@ const statusPayMap = {
         text: '已付款'
     }
 }
-import { checkOutOrders,startDesign,sendSample } from '@/api/seller'
+import { checkOutOrders,startDesign,sendSample, logistics,confirmLogistics } from '@/api/seller'
 export default {
   components: {
   },
   data() {
     return {
+      visible: false,
+      form: this.$form.createForm(this),
       columns: [
         {
           title: '订单号',
@@ -213,12 +248,15 @@ export default {
         total: 0
       },
       loading:false,
-      current: 0
+      current: 0,
+      componyList: [],
+      postId:''
     }
   },
   mounted(){
     this.loading = true;
     this.getCheckOutOrders(1,'','');
+    this.getLogistics();
   },
   filters:{
     statusFilter (type){
@@ -229,6 +267,36 @@ export default {
     },
   },
   methods: {
+    getLogistics(){
+      logistics().then(res => {
+        console.log(res)
+        if(res.code == 0){
+          this.componyList = res.result;
+        }
+      })
+    },
+    
+    confirmSend(id){
+      this.visible = true;
+      this.postId = id;
+    },
+    beConfirmed(){
+      this.form.validateFields((err, values) => {
+        if (!err) {
+          console.log('Received values of form: ', values);
+          this.postConfirmLogistics(this.postId,values.gender,values.note)
+        }
+      });
+    },
+    postConfirmLogistics(orderId,shippingNo,transportMode){
+      confirmLogistics(orderId,shippingNo,transportMode).then(res => {
+        console.log(res)
+        if(res.code == 0){
+          this.visible = false;
+          this.$message.success('发货成功！')
+        }
+      })
+    },
     startToDesign(id){
       this.loading = true;
       startDesign(id).then(res => {
@@ -308,4 +376,7 @@ export default {
 </script>
 <style scoped>
 @import '~@assets/less/common.less';
+.table-page-search-wrapper a:hover{
+  color: #666;
+}
 </style>
