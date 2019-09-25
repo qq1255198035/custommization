@@ -580,3 +580,34 @@ export function dealerList(name,status,pageNo) {
         data:qs.stringify({pageSize: 12,pageNo:pageNo,name:name,status:status,})
     })
 }
+
+export function dealerDetails(dealerId) {
+    return axios({
+        url: '/system/jeecgAdministrator/getDealerDetails',
+        method: 'post',
+        data:qs.stringify({dealerId:dealerId})
+    })
+}
+
+export function approvalDealer(ids,status,remark,level) {
+    return axios({
+        url: '/system/jeecgAdministrator/approvalDealer',
+        method: 'post',
+        data:qs.stringify({ids:ids,status:status,remark:remark,level:level})
+    })
+}
+
+export function dealerGrade() {
+    return axios({
+        url: '/system/jeecgAdministrator/selectDealerGrade',
+        method: 'post',
+    })
+}
+
+export function dealerDesignList(orderId) {
+    return axios({
+        url: '/system/jeecgAdministrator/getDealerDesignList',
+        method: 'post',
+        data:qs.stringify({orderId:orderId})
+    })
+}

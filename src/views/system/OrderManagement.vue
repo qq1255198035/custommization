@@ -74,7 +74,7 @@
                 <a href="javascript:;" @click="startToDesign(record.id)">开始设计</a>
               </a-menu-item>
               <a-menu-item>
-                <a href="javascript:;">设计需求</a>
+                <a href="javascript:;" @click="$router.push({path:'/specification',query:{orderId: record.id}})">设计需求</a>
               </a-menu-item>
               <a-menu-item>
                 <a href="javascript:;" @click="sendExample(record.id)">发送样稿</a>
@@ -128,7 +128,7 @@
           <a-input
             v-decorator="[
               'name',
-              {rules: [{ required: true, message: '请填写发件人姓名!' }]}
+              {rules: [{ required: false, message: '请填写发件人姓名!' }]}
             ]"
             placeholder="请填写发件人姓名"
           />
@@ -141,7 +141,7 @@
           <a-input
             v-decorator="[
               'phone',
-              {rules: [{ required: true, message: '请填写发件人电话!' }]}
+              {rules: [{ required: false, message: '请填写发件人电话!' }]}
             ]"
             placeholder="请填写发件人电话"
           />
@@ -156,7 +156,7 @@
               style="width: 95%;"
               v-decorator="[
                 'province',
-                {rules: [{ required: true, message: '请填写省!' }]}
+                {rules: [{ required: false, message: '请填写省!' }]}
               ]"
               placeholder="请填写省"
             />
@@ -166,7 +166,7 @@
               style="width: 95%;"
               v-decorator="[
                 'city',
-                {rules: [{ required: true, message: '请填写市!' }]}
+                {rules: [{ required: false, message: '请填写市!' }]}
               ]"
               placeholder="请填写市"
             />
@@ -176,7 +176,7 @@
               style="width: 95%;"
               v-decorator="[
                 'quire',
-                {rules: [{ required: true, message: '请填写区!' }]}
+                {rules: [{ required: false, message: '请填写区!' }]}
               ]"
               placeholder="请填写区"
             />
@@ -186,7 +186,7 @@
         <a-input
           v-decorator="[
             'details',
-            {rules: [{ required: true, message: '请填写详细地址!' }]}
+            {rules: [{ required: false, message: '请填写详细地址!' }]}
           ]"
           placeholder="请填写详细地址"
         />

@@ -27,6 +27,13 @@ const constantRouterComponents = {
   dealerInfo: () => import("@/pages/common/dealerInfo/dealerInfo"),
   noticeList: () => import("@/pages/common/noticeList/noticeList"),
   //系统
+  workbench:() => import("@/views/salessystem/workbench/workbench"),
+  specification: () => import("@/views/system/specification"), //设计需求
+  sellerUserList: () => import("@/views/system/customer"), //经销商审批
+  OrderManagement: () => import("@/views/system/OrderManagement"), //订单管理
+  orderListDetails: () => import("@/views/system/orderDetails"), //订单详情
+  sellerInfo: () => import("@/views/system/SellerInfo"),//经销商详情
+  
   isystemRole:() => import("@/views/system/RoleList"), //角色管理
   PermissionList:() => import("@/views/system/PermissionList"), //菜单管理
   UserList:() => import("@/views/system/UserList"), //用户管理
@@ -36,14 +43,12 @@ const constantRouterComponents = {
   SysCategoryList:() => import("@/views/system/SysCategoryList"), //分类字典
   DictList:() => import("@/views/system/DictList"), //数字字典
   service:() => import("@/views/management/service/service"), //云储
-  specification: () => import("@/views/management/specification/specification"), //商品规格
+  
   //format: () => import("@/views/management/format/format"), //商品类别
   onlineGoods: () => import("@/views/management/onlineGoods/onlineGoods"), //在线商品
   productTypes: () => import("@/views/management/productTypes/productTypes"), //商品属性
-  sellerUserList: () => import("@/views/system/customer"), //经销商审批
-  sellerInfo: () => import("@/views/system/SellerInfo"),
-  OrderManagement: () => import("@/views/system/OrderManagement"), //订单管理
-  orderListDetails: () => import("@/views/system/orderDetails"), //订单详情
+  
+  
   
   
 }

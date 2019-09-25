@@ -1,5 +1,6 @@
 <template>
-  <div class="share-boxs">
+<div id="contentBox">
+  <div class="share-boxs" v-if="mobileShow">
     <div class="wrapper-box">
       <header>
         <router-link :to="{name:'index'}">
@@ -72,6 +73,44 @@
       </div>
     </div>
   </div>
+  <div class="mobile-box" v-else>
+    <header class="mobile-header">
+      <img src="@/assets/logoWhite.png" alt="">
+    </header>
+    <card-header-m :detailList="detailList"></card-header-m>
+    <a-row :gutter="40" style="padding:0 8%">
+        <!--list1-->
+        <div>
+          <a-col
+            class="scroll-boxs"
+            :xxl="12"
+            :xl="24"
+            v-for="(item,index) in resultData"
+            :key="index"
+          >
+            <table-item :datas="item" ref="myTable">
+              <a
+                @click="imgShow"
+                href="javascript:;"
+                style="font-size: 18px; color: #999; text-decoration: underline"
+              >View the size chart</a>
+              <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancelImg">
+                <img alt="example" style="width: 100%" :src="item.size_chart_url" />
+              </a-modal>
+            </table-item>
+            <div v-if="!item.is_print_numbe && !item.is_print_text">
+              <my-table :dataSize="[item]" @getList="list" ref="mychild"></my-table>
+            </div>
+
+            <div v-if="item.is_print_numbe || item.is_print_text">
+              <my-tables :dataName="[item]" @getList="lists"></my-tables>
+            </div>
+          </a-col>
+        </div>
+      </a-row>
+  </div>
+</div>
+  
 </template>
 
 <script>
@@ -82,11 +121,11 @@ import MyTable from "@/components/MyTable/MyTable";
 import MyTables from "@/components/MyTables/MyTables";
 import MyTitle from "@/components/MyTitle/MyTitle";
 import CardHeader from "@/components/CardHeader/CardHeader";
+import CardHeaderM from "@/components/CardHeader/CardHeaderM";
 import TableItem from "@/components/TableItem/TableItem";
 import { ACCESS_TOKEN } from "@/store/mutation-types";
 //import MyTable from "@/components/MyTable/MyTable";
 export default {
-  props: {},
   data() {
     return {
       pay_mode: "",
@@ -120,17 +159,25 @@ export default {
       newListOld: [],
       newListOld1: [],
       arrtyNew1: [],
-      arrtyNew2: []
+      arrtyNew2: [],
+      mobileShow: false
     };
   },
-  computed: {},
-  created() {},
   mounted() {
     this._apiPersonOrder();
     this.check();
+    this.getWindowScreen();
   },
-  watch: {},
   methods: {
+    getWindowScreen(){
+      let screenWidths = window.screen.width;
+      console.log(screenWidths)
+      if(screenWidths > 768){
+        this.mobileShow = true;
+      }else{
+        this.mobileShow = false;
+      }
+    },
     imgShow() {
       this.previewVisible = true;
     },
@@ -300,7 +347,8 @@ export default {
     MyTable,
     MyTables,
     User,
-    commonBtn
+    commonBtn,
+    CardHeaderM
   }
 };
 </script>
@@ -353,7 +401,6 @@ export default {
   display: block;
   background-size: 100%;
 }
-
 .share-boxs {
   width: 100%;
   //height: 100%;
@@ -399,4 +446,25 @@ export default {
     }
   }
 }
+@media screen and (max-width: 768px) and (min-width: 325px){
+  #contentBox{
+    height: 100%;
+    .mobile-box{
+      width: 100%;
+      height: 100%;
+      background-color: #fff;
+      .mobile-header{
+        width: 100%;
+        background-color: #33b8b3;
+        text-align: left;
+        padding: 10px 20px;
+        img{
+          width: 40%;
+        }
+      }
+    }
+  }
+  
+}
+
 </style>

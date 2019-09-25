@@ -294,7 +294,7 @@ export default {
       orderDetailUp(id).then(res => {
         console.log(res);
         if (res.code == 0) {
-            this.shareText = res.result;
+          this.shareText = res.result;
           this.orderId = res.result.orderSn;
           this.contact = res.result.contact;
           this.createTime = res.result.createTime;

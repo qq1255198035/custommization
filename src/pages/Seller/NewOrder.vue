@@ -1872,6 +1872,7 @@ export default {
                 if(obj.myId == 'Number'){
                     obj.set("fill", val);
                     this.myCanvas.requestRenderAll();
+                    this.visibletype = 2;
                 }
             }
         },
@@ -1893,6 +1894,8 @@ export default {
                 if(obj.myId == 'Name'){
                     obj.set("fill", val);
                     this.myCanvas.requestRenderAll();
+                    this.visibletype = 2;
+
                 }
             }
         },

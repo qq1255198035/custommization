@@ -39,18 +39,9 @@
         <a-col :xxl="3" :xl="2"></a-col>
         <a-col :xxl="5" :xl="6">
           <div class="right-desc">
-            <div class="top" style="line-height:40px;display: flex;">
+            <div class="top" style="line-height:40px;display: flex; align-items: center;">
               <span>Share to a Friend：</span>
               <share v-if="share" class="share" :config="config"></share>
-              <span @mouseover="shareWx" @mouseout="shareWxOut">
-                <a-icon type="wechat" class="wx-font"/>
-                <div v-show="shareWxs" class="newWx">
-                  <div>扫一扫分享</div>
-                  <canvas id="canvas"></canvas>
-                  <div>微信扫一扫分享给好友</div>
-                </div>
-              </span>
-
               <span>
                 <a-button
                   class="copys"
@@ -95,8 +86,8 @@ export default {
       config: {
         url: window.location.href, // 网址，默认使用 window.location.href
         source: "", // 来源（QQ空间会用到）, 默认读取head标签：<meta name="site" content="http://overtrue" />
-        title: "标题", // 标题，默认读取 document.title 或者 <meta name="title" content="share.js" />
-        description: "描述", // 描述, 默认读取head标签：<meta name="description" content="PHP弱类型的实现原理分析" />
+        title: "title", // 标题，默认读取 document.title 或者 <meta name="title" content="share.js" />
+        description: "description", // 描述, 默认读取head标签：<meta name="description" content="PHP弱类型的实现原理分析" />
         image:
           "https://hlx-1258407851.cos.ap-beijing.myqcloud.com/hlx/20181229/16144720457881.png", // 图片, 默认取网页中第一个img标签
         //sites: ["facebook", "wechat", "weibo"], // 启用的站点
@@ -144,10 +135,10 @@ export default {
       }
     },
     onCopy() {
-      this.$message.success("复制成功");
+      this.$message.success("Replication success");
     },
     onError() {
-      this.$message.error("复制失败");
+      this.$message.error("copy failed");
     }
   },
   components: {}
@@ -176,6 +167,9 @@ export default {
   padding: 0;
   border: none;
   box-shadow: none;
+  i{
+    font-size: 18px;
+  }
 }
 .wrappers {
   margin-top: 40px;

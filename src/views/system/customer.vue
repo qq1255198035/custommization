@@ -37,13 +37,13 @@
 
     <!-- 操作按钮区域 -->
     <div class="table-operator" style="margin-top: 5px;margin-left: 30px;">
-      <a-dropdown v-if="selectedRowKeys.length > 0">
-        <a-menu slot="overlay" @click="handleMenuClick">
-          <a-menu-item key="1">
-            <a-icon type="delete" @click="batchDel" />批量通过
+      <a-dropdown v-if="selectedRowKeys.length > 1">
+        <a-menu slot="overlay">
+          <a-menu-item key="1" @click="batchDel(1)">
+            <a-icon type="check-circle" />批量通过
           </a-menu-item>
-          <a-menu-item key="1">
-            <a-icon type="delete" @click="batchDel" />批量拒绝
+          <a-menu-item key="2"  @click="batchDel(2)">
+            <a-icon type="close-circle" />批量拒绝
           </a-menu-item>
         </a-menu>
         <a-button style="margin-left: 8px">
@@ -69,7 +69,7 @@
         :dataSource="dataSource"
         :pagination="ipagination"
         :loading="loading"
-        :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
+        :rowSelection="rowSelection"
         @change="handleTableChange"
       >
         <template slot="status" slot-scope="text">
@@ -77,36 +77,62 @@
             {{ text | statusFilter }}
           </div>
         </template>
-        <span slot="action" slot-scope="text, record">
+        <template slot="action" slot-scope="text, record">
           <a-popconfirm
             title="确定操作吗?"
             :visible="popvisible == record.id"
-            @confirm="confirm"
-            @cancel="cancel"
+            @confirm="confirm(record.id)"
+            @cancel="cancel(record.id)"
             okText="通过"
             cancelText="拒绝"
           >
-            <a @click="popvisible = record.id">审批</a>
+            <a @click="popvisible = record.id" v-if="record.status == 0">审批</a>
           </a-popconfirm>
-          <a-divider type="vertical" />
+          <a-divider type="vertical" v-if="record.status == 0"/>
           <a @click="handleDetail(record.id)">查看详情</a>
-        </span>
+        </template>
       </a-table>
     </div>
     <!-- table区域-end -->
-    <a-modal title="审批通过" v-model="visiblePast" @ok="handleOkPast">
-      <p>折扣比例</p>
-      <p><a-input></a-input></p>
-    </a-modal>
-    <a-modal title="审批不通过" v-model="visibleNoPast" @ok="handleNoPast">
-      <p>原因</p>
-      <p><a-textarea>原因</a-textarea></p>
+    <a-modal v-model="show" title="经销商审批" okText="确认" cancelText="取消" @ok="hideModal">
+        <div>
+            <a-form :form="form">
+                <a-form-item
+                    label="拒绝原因"
+                    :label-col="{ span: 5 }"
+                    :wrapper-col="{ span: 18 }"
+                    v-if="key == 2"
+                >
+                    <a-textarea 
+                        v-decorator="[
+                        'note',
+                        {rules: [{ required: true, message: '请填写拒绝原因!' }]}
+                        ]"
+                    ></a-textarea>
+                </a-form-item>
+                <a-form-item
+                    label="折扣等级"
+                    :label-col="{ span: 5 }"
+                    :wrapper-col="{ span: 18 }"
+                    v-if="key == 1"
+                >
+                    <a-select placeholder="请选择折扣等级" style="width: 100%;"
+                        v-decorator="[
+                        'leavel',
+                        {rules: [{ required: true, message: '请选择折扣等级!' }]}
+                        ]"
+                    >
+                        <a-select-option v-for="item in options" :key="item.id" :value="item.id">{{item.discount}}</a-select-option>
+                    </a-select>
+                </a-form-item>
+            </a-form>
+        </div>
     </a-modal>
   </a-card>
 </template>
 
 <script>
-import { dealerList } from '@/api/seller';
+import { dealerList,dealerGrade,approvalDealer } from '@/api/seller';
 const statusMap = {
     0: {
         text: '未审批'
@@ -126,6 +152,8 @@ export default {
   },
   data() {
     return {
+      show:false,
+      key:0,
       loading:false,
       popvisible: -1,
       visiblePast: false,
@@ -196,7 +224,10 @@ export default {
         showQuickJumper: true,
         total: 0
       },
-      current:1
+      current:1,
+      options:[],
+      form: this.$form.createForm(this),
+      dealerId:''
     };
   },
   filters:{
@@ -205,9 +236,43 @@ export default {
     },
   },
   mounted(){
-    this.getDealerList('','',1)
+    this.getDealerList('','',1);
+    this.getDealerGrade();
   },
   methods: {
+    hideModal(){
+      if(this.key == 1){
+          this.form.validateFields((err, values) => {
+              if (!err) {
+                  this.postApprovalDealer(this.dealerId,1,'',values.leavel)
+              }
+          })
+      }else if(this.key == 2){
+          this.form.validateFields((err, values) => {
+              if (!err) {
+                  this.postApprovalDealer(this.dealerId,2,values.note,'')
+              }
+          })
+      }
+    },
+    postApprovalDealer(ids,status,remark,level){
+      approvalDealer(ids,status,remark,level).then(res => {
+          console.log(res)
+          if(res.code == 0){
+              this.show = false;
+              this.$message.success('操作成功！');
+              window.location.reload();
+          }
+      })
+    },
+    getDealerGrade(){
+      dealerGrade().then(res => {
+        console.log(res)
+        if(res.code == 0){
+          this.options = res.result;
+        }
+      })
+    },
     handleTableChange(pagination) {
       console.log(pagination)
       this.loading = true;
@@ -219,21 +284,13 @@ export default {
       this.selectedRowKeys = [];
       this.selectionRows = [];
     },
-    onSelectChange(selectedRowKeys, selectionRows) {
-      this.selectedRowKeys = selectedRowKeys;
-      this.selectionRows = selectionRows;
-    },
-    handleMenuClick(e) {
-      if (e.key == 1) {
-        this.batchDel()
-      } else if (e.key == 2) {
-        this.batchFrozen(2)
-      } else if (e.key == 3) {
-        this.batchFrozen(1)
-      }
-    },
-    batchDel(){
-
+  
+    batchDel(key){
+      this.key = key;
+      this.show = true;
+      this.dealerId = this.selectedRowKeys.join(',')
+      console.log(this.dealerId);
+      console.log(this.selectedRowKeys)
     },
     searchQuery(){
       this.loading = true;
@@ -252,18 +309,19 @@ export default {
         this.loading = false;
       })
     },
-    confirm () {
-      
+    confirm(id) {
+      this.key = 1;
+      this.dealerId = id;
+      this.show = true;
+      this.popvisible = -1;
     },
-    cancel () {
-      
+    cancel(id) {
+      this.key = 2;
+      this.dealerId = id;
+      this.show = true;
+      this.popvisible = -1;
     },
-    handleOkPast() {
-      this.visiblePast = false;
-    },
-    handleNoPast() {
-      this.visibleNoPast = false
-    },
+   
     handleDetail(data) {
       console.log(data)
       this.$router.push({
@@ -271,9 +329,26 @@ export default {
         query: {id: data}
       });
     },
-   
-   
-  }
+  },
+  computed: {
+    rowSelection() {
+       /* eslint-disable */
+      const { selectedRowKeys } = this;
+      return {
+        onChange: (selectedRowKeys, selectedRows) => {
+          this.selectedRowKeys = selectedRowKeys;
+          this.selectionRows = selectedRows;
+          console.log(this.selectedRowKeys);
+          console.log(this.selectionRows);
+        },
+        getCheckboxProps: record => ({
+          props: {
+            disabled: record.status == 1 || record.status == 2, // Column configuration not to be checked
+          }
+        }),
+      }
+    }
+  },
 };
 </script>
 <style scoped lang="less">
