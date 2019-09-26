@@ -231,7 +231,7 @@
                                                 <span>HEIGHT：</span>
                                                 <div>
                                                     <p>
-                                                        <a-select defaultValue="6cm" style="width: 95%;" @change="changeNameSize" :disabled="!addNameData">
+                                                        <a-select defaultValue="6cm" style="width: 95%;" @change="changeNameSize" :disabled="!addNameData || keyId !== 'Name'">
                                                             <a-select-option value="20">6cm</a-select-option>
                                                             <a-select-option value="30">7cm</a-select-option>
                                                             <a-select-option value="40">8cm</a-select-option>
@@ -239,7 +239,7 @@
                                                         </a-select>
                                                     </p>
                                                     <p>
-                                                        <a-select defaultValue="15cm" style="width: 100%;" @change="changeNumberSize" :disabled="!addNumberData">
+                                                        <a-select defaultValue="15cm" style="width: 100%;" @change="changeNumberSize" :disabled="!addNumberData || keyId !== 'Number'">
                                                             <a-select-option value="150">15cm</a-select-option>
                                                             <a-select-option value="170">18cm</a-select-option>
                                                             <a-select-option value="190">20cm</a-select-option>
@@ -252,13 +252,13 @@
                                                 <span>Font：</span>
                                                 <div>
                                                     <p>
-                                                        <a-select style="width: 95%;" :disabled="!addNameData" placeholder="Please choose" @change="changeNameFamily">
+                                                        <a-select style="width: 95%;" :disabled="!addNameData || keyId !== 'Name'" placeholder="Please choose" @change="changeNameFamily">
                                                             <a-select-option v-for="item in fontFamilyArr" :key="item.id" :value="item.name">{{item.name}}</a-select-option>
                                                             
                                                         </a-select>
                                                     </p>
                                                     <p>
-                                                        <a-select style="width: 100%;" :disabled="!addNumberData" placeholder="Please choose" @change="changeNumberFamily">
+                                                        <a-select style="width: 100%;" :disabled="!addNumberData || keyId !== 'Number'" placeholder="Please choose" @change="changeNumberFamily">
                                                             <a-select-option v-for="item in fontFamilyArr" :key="item.id" :value="item.name">{{item.name}}</a-select-option>
                                                         </a-select>
                                                     </p>
@@ -412,7 +412,24 @@
                                             </dd>
                                         </dl>
                                         <!-- <my-title :title="colorTitle"></my-title> -->
-                                        <p style="display:flex;align-items: center;margin-top: 20px; font-size: 18px;color: #999;">Choose Color： <span :style="{backgroundColor: colorShow}" style="width: 20px;height: 20px;display: inline-block;margin:0 10px;border:1px solid #ccc;"></span>{{colorShowName}}</p>
+                                        <p style="display:flex;align-items: center;margin-top: 20px; font-size: 18px;color: #999;" v-if="colorKey == 1">Choose Color： 
+                                            <span :style="{backgroundColor: color}" style="width: 20px;height: 20px;display: inline-block;margin:0 10px;border:1px solid #ccc;"></span>{{colorName}}
+                                        </p>
+                                        <p style="display:flex;align-items: center;margin-top: 20px; font-size: 18px;color: #999;" v-if="colorKey == 2">Choose Color： 
+                                            <span :style="{backgroundColor: bgcolor}" style="width: 20px;height: 20px;display: inline-block;margin:0 10px;border:1px solid #ccc;"></span>{{fontBgColorName}}
+                                        </p>
+                                        <p style="display:flex;align-items: center;margin-top: 20px; font-size: 18px;color: #999;" v-if="colorKey == 3">Choose Color： 
+                                            <span :style="{backgroundColor: strokeColor}" style="width: 20px;height: 20px;display: inline-block;margin:0 10px;border:1px solid #ccc;"></span>{{strokeColorName}}
+                                        </p>
+                                        <p style="display:flex;align-items: center;margin-top: 20px; font-size: 18px;color: #999;" v-if="colorKey == 4">Choose Color： 
+                                            <span :style="{backgroundColor: shadowColor}" style="width: 20px;height: 20px;display: inline-block;margin:0 10px;border:1px solid #ccc;"></span>{{shadowColorName}}
+                                        </p>
+                                        <p style="display:flex;align-items: center;margin-top: 20px; font-size: 18px;color: #999;" v-if="colorKey == 5">Choose Color： 
+                                            <span :style="{backgroundColor: nameColor}" style="width: 20px;height: 20px;display: inline-block;margin:0 10px;border:1px solid #ccc;"></span>{{nameColorName}}
+                                        </p>
+                                        <p style="display:flex;align-items: center;margin-top: 20px; font-size: 18px;color: #999;" v-if="colorKey == 6">Choose Color： 
+                                            <span :style="{backgroundColor: numberColor}" style="width: 20px;height: 20px;display: inline-block;margin:0 10px;border:1px solid #ccc;"></span>{{numberColorName}}
+                                        </p>
                                         <ul class="color-list-box">
                                             <li v-for="(item,index) in colorList.list" :key="item.itemText" :style="{backgroundColor: item.itemValue}" @click="changeAllColor(item.itemValue,item.itemText,index)">
                                                 <template v-if="colorList.key == 1">
@@ -894,8 +911,8 @@ export default {
             productColor: '',
             productColorName: '',
             //字体颜色值 | 颜色名
-            color:'#000',
-            colorName:'BLACK',
+            color:'#B17700',
+            colorName:'Pantone 1395',
             //字体背景颜色值 | 颜色名
             bgcolor:'',
             fontBgColorName:'',
@@ -1047,19 +1064,20 @@ export default {
             twoPrice: "",
             prices: '',
             shapeActive: -1,
-            numberColorName: 'Black',
-            numberColor: '#000',
-            nameColorName: 'Black',
-            nameColor: '#000',
+            numberColorName: 'Pantone 1395',
+            numberColor: '#B17700',
+            nameColorName: 'Pantone 1395',
+            nameColor: '#B17700',
             discounts: '',
             fontfamilydata: -1,
             imgIndex: 0,
-            boxSize1: [],
-            boxSize2: [],
-            boxSize3: [],
-            boxSize4: [],
+            boxSize1: {},
+            boxSize2: {},
+            boxSize3: {},
+            boxSize4: {},
             sizeList: false,
-            changeWidthShow:0
+            changeWidthShow:0,
+            keyId:'sss'
         }
     },
     created(){
@@ -1088,10 +1106,10 @@ export default {
             this.onMouseUp(this.myCanvas2);
             this.onMouseUp(this.myCanvas3);
             this.onMouseUp(this.myCanvas4);
-            this.delSelected(this.myCanvas1);
-            this.delSelected(this.myCanvas2);
-            this.delSelected(this.myCanvas3);
-            this.delSelected(this.myCanvas4);
+            // this.delSelected(this.myCanvas1);
+            // this.delSelected(this.myCanvas2);
+            // this.delSelected(this.myCanvas3);
+            // this.delSelected(this.myCanvas4);
             
             this.setEditIcon();
             this.setEditPointer();
@@ -1123,14 +1141,6 @@ export default {
             let that = this;
             let obj = that.myCanvas.getActiveObject();
             if(obj){
-                // let scalex = obj.scaleX;
-                // let scaley = obj.scaleY;
-                // var filter = new fabric.Image.filters.RemoveWhite({
-                //     threshold: 40,
-                //     distance: 140
-                // });
-                // obj.filters.push(filter);
-                // obj.applyFilters(that.myCanvas.renderAll.bind(that.myCanvas));
                 let left = obj.left;
                 let top = obj.top;
                 let id = obj.id;
@@ -1144,7 +1154,7 @@ export default {
                     rmWhite(id).then(res => {
                         console.log(res)
                         if(res.code == 0){
-                            that.myCanvas.remove(obj);
+                            
                             img.src = res.result.out + "?timeStamp="+new Date().getTime();
                             img.onload = function () {
                                 imgInstance = new fabric.Image(img, {
@@ -1161,6 +1171,7 @@ export default {
                                     removeColor: true,
                                     crossOrigin: '*'
                                 });
+                                that.myCanvas.remove(obj);
                                 imgInstance.scaleToWidth(width);
                                 that.myCanvas.add(imgInstance);
                                 that.myCanvas.setActiveObject(imgInstance);
@@ -1333,7 +1344,6 @@ export default {
             }
         },
         addNewPro(){
-            
             this.saveImg();
             this.downLoadImg();
             let params = {
@@ -1355,7 +1365,6 @@ export default {
         },
         handleChangeFont(params,isAdd){
             let that = this;
-            
             changeFont(params).then(res => {
                 console.log(res)
                 if(res.code == 0){
@@ -1366,13 +1375,13 @@ export default {
                     img.src = res.result+"?timeStamp="+new Date().getTime();
                     img.onload = function () {
                         if(isAdd){
-                            let obj = that.myCanvas.getActiveObject();
-                            if(obj){
+                            
+                            if(that.myCanvas.getActiveObject()){
+                                let obj = that.myCanvas.getActiveObject();
                                 let left = obj.left;
                                 let top = obj.top;
                                 let width = obj.getBoundingRect().width;
-                        
-                                that.myCanvas.remove(obj)
+                                that.myCanvas.remove(obj);
                                 imgInstance = new fabric.Image(img, {
                                     mytext:that.addText,
                                     lockUniScaling:true, // When `true`, object non-uniform scaling is locked
@@ -1725,7 +1734,6 @@ export default {
             let that = this;
             object.on('mouse:down',function(obj){
                 console.log(obj.target)
-                console.log(obj.target.getBoundingRect())
                 if(!obj.target){
                     that.visibletype = -1;
                     that.liClick = -1;
@@ -1776,18 +1784,18 @@ export default {
                 }
             }
         },
-        delSelected(obj) {
-            var that = this;
-            obj.on("mouse:down", function(options) {
-                if (options.target) {
-                    document.onkeydown = function(e) {
-                        if (e.keyCode == 8) {
-                            that.myCanvas.remove(options.target);
-                        }
-                    };
-                }
-            });
-        },
+        // delSelected(obj) {
+        //     var that = this;
+        //     obj.on("mouse:down", function(options) {
+        //         if (options.target) {
+        //             document.onkeydown = function(e) {
+        //                 if (e.keyCode == 8) {
+        //                     that.myCanvas.remove(options.target);
+        //                 }
+        //             };
+        //         }
+        //     });
+        // },
 
         removeInput(k) {
             const { form1 } = this;
@@ -2049,52 +2057,47 @@ export default {
                     originY:'center',
                     left: that.screenWidth / 2,
                     top: 300,
-                    fontSize: that.numberSize
+                    fontSize: that.numberSize,
+                    fill: that.numberColor
                 });
                 that.exampleNumber.lockScalingX = true;
                 that.exampleNumber.lockScalingY = true;
-                //that.exampleNumber.lockMovementX = true;
+                that.exampleNumber.hasControls = false;
+                that.keyId = 'Number'
+                that.exampleNumber.lockMovementX = true;
                 that.myCanvas.add(that.exampleNumber).setActiveObject(that.exampleNumber);
                 that.exampleNumber.on("selected", function() {
-
+                    that.keyId = 'Number'
                     that.liClick = 2;
                     that.visibletype = 2;
                 })
-            // }).catch(function(e) {
-            //     console.log(e)
-
-            // });
+            
         },
 
         addExampleName(font){
             let that = this;
-            // let myfont = new FontFaceObserver(font);
-            // myfont.load().then(function() {
-                // when font is loaded, use it.
-                that.exampleName = new fabric.Text("EXAMPLE", {
-                    myId: 'Name',
-                    fontFamily: font,
-                    originX:'center',
-                    originY:'center',
-                    left: that.screenWidth / 2,
-                    top: 200,
-                    fontSize: that.nameSize,
-                    lockUniScaling:true,
-                    
-                });
-                that.exampleName.lockScalingX = true;
-                that.exampleName.lockScalingY = true;
-                //that.exampleName.lockMovementX = true;
-                that.myCanvas.add(that.exampleName).setActiveObject(that.exampleName);
-                that.exampleName.on("selected", function() {
-
-                    that.liClick = 2;
-                    that.visibletype = 2;
-                })
-            // }).catch(function(e) {
-            //     console.log(e)
-
-            // });
+            that.exampleName = new fabric.Text("EXAMPLE", {
+                myId: 'Name',
+                fontFamily: font,
+                originX:'center',
+                originY:'center',
+                left: that.screenWidth / 2,
+                top: 200,
+                fontSize: that.nameSize,
+                lockUniScaling:true,
+                fill: that.nameColor
+            });
+            that.exampleName.lockScalingX = true;
+            that.exampleName.lockScalingY = true;
+            that.exampleName.hasControls = false;
+            that.keyId = 'Name'
+            that.exampleName.lockMovementX = true;
+            that.myCanvas.add(that.exampleName).setActiveObject(that.exampleName);
+            that.exampleName.on("selected", function() {
+                that.liClick = 2;
+                that.visibletype = 2;
+                that.keyId = 'Name'
+            })
         },
 
         addName (e) {
@@ -2205,12 +2208,14 @@ export default {
                         lockUniScaling:true, // When `true`, object non-uniform scaling is locked
                         left: 200,
                         top:  200,
-                        scaleX: 0.3,
-                        scaleY:0.3,
+                        
                         removeColor: false,
                         myId: 'Img',
                         crossOrigin: '*'
                     });
+                    if(imgInstance.width > that.boxSize1.width){
+                        imgInstance.scaleToWidth(that.boxSize1.width - 50)
+                    }
                 }else{
                     imgInstance = new fabric.Image(img, {
                         id: imgUrl,
@@ -2219,15 +2224,17 @@ export default {
                         skewX:0,
                         skewY:0,
                         lockUniScaling:true, // When `true`, object non-uniform scaling is locked
-                        left: 275,
-                        top:  170,
-                        scaleX: 0.1,
-                        scaleY:0.1,
+                        left: that.boxSize3.left + 10,
+                        top:  that.boxSize3.top + 10,
                         removeColor: false,
                         myId: 'Img',
                         crossOrigin: '*'
                     });
+                    if(imgInstance.width > that.boxSize3.width){
+                        imgInstance.scaleToWidth(that.boxSize3.width - 10)
+                    }
                 }
+                
                 that.myCanvas.add(imgInstance);
                 that.myCanvas.setActiveObject(imgInstance);
                 that.myCanvas.requestRenderAll();
@@ -2461,16 +2468,26 @@ export default {
             console.log(key)
             this.changeWidthShow = key;
             if(key == 5){
+                console.log(this.keyId)
                 if(this.addNameData){
-                    this.visibletype = 8;
-                    this.colorTitle = title;
-                    this.colorKey = key;
+                    if(this.keyId == 'Name'){
+                        this.visibletype = 8;
+                        this.colorTitle = title;
+                        this.colorKey = key;
+                    }else{
+                        this.$message.error('Please select name first.')
+                    }
                 }
             }else if(key == 6){
                 if(this.addNumberData){
-                    this.visibletype = 8;
-                    this.colorTitle = title;
-                    this.colorKey = key;
+                    console.log(this.keyId)
+                    if(this.keyId == 'Number'){
+                        this.visibletype = 8;
+                        this.colorTitle = title;
+                        this.colorKey = key;
+                    }else{
+                        this.$message.error('Please select number first.')
+                    }
                 }
             }else{
                 this.visibletype = 8;

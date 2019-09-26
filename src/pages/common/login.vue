@@ -85,7 +85,7 @@
                   placeholder="Please fill in the account."
                   v-decorator="[
                 'username',
-                {rules: [{ required: true, message: 'Please fill in the account.' }], validateTrigger: 'change'}
+                {rules: [{ required: true, message: 'Please fill in the account.' }], validateTrigger: 'blur'}
               ]"
                 >
                   <a-icon
@@ -227,6 +227,8 @@ export default {
             this.formLogin.rememberMe = false
           }
           const loginParams = { ...values };
+          console.log(values)
+          console.log(loginParams)
           delete loginParams.username;
           loginParams.username = values.username;
           loginParams.password = values.password;
@@ -293,6 +295,7 @@ export default {
             console.log(arr2[1])
             this.form.setFieldsValue({['username']:arr2[1]}) //保存到保存数据的地方
           } else if (arr2[0] == "userPwd") {
+            console.log(arr2[1])
             this.form.setFieldsValue({['password']:arr2[1]})
             //this.ruleForm.password = arr2[1];
           }

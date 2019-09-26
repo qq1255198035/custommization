@@ -611,3 +611,35 @@ export function dealerDesignList(orderId) {
         data:qs.stringify({orderId:orderId})
     })
 }
+
+export function confirmSample(picId) {
+    return axios({
+        url: '/system/jeecgAdministrator/confirmationSample',
+        method: 'post',
+        data:qs.stringify({picId:picId})
+    })
+}
+
+export function viewDesign(picId) {
+    return axios({
+        url: '/system/jeecgAdministrator/getDealerDesignDemand',
+        method: 'post',
+        data:qs.stringify({picId:picId})
+    })
+}
+
+export function photoInfo(url) {
+    return axios({
+        url: '/system/jeecgAdministrator/getPhotoInfo',
+        method: 'post',
+        data:qs.stringify({url:url})
+    })
+}
+
+export function colorInfo(color) {
+    return axios({
+        url: '/system/jeecgAdministrator/getColorInfo',
+        method: 'post',
+        data:qs.stringify({color:color})
+    })
+}
