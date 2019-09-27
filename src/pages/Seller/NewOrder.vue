@@ -2141,7 +2141,7 @@ export default {
                 
                 this.$message.error('Image Size Exceeds Limit');
                 this.uploadA = false
-                
+                return;
             }
         },
         postSourceUpload(file){
@@ -2489,7 +2489,24 @@ export default {
                         this.$message.error('Please select number first.')
                     }
                 }
-            }else{
+            }/**else if(key == 2){
+                // 后加 不严谨
+                if(this.shadowColorName){
+                    this.$message.error('Please remove the shadows first.')
+                }else{
+                    this.visibletype = 8;
+                    this.colorTitle = title;
+                    this.colorKey = key;
+                }
+            }else if(key == 4){
+                if(this.bgcolor){
+                    this.$message.error('Please remove the Text Background Colour first.')
+                }else{
+                    this.visibletype = 8;
+                    this.colorTitle = title;
+                    this.colorKey = key;
+                }
+            }**/else{
                 this.visibletype = 8;
                 this.colorTitle = title;
                 this.colorKey = key;

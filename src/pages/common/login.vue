@@ -84,7 +84,7 @@
                   type="text"
                   placeholder="Please fill in the account."
                   v-decorator="[
-                'username',
+                'username1',
                 {rules: [{ required: true, message: 'Please fill in the account.' }], validateTrigger: 'blur'}
               ]"
                 >
@@ -102,9 +102,9 @@
                   type="password"
                   autocomplete="false"
                   placeholder="Please fill in the password."
-                  @keyup.enter.native="submitLogin"
+                  @keyup.enter.native="submitLoginMobile"
                   v-decorator="[
-                'password',
+                'password1',
                 {rules: [{ required: true, message: 'Please fill in the password.'}], validateTrigger: 'blur'}
               ]"
                 >
@@ -124,7 +124,7 @@
                   :padding="'15px'"
                   :radio="'18px'"
                   :fontsize="'18px'"
-                  @submitLogin="submitLogin"
+                  @submitLogin="submitLoginMobile"
                 ></commonBtn>
               </a-form-item>
 
@@ -241,7 +241,44 @@ export default {
         }
       });
     },
+    submitLoginMobile() {
+      const {
+        form: { validateFields },
+        state,
+        customActiveKey,
+        Login
+      } = this;
 
+      state.loginBtn = true;
+
+      const validateFieldsKey1 =
+        customActiveKey === "tab1"
+          ? ["username1", "password1"]
+          : ["mobile", "captcha"];
+
+      validateFields(validateFieldsKey1, { force: true }, (err, values) => {
+        if (!err) {
+          if (this.formLogin.rememberMe) {
+            this.setCookie(values.username1, values.password1, 3);
+          } else {
+            this.clearCookie();
+            this.formLogin.rememberMe = false
+          }
+          const loginParams = { ...values };
+          console.log(values)
+          console.log(loginParams)
+          delete loginParams.username1;
+          loginParams.username = values.username1;
+          loginParams.password = values.password1;
+          Login(loginParams)
+            .then(res => this.loginSuccess(res))
+            .catch(err => this.requestFailed(err))
+            .finally(() => {
+              state.loginBtn = false;
+            });
+        }
+      });
+    },
     loginSuccess(res) {
       if (this.$route.query.order_id) {
         this.$router.push({
@@ -294,9 +331,11 @@ export default {
           if (arr2[0] == "userName") {
             console.log(arr2[1])
             this.form.setFieldsValue({['username']:arr2[1]}) //保存到保存数据的地方
+            this.form.setFieldsValue({['username1']:arr2[1]})
           } else if (arr2[0] == "userPwd") {
             console.log(arr2[1])
             this.form.setFieldsValue({['password']:arr2[1]})
+            this.form.setFieldsValue({['password1']:arr2[1]})
             //this.ruleForm.password = arr2[1];
           }
         }

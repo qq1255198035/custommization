@@ -29,14 +29,16 @@ const constantRouterComponents = {
   //系统
   workbench:() => import("@/views/salessystem/workbench/workbench"),
   specification: () => import("@/views/system/specification"), //设计需求
-  sellerUserList: () => import("@/views/system/customer"), //经销商审批
+  sellerUserList: () => import("@/views/system/customer"), //经销商审批列表
   OrderManagement: () => import("@/views/system/OrderManagement"), //订单管理
   orderListDetails: () => import("@/views/system/orderDetails"), //订单详情
   sellerInfo: () => import("@/views/system/SellerInfo"),//经销商详情
-  
   isystemRole:() => import("@/views/system/RoleList"), //角色管理
   PermissionList:() => import("@/views/system/PermissionList"), //菜单管理
   UserList:() => import("@/views/system/UserList"), //用户管理
+  onlineGoods: () => import("@/views/system/onlineGoods"), // 设计师设计需求
+
+
   RoleUserList:() => import("@/views/system/RoleUserList"), //角色维护
   UserAnnouncementList:() => import("@/views/system/UserAnnouncementList"), //我的消息
   SysAnnouncementList:() => import("@/views/system/SysAnnouncementList"), //系统通告
@@ -45,7 +47,7 @@ const constantRouterComponents = {
   service:() => import("@/views/management/service/service"), //云储
   
   //format: () => import("@/views/management/format/format"), //商品类别
-  onlineGoods: () => import("@/views/management/onlineGoods/onlineGoods"), //在线商品
+  
   productTypes: () => import("@/views/management/productTypes/productTypes"), //商品属性
   
   

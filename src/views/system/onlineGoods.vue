@@ -51,12 +51,8 @@
                 <a-menu-item v-for="(aitem,index) in item.listMap" :key="index">
                   <a href="javascript:;" @click="viewDesignCase(aitem.id,aitem.status)">设计方案{{index + 1}}</a>
                 </a-menu-item>
-                <a-menu-item>
-                  <a href="javascript:;" @click="createNewDesign(item.type,item.id)">创建新设计</a>
-                </a-menu-item>
               </a-menu>
             </a-dropdown>
-            <a-button @click="handleConfirm(item.id)">确认样稿</a-button>
           </div>
         </div>
       </li>
@@ -135,7 +131,6 @@
             @change="handleChange"
             accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif"
             v-decorator="['img1',{rules: [{ required: true, message: 'Please upload pictures！'}]}]"
-            v-if="false"
           >
               <a-button>
                 <a-icon type="upload" /> 点击上传
@@ -143,7 +138,7 @@
           </a-upload>
         </a-form-item>
         <a-form-item style="width: 55%;">
-          <a-textarea :autosize="{minRows: 4}" v-decorator="['remarks1',{rules: [{ required: false, message: 'Please upload pictures！' }]}]"></a-textarea>
+          <a-textarea :autosize="{minRows: 4}" v-decorator="['remarks1',{rules: [{ required: false, message: 'Please upload pictures！' }]}]" :disabled="true"></a-textarea>
         </a-form-item>
         <a-form-item
           label="上传背面"
@@ -157,7 +152,6 @@
             @change="handleChange1"
             accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif"
             v-decorator="['img2',{rules: [{ required: true, message: 'Please upload pictures！'}]}]"
-            v-if="false"
           >
               <a-button>
                 <a-icon type="upload" /> 点击上传
@@ -165,7 +159,7 @@
           </a-upload>
         </a-form-item>
         <a-form-item style="width: 55%;">
-          <a-textarea :autosize="{minRows: 4}" v-decorator="['remarks2',{rules: [{ required: false, message: 'Please upload pictures！' }]}]"></a-textarea>
+          <a-textarea :autosize="{minRows: 4}" v-decorator="['remarks2',{rules: [{ required: false, message: 'Please upload pictures！' }]}]" :disabled="true"></a-textarea>
         </a-form-item>
         <a-form-item
           label="上传左面"
@@ -179,7 +173,6 @@
             @change="handleChange2"
             accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif"
             v-decorator="['img3',{rules: [{ required: true, message: 'Please upload pictures！'}]}]"
-            v-if="false"
           >
               <a-button>
                 <a-icon type="upload" /> 点击上传
@@ -187,7 +180,7 @@
           </a-upload>
         </a-form-item>
         <a-form-item style="width: 55%;">
-          <a-textarea :autosize="{minRows: 4}" v-decorator="['remarks3',{rules: [{ required: false, message: 'Please upload pictures！' }]}]"></a-textarea>
+          <a-textarea :autosize="{minRows: 4}" v-decorator="['remarks3',{rules: [{ required: false, message: 'Please upload pictures！' }]}]" :disabled="true"></a-textarea>
         </a-form-item>
         <a-form-item
           label="上传右面"
@@ -201,7 +194,6 @@
             @change="handleChange3"
             accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif"
             v-decorator="['img4',{rules: [{ required: true, message: 'Please upload pictures！'}]}]"
-            v-if="false"
           >
               <a-button>
                 <a-icon type="upload" /> 点击上传
@@ -209,7 +201,7 @@
           </a-upload>
         </a-form-item>
         <a-form-item style="width: 55%;">
-          <a-textarea v-decorator="['remarks4',{rules: [{ required: false, message: 'Please upload pictures！' }]}]" :autosize="{minRows: 4}"></a-textarea>
+          <a-textarea v-decorator="['remarks4',{rules: [{ required: false, message: 'Please upload pictures！' }]}]" :autosize="{minRows: 4}" :disabled="true"></a-textarea>
         </a-form-item>
       </a-form>
     </a-modal> 
@@ -472,14 +464,7 @@ export default {
             return;
         }
     },
-    createNewDesign(key,id){
-      if(key == 0){
-        this.$message.error('您还有设计没有完成！')
-      }else{
-        this.newDesign = true;
-        this.id2 = id;
-      }
-    },
+    
     getColorInfo(color){
       colorInfo(color).then(res => {
         console.log(res)
@@ -769,5 +754,4 @@ export default {
     }
   }
 }
-
 </style>

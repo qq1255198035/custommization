@@ -643,3 +643,30 @@ export function colorInfo(color) {
         data:qs.stringify({color:color})
     })
 }
+
+export function designingScheme(despicId) {
+    return axios({
+        url: '/system/jeecgAdministrator/getDesigningScheme',
+        method: 'post',
+        data:qs.stringify({despicId:despicId})
+    })
+}
+
+export function updateDespic(params) {
+    return axios({
+        url: '/system/jeecgAdministrator/updateJeecgGoodsDespic',
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json;charset-UTF-8'
+        },
+        data: JSON.stringify(params)
+    })
+}
+
+export function rejectDesign(despicId) {
+    return axios({
+        url: '/system/jeecgAdministrator/getDesignerDesign',
+        method: 'post',
+        data:qs.stringify({despicId:despicId})
+    })
+}

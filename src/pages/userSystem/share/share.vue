@@ -333,6 +333,7 @@ export default {
         pageNo: 1,
         pageSize: 10
       }).then(res => {
+        console.log(res)
         this.$ls.set("pay_mode", res.result.pay_mode);
         this.pay_mode = res.result.pay_mode;
         this.resultData = res.result.personOrderNoPrintList;
@@ -369,7 +370,7 @@ export default {
 .scroll-boxs {
   overflow-y: auto;
   overflow-x: hidden;
-  height: 560px;
+  
   margin-bottom: 20px;
   max-height: 560px;
   &::-webkit-scrollbar {
