@@ -13,6 +13,7 @@
           v-if="col == 'size'"
           :key="col"
           style="text-align: center;width: 100%;background:#fff"
+          placeholder="Select Size"
         >
           <a-select-option
             v-for="(sitem,index) in targetList.sizess"

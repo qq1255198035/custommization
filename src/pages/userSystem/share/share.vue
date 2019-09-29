@@ -78,37 +78,140 @@
       <img src="@/assets/logoWhite.png" alt="">
     </header>
     <card-header-m :detailList="detailList"></card-header-m>
-    <a-row :gutter="40" style="padding:0 8%">
-        <!--list1-->
-        <div>
-          <a-col
-            class="scroll-boxs"
-            :xxl="12"
-            :xl="24"
-            v-for="(item,index) in resultData"
-            :key="index"
-          >
-            <table-item :datas="item" ref="myTable">
-              <a
-                @click="imgShow"
-                href="javascript:;"
-                style="font-size: 18px; color: #999; text-decoration: underline"
-              >View the size chart</a>
-              <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancelImg">
-                <img alt="example" style="width: 100%" :src="item.size_chart_url" />
-              </a-modal>
-            </table-item>
-            <div v-if="!item.is_print_numbe && !item.is_print_text">
-              <my-table :dataSize="[item]" @getList="list" ref="mychild"></my-table>
+    <div class="mobile-main">
+      <template v-for="(item,index) in resultData">
+        <!-- item.is_print_numbe || item.is_print_text -->
+        <template v-if="false">
+          <div class="share-type" :key="item.des_id">
+            <div class="title">
+              <h2>
+                {{item.name}}
+                <span @click="imgShow">View the size chart</span>
+              </h2>
+              <span @click="delshow = -1" v-if="delshow == index"><a-icon type="close-circle"></a-icon>cancel</span>
+              <span @click="delshow = index" v-else><a-icon type="edit"></a-icon>edit</span>
             </div>
+            <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancelImg">
+              <img alt="example" style="width: 100%" :src="item.size_chart_url" />
+            </a-modal>
+            <ul class="img-box">
+              <li>
+                <img :src="item.positive_pic_url" alt="">
+              </li>
+              <li>
+                <img :src="item.back_pic_url" alt="">
+              </li>
+              <li>
+                <img :src="item.left_pic_url" alt="">
+              </li>
+              <li>
+                <img :src="item.right_pic_url" alt="">
+              </li>
+            </ul>
+            <ul class="share-desc">
+              <li v-for="(aitem,aindex) in mobileData['list' + index]" :key="aindex">
+                Name: <span>{{aitem.name}}</span> No: <span>{{aitem.no}}</span> Size: <span>{{aitem.size}}</span> <span>${{item.price}}</span> <a-icon type="delete" v-if="delshow == index" @click="delectItem(index,aindex)"/>
+              </li>
+            </ul>
+            <a-button block style="margin: 10px 0;" @click="addDataList(index,1)">ADD</a-button>
+          </div>
+        </template>
+        <template v-if="!item.is_print_numbe && !item.is_print_text">
+          <div class="share-type" :key="item.des_id">
+            <div class="title">
+              <h2>
+                {{item.name}}
+                <span @click="imgShow">View the size chart</span>
+              </h2>
+              <span @click="delshow = -1" v-if="delshow == index"><a-icon type="close-circle"></a-icon>cancel</span>
+              <span @click="delshow = index" v-else><a-icon type="edit"></a-icon>edit</span>
+            </div>
+            <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancelImg">
+              <img alt="example" style="width: 100%" :src="item.size_chart_url" />
+            </a-modal>
+            <ul class="img-box">
+              <li>
+                <img :src="item.positive_pic_url" alt="">
+              </li>
+              <li>
+                <img :src="item.back_pic_url" alt="">
+              </li>
+              <li>
+                <img :src="item.left_pic_url" alt="">
+              </li>
+              <li>
+                <img :src="item.right_pic_url" alt="">
+              </li>
+            </ul>
+            <ul class="share-desc">
+              <li v-for="(aitem,aindex) in mobileData['list' + index]" :key="aindex">
+                Size: <span>{{aitem.size}}</span> Quantify: <span>{{aitem.quantify}}</span> Price: <span>${{aitem.quantify * aitem.price}}</span><a-icon type="delete" v-if="delshow == index" @click="delectItem(index,aindex)"/>
+              </li>
+            </ul>
+            <a-button block style="margin: 10px 0;" @click="addDataList(index,0)">ADD</a-button>
+          </div>
+        </template>
+      </template>
 
-            <div v-if="item.is_print_numbe || item.is_print_text">
-              <my-tables :dataName="[item]" @getList="lists"></my-tables>
-            </div>
-          </a-col>
-        </div>
-      </a-row>
+    </div>
+    <div class="total-price">
+      <p>
+        Total Amount: $ 11
+      </p>
+      <a-button type="primary">Pay Now</a-button>
+    </div>
   </div>
+  <a-drawer
+    title="ADD"
+    placement="bottom"
+    @close="onClose"
+    :visible="mobildvisible"
+    :height="drawerH"
+    :destroyOnClose="true"
+  >
+    <div class="add-type-1">
+      <div class="img-title">
+        <img :src="mobileImgArr[sizeIndex]" alt="" width="100" height="100">
+        <div>
+          <h2>${{priceArr[sizeIndex]}}</h2>
+          <span style="margin-right: 10px;">size: {{size ? size : 'Select Size'}}</span>
+          <span>quantify: {{defaultNum}}</span>
+        </div>
+      </div>
+      <div class="size-box">
+        <h3>Size</h3>
+        <span v-for="(size,index) in sizes[sizeIndex]" @click="choseSize(index,size)" :key="index" 
+          :style="{backgroundColor: activeIndex == index ? 'rgba(0,0,0,0)' : '#ccc', 
+          color: activeIndex == index ? '#33b8b3' : '#333', border: activeIndex == index ? '1px solid #33b8b3' : 'none'}">{{size}}</span>
+      </div>
+      <a-form :form="form" v-if="drawerShow == 1">
+        <a-form-item label="Name" style="border-bottom: 1px solid #ccc;padding: 10px 0;">
+          <a-input v-decorator="[
+            'name',
+            {rules: [{ required: true, message: 'Please fill in the name.'}], validateTrigger: 'blur'}
+          ]"></a-input>
+
+        </a-form-item>
+        <a-form-item label="No" style="border-bottom: 1px solid #ccc;padding: 10px 0;">
+          <a-input v-decorator="[
+            'no',
+            {rules: [{ required: true, message: 'Please fill in the number.' }], validateTrigger: 'blur'}
+          ]" type="Number"></a-input>
+        </a-form-item>
+      </a-form>
+      <div v-else class="stepper-box">
+        <span>Quantify</span>
+        <div id="steppers">
+          <button class="left" @click="clickLeftbtn">-</button>
+          <input type="number" min="1" max="Infinity" class="stepper-input" v-model="defaultNum" />
+          <button class="right" @click="clickRightbtn">+</button>
+        </div>
+      </div>
+      <div>
+        <a-button type="primary" block @click="insertData">Sure</a-button>
+      </div>
+    </div>
+  </a-drawer>
 </div>
   
 </template>
@@ -128,6 +231,14 @@ import { ACCESS_TOKEN } from "@/store/mutation-types";
 export default {
   data() {
     return {
+      defaultNum: 1,
+      drawerH:0,
+      form:this.$form.createForm(this),
+      mobileImgArr:[],
+      activeIndex: -1,
+      sizeIndex: -1,
+      mobildvisible:false,
+      delshow:-1,
       pay_mode: "",
       previewVisible: false,
       showList: "",
@@ -137,7 +248,7 @@ export default {
       allPrice: 0,
       listPay: {},
       listNoPay: {},
-      size: [],
+      size: '',
       sizes: [],
       payData: "",
       dataSize: [],
@@ -160,7 +271,12 @@ export default {
       newListOld1: [],
       arrtyNew1: [],
       arrtyNew2: [],
-      mobileShow: false
+      mobileShow: false,
+      mobileData:{},
+      drawerShow: -1,
+      calcPrice:0,
+      priceArr:[],
+      totalPriceArr:[]
     };
   },
   mounted() {
@@ -168,7 +284,116 @@ export default {
     this.check();
     this.getWindowScreen();
   },
+  computed:{
+    
+
+  },
   methods: {
+    // calcTotalPrice(){
+    //   var s = 0;
+    //   this.totalPriceArr.forEach(val => {
+    //     s += val;
+    //   });
+    //   return s;
+    // },
+    clickRightbtn(){
+      this.defaultNum ++;
+    },
+    clickLeftbtn(){
+      if(this.defaultNum > 1){
+        this.defaultNum --;
+      }else{
+        this.defaultNum = 1
+      }
+    },
+    delectItem(index,aindex){
+      console.log(index,aindex)
+      let that = this;
+      that.$confirm({
+        title: 'Are you sure delete this task?',
+        okText: 'Yes',
+        cancelText: 'No',
+        onOk() {
+          let a = []
+          that.mobileData['list' + index].splice(aindex,1);
+          a = that.mobileData['list' + index].concat(a);
+          that.$delete(that.mobileData,'list' + index);
+          that.$set(that.mobileData,'list' + index,a);
+          that.handleTotalPrice();
+          that.$message.success('Successful operation!')
+        }
+      })
+    },
+    insertData(){
+      this.form.validateFields((err,values) => {
+        if (!err) {
+          if(this.size){
+            let that = this;
+            let dataArr = [];
+            let key = 'list' + that.sizeIndex.toString()
+            dataArr.push({
+              size: that.size,
+              name: values.name ? values.name : '',
+              no: values.no ? values.no : '',
+              quantify: that.defaultNum,
+              price: that.calcPrice
+            })
+            console.log(values)
+            if(that.mobileData[key]){
+              dataArr = dataArr.concat(that.mobileData[key]);
+              that.mobileData[key] = dataArr;
+              console.log(that.mobileData)
+            }else{
+              that.mobileData[key] = dataArr;
+              console.log(that.mobileData)
+            }
+            that.mobildvisible = false;
+            that.size = '';
+            that.activeIndex = -1;
+            that.defaultNum = 1;
+            this.handleTotalPrice();
+            that.$message.success('Successful operation!')
+          }else{
+            this.$message.error('Please Select Size!')
+          }
+            
+        }
+      });
+      
+    },
+    handleTotalPrice(){
+      let priceArr = [];
+      this.resultData.forEach((item,index) => {
+        if(this.mobileData['list' + index]){
+          this.mobileData['list' + index].forEach((aitem,aindex) => {
+            priceArr.push(this.mobileData['list' + index][aindex].price * this.mobileData['list' + index][aindex].quantify)
+            this.totalPriceArr = priceArr;
+            console.log(this.totalPriceArr)
+            //console.log(priceArr)
+          })
+        }
+      })
+    },
+    choseSize(index,size){
+      console.log(size);
+      this.size = size;
+      this.activeIndex = index;
+    },
+    addDataList(index,type){
+      console.log(index)
+      this.mobildvisible = true;
+      this.sizeIndex = index;
+      this.drawerShow = type;
+      this.calcPrice = this.resultData[index].price;
+      if(type == 1){
+        this.drawerH = 550;
+      }else{
+        this.drawerH = 380;
+      }
+    },
+    onClose() {
+      this.mobildvisible = false
+    },
     getWindowScreen(){
       let screenWidths = window.screen.width;
       console.log(screenWidths)
@@ -338,6 +563,12 @@ export default {
         this.pay_mode = res.result.pay_mode;
         this.resultData = res.result.personOrderNoPrintList;
         this.detailList = res.result;
+        this.resultData.forEach(el => {
+          this.sizes.push(el.sizes);
+          this.mobileImgArr.push(el.positive_pic_url);
+          this.priceArr.push(el.price)
+          console.log(this.sizes)
+        })
       });
     }
   },
@@ -452,8 +683,25 @@ export default {
     height: 100%;
     .mobile-box{
       width: 100%;
-      height: 100%;
+      min-height: 100%;
       background-color: #fff;
+      
+      padding-bottom: 75px;
+      .total-price{
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding: 20px;
+        border-top: 1px solid #ccc;
+        background-color: #fff;
+        p{
+          margin-right: 10px;
+        }
+      }
       .mobile-header{
         width: 100%;
         background-color: #33b8b3;
@@ -463,9 +711,146 @@ export default {
           width: 40%;
         }
       }
+      .mobile-main{
+        padding: 20px;
+        .title{
+          display: flex;
+          justify-content: space-between;
+          h2{
+            font-size: 16px;
+            color: #33b8b3;
+            span{
+              font-size: 14px;
+              color: #333;
+            }
+          }
+          span{
+            i{
+              margin-right: 5px; 
+            }
+          }
+        }
+        .share-type{
+          .img-box{
+            display: flex;
+            justify-content: space-between;
+            li{
+              width: 24%;
+              border: 1px solid #ccc;
+              padding: 5px;
+              img{
+                width: 100%;
+              }
+            }
+          }
+          .share-desc{
+            li{
+              display: flex;
+              justify-content: space-between;
+              padding: 10px 0;
+              border-bottom: 1px solid #ccc;
+              font-size: 14px;
+              margin: 10px 0;
+              align-items: center;
+              i{
+                font-size: 16px;
+                vertical-align: middle;
+                color: red;
+                margin-left: 10px;
+              }
+              span{
+                color: #33b8b3;
+              }
+            }
+          }
+        }
+      }
     }
   }
-  
+  .add-type-1{
+    .stepper-box{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #ccc;
+      margin-bottom: 20px;
+    }
+    .size-box{
+      margin-top: 10px;
+      border-bottom: 1px solid #ccc;
+      span{
+        padding: 2px 10px;
+        background-color: #ccc;
+        border-radius: 5px;
+        margin: 5px;
+        min-width: 35px;
+        display: inline-block;
+        text-align: center;
+      }
+    }
+    .img-title{
+      display: flex;
+      align-items: center;
+      img{
+        margin-right: 10px;
+      }
+    }
+  }
 }
+#steppers {
+  .stepper-input {
+    box-sizing: border-box;
+    width: 32px;
+    height: 28px;
 
+    padding: 0;
+    color: #999;
+    font-size: 14px;
+    text-align: center;
+    vertical-align: middle;
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 0;
+    border-width: 1px 0;
+    border-radius: 0;
+    -webkit-appearance: none;
+    outline: none;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+  }
+  .left {
+    position: relative;
+    box-sizing: border-box;
+    width: 28px;
+    height: 28px;
+    margin: 0;
+    padding: 5px;
+    color: #999;
+    vertical-align: middle;
+    background-color: rgba(255, 255, 255);
+    border: 0;
+    border-radius: 4px 0 0 4px;
+    border: 1px solid #eee;
+    outline: none;
+    cursor: pointer;
+    line-height: 14px;
+  }
+  .right {
+    position: relative;
+    box-sizing: border-box;
+    width: 28px;
+    height: 28px;
+    margin: 0;
+    padding: 5px;
+    color: #999;
+    vertical-align: middle;
+    background-color: rgba(255, 255, 255);
+    border: 0;
+    border-radius: 0 4px 4px 0;
+    border: 1px solid #eee;
+    outline: none;
+    cursor: pointer;
+    line-height: 14px;
+  }
+}
 </style>
