@@ -2404,13 +2404,24 @@ export default {
         },
         // 添加文字
         addItext(text,isAdd) {
-            
-            let params = {
+            if(isAdd){
+                if(this.myCanvas.getActiveObject()){
+                    let params = {
+                        text: text,style:'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
+                        lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,
+                        backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1
+                    }
+                    this.handleChangeFont(params,isAdd);
+                }
+            }else{
+                let params = {
                     text: text,style:'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
                     lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,
                     backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1
                 }
-            this.handleChangeFont(params,isAdd);
+                this.handleChangeFont(params,isAdd);
+            }
+            
         },
         // 加载资源字体
         loadAndUse(font) {
