@@ -670,3 +670,11 @@ export function rejectDesign(despicId) {
         data:qs.stringify({despicId:despicId})
     })
 }
+
+export function getTrackingData(orderId) {
+    return axios({
+        url: '/system/jeecgOrder/logisticsInformation',
+        method: 'post',
+        data:qs.stringify({orderId:orderId})
+    })
+}
