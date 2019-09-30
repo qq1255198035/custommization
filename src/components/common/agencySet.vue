@@ -133,7 +133,7 @@ export default {
     },*/
     // 更新
     submitPerson() {
-      console.log(111);
+
       this.form.validateFields((err, values) => {
         if (!err) {
           const params = {

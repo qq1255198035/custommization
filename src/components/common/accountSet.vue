@@ -98,14 +98,14 @@
                 <a-row :gutter="32">
                   <a-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
                     <a-input
-                      @change="phoneFirstBtn"
+
                       placeholder="86"
                       v-decorator="['phoneName1',{rules: [{ required: true, message: '' }]}]"
                     />
                   </a-col>
                   <a-col :xs="20" :sm="20" :md="20" :lg="20" :xl="20">
                     <a-input
-                      @change="phoneLastBtn"
+
                       placeholder="Telephone number"
                       v-decorator="['phoneName2',{rules: [{ required: true, message: 'Telephone number' }]}]"
                     />
@@ -312,12 +312,12 @@ export default {
     onCity(value) {
       this.cityId = value;
     },
-    phoneFirstBtn(e) {
-      console.log(e.target.value);
-    },
-    phoneLastBtn(e) {
-      console.log(e.target.value);
-    },
+    // phoneFirstBtn(e) {
+    //   console.log(e.target.value);
+    // },
+    // phoneLastBtn(e) {
+    //   console.log(e.target.value);
+    // },
     beforeUpload(file) {
       const isJPG = file.type === "image/jpeg";
       const isPNG = file.type === "image/png";
@@ -327,7 +327,7 @@ export default {
       }
       const isLt2M = file.size / 1024 / 1024 < 2;
       if (!isLt2M) {
-        this.$message.error(this.$t("Image Size Over 2MB"));
+        `this`.$message.error(this.$t("Image Size Over 2MB"));
         return isLt2M;
       }
       getBase64(file, imageUrl => {

@@ -125,36 +125,38 @@
           <ul class="perInfo">
             <li>
               Consignee:
-              <span>曲丽丽</span>
+              <span>{{ data.mapAddress.userName}}</span>
             </li>
             <li>
               Zip code:
-              <span>123456</span>
+              <span>{{ data.mapAddress.postalCode}}</span>
             </li>
             <li>
-              Email:
-              <span>曲丽丽</span>
+              Phone:
+              <span>{{ data.mapAddress.telNumber}}</span>
             </li>
             <li>
               Delivery address:
-              <span>紧邻生长处是此时此刻</span>
+              <span>{{ data.mapAddress.address}}</span>
             </li>
           </ul>
           <h3>Logistics track</h3>
           <ul class="perInfo">
             <li>
               Logistics company：
-              <span>申通快递</span>
+              <span>{{ data.mapExpressage.itemText}}</span>
             </li>
             <li>
-              Reference number：
-              <span>1444554</span>
+              Shipping number：
+              <span>{{ data.mapExpressage.shippingNo}}</span>
             </li>
           </ul>
           <ul class="logistics-info">
-            <li>cddcdcddddccdcdcdcdcdccdcd</li>
-            <li>cddcdcddddccdcdcdcdcdccdcd</li>
-            <li>cddcdcddddccdcdcdcdcdccdcd</li>
+            
+            <li v-for="(item,index) in data.logisticsList" :key="index">
+              {{item.createdAt}}  {{item.tag}} {{item.location}}  {{item.message}}  
+            </li>
+            
           </ul>
         </div>
       </a-tab-pane>
@@ -184,7 +186,7 @@
 <script>
 import MyTitle from "@/components/MyTitle/MyTitle";
 import MyStpes from "@/components/MyPrimaryStpes/MyPrimaryStpes";
-import { orderDetailUp, orderDetailDown } from "@/api/seller";
+import { orderDetailUp, orderDetailDown,getTrackingData } from "@/api/seller";
 const statusMap = {
   0: {
     status: "success",
@@ -240,7 +242,7 @@ export default {
           scopedSlots: { customRender: "status" }
         }
       ],
-      data: [],
+      data: {} ,
       infoList: [],
       openShare: false,
       config: {
@@ -263,6 +265,7 @@ export default {
     this.id = this.$route.query.id;
     this.getOrderDetailUp(this.id);
     this.getOrderDetailDown(this.id);
+    this.getTrackingData(this.id);
   },
   methods: {
     onCopy() {
@@ -289,7 +292,13 @@ export default {
         this.infoList = res.result;
       });
     },
-
+    getTrackingData(id) {
+      getTrackingData(id).then(res =>{
+        if(res.code == "0") {
+          this.data = res.result;
+        }
+      });
+    },
     getOrderDetailUp(id) {
       orderDetailUp(id).then(res => {
         console.log(res);
