@@ -58,12 +58,19 @@ export default {
     }
     .right {
       float: right;
-      .ant-btn {
-      }
     }
   }
 }
 .ant-btn .anticon {
   font-size: 30px !important;
+}
+@media screen and (max-width: 768px) and (min-width: 325px){
+  #TableItem{
+    padding: 0 20px;
+    .font-reset{
+      font-size: 14px;
+    }
+  }
+  
 }
 </style>

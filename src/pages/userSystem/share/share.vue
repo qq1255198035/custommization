@@ -81,7 +81,7 @@
     <div class="mobile-main">
       <template v-for="(item,index) in resultData">
         <!-- item.is_print_numbe || item.is_print_text -->
-        <template v-if="false">
+        <template v-if="item.is_print_numbe || item.is_print_text">
           <div class="share-type" :key="item.des_id">
             <div class="title">
               <h2>
@@ -116,6 +116,7 @@
             <a-button block style="margin: 10px 0;" @click="addDataList(index,1)">ADD</a-button>
           </div>
         </template>
+        <!-- !item.is_print_numbe && !item.is_print_text -->
         <template v-if="!item.is_print_numbe && !item.is_print_text">
           <div class="share-type" :key="item.des_id">
             <div class="title">
@@ -156,9 +157,9 @@
     </div>
     <div class="total-price">
       <p>
-        Total Amount: $ 11
+        Total Amount: $ {{myPrice}}
       </p>
-      <a-button type="primary">Pay Now</a-button>
+      <a-button type="primary" @click="goToPay">Pay Now</a-button>
     </div>
   </div>
   <a-drawer
@@ -276,26 +277,48 @@ export default {
       drawerShow: -1,
       calcPrice:0,
       priceArr:[],
-      totalPriceArr:[]
+      totalPriceArr:[],
+      totalPriceArrB:[],
+      myPostList:[],
+      myPostListB:[]
     };
   },
   mounted() {
     this._apiPersonOrder();
     this.check();
     this.getWindowScreen();
+    console.log(this.$route.query)
   },
   computed:{
-    
-
+    myPrice(){
+      let s = 0;
+      this.totalPriceArrB.forEach(val => {
+        s += val;
+      });
+      return s;
+    },
   },
   methods: {
-    // calcTotalPrice(){
-    //   var s = 0;
-    //   this.totalPriceArr.forEach(val => {
-    //     s += val;
-    //   });
-    //   return s;
-    // },
+    calcPostlist(){
+      let newArr = [];
+      for (let va of this.myPostList) {
+        for (let vq of Array.from(va)) {
+          newArr.push(vq);
+          this.myPostListB = newArr;
+          console.log(this.myPostListB)
+        }
+      }
+    },
+    calcTotalPrice(){
+      let newArr = [];
+      for (let va of this.totalPriceArr) {
+        for (let vq of Array.from(va)) {
+          newArr.push(vq);
+          this.totalPriceArrB = newArr;
+          console.log(this.totalPriceArrB)
+        }
+      }
+    },
     clickRightbtn(){
       this.defaultNum ++;
     },
@@ -314,12 +337,23 @@ export default {
         okText: 'Yes',
         cancelText: 'No',
         onOk() {
-          let a = []
+          let a = [];
+          let b = [];
+         
           that.mobileData['list' + index].splice(aindex,1);
           a = that.mobileData['list' + index].concat(a);
           that.$delete(that.mobileData,'list' + index);
           that.$set(that.mobileData,'list' + index,a);
-          that.handleTotalPrice();
+
+          that.totalPriceArr[index].splice(aindex,1);
+          b =  that.totalPriceArr[index].concat(b);
+          that.$delete(that.totalPriceArr,index);
+          that.$set(that.totalPriceArr,index,b);
+          that.calcTotalPrice();
+
+          that.myPostList[index].splice(aindex,1);
+          that.calcPostlist();
+          console.log(that.myPostListB)
           that.$message.success('Successful operation!')
         }
       })
@@ -330,6 +364,8 @@ export default {
           if(this.size){
             let that = this;
             let dataArr = [];
+            let priceArrA = [];
+            let postList = [];
             let key = 'list' + that.sizeIndex.toString()
             dataArr.push({
               size: that.size,
@@ -338,7 +374,14 @@ export default {
               quantify: that.defaultNum,
               price: that.calcPrice
             })
-            console.log(values)
+            priceArrA.push(dataArr[0].quantify * dataArr[0].price);
+            
+            if(that.totalPriceArr[that.sizeIndex]){
+              that.totalPriceArr[that.sizeIndex] = priceArrA.concat(that.totalPriceArr[that.sizeIndex])
+            }else{
+              that.totalPriceArr[that.sizeIndex] = priceArrA
+            }
+            
             if(that.mobileData[key]){
               dataArr = dataArr.concat(that.mobileData[key]);
               that.mobileData[key] = dataArr;
@@ -347,32 +390,41 @@ export default {
               that.mobileData[key] = dataArr;
               console.log(that.mobileData)
             }
+            postList.push({
+              price: that.resultData[that.sizeIndex].price,
+              number: dataArr[0].quantify,
+              printName:that.resultData[that.sizeIndex].printName,
+              printNumber:that.resultData[that.sizeIndex].printNumber,
+              size: that.size,
+              goods_id: that.resultData[that.sizeIndex].goods_id,
+              des_id: that.resultData[that.sizeIndex].des_id,
+              total_price: dataArr[0].price * dataArr[0].quantify,
+              positive_pic_url: that.resultData[that.sizeIndex].positive_pic_url,
+              back_pic_url: that.resultData[that.sizeIndex].positive_pic_url,
+              left_pic_url: that.resultData[that.sizeIndex].positive_pic_url,
+              right_pic_url: that.resultData[that.sizeIndex].positive_pic_url,
+              color: that.resultData[that.sizeIndex].color,
+              weight: that.resultData[that.sizeIndex].weight,
+              name: that.resultData[that.sizeIndex].name
+            })
+            if(that.myPostList[that.sizeIndex]){
+              that.myPostList[that.sizeIndex] = postList.concat(that.myPostList[that.sizeIndex])
+            }else{
+              that.myPostList[that.sizeIndex] = postList
+            }
+            console.log(that.myPostList)
             that.mobildvisible = false;
             that.size = '';
             that.activeIndex = -1;
             that.defaultNum = 1;
-            this.handleTotalPrice();
+            that.calcTotalPrice();
+            that.calcPostlist();
             that.$message.success('Successful operation!')
           }else{
             this.$message.error('Please Select Size!')
           }
-            
         }
       });
-      
-    },
-    handleTotalPrice(){
-      let priceArr = [];
-      this.resultData.forEach((item,index) => {
-        if(this.mobileData['list' + index]){
-          this.mobileData['list' + index].forEach((aitem,aindex) => {
-            priceArr.push(this.mobileData['list' + index][aindex].price * this.mobileData['list' + index][aindex].quantify)
-            this.totalPriceArr = priceArr;
-            console.log(this.totalPriceArr)
-            //console.log(priceArr)
-          })
-        }
-      })
     },
     choseSize(index,size){
       console.log(size);
@@ -509,27 +561,32 @@ export default {
         });
       }
       //校验尺码，名字，号码
-      for (var i = 0; i < this.arrtyAllList.length; i++) {
-        console.log(!this.arrtyAllList[i].size);
-        if (!this.arrtyAllList[i].size) {
-          this.$message.error("Please choose the size.");
-          return;
+      if(this.arrtyAllList){
+        for (var i = 0; i < this.arrtyAllList.length; i++) {
+          console.log(!this.arrtyAllList[i].size);
+          if (!this.arrtyAllList[i].size) {
+            this.$message.error("Please choose the size.");
+            return;
+          }
+          if (
+            this.arrtyAllList[i].is_print_number == 1 &&
+            !this.arrtyAllList[i].printNumber
+          ) {
+            this.$message.error("Please choose the number.");
+            return;
+          }
+          if (
+            this.arrtyAllList[i].is_print_text == 1 &&
+            !this.arrtyAllList[i].printName
+          ) {
+            this.$message.error("Please choose your name.");
+            return;
+          }
         }
-        if (
-          this.arrtyAllList[i].is_print_number == 1 &&
-          !this.arrtyAllList[i].printNumber
-        ) {
-          this.$message.error("Please choose the number.");
-          return;
-        }
-        if (
-          this.arrtyAllList[i].is_print_text == 1 &&
-          !this.arrtyAllList[i].printName
-        ) {
-          this.$message.error("Please choose your name.");
-          return;
-        }
+      }else{
+        this.$message.error("Please add at least one item!");
       }
+      
       if (this.allPrice && token) {
         const param = {
           user_order_id: this.$route.query.user_order_id,
@@ -549,6 +606,47 @@ export default {
         });
       }
     },
+    goToPay(){
+      const token = this.$ls.get(ACCESS_TOKEN);
+      if (!token) {
+        this.$error({
+          title: "Not Signed In",
+          content:
+            "You are currently not signed in, please sign-in to continue",
+          okText: "Proceed to Sign-In",
+          mask: false,
+          onOk: () => {
+            this.$router.push({
+              path: "/login",
+              query: {
+                order_id: this.$route.query.order_id
+              }
+            });
+          }
+        });
+      }else{
+        if(this.myPrice > 0){
+          const param = {
+            user_order_id: this.$route.query.user_order_id,
+            order_id: this.$route.query.order_id,
+            order_price: this.myPrice,
+            personOrderList: JSON.stringify({data:this.myPostListB}),
+            pay_mode: this.pay_mode
+          };
+          console.log(param);
+          apiPay(param).then(res => {
+            console.log(res);
+            if (res.code == 1) {
+              this.$router.push({
+                path: "/payment"
+              });
+            }
+          });
+        }else{
+          this.$message.error('Please add at least one item');
+        }
+      }
+    },
     //初始订单查询
     _apiPersonOrder() {
       apiPersonOrder({
@@ -563,11 +661,12 @@ export default {
         this.pay_mode = res.result.pay_mode;
         this.resultData = res.result.personOrderNoPrintList;
         this.detailList = res.result;
+        
         this.resultData.forEach(el => {
           this.sizes.push(el.sizes);
           this.mobileImgArr.push(el.positive_pic_url);
           this.priceArr.push(el.price)
-          console.log(this.sizes)
+          
         })
       });
     }

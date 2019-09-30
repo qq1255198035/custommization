@@ -89,7 +89,6 @@ export default {
       };
 
       sumbitOrder(param).then(res => {
-        debugger
           this.price = res.result.order_price;
           this.orderId = res.result.order_sn;
           this.userOrderId = res.result.order_id;

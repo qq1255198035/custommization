@@ -26,4 +26,14 @@ export default {
       }
 
 }
+@media screen and (max-width: 768px) and (min-width: 325px){
+      #doct1{
+            width: 14px;
+            height: 14px;
+            .circle{
+                  width: 10px;
+                  height: 10px;
+            }
+      }
+}
 </style>

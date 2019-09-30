@@ -66,11 +66,6 @@
       :fontsize="'18px'"
       :top="'20px'"
     ></commonBtn>
-    <!--<a-button
-      style="width: 100%; margin-top: 20px;height:45px"
-      icon="plus"
-      @click="newMember"
-    >添加</a-button>-->
   </div>
 </template>
 <script>

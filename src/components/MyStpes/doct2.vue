@@ -19,4 +19,11 @@
     color: #33b8b3;
   }
 }
+@media screen and (max-width: 768px) and (min-width: 325px){
+  #doct2{
+    i{
+      font-size: 10px;
+    }
+  }
+}
 </style>
