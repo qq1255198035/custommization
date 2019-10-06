@@ -64,6 +64,7 @@
           <a-button @click="textShowOne(item.id,index)" v-show="!item.opinion && !item.checked">Add Description</a-button>
           <a-button @click="textShowTwo(item.id,item.pic_id)" v-show="!item.opinion && item.checked">Save</a-button>
           <a-button @click="programmeBtn(item.id)" v-show="item.status == 0" :disabled="astatus == 2">Choose this option</a-button>
+          <a-button @click="programmeBtn(item.id)" v-show="item.status == 2">Choose this option</a-button>
           <a-button @click="programmeBtn(item.id,item.pic_id)" v-show="item.status == 1" disabled="disabled">Campaign has been selected</a-button>
         </li>
 
