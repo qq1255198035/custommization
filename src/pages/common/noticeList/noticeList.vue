@@ -15,7 +15,7 @@
                 @click="loadMore"
                 :loading="loadingMore"
                 :disabled="btnDsiable"
-              >{{$t('issuer.hdgl.loadMore')}}</a-button>
+              >Load More</a-button>
             </div>
           </a-list>
         </a-card>
@@ -38,12 +38,12 @@ import { apiNotice } from "@/api/system";
 import MyTitle from "@/components/MyTitle/MyTitle";
 import { mixinsTitle } from "@/utils/mixin.js";
 /* eslint-disable */
-import enUS from "ant-design-vue/lib/locale-provider/en_US";
-// import zhCN from "ant-design-vue/lib/locale-provider/zh_CN";
-// import zhTW from "ant-design-vue/lib/locale-provider/zh_TW";
+// import enUS from "ant-design-vue/lib/locale-provider/en_US";
+// // import zhCN from "ant-design-vue/lib/locale-provider/zh_CN";
+// // import zhTW from "ant-design-vue/lib/locale-provider/zh_TW";
 // const lang = {
-//   "zh-TW": zhTW,
-//   "zh-CN": zhCN,
+//   // "zh-TW": zhTW,
+//   // "zh-CN": zhCN,
 //   "en-US": enUS
 // };
 export default {
@@ -74,12 +74,16 @@ export default {
         pageNo: this.offset,
         pageSize: this.pages
       };
+
       apiNotice(param).then(res => {
-        console.log(res);
+        
         this.data = res.records;
         this.pages = res.pages
-        this.loading = false
+        this.loading = false;
+        console.log(this);
       });
+
+      console.log(this.data);
     },
     loadMore() {
       this.offset++;
