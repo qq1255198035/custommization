@@ -21,34 +21,28 @@
                 <a-form-item label="Email">
                   <a-input
                     size="large"
-                    type="text"
+                    type="email"
                     placeholder="Email"
-                    v-decorator="['email', {rules: [{ required: true, message: 'Please enter your mailbox' },{ type: 'email', message: 'The input is not valid E-mail!' }], validateTrigger: ['change', 'blur']}]"
+                    v-decorator="['email', {rules: [{ required: true, message: 'Please enter your email' },{ type: 'email', message: 'The input is not valid E-mail!' }], validateTrigger: ['blur']}]"
                   ></a-input>
-                  <div v-if="formShow" class="font-splic">
-                    <span>
-                      <a-icon type="close-circle" />
-                    </span>
-                    <span>{{emailText}}</span>
-                  </div>
                 </a-form-item>
                 <a-row :gutter="12">
                   <a-col :span="12">
-                    <a-form-item label="Surname">
+                    <a-form-item label="First Name">
                       <a-input
                         size="large"
                         type="text"
-                        placeholder="Surname"
+                        placeholder="First Name"
                         v-decorator="['surname', {rules: [{ required: true, message: 'Surname' }], validateTrigger: ['change', 'blur']}]"
                       ></a-input>
                     </a-form-item>
                   </a-col>
                   <a-col :span="12">
-                    <a-form-item label="Name">
+                    <a-form-item label="Last Name">
                       <a-input
                         size="large"
                         type="text"
-                        placeholder="Name"
+                        placeholder="Last Name"
                         v-decorator="['monicker', {rules: [{ required: true, message: 'Name' }], validateTrigger: ['change', 'blur']}]"
                       ></a-input>
                     </a-form-item>
@@ -100,12 +94,12 @@
                 </a-form-item>
                 <a-row :gutter="16" type="flex" align="bottom" style="align-items: center;">
                   <a-col class="gutter-row" :span="16">
-                    <a-form-item label="Verification code">
+                    <a-form-item label="Verify code">
                       <a-input
                         size="large"
                         type="text"
-                        placeholder="Verification code"
-                        v-decorator="['captcha', {rules: [{ required: true, message: 'Verification code' }], validateTrigger: 'blur'}]"
+                        placeholder="Verify code"
+                        v-decorator="['captcha', {rules: [{ required: true, message: 'Verification code' }]}]"
                       >
                         <a-icon slot="prefix" type="mail" :style="{ color: 'rgba(0,0,0,.25)' }" />
                       </a-input>
@@ -119,7 +113,7 @@
                       :disabled="state.smsSendBtn"
                       @click.stop.prevent="getCaptcha"
                       v-text="(state.time+' s')"
-                    >Get verification code</a-button>
+                    ></a-button>
                     <a-button
                       v-if="!state.smsSendBtn"
                       class="getCaptcha"
@@ -127,7 +121,7 @@
                       :disabled="state.smsSendBtn"
                       @click.stop.prevent="getCaptcha"
                       v-text="getCode"
-                    >Get verification code</a-button>
+                    ></a-button>
                   </a-col>
                 </a-row>
 
@@ -177,12 +171,7 @@
                   >
                     <a-icon slot="prefix" type="mail" style="color:#33b8b3;font-size: 15px;"/>
                   </a-input>
-                  <div v-if="formShow" class="font-splic">
-                    <span>
-                      <a-icon type="close-circle" />
-                    </span>
-                    <span>{{emailText}}</span>
-                  </div>
+                  
                 </a-form-item>
                 <a-row type="flex" >
                   <a-col class="gutter-row" :span="24">
@@ -192,7 +181,7 @@
                         size="large"
                         type="text"
                         placeholder="Verification code"
-                        v-decorator="['captcha', {rules: [{ required: true, message: 'Verification code' }], validateTrigger: 'blur'}]"
+                        v-decorator="['captcha', {rules: [{ required: true, message: 'Verification code' }]}]"
                       >
                         <a-icon slot="prefix" type="key" style="color:#33b8b3;font-size: 15px;" />
                       </a-input>
@@ -342,7 +331,7 @@ export default {
         }
       ],
       formShow: false,
-      emailText: "",
+      emailText: "Please enter your email",
       itemTitle: "Register",
       registerBtn: false,
       customActiveKey: "tab1",
@@ -443,13 +432,13 @@ export default {
     register() {
       this.registerActor("/sys/user/register");
     },
-    goRegister() {
-      if (!this.activeIndex) {
-        this.$message.error("ee");
-      } else {
-        this.current = "1";
-      }
-    },
+    // goRegister() {
+    //   if (!this.activeIndex) {
+    //     this.$message.error("ee");
+    //   } else {
+    //     this.current = "1";
+    //   }
+    // },
     registerActor(api) {
       const {
         form: { validateFields },
@@ -489,8 +478,8 @@ export default {
       } = this;
       validateFields(["email"], { force: true }, (err, values) => {
         if (!err) {
-          //state.smsSendBtn = true;
-          const interval = window.setInterval(() => {
+          if(values.email){
+            const interval = window.setInterval(() => {
             if (state.time-- <= 0) {
               state.time = 60;
               state.smsSendBtn = false;
@@ -504,7 +493,7 @@ export default {
           })
             .then(res => {
               if (res.code == 500) {
-                (this.formShow = true), (this.emailText = res.message);
+                this.formShow = true;
               }
               if (res.status == 200) {
                 //setTimeout(hide, 1);
@@ -529,6 +518,10 @@ export default {
               state.smsSendBtn = false;
               this.requestFailed(err);
             });
+          }else{
+            this.$message.error('Please enter your email!')
+          }
+          
         }
       });
     },

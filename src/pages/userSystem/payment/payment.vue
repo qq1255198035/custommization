@@ -245,6 +245,7 @@
               </a-radio-group>
             </dd>
           </dl>
+          <!-- pay_mode == 2 -->
           <div v-if="pay_mode == 2">
             <ul class="pay-list">
               <li>
@@ -288,17 +289,21 @@
                 </a-row>
               </li>
             </ul>
-            
           </div>
-          
         </div>
       </div>
-      <div class="total-price">
+      <div class="total-price" v-if="false">
         <p>
           Total Amount: $ {{pricess.all_price}}
         </p>
         <a-button type="primary" @click="payBtn">Pay Now</a-button>
-    </div>
+      </div>
+      <div class="total-price" v-if="true">
+        <p>
+          Total Amount: $ {{pricess.all_price}}
+        </p>
+        <a-button type="primary" @click="payBtnOrder">Submit Order</a-button>
+      </div>
     </div>
   </div>
 </template>
@@ -717,6 +722,8 @@ export default {
 @media screen and (max-width: 768px) and (min-width: 325px){
   #PayMent{
     height: 100%;
+    width: 100%;
+    overflow-x: hidden;
     .total-price{
       position: fixed;
       bottom: 0;

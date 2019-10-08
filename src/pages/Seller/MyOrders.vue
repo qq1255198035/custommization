@@ -125,35 +125,35 @@
           <ul class="perInfo">
             <li>
               Consignee:
-              <span>{{ data.mapAddress.userName}}</span>
+              <span>{{ mydata.mapAddress.userName }}</span>
             </li>
             <li>
               Zip code:
-              <span>{{ data.mapAddress.postalCode}}</span>
+              <span>{{ mydata.mapAddress.postalCode }}</span>
             </li>
             <li>
               Phone:
-              <span>{{ data.mapAddress.telNumber}}</span>
+              <span>{{ mydata.mapAddress.telNumber }}</span>
             </li>
             <li>
               Delivery address:
-              <span>{{ data.mapAddress.address}}</span>
+              <span>{{ mydata.mapAddress.address }}</span>
             </li>
           </ul>
           <h3>Logistics track</h3>
           <ul class="perInfo">
             <li>
               Logistics company：
-              <span>{{ data.mapExpressage.itemText}}</span>
+              <span>{{ mydata.mapExpressage.itemText}}</span>
             </li>
             <li>
               Shipping number：
-              <span>{{ data.mapExpressage.shippingNo}}</span>
+              <span>{{ mydata.mapExpressage.shippingNo}}</span>
             </li>
           </ul>
           <ul class="logistics-info">
             
-            <li v-for="(item,index) in data.logisticsList" :key="index">
+            <li v-for="(item,index) in mydata.logisticsList" :key="index">
               {{item.createdAt}}  {{item.tag}} {{item.location}}  {{item.message}}  
             </li>
             
@@ -165,7 +165,7 @@
       :visible="openShare"
       :footer="null"
       @cancel="closeShareBox"
-      title="Share to a Friend"
+      title="Share"
       :centered="true"
     >
       <div class="share-box1">
@@ -212,7 +212,7 @@ export default {
   },
   data() {
     return {
-        shareText: '',
+      shareText: '',
       hidemenu: false,
       id: "",
       orderStatus: "",
@@ -242,7 +242,7 @@ export default {
           scopedSlots: { customRender: "status" }
         }
       ],
-      data: {} ,
+      mydata: {} ,
       infoList: [],
       openShare: false,
       config: {
@@ -294,8 +294,10 @@ export default {
     },
     getTrackingData(id) {
       getTrackingData(id).then(res =>{
-        if(res.code == "0") {
-          this.data = res.result;
+        if(res.code == 0) {
+          console.log(res.result)
+          this.mydata = res.result;
+          console.log(this.mydata.mapAddress)
         }
       });
     },

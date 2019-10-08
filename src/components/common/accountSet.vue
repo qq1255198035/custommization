@@ -14,26 +14,26 @@
 
             <a-row :gutter="32">
               <a-col :span="12">
-                <a-form-item label="Surname">
+                <a-form-item label="First name">
                   <a-input
-                    placeholder="Surname"
-                    v-decorator="['surname',{rules: [{ required: true, message: 'Surname' }]}]"
+                    placeholder="First name"
+                    v-decorator="['surname',{rules: [{ required: true, message: 'First name' }]}]"
                   />
                 </a-form-item>
               </a-col>
               <a-col :span="12">
-                <a-form-item label="Name">
+                <a-form-item label="Last name">
                   <a-input
-                    placeholder="Name"
-                    v-decorator="['monicker',{rules: [{ required: true, message: 'Name' }]}]"
+                    placeholder="Last name"
+                    v-decorator="['monicker',{rules: [{ required: true, message: 'Last name' }]}]"
                   />
                 </a-form-item>
               </a-col>
             </a-row>
-            <a-form-item label="Personal profile">
+            <a-form-item label="Bio">
               <a-input
-                placeholder="Personal profile"
-                v-decorator="['company',{rules: [{ required: true, message: 'Personal profile' }]}]"
+                placeholder="Bio"
+                v-decorator="['company',{rules: [{ required: true, message: 'Bio' }]}]"
               />
             </a-form-item>
 
@@ -51,7 +51,7 @@
             </a-form-item>
             <a-row :gutter="32">
               <a-col :span="12">
-                <a-form-item label="Province where">
+                <a-form-item label="Address">
                   <div class>
                     <a-select
                       @change="onProvince"
@@ -86,28 +86,26 @@
               </a-col>
             </a-row>
 
-            <a-form-item label="Street address">
+            <a-form-item label="Street">
               <a-input
-                placeholder="Street address"
+                placeholder="Street"
                 :autosize="{ minRows: 6 }"
-                v-decorator="['streetName',{rules: [{ required: true, message: 'Street address' }]}]"
+                v-decorator="['streetName',{rules: [{ required: true, message: 'Street' }]}]"
               />
             </a-form-item>
             <a-input-group compact>
-              <a-form-item label="Telephone">
+              <a-form-item label="Phone number">
                 <a-row :gutter="32">
                   <a-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
                     <a-input
-
                       placeholder="86"
                       v-decorator="['phoneName1',{rules: [{ required: true, message: '' }]}]"
                     />
                   </a-col>
                   <a-col :xs="20" :sm="20" :md="20" :lg="20" :xl="20">
                     <a-input
-
-                      placeholder="Telephone number"
-                      v-decorator="['phoneName2',{rules: [{ required: true, message: 'Telephone number' }]}]"
+                      placeholder="Phone number"
+                      v-decorator="['phoneName2',{rules: [{ required: true, message: 'Phone number' }]}]"
                     />
                   </a-col>
                 </a-row>
@@ -153,7 +151,7 @@
           :icon="'upload'"
           @submitPerson="submitPerson"
           :width="'100%'"
-          :title="'To Update'"
+          :title="'Update'"
           :height="'45px'"
           :padding="'10px'"
           :radio="'12px'"

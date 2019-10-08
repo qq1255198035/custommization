@@ -4,14 +4,8 @@ import BlankLayout from "@/layouts/BlankLayout.vue";
 const routes = [
       {
             path: "/",
-            name: "index",
+            name: "myindex",
             redirect: "/home",
-      },
-
-      {
-            path: "/design",
-            name: "design",
-            component: () => import("@/pages/Seller/Design")
       },
       {
             path: "/basic",
@@ -41,39 +35,6 @@ const routes = [
                         component: () => import("@/pages/Website/About"),
                         meta: {
 
-                        }
-                  },
-                  {
-                        path: "/test",
-                        name: "test",
-                        component: () => import("@/pages/Website/test"),
-                        meta: {
-                              
-                        }
-                  },
-                  {
-                        path: "/test2",
-                        name: "test2",
-                        component: () => import("@/pages/Website/test2"),
-                        meta: {
-                              
-                        }
-                  },
-                  {
-                        path: "/swiper",
-                        name: "swiper",
-                        component: () => import("@/pages/Website/Swiper"),
-                        meta: {
-                              
-                        }
-                  },
-                  
-                  {
-                        path: "/comtest",
-                        name: "comtest",
-                        component: () => import("@/pages/Website/comtest"),
-                        meta: {
-                              
                         }
                   }
             ],

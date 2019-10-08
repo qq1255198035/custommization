@@ -15,7 +15,7 @@
       <ul>
         <li>
           <p>
-            <span>Founder：</span>
+            <span>Order number:</span>
             {{ contact }}
           </p>
           <p>
@@ -25,7 +25,7 @@
         </li>
         <li>
           <p>
-            <span>Add Notes：</span>
+            <span>Note：</span>
             {{ introduction }}
           </p>
         </li>

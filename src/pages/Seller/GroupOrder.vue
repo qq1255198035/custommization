@@ -17,7 +17,7 @@
         <a-radio-group defaultValue="9" style="margin-left: 10px;" @change="changeStatus">
           <a-radio-button value="9">All Orders</a-radio-button>
           <a-radio-button value="2">Paid</a-radio-button>
-          <a-radio-button value="0">To Be Paid</a-radio-button>
+          <a-radio-button value="0">Pending</a-radio-button>
         </a-radio-group>
       </li>
       <li>

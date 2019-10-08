@@ -1,37 +1,18 @@
 <template>
   <div id="SellerLayout">
-    <div class="content">
+    <div class="content" v-if="mobileShow">
       <a-row type="flex" justify="space-between" align="top" style="min-height: 100%;height: 100%;">
         <a-col :span="6" style="height: 100%;">
           <div class="left-menu" ref="left">
             <My-Header :showNav="false"></My-Header>
             <div class="menu-scroll">
-              <a-drawer
-              style="margin-top: 50px;"
-              v-if="isMobile()"
-              placement="left"
-              :wrapClassName="`drawer-sider ${navTheme}`"
-              :closable="false"
-              :visible="collapsed"
-              @close="drawerClose"
-            >
               <side-menu
                 mode="inline"
                 :menus="menus"
                 :theme="navTheme"
-                :collapsed="false"
+                :collapsed="collapsed"
                 :collapsible="true"
               ></side-menu>
-            </a-drawer>
-
-            <side-menu
-              v-else-if="isSideMenu()"
-              mode="inline"
-              :menus="menus"
-              :theme="navTheme"
-              :collapsed="collapsed"
-              :collapsible="true"
-            ></side-menu>
             </div>
             
           </div>
@@ -49,37 +30,37 @@
         </a-col>
       </a-row>
     </div>
-    <!-- SideMenu -->
-
-    <!-- Setting Drawer (show in development mode) -->
-    <!-- <setting-drawer v-if="!production"></setting-drawer> -->
+    <div v-else class="mobile-box">
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
 <script>
-import { triggerWindowResizeEvent } from "@/utils/util";
+
 import { mapState, mapActions } from "vuex";
 import MyHeader from "@/components/Header/Header";
-import { mixin, mixinDevice } from "@/utils/mixin";
+
 //import config from "@/config/defaultSettings";
 import User from "@/components/Header/User";
 //import RouteView from "./RouteView";
 import SideMenu from "@/components/Menu/SideMenu";
 
 export default {
-  name: "BasicLayout",
-  mixins: [mixin, mixinDevice],
+ 
   components: {
     SideMenu,
     MyHeader,
-    User
+    User,
+    
   },
   data() {
     return {
       //production: config.production,
       collapsed: false,
       menus: [],
-      navTheme: 'light'
+      navTheme: 'light',
+      mobileShow: false
     };
   },
   computed: {
@@ -87,20 +68,9 @@ export default {
       // 动态主路由
       mainMenu: state => state.permission.addRouters
     }),
-    contentPaddingLeft() {
-      if (!this.fixSidebar || this.isMobile()) {
-        return "0";
-      }
-      if (this.sidebarOpened) {
-        return "256px";
-      }
-      return "80px";
-    }
+    
   },
   watch: {
-    sidebarOpened(val) {
-      this.collapsed = !val;
-    }
   },
   created() {
     console.log(this.mainMenu);
@@ -108,6 +78,7 @@ export default {
     this.menus = this.mainMenu.find(item => item.path === "/").children;
     console.log(this.menus);
     this.collapsed = !this.sidebarOpened;
+    this.getWindowScreen();
   },
   mounted() {
     const userAgent = navigator.userAgent;
@@ -119,31 +90,19 @@ export default {
         }, 16);
       });
     }
+    
   },
   methods: {
     ...mapActions(["setSidebar"]),
-    toggle() {
-      this.collapsed = !this.collapsed;
-      this.setSidebar(!this.collapsed);
-      triggerWindowResizeEvent();
-    },
-    paddingCalc() {
-      let left = "";
-      if (this.sidebarOpened) {
-        left = this.isDesktop() ? "256px" : "80px";
-      } else {
-        left = (this.isMobile() && "0") || ((this.fixSidebar && "80px") || "0");
-      }
-      return left;
-    },
-    menuSelect() {
-      if (!this.isDesktop()) {
-        this.collapsed = false;
+    getWindowScreen(){
+      let screenWidths = window.screen.width;
+      console.log(screenWidths)
+      if(screenWidths > 768){
+        this.mobileShow = true;
+      }else{
+        this.mobileShow = false;
       }
     },
-    drawerClose() {
-      this.collapsed = false;
-    }
   }
 };
 </script>
@@ -212,5 +171,17 @@ export default {
 .page-transition-leave-active .page-transition-container {
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
+}
+@media screen and (max-width: 768px) and (min-width: 325px){
+  #SellerLayout {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    .mobile-box{
+      width: 100%;
+      height: 100%;
+      overflow-x: hidden;
+    }
+  }
 }
 </style>

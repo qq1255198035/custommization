@@ -3,7 +3,7 @@
     <div v-for="items in orderArr" :key="items.id">
       <div class="order-title">
         <p>
-          <span>Order ID:{{items.orderSn}}</span>
+          <span>Order number:{{items.orderSn}}</span>
           <span>Order time: {{items.createTime}}</span>
           <span>Order Deadline： {{items.payEndDate}}</span>
           <span>Status：{{items.orderStatus | statusFilter1}}</span>
@@ -52,7 +52,7 @@
       :visible="openShare"
       :footer="null"
       @cancel="closeShareBox"
-      title="Share to a Friend"
+      title="Share"
       :centered="true"
     >
       <div class="share-box1">

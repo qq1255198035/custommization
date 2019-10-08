@@ -1,12 +1,12 @@
 <template>
   <div class="shares">
-    <div class="share-boxs">
+    <div class="share-boxs" v-if="mobileShow">
       <header>
         <router-link :to="{name:'index'}">
           <p class="icon-logotxt"></p>
         </router-link>
         <p>
-          <User></User>
+          <User :bellcolor="'#fff'" :usercolor="'#fff'"></User>
         </p>
       </header>
       <a-row>
@@ -47,6 +47,48 @@
         <a-col :span="2"></a-col>
       </a-row>
     </div>
+    <div class="mobile-box-payment" v-else>
+      <div class="mobile-title">
+        <h1>
+          <a-icon type="left" />
+          Order Fetails
+        </h1>
+      </div>
+      <stpes-mobile :mycurrent="step" style="padding: 20px 10px;">
+        <p slot="p1">Select Size</p>
+        <p slot="p2">Please Confirm Payment</p>
+        <p slot="p3">Waiting To Start Group Order</p>
+        <p slot="p4">Completed</p>
+      </stpes-mobile>
+      <div class="content">
+        <div class="title">
+          <span>
+            <a-icon type="smile" theme="filled"/>
+          </span>
+          <div>
+            <h3>Payment Successful !</h3>
+            <p>Thank you for your payment.</p>
+          </div>
+        </div>
+        <div class="white-bg">
+          <div class="desc">
+            <div class="border"></div>
+            <div class="bg">
+              <h1>${{price}}</h1>
+              <div class="pay-detail">
+                <p>Order No: {{orderId}}</p>
+              </div>
+              <div class="pay-btn">
+                <a-button class="buy-again" @click="alginBtn">Buy Again</a-button>
+                <a-button class="back" @click="backBtn">Back</a-button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -54,9 +96,9 @@
 import { sumbitOrder } from "@/api/system";
 import MyStpes from "@/components/MyStpes/MyStpes";
 import User from "@/components/Header/User";
+import stpesMobile from "@/components/MyPrimaryStpes/stpesMobile";
 //import { paypalSellerBack } from "@/api/seller";
 export default {
-  props: {},
   data() {
     return {
       order_ids: "",
@@ -65,12 +107,14 @@ export default {
       value: 1,
       price: "",
       orderId: "",
-      orderAgain: ""
+      orderAgain: "",
+      mobileShow: false
     };
   },
   computed: {},
   created() {
     this._sumbitOrder();
+    this.getWindowScreen();
     //this._status();
 
     //this.config.url = 'localhost:3000/#/sellerShare' + '?order_id='+this.userOrderId
@@ -78,6 +122,15 @@ export default {
   mounted() {},
   watch: {},
   methods: {
+    getWindowScreen(){
+      let screenWidths = window.screen.width;
+      console.log(screenWidths)
+      if(screenWidths > 768){
+        this.mobileShow = true;
+      }else{
+        this.mobileShow = false;
+      }
+    },
     backBtn() {
       this.$router.push({
         path: "/index"
@@ -106,7 +159,8 @@ export default {
   },
   components: {
     MyStpes,
-    User
+    User,
+    stpesMobile
   }
 };
 </script>
@@ -200,5 +254,75 @@ export default {
       }
     }
   }
+}
+@media screen and (max-width: 768px) and (min-width: 325px){
+  .shares{
+    height: 100%;
+    .mobile-box-payment{
+      height: 100%;
+      width: 100%;
+      overflow-x: hidden;
+      .mobile-title{
+        border-bottom: 1px solid #fff;
+        position: relative;
+        h1{
+          padding: 10px 20px;
+          width: calc(57% + 40px);
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-size: 16px;
+          color: #fff;
+          text-align: center;
+          margin: 0;
+        }
+      }
+      .content{
+        height: calc(100% - 265px);
+        margin-top: 0;
+        .title{
+          align-items: center;
+          h3{
+            font-size: 14px;
+            margin: 0;
+          }
+          p{
+            font-size: 12px;
+          }
+        }
+        .white-bg{
+          width: 100%;
+          height: 100%;
+          background-color: #fff;
+          position: relative;
+          margin-top: 40px;
+          .desc{
+            width: 100%;
+            padding: 0 20px;
+            position: absolute;
+            top: -40px;
+            
+            .bg{
+              box-shadow: 2px 3px 4px rgba(0, 0, 0, 0.4);
+              h1{
+                font-size: 16px;
+                color: #33b8b3;
+              }
+              .pay-detail{
+                p{
+                  font-size: 14px;
+                }
+              }
+              .pay-btn{
+                width: 100%;
+              }
+            }
+          }
+        }
+        
+      }
+    }
+  }
+  
 }
 </style>

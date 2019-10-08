@@ -306,7 +306,7 @@ export default {
     },
     requestFailed(err) {
       this.$notification["error"]({
-        message: "the error message",
+        message: "The error message",
         description: ((err.response || {}).data || {}).message || "the error message",
         duration: 4
       });

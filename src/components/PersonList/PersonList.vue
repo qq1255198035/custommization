@@ -5,7 +5,7 @@
         <a-radio-group @change="onChange" v-model="value">
           <a-radio-button value="">All Orders</a-radio-button>
           <a-radio-button value="2">Paid Quantity</a-radio-button>
-          <a-radio-button value="0">To Be Paid</a-radio-button>
+          <a-radio-button value="0">Pending</a-radio-button>
         </a-radio-group>
       </div>
       <div class="right">
@@ -61,7 +61,7 @@
                 <img :src="items.positive_pic_url" alt />
               </div>-->
               <img :src="items.positive_pic_url" alt />
-              <div class>
+              <div>
                 <h3 style="color:#33b8b3">{{items.name}}</h3>
                 <div class="desc">
                   <p>COLOR：{{items.color}}</p>
@@ -143,24 +143,6 @@ export default {
         case 3:
           return "Refunded";
       }
-      /*switch (data) {
-        case 0:
-          return "Awaiting for Payment";
-        case 101:
-          return "订单已Cancel";
-        case 102:
-          return "订单已删除";
-        case 201:
-          return "订单已付款";
-        case 300:
-          return "订单已发货";
-        case 301:
-          return "用户确认收货";
-        case 401:
-          return "退款";
-        case 402:
-          return "完成";
-      }*/
     }
   },
   methods: {

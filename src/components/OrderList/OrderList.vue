@@ -4,7 +4,6 @@
                   <a-col :span="8" v-for="item in orderList" :key="item.id">
                         <div class="order-item">
                               <div style="height:330px"><img :src="item.topic_url" alt=""></div>
-                              
                               <div class="desc">
                                     <p>
                                           <span style="color: #33b8b3;font-size: 18px; min-height: 27px;">{{item.topic}}</span>

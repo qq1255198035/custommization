@@ -14,7 +14,7 @@
       :visible="openShare"
       :footer="null"
       @cancel="closeShareBox"
-      title="Share to a Friend"
+      title="Share"
       :centered="true"
     >
       <div class="share-box1">

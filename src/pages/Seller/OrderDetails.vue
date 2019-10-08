@@ -107,7 +107,7 @@
               </li>
               <li>
                 <h3>
-                  Select Payment Cutoff Date
+                  Select psayment due Date
                   <!-- <span>描述1313213213213232</span> -->
                 </h3>
                 <a-form-item
@@ -237,10 +237,10 @@
                 v-decorator="['phonesome',{rules: [{ required: true, message: 'Please Fill In Conact Person' }]}]"
               />
             </a-form-item>
-            <a-form-item label="Telephone Number：">
+            <a-form-item label="Phone number：">
               <a-input
                 type="tel"
-                v-decorator="['tel',{rules: [{ required: true, message: 'Please Fill In Telephone Number' }]}]"
+                v-decorator="['tel',{rules: [{ required: true, message: 'Please Fill In Phone number' }]}]"
               />
             </a-form-item>
           </a-form>

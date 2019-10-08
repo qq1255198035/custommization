@@ -1,6 +1,6 @@
 <template>
   <div>
-     <s-menu
+    <s-menu
       :collapsed="true"
       :menu="menus"
       :theme="theme"

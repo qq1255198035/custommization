@@ -1,6 +1,5 @@
 <template>
     <div id="BlankLayout">
-        
         <router-view></router-view>
     </div>
 </template>
