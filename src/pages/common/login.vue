@@ -36,7 +36,7 @@
               </a-form-item>
               <a-form-item>
                 <p class="auto-login">
-                  <a-checkbox @change="onChange" :checked="formLogin.rememberMe">Automatic logon</a-checkbox>
+                  <a-checkbox @change="onChange" :checked="formLogin.rememberMe">Automatic login</a-checkbox>
                 </p>
                 <div class="forget">
                   <router-link class="register" :to="{ name: 'passwordSet' }">
@@ -65,7 +65,7 @@
 
               <div class="user-login-other">
                 <router-link class="register" :to="{ path: '/register' }">
-                  <span class="font-18">Registered accounts</span>
+                  <span class="font-18">Register</span>
                 </router-link>
               </div>
             </a-form>
@@ -135,7 +135,7 @@
               </div>
               <a-form-item style="margin-top: 30px;">
                 <p class="auto-login">
-                  <a-checkbox @change="onChange" :checked="formLogin.rememberMe" style="color: #fff;">Automatic logon</a-checkbox>
+                  <a-checkbox @change="onChange" :checked="formLogin.rememberMe" style="color: #fff;">Automatic login</a-checkbox>
                 </p>
                 <div class="forget">
                   <router-link class="register" :to="{ name: 'passwordSet' }">

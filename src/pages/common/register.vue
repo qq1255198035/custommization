@@ -99,7 +99,7 @@
                         size="large"
                         type="text"
                         placeholder="Verify code"
-                        v-decorator="['captcha', {rules: [{ required: true, message: 'Verification code' }]}]"
+                        v-decorator="['captcha', {rules: [{ required: true, message: 'verify code' }]}]"
                       >
                         <a-icon slot="prefix" type="mail" :style="{ color: 'rgba(0,0,0,.25)' }" />
                       </a-input>
@@ -180,8 +180,8 @@
                         style="width: 50%;"
                         size="large"
                         type="text"
-                        placeholder="Verification code"
-                        v-decorator="['captcha', {rules: [{ required: true, message: 'Verification code' }]}]"
+                        placeholder="verify code"
+                        v-decorator="['captcha', {rules: [{ required: true, message: 'verify code' }]}]"
                       >
                         <a-icon slot="prefix" type="key" style="color:#33b8b3;font-size: 15px;" />
                       </a-input>
@@ -338,7 +338,7 @@ export default {
       loginBtn: false,
       // login type: 0 email, 1 username, 2 telephone
       loginType: 0,
-      getCode: "Get Verification Code",
+      getCode: "Get verify code",
       // stepCaptchaVisible: false,
       form: this.$form.createForm(this),
       state: {

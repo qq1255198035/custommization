@@ -28,7 +28,7 @@
       <ul>
         <li>
           <p>
-            <span>Founder：</span>
+            <span>Order number：</span>
             {{ contact }}
           </p>
           <p>
@@ -38,7 +38,7 @@
         </li>
         <li>
           <p>
-            <span>Add Notes：</span>
+            <span>Note：</span>
             {{ introduction }}
           </p>
         </li>
@@ -144,11 +144,11 @@
           <ul class="perInfo">
             <li>
               Logistics company：
-              <span>{{ mydata.mapExpressage.itemText}}</span>
+              <span>{{ mydata.mapExpressage.itemText ? mydata.mapExpressage.itemText : ''}}</span>
             </li>
             <li>
               Shipping number：
-              <span>{{ mydata.mapExpressage.shippingNo}}</span>
+              <span>{{ mydata.mapExpressage.shippingNo ? mydata.mapExpressage.shippingNo : ''}}</span>
             </li>
           </ul>
           <ul class="logistics-info">
@@ -242,7 +242,11 @@ export default {
           scopedSlots: { customRender: "status" }
         }
       ],
-      mydata: {} ,
+      mydata: {
+        logisticsList: [],
+        mapAddress:{},
+        mapExpressage:{}
+      },
       infoList: [],
       openShare: false,
       config: {
@@ -296,8 +300,11 @@ export default {
       getTrackingData(id).then(res =>{
         if(res.code == 0) {
           console.log(res.result)
-          this.mydata = res.result;
-          console.log(this.mydata.mapAddress)
+          this.mydata.logisticsList = res.result.logisticsList;
+          this.mydata.mapAddress = res.result.mapAddress;
+          this.mydata.mapExpressage = res.result.mapExpressage ? res.result.mapExpressage : {};
+          console.log(this.mydata.mapAddress.userName)
+          console.log(this.mydata)
         }
       });
     },

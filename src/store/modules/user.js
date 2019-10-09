@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import { login } from '@/api/login'
-import { ACCESS_TOKEN } from '@/store/mutation-types'
+import { ACCESS_TOKEN,USER_AUTH,SYS_BUTTON_AUTH } from '@/store/mutation-types'
 
 import { loadLanguageAsync } from '@/lang'
 import { getRouterByUser } from '@/utils/routerUtil'
@@ -8,7 +8,7 @@ const user = {
   state: {
     token: '',
     name: '',
-    
+  
     avatar: '',
     roles: [],
     info: {},
@@ -36,6 +36,7 @@ const user = {
     SET_LANG: (state, lang) => {
       state.lang = lang
     }
+    
   },
 
   actions: {
@@ -66,12 +67,16 @@ const user = {
       return new Promise((resolve, reject) => {
         getRouterByUser().then(res => {
           const result = res.result.menu
+          const authData = res.result.auth;
+          const allAuthData = res.result.allAuth;
+          sessionStorage.setItem(USER_AUTH,JSON.stringify(authData));
+          sessionStorage.setItem(SYS_BUTTON_AUTH,JSON.stringify(allAuthData));
           commit('SET_ROLES', result)
           resolve(res.result.menu)
         }).catch(err => {
           reject(err)
         })
-      
+        
       })
     },
 

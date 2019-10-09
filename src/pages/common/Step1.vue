@@ -7,13 +7,13 @@
           v-decorator="['email',{rules: [{ required: true, message: 'Email' }]}]"
         />
       </a-form-item>
-      <a-form-item label="Verification Code" :labelCol="{span: 6}" :wrapperCol="{span: 18}">
+      <a-form-item label="Verify code" :labelCol="{span: 6}" :wrapperCol="{span: 18}">
         <a-row :gutter="32">
           <a-col :span="16">
             <a-input
               size="large"
               type="text"
-              placeholder="Verification Code"
+              placeholder="verify code"
               v-model="captcha"
             >
               <a-icon slot="prefix" type="mail" :style="{ color: 'rgba(0,0,0,.25)' }" />
@@ -71,8 +71,8 @@ export default {
             }
             if (res.code == 300) {
               this.$notification["warn"]({
-                message: "Verification code is still valid",
-                description: "Verification code is still valid within 10 minutes",
+                message: "Verify code is still valid",
+                description: "Verify code is still valid within 10 minutes",
                 duration: 4
               });
             }
@@ -98,7 +98,7 @@ export default {
               })
               //
             }else{
-              this.$message.error('Please fill in the verification code!')
+              this.$message.error('Please fill in the verify code!')
             }
             
           }

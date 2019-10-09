@@ -51,6 +51,9 @@
                 <a-menu-item v-for="(aitem,index) in item.listMap" :key="index">
                   <a href="javascript:;" @click="viewDesignCase(aitem.id,aitem.status)">设计方案{{index + 1}}</a>
                 </a-menu-item>
+                <a-menu-item>
+                  <a href="javascript:;">暂无数据</a>
+                </a-menu-item>
               </a-menu>
             </a-dropdown>
           </div>

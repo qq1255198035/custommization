@@ -70,16 +70,16 @@
               更多 <a-icon type="down"/>
             </a>
             <a-menu slot="overlay">
-              <a-menu-item>
+              <a-menu-item v-has="'user:start'" v-if="record.designStatus == 1">
                 <a href="javascript:;" @click="startToDesign(record.id)">开始设计</a>
               </a-menu-item>
               <a-menu-item>
                 <a href="javascript:;" @click="$router.push({path:'/specification',query:{orderId: record.id}})">设计需求</a>
               </a-menu-item>
-              <a-menu-item>
+              <a-menu-item v-has="'user:send'" v-if="record.designStatus == 3">
                 <a href="javascript:;" @click="sendExample(record.id)">发送样稿</a>
               </a-menu-item>
-              <a-menu-item>
+              <a-menu-item v-has="'user:confirm'" v-if="record.designStatus == 5">
                 <a href="javascript:;" @click="confirmSend(record.id)">确认发货</a>
               </a-menu-item>
             </a-menu>

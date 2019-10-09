@@ -9,8 +9,8 @@
                         <nav class="txtRight">
                               <router-link to="/home" class="anav a" :class="{'nav': $route.name == 'home'}">Home</router-link>
                               <router-link to="/products" class="anav a" :class="{'nav': $route.name == 'products'}">Products</router-link>
-                              <router-link to="/about" class="anav a" :class="{'nav': $route.name == 'about'}">About Us</router-link>
                               <router-link to="/register" class="anav a">Become A Seller</router-link>
+                              <router-link to="/about" class="anav a" :class="{'nav': $route.name == 'about'}">About Us</router-link>
                         </nav>
                         </a-col>
                   </a-row>

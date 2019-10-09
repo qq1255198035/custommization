@@ -39,8 +39,10 @@ import {
   Popconfirm,
   Tree,
   Tooltip,
-  Spin
+  Spin,
+  TreeSelect
 } from "ant-design-vue";
+Vue.use(TreeSelect);
 Vue.use(Alert);
 Vue.use(Button);
 Vue.use(Card);

@@ -168,11 +168,15 @@
   import {addPermission,editPermission,queryTreeList} from '@/api/api'
   import Icons from './icon/Icons'
   import pick from 'lodash.pick'
-
-
+  import JDictSelectTag from '@/components/dict/JDictSelectTag.vue'
+  
   export default {
     name: "PermissionModal",
-    components: {Icons},
+    components: {
+      Icons,
+      JDictSelectTag,
+     
+    },
     data () {
       return {
         drawerWidth:700,
@@ -206,6 +210,7 @@
         validateStatus:""
       }
     },
+    
     computed:{
       validatorRules:function() {
         return {

@@ -75,7 +75,7 @@ import commonBtn from "@/components/commonBtn/commonBtn";
 import HideMenu from "@/components/HideMenu/HideMenu";
 const statusMap = {
   "1": {
-    text: "To Be Confirmed"
+    text: "To Be Confirme"
   },
   "2": {
     text: "Confirmed"

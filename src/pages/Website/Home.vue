@@ -281,10 +281,10 @@
                 </a-col>
                 <a-col :span="8" class="tckCenter">
                     <h3>QUICK LINK</h3>
-                    <a href="">Home</a>
-                    <a href="">Products</a>
-                    <a href="">About Us</a>
-                    <a href="">Become A Seller</a>
+                    <router-link to="/home">Home</router-link>
+                    <router-link to="/products">Products</router-link>
+                    <router-link to="/register">Become A Seller</router-link>
+                    <router-link to="/about">About Us</router-link>
                 </a-col>
                 <a-col :span="8" class="tckRight">                
                         <h3>QUICK CONTACT</h3>

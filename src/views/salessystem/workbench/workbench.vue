@@ -5,7 +5,7 @@
       <p>欢迎来到The Custom King 管理平台！</p>
       <p>
         <router-link to="/OrderManagement">订单管理</router-link>
-        <router-link to="/sellerUserList">经销商审批</router-link>
+        <router-link to="/sellerUserList" v-has="'jxs'">经销商审批</router-link>
       </p>
     </div>
   </div>

@@ -11,8 +11,11 @@ import VueFullPage from "vue-fullpage.js";
 import Share from 'vue-social-share';
 import VueIntro from 'vue-introjs';
 import 'intro.js/introjs.css';
+import '@/utils/filter';
+import hasPermission from '@/utils/hasPermission'
 Vue.use(Share);
 Vue.use(VueIntro);
+Vue.use(hasPermission)
 var SocialSharing = require('vue-social-sharing');
 import '@babel/polyfill'
 import Storage from 'vue-ls';
