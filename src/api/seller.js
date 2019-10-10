@@ -678,3 +678,11 @@ export function getTrackingData(orderId) {
         data:qs.stringify({orderId:orderId})
     })
 }
+
+export function withdrawList(pageNo) {
+    return axios({
+        url: '/system/jeecgAdministrator/getWithdrawList',
+        method: 'post',
+        data:qs.stringify({pageNo:pageNo,pageSize: 10})
+    })
+}

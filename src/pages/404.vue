@@ -26,7 +26,7 @@ import commonBtn from "@/components/commonBtn/commonBtn";
 export default {
   methods: {
     backHome() {
-      this.$router.go(-1)
+      this.$router.push({path: '/'})
     }
   },
   components: {

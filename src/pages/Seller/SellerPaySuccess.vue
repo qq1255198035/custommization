@@ -100,8 +100,7 @@ export default {
   created() {
     this._paypalSellerBack();
     this._status();
-    this.config.url =
-      "http://192.168.0.9/index#/share" + "?order_id=" + this.userOrderId;
+    this.config.url = window.location.origin + "/#/share" + "?order_id=" + this.userOrderId;
   },
   mounted() {},
   watch: {},

@@ -49,7 +49,12 @@
               </a-button>
               <a-menu slot="overlay">
                 <a-menu-item v-for="(aitem,index) in item.listMap" :key="index">
+                  <a-tooltip placement="left" >
+                  <template slot="title">
+                    <span>{{aitem.status == 0 ? '未通过' : aitem.status == 1 ? '通过' : aitem.status == 2 ? '未审批' : ''}}</span>
+                  </template>
                   <a href="javascript:;" @click="viewDesignCase(aitem.id,aitem.status)">设计方案{{index + 1}}</a>
+                </a-tooltip>
                 </a-menu-item>
                 <a-menu-item>
                   <a href="javascript:;" @click="createNewDesign(item.type,item.id)">创建新设计</a>
@@ -345,10 +350,10 @@ export default {
             this.leftPicUrl = res.result.leftPicUrl;
             this.rightPicUrl = res.result.rightPicUrl;
             this.form.setFieldsValue({
-              img1:res.result.positivePicUrl,
-              img2:res.result.backPicUrl,
-              img3:res.result.leftPicUrl,
-              img4:res.result.rightPicUrl,
+              // img1:res.result.positivePicUrl,
+              // img2:res.result.backPicUrl,
+              // img3:res.result.leftPicUrl,
+              // img4:res.result.rightPicUrl,
               remarks1:res.result.porsitiveDescription,
               remarks2:res.result.backDescription,
               remarks3:res.result.leftDescription,

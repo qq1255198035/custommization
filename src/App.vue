@@ -40,6 +40,7 @@ export default {
   input::-webkit-input-placeholder{
     color: #ccc;
   }
+  
 }
 
 </style>

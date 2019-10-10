@@ -789,7 +789,7 @@
                     </div>
                     <div class="price-right">
                         Your Price：
-                        <span>${{onePrice}}</span>
+                        <span>${{onePrice | moneyFormat}}</span>
                     </div>
                     </div>
                     <div class="font-color">Minimum Order Quantity{{designDetail.minOrder}}</div>
@@ -803,7 +803,7 @@
                     </div>
                     <div class="price-right">
                         Your Profit：
-                        <span>${{twoPrice}}</span>
+                        <span>${{twoPrice | moneyFormat}}</span>
                     </div>
                     </div>
                     <div class="font-color">Suggested selling price：${{designDetail.price}}/PC</div>
@@ -1083,6 +1083,31 @@ export default {
     created(){
         this.getAllList();
     },
+    filters:{
+        moneyFormat(number, decimals) {
+            number = (number + '').replace(/[^0-9+-Ee.]/g, '');
+            var n = !isFinite( + number) ? 0 : +number,
+                prec = !isFinite( + decimals) ? 2 : Math.abs(decimals),
+                sep = ',',
+                dec = '.',
+                s = '',
+                toFixedFix = function(n, prec) {
+                    var k = Math.pow(10, prec);
+                    return '' + Math.ceil(n * k) / k;
+                };
+            s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+            var re = /(-?\d+)(\d{3})/;
+            while (re.test(s[0])) {
+                s[0] = s[0].replace(re, "$1" + sep + "$2");
+            }
+            if ((s[1] || '').length < prec) {
+                s[1] = s[1] || '';
+                s[1] += new Array(prec - s[1].length + 1).join('0');
+            }
+            return s.join(dec);
+        },
+    },
+    
     beforeCreate () {
         this.form1 = this.$form.createForm(this);
         this.form1.getFieldDecorator('keys', { initialValue: [0], preserve: true });
@@ -1637,8 +1662,6 @@ export default {
             //         onCancel() {}
             //     });
             // }
-            
-            
         },
         openDesignModal(id){
             console.log(id)
@@ -2741,9 +2764,6 @@ export default {
                 this.colorShowName = 'BLACK';
             }
         }
-    },
-    computed:{
-
     }
 }
 </script>

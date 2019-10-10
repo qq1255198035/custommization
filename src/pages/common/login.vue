@@ -330,13 +330,19 @@ export default {
           //判断查找相对应的值
           if (arr2[0] == "userName") {
             console.log(arr2[1])
-            this.form.setFieldsValue({['username']:arr2[1]}) //保存到保存数据的地方
-            this.form.setFieldsValue({['username1']:arr2[1]})
+            if(this.mobileShow){
+              this.form.setFieldsValue({['username']:arr2[1]})
+            }else{
+              this.form.setFieldsValue({['username1']:arr2[1]})
+            }
+             //保存到保存数据的地方
           } else if (arr2[0] == "userPwd") {
             console.log(arr2[1])
-            this.form.setFieldsValue({['password']:arr2[1]})
-            this.form.setFieldsValue({['password1']:arr2[1]})
-            //this.ruleForm.password = arr2[1];
+            if(this.mobileShow){
+              this.form.setFieldsValue({['password']:arr2[1]});
+            }else{
+              this.form.setFieldsValue({['password1']:arr2[1]});
+            }
           }
         }
       }

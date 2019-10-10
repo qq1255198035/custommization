@@ -270,6 +270,8 @@ export default {
     this.getOrderDetailUp(this.id);
     this.getOrderDetailDown(this.id);
     this.getTrackingData(this.id);
+    console.log(window.location)
+    console.log(this.config.url)
   },
   methods: {
     onCopy() {
@@ -281,7 +283,7 @@ export default {
     openMyshareBox(id) {
       console.log(id);
       this.openShare = true;
-      this.config.url = "http://192.168.0.9/#/share" + "?order_id=" + id;
+      this.config.url = window.location.origin + "/#/share" + "?order_id=" + id;
       this.config.title = this.shareText.topic;
       this.config.image = this.shareText.topic_url;
       this.config.description = this.shareText.introduction;
@@ -300,8 +302,8 @@ export default {
       getTrackingData(id).then(res =>{
         if(res.code == 0) {
           console.log(res.result)
-          this.mydata.logisticsList = res.result.logisticsList;
-          this.mydata.mapAddress = res.result.mapAddress;
+          this.mydata.logisticsList = res.result.logisticsList ? res.result.logisticsList : [];
+          this.mydata.mapAddress = res.result.mapAddress ? res.result.mapAddress : {};
           this.mydata.mapExpressage = res.result.mapExpressage ? res.result.mapExpressage : {};
           console.log(this.mydata.mapAddress.userName)
           console.log(this.mydata)

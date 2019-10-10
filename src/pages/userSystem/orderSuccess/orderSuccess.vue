@@ -115,9 +115,6 @@ export default {
   created() {
     this._sumbitOrder();
     this.getWindowScreen();
-    //this._status();
-
-    //this.config.url = 'localhost:3000/#/sellerShare' + '?order_id='+this.userOrderId
   },
   mounted() {},
   watch: {},

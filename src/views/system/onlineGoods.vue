@@ -48,10 +48,18 @@
                 设计方案 <a-icon type="down"/>
               </a-button>
               <a-menu slot="overlay">
-                <a-menu-item v-for="(aitem,index) in item.listMap" :key="index">
-                  <a href="javascript:;" @click="viewDesignCase(aitem.id,aitem.status)">设计方案{{index + 1}}</a>
-                </a-menu-item>
-                <a-menu-item>
+                <template v-if="item.listMap.length > 0">
+                  <a-menu-item v-for="(aitem,index) in item.listMap" :key="index" >
+                    <a-tooltip placement="left" >
+                    <template slot="title">
+                      <span>{{aitem.status == 0 ? '未通过' : aitem.status == 1 ? '通过' : aitem.status == 2 ? '未审批' : ''}}</span>
+                    </template>
+                    <a href="javascript:;" @click="viewDesignCase(aitem.id,aitem.status)">设计方案{{index + 1}}</a>
+                  </a-tooltip>
+                  </a-menu-item>
+                </template>
+                
+                <a-menu-item v-else>
                   <a href="javascript:;">暂无数据</a>
                 </a-menu-item>
               </a-menu>

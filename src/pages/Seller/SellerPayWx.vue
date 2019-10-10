@@ -134,8 +134,7 @@ export default {
           this.code = 1;
           this.orderId = res.orderSn;
           this.price = res.price;
-          this.config.url =
-            "http://192.168.0.9/#/share" + "?order_id=" + this.$route.query.orderId;
+          this.config.url = window.location.origin + "/#/share" + "?order_id=" + this.$route.query.orderId;
         }
         if (res.successCode == 0) {
           this.code = 0;

@@ -165,7 +165,7 @@ export default {
     openMyshareBox(item) {
       console.log(item);
       this.openShare = true;
-      this.config.url = "http://192.168.0.9/#/share" + "?order_id=" + item.id;
+      this.config.url = window.location.origin + "/#/share" + "?order_id=" + item.id;
       this.config.image = item.interiorList[0].positivePicUrl;
     },
     statusFilter(type) {

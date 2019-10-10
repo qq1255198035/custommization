@@ -132,11 +132,29 @@ export default {
             console.log(res)
             if(res.code == 0){
               if(res.result == 1){
-                this.$router.push({path:'/neworder'})
+                this.$router.push({path:'/neworder'});
               }else if(res.result == 0){
-                this.$message.error('Sorry,Not examined and approved')
+                //this.$message.error('Sorry,Not examined and approved');
+                let that = this;
+                this.$error({
+                  title: 'Error',
+                  content: 'Sorry,Not examined and approved',
+                  onOk() {
+                    console.log(11);
+                    that.$router.push({path: '/dealerInfo'})
+                  },
+                });
               }else if(res.result == 2){
-                this.$message.error('Sorry,Failure to pass the examination and approval')
+                //this.$message.error('Sorry,Failure to pass the examination and approval');
+                let that = this;
+                this.$error({
+                  title: 'Error',
+                  content: 'Sorry,Failure to pass the examination and approval',
+                  onOk() {
+                    console.log(11);
+                    that.$router.push({path: '/dealerInfo'})
+                  },
+                });
               }else if(res.result == 3){
                 let that = this;
                 this.$error({

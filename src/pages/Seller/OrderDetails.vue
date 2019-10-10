@@ -118,22 +118,11 @@
                   <a-date-picker
                     @change="onClosingDate"
                     :disabledDate="disabledDate"
-                    :disabledTime="disabledDateTime"
                     format="YYYY-MM-DD"
                     style="margin-left: 30px;"
-                    v-decorator="['closingDate',{rules: [{ type: 'object', required: true, message: 'Please fill in the time' }]}]"
+                    v-decorator="['closingDate',{rules: [{ required: true, message: 'Please fill in the time' }]}]"
                   />
                 </a-form-item>
-                <!--<div style="padding-left: 30px;">
-                <a-date-picker
-                  :disabledDate="disabledStartDate"
-                  showTime
-                  format="YYYY-MM-DD HH:mm:ss"
-                  v-model="startValue"
-                  placeholder="Start"
-                  @openChange="handleStartOpenChange"
-                />
-                </div>-->
               </li>
             </a-form>
             <li>
@@ -318,10 +307,11 @@
         okText="Share"
         cancelText="Back"
         width="50%"
+        title="Successful"
       >
         <div class="share-box1">
           <div>
-            <a-icon class="font-color" style="font-size:40px" type="check-circle" />
+            <a-icon class="font-color" style="font-size:40px;margin-right: 10px;" type="check-circle" />
           </div>
           <div class="success">Successful</div>
         </div>
@@ -403,6 +393,7 @@ export default {
     this.getTeamOrderDetails(this.id);
   },
   methods: {
+    moment,
     range(start, end) {
       const result = [];
       for (let i = start; i < end; i++) {
@@ -410,12 +401,10 @@ export default {
       }
       return result;
     },
-
     disabledDate(current) {
       // Can not select days before today and today
-      return current && current < moment(new Date()).add(7, "days");
+      return current && current < moment().endOf('day');
     },
-
     disabledDateTime() {
       return {
         disabledHours: () => this.range(0, 24).splice(4, 20),
@@ -622,16 +611,16 @@ export default {
       teamOrderDetails(id).then(res => {
         console.log(res);
         const formList = res.result;
-        this.myform.setFieldsValue({
-          note: formList.topic,
-          desc: formList.introduction,
-          contanct: formList.contact,
-          phone: formList.mobile,
-          email: formList.email,
-          closingDate: formList.payEndDate
-            ? moment(formList.payEndDate, "YYYY-MM-DD")
-            : ''
-        });
+        // this.myform.setFieldsValue({
+        //   note: formList.topic,
+        //   desc: formList.introduction,
+        //   contanct: formList.contact,
+        //   phone: formList.mobile,
+        //   email: formList.email,
+        //   closingDate: formList.payEndDate
+        //     ? moment(formList.payEndDate, "YYYY-MM-DD")
+        //     : moment('00:00:00', 'HH:mm:ss')
+        // });
         this.orderPid = formList.id;
         this.addressId = formList.addressId;
         this.timeover = formList.payEndDate

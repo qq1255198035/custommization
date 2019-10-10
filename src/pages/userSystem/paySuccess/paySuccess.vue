@@ -115,9 +115,6 @@ export default {
   computed: {},
   created() {
     this._payBack();
-    //this._status();
-
-    //this.config.url = 'localhost:3000/#/sellerShare' + '?order_id='+this.userOrderId
   },
   mounted() {},
   watch: {},
@@ -142,11 +139,7 @@ export default {
           this.orderId = res.order_sn;
           this.orderAgain = res.userOrderId;
           this.userOrderId = res.order_id;
-          this.config.url =
-            "http://192.168.0.9/#/share" + "?order_id=" + res.order_id;
-          console.log(this.config.url);
-          //this.config.url ='http://192.168.0.9/index#/share' + "?order_id=" + res.order_id;
-          //this.config.url = "http://magicfish1981.ngrok2.xiaomiqiu.cn" + "?order_id=" + res.order_id;
+          this.config.url = window.location.origin + "/#/share" + "?order_id=" + res.order_id;
         }
         if (res.code == 0) {
           this.code = 0;
