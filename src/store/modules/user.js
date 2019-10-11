@@ -8,7 +8,6 @@ const user = {
   state: {
     token: '',
     name: '',
-  
     avatar: '',
     roles: [],
     info: {},
@@ -84,10 +83,10 @@ const user = {
     Logout({ commit, state }) {
       return new Promise(resolve => {
         console.log(resolve)
-        commit('SET_TOKEN', '')
-        commit('SET_ROLES', [])
+        commit('SET_TOKEN', '');
+        commit('SET_ROLES', []);
         console.log(state)
-        Vue.ls.remove(ACCESS_TOKEN)
+        Vue.ls.remove(ACCESS_TOKEN);
       })
     },
     SetLang({ commit }, lang) {

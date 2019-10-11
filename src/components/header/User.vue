@@ -51,10 +51,12 @@ export default {
       this.$confirm({
         title: "Logout",
         content: "Confirm Logout？",
-        okText: "confirm",
+        okText: "Confirm",
         cancelText: "Cancel",
         onOk() {
+          
           that.Logout();
+          that.$router.push({path: '/'});
           window.location.reload();
         },
         onCancel() {}

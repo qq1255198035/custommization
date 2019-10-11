@@ -432,6 +432,7 @@ export default {
             //internationalization: localStorage.lang
           }).then(res => {
             if (res.code == 200) {
+              this.$message.success('Register successfully, please login');
               $router.push({ path: "/login", params: { ...values } });
             } else {
               $notification["error"]({
