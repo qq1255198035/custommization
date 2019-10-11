@@ -467,7 +467,7 @@ export default {
                       clearInterval(interval)
                     }
                   }, 1000);
-                  this.$message.success('验证码已发送，请注意查收！')
+                  this.$message.success('Verification code has been sent, please pay attention to check!')
               }else{
                 this.$message.error(res.message);
                 this.state.time = 60;

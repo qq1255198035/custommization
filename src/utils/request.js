@@ -20,20 +20,20 @@ const err = (error) => {
     console.log("------异常响应------",error.response.status)
     switch (error.response.status) {
       case 403:
-        notification.error({ message: '系统提示', description: '拒绝访问',duration: 4})
+        notification.error({ message: 'System hint', description: 'access denied',duration: 4})
         break
       case 500:
         
-        //notification.error({ message: '系统提示', description:'Token失效，请重新登录!',duration: 4})
+        //notification.error({ message: 'System hint', description:'Token失效，请重新登录!',duration: 4})
         if(token && data.message=="Token失效，请重新登录"){
           // update-begin- --- author:scott ------ date:20190225 ---- for:Token失效采用弹框模式，不直接跳转----
           // store.dispatch('Logout').then(() => {
           //     window.location.reload()
           // })
           Modal.error({
-            title: '登录已过期',
-            content: '很抱歉，登录已过期，请重新登录',
-            okText: '重新登录',
+            title: 'Logon has expired',
+            content: 'Sorry, the login has expired. Please login again.',
+            okText: 'Re login',
             mask: false,
             onOk: () => {
               router.push({
@@ -49,13 +49,13 @@ const err = (error) => {
         }
         break
       case 404:
-          notification.error({ message: '系统提示', description:'很抱歉，资源未找到!',duration: 4})
+          notification.error({ message: 'System hint', description:'Sorry, resources are not found!',duration: 4})
         break
       case 504:
-        notification.error({ message: '系统提示', description: '网络超时'})
+        notification.error({ message: 'System hint', description: 'Network Timeout'})
         break
       case 401:
-        notification.error({ message: '系统提示', description:'未授权，请重新登录',duration: 4})
+        notification.error({ message: 'System hint', description:'Unauthorized, please log in again',duration: 4})
         /*if (token) {
           store.dispatch('Logout').then(() => {
             setTimeout(() => {
@@ -66,7 +66,7 @@ const err = (error) => {
         break
       default:
         notification.error({
-          message: '系统提示',
+          message: 'System hint',
           description: data.message,
           duration: 4
         })
