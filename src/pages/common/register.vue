@@ -107,21 +107,13 @@
                   </a-col>
                   <a-col class="gutter-row" :span="8" style="padding-top:30px;text-align:right">
                     <a-button
-                      v-if="state.smsSendBtn"
                       class="getCaptcha"
                       size="large"
                       :disabled="state.smsSendBtn"
                       @click.stop.prevent="getCaptcha"
-                      v-text="(state.time+' s')"
-                    ></a-button>
-                    <a-button
-                      v-if="!state.smsSendBtn"
-                      class="getCaptcha"
-                      size="large"
-                      :disabled="state.smsSendBtn"
-                      @click.stop.prevent="getCaptcha"
-                      v-text="getCode"
-                    ></a-button>
+                    >
+                      {{state.smsSendBtn ? state.time+'s' : 'Get verify code'}}
+                    </a-button>
                   </a-col>
                 </a-row>
 
@@ -186,26 +178,16 @@
                         <a-icon slot="prefix" type="key" style="color:#33b8b3;font-size: 15px;" />
                       </a-input>
                       <a-button
-                        v-if="state.smsSendBtn"
                         class="getCaptcha"
                         size="small"
                         :disabled="state.smsSendBtn"
                         @click.stop.prevent="getCaptcha"
-                        v-text="(state.time+' s')"
                         style="border-radius: 0; border: none; border-left: 1px solid #33b8b3"
-                      ></a-button>
-                      <a-button
-                        v-if="!state.smsSendBtn"
-                        class="getCaptcha"
-                        size="small"
-                        :disabled="state.smsSendBtn"
-                        @click.stop.prevent="getCaptcha"
-                        v-text="getCode"
-                        style="border-radius: 0; border: none; border-left: 1px solid #33b8b3"
-                      ></a-button>
+                      >
+                        {{state.smsSendBtn ? state.time+'s' : 'Get verify code'}}
+                      </a-button>
                     </a-form-item>
                   </a-col>
-                  
                 </a-row>
                 <a-row>
                   <a-col :span="12">
@@ -330,7 +312,6 @@ export default {
           key: 2
         }
       ],
-      formShow: false,
       emailText: "Please enter your email",
       itemTitle: "Register",
       registerBtn: false,
@@ -432,13 +413,7 @@ export default {
     register() {
       this.registerActor("/sys/user/register");
     },
-    // goRegister() {
-    //   if (!this.activeIndex) {
-    //     this.$message.error("ee");
-    //   } else {
-    //     this.current = "1";
-    //   }
-    // },
+    
     registerActor(api) {
       const {
         form: { validateFields },
@@ -472,56 +447,41 @@ export default {
     getCaptcha(e) {
       e.preventDefault();
       const {
-        form: { validateFields },
-        state,
-        $notification
+        form: { validateFields }
       } = this;
       validateFields(["email"], { force: true }, (err, values) => {
         if (!err) {
           if(values.email){
-            const interval = window.setInterval(() => {
-            if (state.time-- <= 0) {
-              state.time = 60;
-              state.smsSendBtn = false;
-              window.clearInterval(interval);
-            }
-          }, 1000);
-          //const hide = $message.loading(this.$t("login.yzmfsz"), 1);
           register({
             email: values.email
             //internationalization: localStorage.lang
-          })
-            .then(res => {
-              if (res.code == 500) {
-                this.formShow = true;
-              }
-              if (res.status == 200) {
-                //setTimeout(hide, 1);
-                $notification["success"]({
-                  message: "Landing successfully",
-                  description: "Success",
-                  duration: 8
-                });
-                this.$route.push({
-                  path: "/login"
-                });
-              } else if (res.status == 201) {
-                this.$message.error(res.info);
-                state.time = 60;
-                state.smsSendBtn = false;
+          }).then(res => {
+              console.log(res)
+              if (res.success) {
+                const interval = window.setInterval(() => {
+                    this.state.smsSendBtn = true;
+                    this.state.time--;
+                    if(this.state.time == 0){
+                      this.state.time = 60;
+                      this.state.smsSendBtn = false;
+                      clearInterval(interval)
+                    }
+                  }, 1000);
+                  this.$message.success('验证码已发送，请注意查收！')
+              }else{
+                this.$message.error(res.message);
+                this.state.time = 60;
+                this.state.smsSendBtn = false;
               }
             })
             .catch(err => {
-              //setTimeout(hide, 1);
-              clearInterval(interval);
-              state.time = 60;
-              state.smsSendBtn = false;
+              this.state.time = 60;
+              this.state.smsSendBtn = false;
               this.requestFailed(err);
             });
           }else{
             this.$message.error('Please enter your email!')
           }
-          
         }
       });
     },
