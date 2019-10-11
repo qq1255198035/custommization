@@ -54,7 +54,6 @@ export default {
         okText: "Confirm",
         cancelText: "Cancel",
         onOk() {
-          
           that.Logout();
           that.$router.push({path: '/'});
           window.location.reload();

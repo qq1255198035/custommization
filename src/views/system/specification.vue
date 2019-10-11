@@ -667,6 +667,7 @@ export default {
 }
 .section{
   h3{
+    padding: 20px;
     span{
       font-size: 12px;
       margin-left: 10px;

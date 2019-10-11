@@ -49,24 +49,27 @@
       <ul class="example-box" v-else>
         <li v-for="(item,index) in exList" :key="item.id">
           <h2>Option {{index + 1}}</h2>
-          <div style="text-align: center;margin: 10px 0;">
-            <span v-for="(img,index) in item.imgList" :key="index">
-              <img :src="img" alt />
-              <i v-if="index == 0" style="font-style: normal;">Front</i>
-              <i v-if="index == 1" style="font-style: normal;">Back</i>
-              <i v-if="index == 2" style="font-style: normal;">Left</i>
-              <i v-if="index == 3" style="font-style: normal;">Right</i>
-            </span>
+          <div>
+            <template v-if="item.imgList.length > 0">
+              <span v-for="(img,index) in item.imgList" :key="index">
+                <img :src="img" alt v-if="img"/>
+                <p v-else>No Data</p>
+                <i v-if="index == 0 && img" style="font-style: normal;">Front</i>
+                <i v-if="index == 1 && img" style="font-style: normal;">Back</i>
+                <i v-if="index == 2 && img" style="font-style: normal;">Left</i>
+                <i v-if="index == 3 && img" style="font-style: normal;">Right</i>
+              </span>
+            </template>
           </div>
           <div v-if="item.checked" style="width: 70%;margin:20px auto;">
             <a-textarea v-model="texts" :autosize="{ minRows: 2, maxRows: 6 }" />
           </div>
           <div v-show="textshow">{{item.opinion}}</div>
-          <a-button @click="textShowOne(item.id,index)" v-show="!item.opinion && !item.checked">Add Description</a-button>
+          <a-button @click="textShowOne(item.id,index)" v-show="!item.opinion && !item.checked" :disabled="abledBtn">Add Description</a-button>
           <a-button @click="textShowTwo(item.id,item.pic_id)" v-show="!item.opinion && item.checked">Save</a-button>
-          <a-button @click="programmeBtn(item.id)" v-show="item.status == 0" :disabled="astatus == 2">Choose this option</a-button>
+          <a-button @click="programmeBtn(item.id)" v-show="item.status == 0" :disabled="astatus == 2 || abledBtn">Choose this option</a-button>
           <a-button @click="programmeBtn(item.id)" v-show="item.status == 2">Choose this option</a-button>
-          <a-button @click="programmeBtn(item.id,item.pic_id)" v-show="item.status == 1" disabled="disabled">Campaign has been selected</a-button>
+          <a-button @click="programmeBtn(item.id,item.pic_id)" v-show="item.status == 1" :disabled="true">Campaign has been selected</a-button>
         </li>
         <a-button @click="newSchemeBtn" type="primary" :disabled="astatus == 2 || exList.length == 0">Apply for New Case</a-button>
       </ul>
@@ -99,7 +102,8 @@ export default {
         modelShow: false,
         textshow: true,
         exList: [],
-        astatus:""
+        astatus:"",
+        abledBtn: false
     };
   },
   methods: {
@@ -127,71 +131,71 @@ export default {
         }
       })
     },
-      goNewOrder(){
-          queryByIdA().then(res => {
-            console.log(res)
-            if(res.code == 0){
-              if(res.result == 1){
-                this.$router.push({path:'/neworder'});
-              }else if(res.result == 0){
-                //this.$message.error('Sorry,Not examined and approved');
-                let that = this;
-                this.$error({
-                  title: 'Error',
-                  content: 'Sorry,Not examined and approved',
-                  onOk() {
-                    console.log(11);
-                    that.$router.push({path: '/dealerInfo'})
-                  },
-                });
-              }else if(res.result == 2){
-                //this.$message.error('Sorry,Failure to pass the examination and approval');
-                let that = this;
-                this.$error({
-                  title: 'Error',
-                  content: 'Sorry,Failure to pass the examination and approval',
-                  onOk() {
-                    console.log(11);
-                    that.$router.push({path: '/dealerInfo'})
-                  },
-                });
-              }else if(res.result == 3){
-                let that = this;
-                this.$error({
-                  title: 'Error',
-                  content: 'Sorry, please apply first.',
-                  onOk() {
-                    console.log(11);
-                    that.$router.push({path: '/dealerInfo'})
-                  },
-                });
-              }
+    goNewOrder(){
+        queryByIdA().then(res => {
+          console.log(res)
+          if(res.code == 0){
+            if(res.result == 1){
+              this.$router.push({path:'/neworder'});
+            }else if(res.result == 0){
+              //this.$message.error('Sorry,Not examined and approved');
+              let that = this;
+              this.$error({
+                title: 'Error',
+                content: 'Sorry,Not examined and approved',
+                onOk() {
+                  console.log(11);
+                  that.$router.push({path: '/dealerInfo'})
+                },
+              });
+            }else if(res.result == 2){
+              //this.$message.error('Sorry,Failure to pass the examination and approval');
+              let that = this;
+              this.$error({
+                title: 'Error',
+                content: 'Sorry,Failure to pass the examination and approval',
+                onOk() {
+                  console.log(11);
+                  that.$router.push({path: '/dealerInfo'})
+                },
+              });
+            }else if(res.result == 3){
+              let that = this;
+              this.$error({
+                title: 'Error',
+                content: 'Sorry, please apply first.',
+                onOk() {
+                  console.log(11);
+                  that.$router.push({path: '/dealerInfo'})
+                },
+              });
             }
-          })
-      },
-      newSchemeBtn() {
-          const param = {
-              orderId: this.orderId
           }
-          newScheme(param).then(res => {
-              console.log(res)
-              if(res.code == 200) {
-                  this.modelShow = false;
-                  this.$message.success('Successful application');
-              } 
-          })
-      },
-      programmeBtn(id) {
-          const param = {
-              designId: id
-          }
-          programme(param).then(res => {
-              console.log(res)
-              if(res.code == 200) {
-                  window.location.reload()
-              }
-          })
-      },
+        })
+    },
+    newSchemeBtn() {
+        const param = {
+          orderId: this.orderId
+        }
+        newScheme(param).then(res => {
+            console.log(res)
+            if(res.code == 200) {
+                this.modelShow = false;
+                this.$message.success('Successful application');
+            } 
+        })
+    },
+    programmeBtn(id) {
+        const param = {
+            designId: id
+        }
+        programme(param).then(res => {
+            console.log(res)
+            if(res.code == 200) {
+                window.location.reload()
+            }
+        })
+    },
     textShowOne(id, index) {
       this.textshow = false;
       console.log(id, index);
@@ -229,8 +233,12 @@ export default {
       exampleConfirm(id).then(res => {
         console.log(res);
         this.exList = res.result;
-        this.orderId = res.result.length > 0 ? res.result[0].pic_id : ''
-        
+        this.orderId = res.result.length > 0 ? res.result[0].pic_id : '';
+        this.exList.forEach(item => {
+          if(item.status == 1){
+            this.abledBtn = true;
+          }
+        })
       });
     },
     search() {
@@ -255,7 +263,9 @@ export default {
     }
   },
   mounted() {
-    console.log(this.totalnum);
+    
+  },
+  computed:{
   },
   created() {
     this.getGroupOrderList(this.num, this.status, this.content);
@@ -342,17 +352,25 @@ export default {
       text-align: left;
     }
     > div {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      margin: 20px 0;
+      justify-content: center;
       span {
         display: inline-block;
         margin: 0 10px;
-        width: 20%;
+        width: 98px;
+        height: 82px;
         text-align: center;
-        border: 1px solid #ccc;
-        color: #33b8b3;
-        padding: 10px;
+        max-width: 98px;
+        max-height: 82px;
       }
       img {
         width: 100%;
+        height: 100%;
+        border: 1px solid #ccc;
+        padding: 10px;
       }
     }
     p {

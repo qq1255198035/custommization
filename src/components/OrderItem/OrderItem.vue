@@ -194,6 +194,7 @@ export default {
       width: 90%;
       display: flex;
       justify-content: space-between;
+      flex-wrap: wrap;
       span {
         width: 33%;
         color: #33b8b3;

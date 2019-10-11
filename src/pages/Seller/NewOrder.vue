@@ -408,7 +408,7 @@
                                             </dd>
                                             <dd style="padding: 0 10px;" v-if="changeWidthShow == 4">
                                                 <span>SIZE：</span>
-                                                <a-slider :min="0" :max="10" v-model="Shadow1" :step="1" @change="changeShadowWidth" style="width: 95%;margin:10px auto;"/>
+                                                <a-slider :min="0" :max="30" v-model="Shadow1" :step="5" @change="changeShadowWidth" style="width: 95%;margin:10px auto;"/>
                                             </dd>
                                         </dl>
                                         <!-- <my-title :title="colorTitle"></my-title> -->
@@ -1446,12 +1446,12 @@ export default {
         },
         saveFontShapeDesign(fontShape,isAdd){
             //fontShape
-            let params = {text: this.addText,style:'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: fontShape,backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1}
+            let params = {text: this.addText,style:this.bgcolor ? '' : 'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: fontShape,backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1}
             this.handleChangeFont(params,isAdd)
         },
         removeShape(){
-            this.fontShape = ''
-            let params = {text: this.addText,style:'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1}
+            this.fontShape = '';
+            let params = {text: this.addText,style:this.bgcolor ? '' : 'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1}
             this.handleChangeFont(params,true)
         },
         getArtFontList(){
@@ -1850,6 +1850,7 @@ export default {
                 console.log(values)
                 if (!err) {
                     console.log('Received values of form: ', values);
+                    this.$message.success('successful!')
                 }
             });
         },
@@ -1944,7 +1945,7 @@ export default {
         },
         changeTextBgColor(val,name,isAdd){
             let params = {
-                text: this.addText,style:'softshadow',fontName:this.fontfamily,
+                text: this.addText,style:this.bgcolor ? '' : 'softshadow',fontName:this.fontfamily,
                 fontHeight: 50, fontColor: this.color.substr(1), 
                 lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), 
                 effect: this.fontShape,backGround: val.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1}
@@ -1955,7 +1956,7 @@ export default {
             this.bgcolor = '';
             this.fontColorIcon2 = -1;
             let params = {
-                text: this.addText,style:'softshadow',fontName:this.fontfamily,
+                text: this.addText,style:this.bgcolor ? '' : 'softshadow',fontName:this.fontfamily,
                 fontHeight: 50, fontColor: this.color.substr(1), 
                 lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), 
                 effect: this.fontShape,backGround: this.bgcolor,shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1}
@@ -1964,7 +1965,7 @@ export default {
         // 设置字体阴影开始
         changeShadowColor(val,name,isAdd){
             let params = {
-                    text: this.addText,style:'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
+                    text: this.addText,style:this.bgcolor ? '' : 'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
                     lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,
                     backGround: this.bgcolor.substr(1),shadowColor: val.substr(1),smudge: this.Shadow1
                 }
@@ -1976,7 +1977,7 @@ export default {
             this.fontColorIcon4 = -1;
             this.Shadow1 = 0;
             let params = {
-                    text: this.addText,style:'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
+                    text: this.addText,style:this.bgcolor ? '' : 'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
                     lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,
                     backGround: this.bgcolor.substr(1),shadowColor: this.shadowColorName,smudge: this.Shadow1
                 }
@@ -2430,7 +2431,7 @@ export default {
             if(isAdd){
                 if(this.myCanvas.getActiveObject()){
                     let params = {
-                        text: text,style:'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
+                        text: text,style:this.bgcolor ? '' : 'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
                         lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,
                         backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1
                     }
@@ -2438,7 +2439,7 @@ export default {
                 }
             }else{
                 let params = {
-                    text: text,style:'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
+                    text: text,style:this.bgcolor ? '' : 'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
                     lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,
                     backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1
                 }
@@ -2523,8 +2524,8 @@ export default {
                         this.$message.error('Please select number first.')
                     }
                 }
-            }/**else if(key == 2){
-                // 后加 不严谨
+            }else if(key == 2){
+                //后加 不严谨
                 if(this.shadowColorName){
                     this.$message.error('Please remove the shadows first.')
                 }else{
@@ -2540,7 +2541,7 @@ export default {
                     this.colorTitle = title;
                     this.colorKey = key;
                 }
-            }**/else{
+            }else{
                 this.visibletype = 8;
                 this.colorTitle = title;
                 this.colorKey = key;
@@ -2606,7 +2607,7 @@ export default {
         },
         PostChangeFontFamily(){
             let params = {
-                    text:  this.addText,style:'softshadow',fontName: this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
+                    text:  this.addText,style:this.bgcolor ? '' : 'softshadow',fontName: this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
                     lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,
                     backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1
                 }
@@ -2616,7 +2617,7 @@ export default {
             this.fontfamily = 'FZCHYFW';
             this.fontfamilydata = -1;
             let params = {
-                    text:  this.addText,style:'softshadow',fontName: this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
+                    text:  this.addText,style:this.bgcolor ? '' : 'softshadow',fontName: this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
                     lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,
                     backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1
                 }
@@ -2624,7 +2625,7 @@ export default {
         },
         changeFillColor(val,name,isAdd){
             let params = {
-                    text:  this.addText,style:'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: val.substr(1), 
+                    text:  this.addText,style:this.bgcolor ? '' : 'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: val.substr(1), 
                     lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,
                     backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1
                 }
@@ -2635,7 +2636,7 @@ export default {
             this.colorName = 'BLACK';
             this.fontColorIcon1 = -1;
             let params = {
-                    text:  this.addText,style:'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
+                    text:  this.addText,style:this.bgcolor ? '' : 'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
                     lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,
                     backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1
                 }
@@ -2644,7 +2645,7 @@ export default {
         // 改变描边样式开始
         changestrokeColor(val,name,isAdd){
             let params = {
-                    text:  this.addText,style:'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1),
+                    text:  this.addText,style:this.bgcolor ? '' : 'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1),
                     lineweight: this.strokeWidth, outLineColor: val.substr(1), effect: this.fontShape,
                     backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1
                 }
@@ -2656,7 +2657,7 @@ export default {
             this.fontColorIcon3 = -1;
             this.strokeWidth = 0;
             let params = {
-                    text:  this.addText,style:'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1),
+                    text:  this.addText,style:this.bgcolor ? '' : 'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1),
                     lineweight: this.strokeWidth, outLineColor: this.strokeColor, effect: this.fontShape,
                     backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1
                 }

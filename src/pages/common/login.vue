@@ -292,7 +292,7 @@ export default {
       }
 
       // 延迟 1 秒显示欢迎信息
-      if (res.code != 200) {
+      if (res.code !== 200) {
         this.$notification["error"]({
           message: "Login failed",
           description: res.message,
