@@ -45,7 +45,8 @@
       />
     </div>
     <a-modal v-model="modelShow" :footer="null" :centered="true" title="Confirm draft" width="40%">
-      <ul class="example-box">
+      <p v-if="exList.length == 0" style="text-align: center;color: #333;padding: 50px 0;">Sorry, there is no need to confirm the sample for the time being.</p>
+      <ul class="example-box" v-else>
         <li v-for="(item,index) in exList" :key="item.id">
           <h2>Option {{index + 1}}</h2>
           <div style="text-align: center;margin: 10px 0;">
@@ -67,7 +68,6 @@
           <a-button @click="programmeBtn(item.id)" v-show="item.status == 2">Choose this option</a-button>
           <a-button @click="programmeBtn(item.id,item.pic_id)" v-show="item.status == 1" disabled="disabled">Campaign has been selected</a-button>
         </li>
-
         <a-button @click="newSchemeBtn" type="primary" :disabled="astatus == 2 || exList.length == 0">Apply for New Case</a-button>
       </ul>
     </a-modal>

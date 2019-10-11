@@ -493,7 +493,7 @@
                                                 @submit="handleSubmit"
                                             >
                                                 <a-form-item v-for="k in form1.getFieldValue('keys')" :key="k" :required="false" style="width: 100%; margin: 0">
-                                                    <a-input-group compact style="display: flex; align-items: center;width: 100%;">
+                                                    <a-input-group compact style="display: flex;width: 100%;">
                                                         <a-form-item style="width: 40%; margin: 0;min-height: 79px;">
                                                             <a-input v-decorator="[
                                                                 `names[${k}]`,
@@ -3273,6 +3273,8 @@ export default {
                         color: #ff0000;
                         font-size: 16px;
                         margin-left: 10px;
+                        margin-top: 12px;
+                        cursor: pointer;
                     }
                     .ant-select-selection{
                         border-top-left-radius: 0px;
