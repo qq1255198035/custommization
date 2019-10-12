@@ -2528,6 +2528,8 @@ export default {
                 //后加 不严谨
                 if(this.shadowColorName){
                     this.$message.error('Please remove the shadows first.')
+                }else if(this.strokeColorName){
+                    this.$message.error('Please remove the outline first.')
                 }else{
                     this.visibletype = 8;
                     this.colorTitle = title;
