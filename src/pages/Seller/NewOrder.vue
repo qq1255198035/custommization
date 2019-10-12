@@ -2533,7 +2533,17 @@ export default {
                     this.colorTitle = title;
                     this.colorKey = key;
                 }
-            }else if(key == 4){
+            }else if(key == 3){
+                //后加 不严谨
+                if(this.bgcolor){
+                    this.$message.error('Please remove the Text Background Colour first.')
+                }else{
+                    this.visibletype = 8;
+                    this.colorTitle = title;
+                    this.colorKey = key;
+                }
+            }
+            else if(key == 4){
                 if(this.bgcolor){
                     this.$message.error('Please remove the Text Background Colour first.')
                 }else{
