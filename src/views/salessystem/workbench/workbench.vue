@@ -4,7 +4,7 @@
       <img src="./../../../assets/logo-title.png" alt="">
       <p>欢迎来到The Custom King 管理平台！</p>
       <p>
-        <router-link to="/OrderManagement">订单管理</router-link>
+        <router-link to="/OrderManagement" v-has="'order'">订单管理</router-link>
         <router-link to="/sellerUserList" v-has="'jxs'">经销商审批</router-link>
       </p>
     </div>
