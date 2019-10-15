@@ -21,7 +21,7 @@
         <div class="order-item" v-for="(item,index) in items.interiorList" :key="index + items.id">
           <div class="left">
             <div style="display: flex; align-items:center;">
-              <img :src="item.positivePicUrl" alt width="150" height="150" />
+              <img :src="item.positivePicUrl" v-preview="item.positivePicUrl" width="150" height="150" />
               <div class="desc">
                 <h3>{{item.name}}</h3>
                 <p>COLOUR： {{item.productColor}}</p>

@@ -422,7 +422,7 @@ export function addRemarks(id, remarks) {
             'Content-Type': 'application/json;charset-UTF-8'
         },
         data: JSON.stringify({
-            pid: id,
+            id: id,
             remarks: remarks
         })
     })
@@ -684,5 +684,13 @@ export function withdrawList(pageNo) {
         url: '/system/jeecgAdministrator/getWithdrawList',
         method: 'post',
         data:qs.stringify({pageNo:pageNo,pageSize: 10})
+    })
+}
+
+export function approveWithdraw(id,remark,status) {
+    return axios({
+        url: '/system/jeecgAdministrator/approveWithdraw',
+        method: 'post',
+        data:qs.stringify({id:id,remark:remark,status:status})
     })
 }

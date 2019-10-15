@@ -4,7 +4,7 @@
                   <a-row :gutter="30">
                         <a-col class="gutter-row" :span="6" v-for="item in goodsArr" :key="item.id">
                               <div class="gutter-box" @click="handleClick(item.id)">
-                                    <img :src="item.positive_pic_url" alt="">
+                                    <img :src="item.positive_pic_url">
                                     <div class="desc">
                                           <h3>{{item.name}}</h3>
                                           <p><span>$ {{item.min_price}} - $ {{item.max_price}}</span></p>

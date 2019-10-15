@@ -37,18 +37,18 @@ const constantRouterComponents = {
   PermissionList:() => import("@/views/system/PermissionList"), //菜单管理
   UserList:() => import("@/views/system/UserList"), //用户管理
   onlineGoods: () => import("@/views/system/onlineGoods"), // 设计师设计需求
-
+  productTypes: () => import("@/views/system/productTypes"), //佣金审批
 
   RoleUserList:() => import("@/views/system/RoleUserList"), //角色维护
   UserAnnouncementList:() => import("@/views/system/UserAnnouncementList"), //我的消息
   SysAnnouncementList:() => import("@/views/system/SysAnnouncementList"), //系统通告
   SysCategoryList:() => import("@/views/system/SysCategoryList"), //分类字典
   DictList:() => import("@/views/system/DictList"), //数字字典
-  service:() => import("@/views/management/service/service"), //云储
+  
   
   //format: () => import("@/views/management/format/format"), //商品类别
   
-  productTypes: () => import("@/views/management/productTypes/productTypes"), //商品属性
+  
   
   
   

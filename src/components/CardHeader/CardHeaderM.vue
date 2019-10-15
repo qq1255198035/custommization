@@ -5,7 +5,7 @@
         <a-col :span="8">
             <div class="left-box">
                 <div class="avatar">
-                    <img :src="detailList.topic_url"/>
+                    <img :src="detailList.topic_url" v-preview="detailList.topic_url"/>
                 </div>
             </div>
         </a-col>

@@ -30,10 +30,10 @@
     <ul class="list-box">
       <li v-for="(item,index) in data.list" :key="item.id">
         <div class="img-box">
-          <img :src="item.positivePicUrl" alt="">
-          <img :src="item.backPicUrl" alt="">
-          <img :src="item.leftPicUrl" alt="">
-          <img :src="item.rightPicUrl" alt="">
+          <img :src="item.positivePicUrl" v-preview="item.positivePicUrl">
+          <img :src="item.backPicUrl" v-preview="item.backPicUrl">
+          <img :src="item.leftPicUrl" v-preview="item.leftPicUrl">
+          <img :src="item.rightPicUrl" v-preview="item.rightPicUrl">
         </div>
         <div class="content">
           <dl>
@@ -71,7 +71,7 @@
     <div class="design-show" v-show="show">
         <a-modal :visible="true" title="设计需求" :width="1000" :getContainer="Ele" @cancel="show = false">
           <div class="section">
-            <h3>{{productName}} <span>颜色：{{productColor}}</span></h3>
+            <h3 style="padding-left: 20px;">{{productName}} <span>颜色：{{productColor}}</span></h3>
             <div class="img-box">
               <div class="imgs">
                 <img v-for="(item,index) in imgList" :key="index" :src="item" @click="viewImgs(index)">
@@ -129,22 +129,22 @@
         </a-modal>
     </div>
     <a-modal :visible="newDesign" title="上传设计样稿" :width="700" @ok="confirmDesign" @cancel="newDesign = false" okText="确认" cancelText="关闭">
-      <a-form :form="form" style="display: flex;flex-wrap: wrap;">
+      <a-form :form="form" style="display: flex;flex-wrap: wrap;padding: 20px 30px; 10px 0">
         <a-form-item
           label="上传正面"
           :label-col="{ span: 7 }"
           :wrapper-col="{ span: 17 }"
           style="width: 45%;"
         >
-          <img :src="positivePicUrl" alt="" width="100" height="100">
+          <img :src="positivePicUrl" alt="" width="100" height="100" v-preview="positivePicUrl" />
           <a-upload
             :beforeUpload="beforeUploadEx"
             @change="handleChange"
             accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif"
             v-decorator="['img1',{rules: [{ required: true, message: 'Please upload pictures！'}]}]"
           >
-              <a-button>
-                <a-icon type="upload" /> 点击上传
+              <a-button :disabled="editDisabled">
+                <a-icon type="upload"/> 点击上传
               </a-button>
           </a-upload>
         </a-form-item>
@@ -157,14 +157,14 @@
           :wrapper-col="{ span: 17 }"
           style="width: 45%;"
         >
-          <img :src="backPicUrl" alt="" width="100" height="100">
+          <img :src="backPicUrl" alt="" width="100" height="100" v-preview="backPicUrl" />
           <a-upload
             :beforeUpload="beforeUploadEx1"
             @change="handleChange1"
             accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif"
             v-decorator="['img2',{rules: [{ required: true, message: 'Please upload pictures！'}]}]"
           >
-              <a-button>
+              <a-button :disabled="editDisabled">
                 <a-icon type="upload" /> 点击上传
               </a-button>
           </a-upload>
@@ -178,14 +178,14 @@
           :wrapper-col="{ span: 17 }"
           style="width: 45%;"
         >
-          <img :src="leftPicUrl" alt="" width="100" height="100">
+          <img :src="leftPicUrl" alt="" width="100" height="100" v-preview="leftPicUrl" />
           <a-upload
             :beforeUpload="beforeUploadEx2"
             @change="handleChange2"
             accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif"
             v-decorator="['img3',{rules: [{ required: true, message: 'Please upload pictures！'}]}]"
           >
-              <a-button>
+              <a-button :disabled="editDisabled">
                 <a-icon type="upload" /> 点击上传
               </a-button>
           </a-upload>
@@ -199,14 +199,14 @@
           :wrapper-col="{ span: 17 }"
           style="width: 45%;"
         >
-          <img :src="rightPicUrl" alt="" width="100" height="100">
+          <img :src="rightPicUrl" alt="" width="100" height="100" v-preview="rightPicUrl" />
           <a-upload
             :beforeUpload="beforeUploadEx3"
             @change="handleChange3"
             accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif"
             v-decorator="['img4',{rules: [{ required: true, message: 'Please upload pictures！'}]}]"
           >
-              <a-button>
+              <a-button :disabled="editDisabled">
                 <a-icon type="upload" /> 点击上传
               </a-button>
           </a-upload>
@@ -220,16 +220,16 @@
       <div class="reject-box">
         <ul>
           <li>
-            正面: <img :src="rejpositivePicUrl" width="100" height="100">
+            正面: <img :src="rejpositivePicUrl" width="100" height="100" v-preview="rejpositivePicUrl">
           </li>
           <li>
-            背面: <img :src="rejbackPicUrl" width="100" height="100">
+            背面: <img :src="rejbackPicUrl" width="100" height="100" v-preview="rejbackPicUrl">
           </li>
           <li>
-            左面: <img :src="rejleftPicUrl" width="100" height="100">
+            左面: <img :src="rejleftPicUrl" width="100" height="100" v-preview="rejleftPicUrl">
           </li>
           <li>
-            右面: <img :src="rejrightPicUrl" width="100" height="100">
+            右面: <img :src="rejrightPicUrl" width="100" height="100" v-preview="rejrightPicUrl">
           </li>
         </ul>
         <p>
@@ -246,7 +246,7 @@
 import { fabric } from 'fabric';
 import MyTitle from "@/components/MyTitle/MyTitle";
 // 方法名加括号
-import { dealerDesignList,confirmSample,viewDesign,colorInfo,photoInfo,sourceUpload,designingScheme,rejectDesign,updateDespic } from '@/api/seller'
+import { dealerDesignList,viewDesign,colorInfo,photoInfo,sourceUpload,designingScheme,rejectDesign,updateDespic } from '@/api/seller'
 export default {
   components:{
     MyTitle
@@ -310,7 +310,8 @@ export default {
       rejleftPicUrl:'',
       rejrightPicUrl:'',
       rejbackPicUrl:'',
-      opinion:''
+      opinion:'',
+      editDisabled: false
     }
   },
   mounted(){
@@ -336,9 +337,33 @@ export default {
           this.rejbackPicUrl = res.result.despic.backPicUrl,
           this.opinion = res.result.despic.opinion
         })
-      }else{
+      }else if(key == 1){
         // 修改设计回显
         this.newDesign = true;
+        this.editDisabled = true;
+        designingScheme(id).then(res => {
+          console.log(res);
+          if(res.code == 0){
+            this.id1 = res.result.id;
+            this.positivePicUrl = res.result.positivePicUrl;
+            this.backPicUrl = res.result.backPicUrl;
+            this.leftPicUrl = res.result.leftPicUrl;
+            this.rightPicUrl = res.result.rightPicUrl;
+            this.form.setFieldsValue({
+              img1:res.result.positivePicUrl,
+              img2:res.result.backPicUrl,
+              img3:res.result.leftPicUrl,
+              img4:res.result.rightPicUrl,
+              remarks1:res.result.porsitiveDescription,
+              remarks2:res.result.backDescription,
+              remarks3:res.result.leftDescription,
+              remarks4:res.result.rightDescription
+            })
+          }
+        })
+      }else{
+        this.newDesign = true;
+        this.editDisabled = false;
         designingScheme(id).then(res => {
           console.log(res);
           if(res.code == 0){
@@ -579,14 +604,6 @@ export default {
         console.log(res)
         if(res.code == 0){
           this.data = res.result;
-        }
-      })
-    },
-    handleConfirm(id){
-      confirmSample(id).then(res => {
-        console.log(res)
-        if(res.code == 0){
-          this.$message.success('操作成功！')
         }
       })
     }

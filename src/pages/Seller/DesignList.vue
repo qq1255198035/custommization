@@ -5,18 +5,16 @@
         <router-link to="/index">
           <p class="icon-logotxt"></p>
         </router-link>
-        
         <p>
           <User></User>
         </p>
       </header>
       <div class="wrapper-box">
-      
       <div style="padding: 30px;">
         <a-table :columns="columns" :dataSource="dataDesign" :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}" :pagination="false">
           <div slot="positivePicUrl" slot-scope="text" style="display: flex;">
             <div v-for="item in text" :key="item.index" style="width: 25%;">
-              <img :src="item" alt style="width: 100%;"/>
+              <img :src="item" style="width: 100%;" v-preview="item"/>
             </div>
           </div>
           <div slot="goodsInfo" slot-scope="text" style="display: flex;">
@@ -66,11 +64,6 @@ const columns = [
     key: "action"
   }
 ];
-
-
-
-
-
 export default {
   data() {
     return {

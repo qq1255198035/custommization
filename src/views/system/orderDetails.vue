@@ -74,11 +74,11 @@
                 <h3>{{item.name}}</h3>
                 <ul class="img-box">
                   <li>
-                    <img :src="item.positivePicUrl" alt />
+                    <img :src="item.positivePicUrl" v-preview="item.positivePicUrl"/>
                     <span>Front</span>
                   </li>
                   <li>
-                    <img :src="item.backPicUrl" alt />
+                    <img :src="item.backPicUrl" v-preview="item.backPicUrl"/>
                     <span>Back</span>
                   </li>
                 </ul>

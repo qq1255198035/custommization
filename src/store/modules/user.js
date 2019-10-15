@@ -85,7 +85,7 @@ const user = {
         console.log(resolve)
         commit('SET_TOKEN', '');
         commit('SET_ROLES', []);
-        console.log(state)
+        console.log(state);
         Vue.ls.remove(ACCESS_TOKEN);
       })
     },

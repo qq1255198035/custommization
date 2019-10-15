@@ -30,7 +30,7 @@
         <a-col :xxl="20" :xl="20">
           <!--<table-item :data="listLeft"></table-item>-->
           <a-table :columns="columns" :dataSource="data">
-            <img slot="positivePicUrl" style="width:120px" slot-scope="text" :src="text" alt />
+            <img slot="positivePicUrl" style="width:120px" slot-scope="text" :src="text" v-preview="text"/>
           </a-table>
         </a-col>
         <!--list2-->

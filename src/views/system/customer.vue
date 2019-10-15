@@ -17,6 +17,7 @@
                 <a-select-option value="0">未审批</a-select-option>
                 <a-select-option value="1">通过</a-select-option>
                 <a-select-option value="2">未通过</a-select-option>
+                <a-select-option value="3">未申请</a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
@@ -142,6 +143,9 @@ const statusMap = {
     },
     2: {
         text: '未通过'
+    },
+    3: {
+        text: '未申请'
     }
 }
 export default {

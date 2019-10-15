@@ -30,10 +30,10 @@
     <ul class="list-box">
       <li v-for="(item,index) in data.list" :key="item.id">
         <div class="img-box">
-          <img :src="item.positivePicUrl" alt="">
-          <img :src="item.backPicUrl" alt="">
-          <img :src="item.leftPicUrl" alt="">
-          <img :src="item.rightPicUrl" alt="">
+          <img :src="item.positivePicUrl" v-preview="item.positivePicUrl">
+          <img :src="item.backPicUrl" v-preview="item.backPicUrl">
+          <img :src="item.leftPicUrl" v-preview="item.leftPicUrl">
+          <img :src="item.rightPicUrl" v-preview="item.rightPicUrl">
         </div>
         <div class="content">
           <dl>
@@ -127,14 +127,14 @@
         </a-modal>
     </div>
     <a-modal :visible="newDesign" title="上传设计样稿" :width="700" @ok="confirmDesign" @cancel="newDesign = false" okText="确认" cancelText="关闭">
-      <a-form :form="form" style="display: flex;flex-wrap: wrap;">
+      <a-form :form="form" style="display: flex;flex-wrap: wrap;padding: 20px 30px; 10px 0">
         <a-form-item
           label="上传正面"
           :label-col="{ span: 7 }"
           :wrapper-col="{ span: 17 }"
           style="width: 45%;"
         >
-          <img :src="positivePicUrl" alt="" width="100" height="100">
+          <img :src="positivePicUrl" v-preview="positivePicUrl" width="100" height="100" v-if="positivePicUrl"/>
           <a-upload
             :beforeUpload="beforeUploadEx"
             @change="handleChange"
@@ -148,7 +148,7 @@
           </a-upload>
         </a-form-item>
         <a-form-item style="width: 55%;">
-          <a-textarea :autosize="{minRows: 4}" v-decorator="['remarks1',{rules: [{ required: false, message: 'Please upload pictures！' }]}]"></a-textarea>
+          <a-textarea :autosize="{minRows: 4}" v-decorator="['remarks1',{rules: [{ required: false, message: 'Please upload pictures！' }]}]" :disabled="editDisabled"></a-textarea>
         </a-form-item>
         <a-form-item
           label="上传背面"
@@ -156,7 +156,7 @@
           :wrapper-col="{ span: 17 }"
           style="width: 45%;"
         >
-          <img :src="backPicUrl" alt="" width="100" height="100">
+          <img :src="backPicUrl" v-preview="backPicUrl" width="100" height="100" v-if="backPicUrl"/>
           <a-upload
             :beforeUpload="beforeUploadEx1"
             @change="handleChange1"
@@ -170,7 +170,7 @@
           </a-upload>
         </a-form-item>
         <a-form-item style="width: 55%;">
-          <a-textarea :autosize="{minRows: 4}" v-decorator="['remarks2',{rules: [{ required: false, message: 'Please upload pictures！' }]}]"></a-textarea>
+          <a-textarea :disabled="editDisabled" :autosize="{minRows: 4}" v-decorator="['remarks2',{rules: [{ required: false, message: 'Please upload pictures！' }]}]"></a-textarea>
         </a-form-item>
         <a-form-item
           label="上传左面"
@@ -178,7 +178,7 @@
           :wrapper-col="{ span: 17 }"
           style="width: 45%;"
         >
-          <img :src="leftPicUrl" alt="" width="100" height="100">
+          <img :src="leftPicUrl" v-preview="leftPicUrl" width="100" height="100" v-if="leftPicUrl"/>
           <a-upload
             :beforeUpload="beforeUploadEx2"
             @change="handleChange2"
@@ -192,7 +192,7 @@
           </a-upload>
         </a-form-item>
         <a-form-item style="width: 55%;">
-          <a-textarea :autosize="{minRows: 4}" v-decorator="['remarks3',{rules: [{ required: false, message: 'Please upload pictures！' }]}]"></a-textarea>
+          <a-textarea :disabled="editDisabled" :autosize="{minRows: 4}" v-decorator="['remarks3',{rules: [{ required: false, message: 'Please upload pictures！' }]}]"></a-textarea>
         </a-form-item>
         <a-form-item
           label="上传右面"
@@ -200,7 +200,7 @@
           :wrapper-col="{ span: 17 }"
           style="width: 45%;"
         >
-          <img :src="rightPicUrl" alt="" width="100" height="100">
+          <img :src="rightPicUrl" v-preview="rightPicUrl" width="100" height="100" v-if="rightPicUrl"/>
           <a-upload
             :beforeUpload="beforeUploadEx3"
             @change="handleChange3"
@@ -214,7 +214,7 @@
           </a-upload>
         </a-form-item>
         <a-form-item style="width: 55%;">
-          <a-textarea v-decorator="['remarks4',{rules: [{ required: false, message: 'Please upload pictures！' }]}]" :autosize="{minRows: 4}"></a-textarea>
+          <a-textarea :disabled="editDisabled" v-decorator="['remarks4',{rules: [{ required: false, message: 'Please upload pictures！' }]}]" :autosize="{minRows: 4}"></a-textarea>
         </a-form-item>
       </a-form>
     </a-modal> 
@@ -222,16 +222,16 @@
       <div class="reject-box">
         <ul>
           <li>
-            正面: <img :src="rejpositivePicUrl" width="100" height="100">
+            正面: <img :src="rejpositivePicUrl" width="100" height="100" v-preview="rejpositivePicUrl" />
           </li>
           <li>
-            背面: <img :src="rejbackPicUrl" width="100" height="100">
+            背面: <img :src="rejbackPicUrl" width="100" height="100" v-preview="rejbackPicUrl" />
           </li>
           <li>
-            左面: <img :src="rejleftPicUrl" width="100" height="100">
+            左面: <img :src="rejleftPicUrl" width="100" height="100" v-preview="rejleftPicUrl" />
           </li>
           <li>
-            右面: <img :src="rejrightPicUrl" width="100" height="100">
+            右面: <img :src="rejrightPicUrl" width="100" height="100" v-preview="rejrightPicUrl" />
           </li>
         </ul>
         <p>
@@ -312,7 +312,8 @@ export default {
       rejleftPicUrl:'',
       rejrightPicUrl:'',
       rejbackPicUrl:'',
-      opinion:''
+      opinion:'',
+      editDisabled: false
     }
   },
   mounted(){
@@ -324,7 +325,6 @@ export default {
     })
   },
   methods:{
-  
     viewDesignCase(id,key){
       console.log(id)
       if(key == 0){
@@ -338,9 +338,10 @@ export default {
           this.rejbackPicUrl = res.result.despic.backPicUrl,
           this.opinion = res.result.despic.opinion
         })
-      }else{
+      }else if(key == 1){
         // 修改设计回显
         this.newDesign = true;
+        this.editDisabled = true;
         designingScheme(id).then(res => {
           console.log(res);
           if(res.code == 0){
@@ -350,10 +351,25 @@ export default {
             this.leftPicUrl = res.result.leftPicUrl;
             this.rightPicUrl = res.result.rightPicUrl;
             this.form.setFieldsValue({
-              // img1:res.result.positivePicUrl,
-              // img2:res.result.backPicUrl,
-              // img3:res.result.leftPicUrl,
-              // img4:res.result.rightPicUrl,
+              remarks1:res.result.porsitiveDescription,
+              remarks2:res.result.backDescription,
+              remarks3:res.result.leftDescription,
+              remarks4:res.result.rightDescription
+            })
+          }
+        })
+      }else{
+        this.newDesign = true;
+        this.editDisabled = false;
+        designingScheme(id).then(res => {
+          console.log(res);
+          if(res.code == 0){
+            this.id1 = res.result.id;
+            this.positivePicUrl = res.result.positivePicUrl;
+            this.backPicUrl = res.result.backPicUrl;
+            this.leftPicUrl = res.result.leftPicUrl;
+            this.rightPicUrl = res.result.rightPicUrl;
+            this.form.setFieldsValue({
               remarks1:res.result.porsitiveDescription,
               remarks2:res.result.backDescription,
               remarks3:res.result.leftDescription,
@@ -482,6 +498,20 @@ export default {
         this.$message.error('您还有设计没有完成！')
       }else{
         this.newDesign = true;
+        this.editDisabled = false;
+        setTimeout(() => {
+          this.form.setFieldsValue({
+            remarks1:'',
+            remarks2:'',
+            remarks3:'',
+            remarks4:''
+          })
+        },0)
+        
+        this.positivePicUrl = '';
+        this.backPicUrl = '';
+        this.leftPicUrl = '';
+        this.rightPicUrl = '';
         this.id2 = id;
       }
     },
@@ -595,7 +625,11 @@ export default {
       confirmSample(id).then(res => {
         console.log(res)
         if(res.code == 0){
-          this.$message.success('操作成功！')
+          if(res.success){
+            this.$message.success('操作成功！')
+          }else{
+            this.$message.error(res.result)
+          }
         }
       })
     }

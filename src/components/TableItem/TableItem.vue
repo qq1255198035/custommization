@@ -7,16 +7,16 @@
     <div class="img-box">
       <a-row :gutter="24">
         <a-col :span="6">
-          <img :src="datas.positive_pic_url" alt />
+          <img :src="datas.positive_pic_url" v-preview="datas.positive_pic_url"/>
         </a-col>
         <a-col :span="6">
-          <img :src="datas.back_pic_url" alt />
+          <img :src="datas.back_pic_url" v-preview="datas.back_pic_url"/>
         </a-col>
         <a-col :span="6">
-          <img :src="datas.left_pic_url" alt />
+          <img :src="datas.left_pic_url" v-preview="datas.left_pic_url"/>
         </a-col>
         <a-col :span="6">
-          <img :src="datas.right_pic_url" alt />
+          <img :src="datas.right_pic_url" v-preview="datas.right_pic_url"/>
         </a-col>
       </a-row>
     </div>

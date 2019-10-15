@@ -96,16 +96,16 @@
             </a-modal>
             <ul class="img-box">
               <li>
-                <img :src="item.positive_pic_url" alt="">
+                <img :src="item.positive_pic_url" v-preview="item.positive_pic_url">
               </li>
               <li>
-                <img :src="item.back_pic_url" alt="">
+                <img :src="item.back_pic_url" v-preview="item.back_pic_url">
               </li>
               <li>
-                <img :src="item.left_pic_url" alt="">
+                <img :src="item.left_pic_url" v-preview="item.left_pic_url">
               </li>
               <li>
-                <img :src="item.right_pic_url" alt="">
+                <img :src="item.right_pic_url" v-preview="item.right_pic_url">
               </li>
             </ul>
             <ul class="share-desc">
@@ -132,16 +132,16 @@
             </a-modal>
             <ul class="img-box">
               <li>
-                <img :src="item.positive_pic_url" alt="">
+                <img :src="item.positive_pic_url" v-preview="item.positive_pic_url">
               </li>
               <li>
-                <img :src="item.back_pic_url" alt="">
+                <img :src="item.back_pic_url" v-preview="item.back_pic_url">
               </li>
               <li>
-                <img :src="item.left_pic_url" alt="">
+                <img :src="item.left_pic_url" v-preview="item.left_pic_url">
               </li>
               <li>
-                <img :src="item.right_pic_url" alt="">
+                <img :src="item.right_pic_url" v-preview="item.right_pic_url">
               </li>
             </ul>
             <ul class="share-desc">
@@ -172,7 +172,7 @@
   >
     <div class="add-type-1">
       <div class="img-title">
-        <img :src="mobileImgArr[sizeIndex]" alt="" width="100" height="100">
+        <img :src="mobileImgArr[sizeIndex]" v-preview="mobileImgArr[sizeIndex]" width="100" height="100">
         <div>
           <h2>${{priceArr[sizeIndex]}}</h2>
           <span style="margin-right: 10px;">size: {{size ? size : 'Select Size'}}</span>

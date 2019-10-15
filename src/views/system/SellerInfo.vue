@@ -13,7 +13,7 @@
                         <p>邮箱：{{item.email}}</p>
                         <p>注册时间：<span>{{item.createTime}}</span></p>
                     </div>
-                    <img :src="item.papersImg" alt="">
+                    <img :src="item.papersImg" v-preview="item.papersImg">
                 </div>
             </a-col>
             <a-col :span="16">

@@ -56,7 +56,9 @@ export default {
         onOk() {
           that.Logout();
           that.$router.push({path: '/'});
-          window.location.reload();
+          setTimeout(() => {
+            window.location.reload();
+          },10)
         },
         onCancel() {}
       });

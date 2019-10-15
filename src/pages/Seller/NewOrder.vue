@@ -368,8 +368,7 @@
                                         </div>
                                         <ul class="info-list">
                                             <li v-for="(item,index) in dataList" :key="index">
-
-                                                <img :src="item.picUrl" alt="" width="100" height="100">
+                                                <img :src="item.picUrl" alt="" width="100" height="100" v-preview="item.picUrl">
                                                 <div>
                                                     <p>{{item.remarks}}</p>
                                                     <span>
@@ -766,10 +765,10 @@
                     <a-row :gutter="20">
                     <h3 style="color: #33b8b3;padding-left: 20px;">{{ designDetail.name }}</h3>
                     <a-col :span="12">
-                        <img width="100%" :src="designDetail.positivePicUrl" alt />
+                        <img width="100%" :src="designDetail.positivePicUrl" v-preview="designDetail.positivePicUrl"/>
                     </a-col>
                     <a-col :span="12">
-                        <img width="100%" :src="designDetail.backPicUrl" alt />
+                        <img width="100%" :src="designDetail.backPicUrl" v-preview="designDetail.backPicUrl"/>
                     </a-col>
                     </a-row>
                 </a-col>
@@ -1374,7 +1373,7 @@ export default {
             let params = {
                 positivePicUrl: this.dataUrl1,backPicUrl: this.dataUrl2,leftPicUrl: this.dataUrl3,rightPicUrl: this.dataUrl4,
                 positiveDesignArea: this.dataPost1, backDesignArea: this.dataPost2, leftDesignArea: this.dataPost3, rightDesignArea: this.dataPost4,
-                goodsId: this.postId, id: this.picId,textFront: this.nameFontFamily, textColor: this.nameColor, textLocation: this.namePosition,textHeight: this.nameSize,
+                goodsId: this.postId, id: this.designId,textFront: this.nameFontFamily, textColor: this.nameColor, textLocation: this.namePosition,textHeight: this.nameSize,
                 numberLocation: this.numberPosition,numberHeight: this.numberSize,numberFront:this.numberFontFamily, numberColor: this.numberColor, isPrintText: this.addNameData ? 1 : 0,isPrintNumber: this.addNumberData ? 1 : 0,
                 productColor: this.productColorName
             }
@@ -1474,7 +1473,6 @@ export default {
                 this.bindCanvas(this.myCanvas2,1);
                 this.bindCanvas(this.myCanvas3,2);
                 this.bindCanvas(this.myCanvas4,3);
-                //this.postId
             })
         },
 
@@ -1523,7 +1521,6 @@ export default {
             referencePic(pidStr).then(res => {
                 console.log(res)
                 this.dataList = res.result
-
             })
         },
         saveEndDesign(){
@@ -1532,7 +1529,7 @@ export default {
             let params = {
                 positivePicUrl: this.dataUrl1,backPicUrl: this.dataUrl2,leftPicUrl: this.dataUrl3,rightPicUrl: this.dataUrl4,
                 positiveDesignArea: this.dataPost1, backDesignArea: this.dataPost2, leftDesignArea: this.dataPost3, rightDesignArea: this.dataPost4,
-                goodsId: this.postId, id: this.picId,textFront: this.nameFontFamily, textColor: this.nameColor, textLocation: this.namePosition,textHeight: this.nameSize,
+                goodsId: this.postId, id: this.designId,textFront: this.nameFontFamily, textColor: this.nameColor, textLocation: this.namePosition,textHeight: this.nameSize,
                 numberLocation: this.numberPosition,numberHeight: this.numberSize,numberFront:this.numberFontFamily, numberColor: this.numberColor, isPrintText: this.addNameData ? 1 : 0,isPrintNumber: this.addNumberData ? 1 : 0,
                 productColor: this.productColorName
             }
@@ -2008,14 +2005,10 @@ export default {
                 if(res.code == 200){
                     this.example = false;
                     this.$message.success('Successful submission!');
-
                     if(res.result){
                         this.designId = res.result;
                     }
                     this.getReferencePic(this.designId);
-                    console.log(this.designId)
-
-
                 }
             })
         },

@@ -121,7 +121,7 @@ export function showDealBtn(bpmStatus){
 }
 export function handleScrollHeader (callback) {
   let timer = 0
-
+  /* eslint-disable */
   let beforeScrollTop = window.pageYOffset
   callback = callback || function () {}
   window.addEventListener(

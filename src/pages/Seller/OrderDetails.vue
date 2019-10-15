@@ -24,7 +24,7 @@
             </dl>
             <ul class="bottom">
               <li v-for="item in information.list" :key="item.id">
-                <img :src="item.positive_pic_url" alt />
+                <img :src="item.positive_pic_url" v-preview="item.positive_pic_url"/>
                 <div>
                   <div>
                     <h3>{{item.name}}</h3>

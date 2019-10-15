@@ -29,7 +29,7 @@
                   <p>Order time：{{item.confirm_time}}</p>
                   <p>Contact Seller：{{item.contact}} Status：{{item.pay_status | status}}</p>
                   <div v-for="items in item.interiorList" :key="items.index">
-                    <img :src="items.positive_pic_url" alt />
+                    <img :src="items.positive_pic_url" v-preview="items.positive_pic_url"/>
                     <div>
                       <h3 style="color:#33b8b3">{{items.name}}</h3>
                       <div class="desc">
@@ -68,7 +68,7 @@
                   <p>Order time：{{item.confirm_time}}</p>
                   <p>Contact Seller：{{item.contact}} Status：{{item.pay_status | status}}</p>
                   <div v-for="items in item.interiorList" :key="items.index">
-                    <img :src="items.positive_pic_url" alt />
+                    <img :src="items.positive_pic_url" v-preview="items.positive_pic_url"/>
                     <div>
                       <h3 style="color:#33b8b3">{{items.name}}</h3>
                       <div class="desc">
@@ -104,7 +104,7 @@
                   <p>Order time：{{item.confirm_time}}</p>
                   <p>Contact Seller：{{item.contact}} Status：{{item.pay_status | status}}</p>
                   <div v-for="items in item.interiorList" :key="items.index">
-                    <img :src="items.positive_pic_url" alt />
+                    <img :src="items.positive_pic_url" v-preview="items.positive_pic_url"/>
                     <div>
                       <h3 style="color:#33b8b3">{{items.name}}</h3>
                       <div class="desc">

@@ -52,7 +52,7 @@
           <div>
             <template v-if="item.imgList.length > 0">
               <span v-for="(img,index) in item.imgList" :key="index">
-                <img :src="img" alt v-if="img"/>
+                <img :src="img" v-if="img" v-preview="img"/>
                 <p v-else>No Data</p>
                 <i v-if="index == 0 && img" style="font-style: normal;">Front</i>
                 <i v-if="index == 1 && img" style="font-style: normal;">Back</i>
