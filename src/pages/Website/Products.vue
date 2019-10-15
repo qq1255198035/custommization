@@ -55,7 +55,7 @@ export default {
 #commodity{
       width: 100%;
       height: 100%;
-      padding: 30px 80px;
+      padding: 0 80px;
       background-image: linear-gradient(to right,#4bb377 , #01b6e1 );
       .main{
             img{

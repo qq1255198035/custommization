@@ -8,7 +8,7 @@
 .whatTCK .homeTitle01,.ourProducts .homeTitle01,.ourBrands .homeTitle,.homeBanner a,.whatIcon i,.purchaseBtn a,.tckRight h4{color: #33B8B3;}
 .whatTCK .homeTitle02,.ourProducts .homeTitle02,.whatIcon h4,.imgBg a,.process-box ul li .text2 .desc{color: #333333;}
 .whatTCK .homeCon01,.ourProducts .homeCon01,.whatIcon p,.tckInput,.tckCenter,.tckRight,.tckCenter a,.tckRight ul li,.tckRight p{color: #999999;}
-.ourBrands .homeTitle01,.ourBrands .homeTitle02,.ourBrands .homeCon01,.purchaseNow,.tckLeft a,nav a:hover,nav a.nav,nav a,nav,.copyright,.copyText,.copyright a{color: #FFFFFF;}
+.ourBrands .homeTitle01,.ourBrands .homeTitle02,.ourBrands .homeCon01,.purchaseNow,.tckLeft a,.copyright,.copyText,.copyright a{color: #FFFFFF;}
 .tck h3{color: #666666;}
 .wb_90{width: 90%;}
 .wb_80{width: 80%;}
@@ -133,6 +133,20 @@ nav a:hover,nav a.nav{text-shadow: gray 3px 3px 2px; }
 	nav a:hover,nav a.nav{font-size: 1.125rem;}
 	.homeBanner a{ padding: 10px 40px; font-size:1.75rem;}
 	.whatTCK{padding: 0 130px;}
+	.txtRight{
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
+	}
+	.txtRight a:nth-child(2){
+		min-width: 142px;
+	}
+	.txtRight a:nth-child(3){
+		min-width: 264px;
+	}
+	.txtRight a:nth-child(4){
+		min-width: 149px;
+	}
 }
 
 @media (min-width: 980px)  {
@@ -142,7 +156,7 @@ nav a:hover,nav a.nav{text-shadow: gray 3px 3px 2px; }
 	.tckRight ul li,.tckRight p,.whatTxt i{font-size: 16px;}
 	nav a:hover,nav a.nav{font-size:36px;}	
 	.homeMenu{padding: 40px 40px 0 ;}
-	.homeMenu h1 img{width: 450px;}
+	.homeMenu h1 img{width: 400px;}
 	nav a{ margin-left:60px;}	
 	.homeBanner a{ padding: 10px 30px;}
 	.whatTCK{padding: 60px 130px 80px ;}
@@ -201,8 +215,6 @@ nav a:hover,nav a.nav{text-shadow: gray 3px 3px 2px; }
 	.process-box ul li{ margin-right: 89px; }
 	.process-box ul.two li{ margin-top: -40px;}
 	.pr_ml{margin-left: -145px;}
-	
-
 }
 
 @media (min-width: 768px) and (max-width: 979px)  {
