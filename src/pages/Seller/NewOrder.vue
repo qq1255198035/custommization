@@ -12,7 +12,7 @@
                             @click="handleClick"
                             @openChange="onOpenChange"
                         >
-                        <a-sub-menu  v-for="(item, index) in menuList" :key="index.toString()">
+                        <a-sub-menu  v-for="(item, index) in menuList" :key="index">
                             <span slot="title" style="display: flex;align-items: center;"><a-avatar :size="20" :src="item.icon" style="margin-right: 5px;" v-if="item.icon"/><span>{{item.title}}</span></span>
                             <a-menu-item v-for="(sub,sindex) in item.subMenu" :key="'sub'+ index + sindex.toString()" @click="handleGetList(sub.categoryId)">{{sub.title}}</a-menu-item>
                         </a-sub-menu>
@@ -1132,7 +1132,9 @@ export default {
             this.onMouseUp(this.myCanvas4);
             this.setEditIcon();
             this.setEditPointer();
-            console.log(this.$route)
+            console.log(this.$route.query.res)
+            console.log(this.$route.query.res.boxSizes)
+            debugger;
             if(this.$route.query.show){
                 let SIZE= JSON.parse(this.$route.query.res.boxSizes);
                 this.loadFromJSON(this.myCanvas1,JSON.parse(this.$route.query.res.posititveDesignArea));
