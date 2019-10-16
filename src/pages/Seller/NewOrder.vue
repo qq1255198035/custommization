@@ -720,8 +720,9 @@
                         </a-form-item>
                     </a-form>
                     <div class="btn-box">
-                        <a-button @click="clickOk">Submit</a-button>
+                        
                         <a-button style="color:#ccc;border-color: #ccc;" @click="closeUploadModal">Cancel</a-button>
+                        <a-button @click="clickOk">Submit</a-button>
                     </div>
                 </div>
             </a-modal>
@@ -1055,7 +1056,6 @@ export default {
             preview_url: '',
             source_url: '',
             designId: '',
-            picId: '',
             designDetail: '',
             showVisible: false,
             nums: "",
@@ -1134,16 +1134,17 @@ export default {
             this.setEditPointer();
             console.log(this.$route.query.res)
             console.log(this.$route.query.res.boxSizes)
-            debugger;
             if(this.$route.query.show){
                 let SIZE= JSON.parse(this.$route.query.res.boxSizes);
+                this.remark = this.$route.query.res.remarks;
+                this.dataList = this.$route.query.res.picDesList;
                 this.loadFromJSON(this.myCanvas1,JSON.parse(this.$route.query.res.posititveDesignArea));
                 this.loadFromJSON(this.myCanvas2,JSON.parse(this.$route.query.res.backDesignArea))
                 this.loadFromJSON(this.myCanvas3,JSON.parse(this.$route.query.res.leftDesignArea))
                 this.loadFromJSON(this.myCanvas4,JSON.parse(this.$route.query.res.rightDesignArea))
                 this.bgimgs = this.$route.query.res.list;
                 this.postId = this.$route.query.res.goodsId;
-                this.picId = this.$route.query.res.picId;
+                this.designId = this.$route.query.res.picId;
                 this.productColor = this.$route.query.res.productColorValue;
                 this.productColorName = this.$route.query.res.productColor;
                 this.boxSize1 = SIZE.canvas1;
@@ -1382,7 +1383,7 @@ export default {
             let params = {
                 positivePicUrl: this.dataUrl1,backPicUrl: this.dataUrl2,leftPicUrl: this.dataUrl3,rightPicUrl: this.dataUrl4,
                 positiveDesignArea: this.dataPost1, backDesignArea: this.dataPost2, leftDesignArea: this.dataPost3, rightDesignArea: this.dataPost4,
-                goodsId: this.postId, id: this.designId ? this.designId : this.picId,textFront: this.nameFontFamily, textColor: this.nameColor, textLocation: this.namePosition,textHeight: this.nameSize,
+                goodsId: this.postId, id: this.designId,textFront: this.nameFontFamily, textColor: this.nameColor, textLocation: this.namePosition,textHeight: this.nameSize,
                 numberLocation: this.numberPosition,numberHeight: this.numberSize,numberFront:this.numberFontFamily, numberColor: this.numberColor, isPrintText: this.addNameData ? 1 : 0,isPrintNumber: this.addNumberData ? 1 : 0,
                 productColor: this.productColorName
             }
@@ -1570,7 +1571,7 @@ export default {
                     this.endDsign = true;
                     this.visibletype = -1;
                     this.liClick = -1;
-                    this.picId = res.result.id
+                    this.designId = res.result.id
                 }
             })
         },
