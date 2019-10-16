@@ -20,7 +20,7 @@
             </a-input>
           </a-col>
           <a-col :span="6">
-            <a-button @click="setCode">Get the authentication code</a-button>
+            <a-button @click="setCode">Get verify code</a-button>
           </a-col>
         </a-row>
       </a-form-item>
@@ -58,7 +58,7 @@ export default {
             if (res.code == 0) {
               this.$notification["success"]({
                 message: "Successful",
-                description: "Successful",
+                description: "Verification code has been sent, please check！",
                 duration: 4
               });
             }
@@ -88,13 +88,11 @@ export default {
               console.log(this.captcha)
               checkCaptcha(values.email, this.captcha).then(res => {
                   console.log(res)
-                 
                     if(res.success){
                       this.$emit("nextStep", values.email, this.captcha);
                     }else{
                       this.$message.error(res.message)
                     }
-                  
               })
               //
             }else{

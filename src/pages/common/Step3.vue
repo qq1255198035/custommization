@@ -15,7 +15,6 @@
     },
     data () {
       return {
-        loading: false
       }
     },
     methods: {

@@ -20,7 +20,6 @@
               ]"
                 ></a-input>
               </a-form-item>
-
               <a-form-item label="Password" class="margin-top-20">
                 <a-input
                   size="large"
@@ -210,14 +209,11 @@ export default {
         customActiveKey,
         Login
       } = this;
-
       state.loginBtn = true;
-
       const validateFieldsKey =
         customActiveKey === "tab1"
           ? ["username", "password"]
           : ["mobile", "captcha"];
-
       validateFields(validateFieldsKey, { force: true }, (err, values) => {
         if (!err) {
           if (this.formLogin.rememberMe) {

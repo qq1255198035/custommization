@@ -366,6 +366,10 @@ export default {
     },
     handlePasswordLevel(rule, value, callback) {
       let level = 0;
+      let reg = /(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,}/;
+      if (!reg.test(value)) {
+        callback(new Error('The password consists of 6 numbers and letters!'))
+      }
       // 判断这个字符串中有没有数字
       if (/[0-9]/.test(value)) {
         level++;

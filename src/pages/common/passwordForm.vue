@@ -7,8 +7,8 @@
         <a-step title="Completed" />
       </a-steps>
       <div class="content">
-        <step1 v-if="currentTab === 0" @nextStep="nextStep"/>
-        <step2 :email="email" v-if="currentTab === 1" @nextStep="nextStep" @prevStep="prevStep"/>
+        <step1 v-if="currentTab === 0" @nextStep="nextStep1"/>
+        <step2 :email="email" v-if="currentTab === 1" @nextStep="nextStep2" @prevStep="prevStep"/>
         <step3 v-if="currentTab === 2" @prevStep="prevStep" @finish="finish"/>
       </div>
     </a-card>
@@ -30,22 +30,23 @@
       return {
         description: '',
         currentTab: 0,
-        email: '',
-        form: null,
-        
+        email: ''
       }
     },
     methods: {
-      nextStep (data) {
+      nextStep1(data) {
           console.log(data)
-          console.log(11)
           this.email = data
         if (this.currentTab < 2) {
           this.currentTab += 1
         }
       },
+      nextStep2(){
+        if (this.currentTab < 2) {
+          this.currentTab += 1
+        }
+      },
       prevStep () {
-        
         if (this.currentTab > 0) {
           this.currentTab -= 1
         }
