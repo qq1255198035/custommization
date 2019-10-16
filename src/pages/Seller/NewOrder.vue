@@ -1130,14 +1130,11 @@ export default {
             this.onMouseUp(this.myCanvas2);
             this.onMouseUp(this.myCanvas3);
             this.onMouseUp(this.myCanvas4);
-            // this.delSelected(this.myCanvas1);
-            // this.delSelected(this.myCanvas2);
-            // this.delSelected(this.myCanvas3);
-            // this.delSelected(this.myCanvas4);
-            
             this.setEditIcon();
             this.setEditPointer();
+            console.log(this.$route)
             if(this.$route.query.show){
+                let SIZE= JSON.parse(this.$route.query.res.boxSizes);
                 this.loadFromJSON(this.myCanvas1,JSON.parse(this.$route.query.res.posititveDesignArea));
                 this.loadFromJSON(this.myCanvas2,JSON.parse(this.$route.query.res.backDesignArea))
                 this.loadFromJSON(this.myCanvas3,JSON.parse(this.$route.query.res.leftDesignArea))
@@ -1146,8 +1143,19 @@ export default {
                 this.postId = this.$route.query.res.goodsId;
                 this.picId = this.$route.query.res.picId;
                 this.productColor = this.$route.query.res.productColorValue;
-                this.productColorName = this.this.$route.query.res.productColor;
-                console.log(this.bgimgs)
+                this.productColorName = this.$route.query.res.productColor;
+                this.boxSize1 = SIZE.canvas1;
+                this.boxSize2 = SIZE.canvas2;
+                this.boxSize3 = SIZE.canvas3;
+                this.boxSize4 = SIZE.canvas4;
+                this.handleObjectMove(this.myCanvas1,this.boxSize1.top,600 - this.boxSize1.top - this.boxSize1.height,this.boxSize1.left,600 - this.boxSize1.left - this.boxSize1.width);
+                this.handleObjectMove(this.myCanvas2,this.boxSize2.top,600 - this.boxSize2.top - this.boxSize2.height,this.boxSize2.left,600 - this.boxSize2.left - this.boxSize2.width);
+                this.handleObjectMove(this.myCanvas3,this.boxSize3.top,600 - this.boxSize3.top - this.boxSize3.height,this.boxSize3.left,600 - this.boxSize3.left - this.boxSize3.width);
+                this.handleObjectMove(this.myCanvas4,this.boxSize4.top,600 - this.boxSize4.top - this.boxSize4.height,this.boxSize4.left,600 - this.boxSize4.left - this.boxSize4.width);
+                this.handleObjectScale(this.myCanvas1,this.boxSize1.left,this.boxSize1.top,this.boxSize1.width,this.boxSize1.height);
+                this.handleObjectScale(this.myCanvas2,this.boxSize2.left,this.boxSize2.top,this.boxSize2.width,this.boxSize2.height);
+                this.handleObjectScale(this.myCanvas3,this.boxSize3.left,this.boxSize3.top,this.boxSize3.width,this.boxSize3.height);
+                this.handleObjectScale(this.myCanvas4,this.boxSize4.left,this.boxSize4.top,this.boxSize4.width,this.boxSize4.height);
             }
         })
         //this.getWindowScreen();
@@ -1178,7 +1186,6 @@ export default {
                     rmWhite(id).then(res => {
                         console.log(res)
                         if(res.code == 0){
-                            
                             img.src = res.result.out + "?timeStamp="+new Date().getTime();
                             img.onload = function () {
                                 imgInstance = new fabric.Image(img, {
@@ -1373,7 +1380,7 @@ export default {
             let params = {
                 positivePicUrl: this.dataUrl1,backPicUrl: this.dataUrl2,leftPicUrl: this.dataUrl3,rightPicUrl: this.dataUrl4,
                 positiveDesignArea: this.dataPost1, backDesignArea: this.dataPost2, leftDesignArea: this.dataPost3, rightDesignArea: this.dataPost4,
-                goodsId: this.postId, id: this.designId,textFront: this.nameFontFamily, textColor: this.nameColor, textLocation: this.namePosition,textHeight: this.nameSize,
+                goodsId: this.postId, id: this.designId ? this.designId : this.picId,textFront: this.nameFontFamily, textColor: this.nameColor, textLocation: this.namePosition,textHeight: this.nameSize,
                 numberLocation: this.numberPosition,numberHeight: this.numberSize,numberFront:this.numberFontFamily, numberColor: this.numberColor, isPrintText: this.addNameData ? 1 : 0,isPrintNumber: this.addNumberData ? 1 : 0,
                 productColor: this.productColorName
             }
@@ -1677,9 +1684,7 @@ export default {
                     }).start();
             },10)
             this.getSelectById(id);
-
         },
-
         loadMore(){
             let that = this;
             that.pageNum ++;
