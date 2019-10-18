@@ -40,8 +40,10 @@ import {
   Tree,
   Tooltip,
   Spin,
-  TreeSelect
+  TreeSelect,
+  Anchor
 } from "ant-design-vue";
+Vue.use(Anchor);
 Vue.use(TreeSelect);
 Vue.use(Alert);
 Vue.use(Button);

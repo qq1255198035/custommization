@@ -3,12 +3,12 @@
             <div class="content">
                   <div class="desc">
                         <h2>
-                        <img src="@/assets/home-page2-title.png" alt="">
+                              <img src="@/assets/logo-group.png">
                         </h2>
-                        <p>長春到曾多次調查的菜單長春到曾多次調查的菜單長春到曾多次調查的菜單長春到曾多次調查的菜單長春到曾多次調查的菜單長春到曾多次調查的菜單長春到曾多次調查的菜單長春到曾多次調查的菜單</p>
-                        <p><a-icon type="environment" /> 吉林省长春市南关区卫星路与健民街交汇创新花园三号楼5单元209</p>
-                        <p><a-icon type="phone" style="transform: rotateY(180deg)"/> +12 12345698654455</p>
-                        <p><a-icon type="mail" /> www@qq.com</p>
+                        <p>Looking for help? Please call or email us!</p>
+                        <p><a-icon type="environment" />5005 Steeles Ave E, Unit 105Scarborough, Ontario M1V 5K1 Canada</p>
+                        <p><a-icon type="phone" style="transform: rotateY(180deg)"/>(647) 983-8195</p>
+                        <p><a-icon type="mail" />info@thecustomking.ca</p>
                         <p>
                               <span><a href="" target="_blank"><a-icon type="facebook" /></a></span>
                               <span><a href="" target="_blank"><a-icon type="instagram" /></a></span>
@@ -40,7 +40,6 @@ export default {
       .content{
             height: 100%;
             width: 100%;
-            padding-top: 5%;
             display: flex;
             justify-content: flex-end;
             align-items: center;
@@ -54,6 +53,11 @@ export default {
                   background-image: url("./../../assets/home-page2-bgright.png");
                   background-position: right 0;
                   background-repeat: no-repeat;
+                  >h2{
+                        img{
+                              width: 30%;
+                        }
+                  }
                   p{
                         word-wrap: break-word;
                         margin: 25px 0;

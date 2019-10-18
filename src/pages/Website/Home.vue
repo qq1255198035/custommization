@@ -61,7 +61,7 @@
         </div>
         <!-- //什么是CUSTOM KING -->
         <!-- 我们的产品 -->
-        <div class="ourProducts">
+        <div class="ourProducts" id="components-anchor">
             <h3 class="homeTitle01">Our Products</h3>
             <h2 class="homeTitle02 wb_60">From custom teamwear to corporate uniforms, we got them all!</h2>
             <p class="homeCon01 wb_70">Select from our catalog or our dedicated designers can help you to create the perfect apparel for you!</p>
@@ -275,7 +275,7 @@
                     <div class="homeVideo wb_80">
                         <video ></video>
                     </div>
-                    <p class="wb_80">long established fact that a reader will be distracted by the readable content by the readable content established fact that.</p>
+                    <p class="wb_80">Want the latest promotions and updates? Subscribe to our mailing list!</p>
                     <input type="text" class="tckInput wb_80 mb_20" value="Your E-maill" onfocus="javascript:if(this.value=='Your E-maill')this.value='';" v-model="email">
                     <p class="wb_80"><a @click="handleSubmit">Subscribe</a></p>
                 </a-col>
@@ -291,20 +291,19 @@
                         <div class="contactCon mb_20">
                             <h4>Phone</h4>
                             <ul>
-                                <li>+86-12345678910</li>
-                                <li>+86-12345678910</li>
+                                <li>(647) 983-8195</li>
                             </ul>
                         </div>
                         <div class="contactCon">
                             <h4>E-maill</h4>
                             <ul>
-                                <li>THECUSTOMKING@gmaill.com</li>
+                                <li>info@thecustomking.ca</li>
                                 <li>THECUSTOMKING@gmaill.com</li>
                             </ul>
                         </div>
                         <div class="contactCon">
                             <h4>Address</h4>
-                            <p>34/5 evergreen road,concord city New work,United Statesm</p>
+                            <p>5005 Steeles Ave E, Unit 105 Scarborough, Ontario M1V 5K1 Canada</p>
                         </div>
                 </a-col>
             </a-row>
