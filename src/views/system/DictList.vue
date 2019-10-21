@@ -1,174 +1,119 @@
 <template>
-  <a-card :bordered="false">
-
-    <!-- 左侧面板 -->
-    <div class="table-page-search-wrapper">
-      <a-form layout="inline">
-        <a-row :gutter="12">
-          <a-col :md="7" :sm="8">
-            <a-form-item label="字典名称" :labelCol="{span: 6}" :wrapperCol="{span: 14, offset: 1}">
-              <a-input placeholder="请输入字典名称" v-model="queryParam.dictName"></a-input>
-            </a-form-item>
-          </a-col>
-          <a-col :md="7" :sm="8">
-            <a-form-item label="字典编号" :labelCol="{span: 6}" :wrapperCol="{span: 14, offset: 1}">
-              <a-input placeholder="请输入字典编号" v-model="queryParam.dictCode"></a-input>
-            </a-form-item>
-          </a-col>
-          <a-col :md="7" :sm="8">
-            <span style="float: left;overflow: hidden;" class="table-page-search-submitButtons">
-              <a-button type="primary" @click="searchQuery" icon="search">查询</a-button>
-              <a-button type="primary" @click="searchReset" icon="reload" style="margin-left: 8px">重置</a-button>
-            </span>
-          </a-col>
-        </a-row>
-      </a-form>
-
-      <div class="table-operator" style="border-top: 5px">
-        <a-button @click="handleAdd" type="primary" icon="plus">添加</a-button>
-        <a-button type="primary" icon="download" @click="handleExportXls('字典信息')">导出</a-button>
-        <a-upload name="file" :showUploadList="false" :multiple="false" :headers="tokenHeader" :action="importExcelUrl" @change="handleImportExcel">
-          <a-button type="primary" icon="import">导入</a-button>
-        </a-upload>
-      </div>
-
-      <a-table
-        ref="table"
-        rowKey="id"
-        size="middle"
-        :columns="columns"
-        :dataSource="dataSource"
-        :pagination="ipagination"
-        :loading="loading"
-        @change="handleTableChange">
-        <span slot="action" slot-scope="text, record">
-          <a @click="handleEdit(record)">
-            <a-icon type="edit"/>
-            编辑
-          </a>
-          <a-divider type="vertical"/>
-          <a @click="editDictItem(record)"><a-icon type="setting"/> 字典配置</a>
-          <a-divider type="vertical"/>
-          <a-popconfirm title="确定删除吗?" @confirm="() =>handleDelete(record.id)">
-            <a>删除</a>
-          </a-popconfirm>
-        </span>
-      </a-table>
-
-    </div>
-    <dict-modal ref="modalForm" @ok="modalFormOk"></dict-modal>  <!-- 字典类型 -->
-    <dict-item-list ref="dictItemList"></dict-item-list>
-  </a-card>
+  <div id="DictList">
+    <a-tabs defaultActiveKey="1" @change="callback">
+      <a-tab-pane tab="基本信息" key="1">
+        <a-form :form="form" @submit="handleSubmit">
+          <a-form-item label="商品名称" :label-col="{ span: 3 }" :wrapper-col="{ span: 8 }">
+            <a-input v-decorator="['name', { rules: [{ required: true, message: '请填写商品名称!' }] }]"/>
+          </a-form-item>
+          <a-form-item label="最小订货量" :label-col="{ span: 3 }" :wrapper-col="{ span: 8 }">
+            <a-input v-decorator="['quantify', 
+            { rules: [{ required: true, message: '请填写数量!' },{ type: 'number', message: '请填写数字!' }] }]" />
+          </a-form-item>
+          <a-form-item label="商品类别" :label-col="{ span: 3 }" :wrapper-col="{ span: 8 }">
+            <a-select v-decorator="['type', { rules: [{ required: true, message: '请选择商品类别!' }] }]" placeholder="选择商品类别">
+              <a-select-option value="jack">Jack</a-select-option>
+              <a-select-option value="lucy">Lucy</a-select-option>
+            </a-select>
+          </a-form-item>
+          <a-form-item label="零售价格" :label-col="{ span: 3 }" :wrapper-col="{ span: 8 }">
+            <a-input
+            v-decorator="['price', 
+            { rules: [{ required: true, message: '请填写零售价格!' },{ type: 'number', message: '请填写数字!' }] }]">
+              <a-icon slot="prefix" type="dollar" style="color: rgba(0,0,0,0.4)" />
+            </a-input>
+          </a-form-item>
+          <a-form-item label="最高价格" :label-col="{ span: 3 }" :wrapper-col="{ span: 8 }">
+            <a-input
+            v-decorator="['maxprice', 
+            { rules: [{ required: true, message: '请填写最高价格!' },{ type: 'number', message: '请填写数字!' }] }]">
+              <a-icon slot="prefix" type="dollar" style="color: rgba(0,0,0,0.4)" />
+            </a-input>
+          </a-form-item>
+          <a-form-item label="最低价格" :label-col="{ span: 3 }" :wrapper-col="{ span: 8 }">
+            <a-input
+            v-decorator="['minprice', 
+            { rules: [{ required: true, message: '请填写最低价格!' },{ type: 'number', message: '请填写数字!' }] }]">
+              <a-icon slot="prefix" type="dollar" style="color: rgba(0,0,0,0.4)" />
+            </a-input>
+          </a-form-item>
+          <a-form-item label="商品简介" :label-col="{ span: 3 }" :wrapper-col="{ span: 8 }">
+            <a-textarea v-decorator="['desc', 
+            { rules: [{ required: false}]}]" />
+          </a-form-item>
+          <a-form-item label="尺寸图片" :label-col="{ span: 3 }" :wrapper-col="{ span: 8 }">
+            <a-upload
+              name="avatar"
+              accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif"
+              listType="picture-card"
+              class="avatar-uploader"
+              :showUploadList="false"
+              :beforeUpload="beforeUpload"
+              @change="handleChange"
+              v-decorator="['img', { rules: [{ required: true,message: '请上传尺寸图片!'}]}]" 
+            >
+              <img v-if="imageUrl" :src="imageUrl" alt="avatar" />
+              <div v-else>
+                <a-icon type='plus'/>
+                <div class="ant-upload-text">Upload</div>
+              </div>
+            </a-upload>
+          </a-form-item>
+          <a-form-item :wrapper-col="{ span: 8, offset: 3 }">
+            <a-button type="primary" html-type="submit">
+              Submit
+            </a-button>
+          </a-form-item>
+        </a-form>
+      </a-tab-pane>
+      <a-tab-pane tab="添加颜色" key="2" forceRender>Content of Tab Pane 2</a-tab-pane>
+      <a-tab-pane tab="设计区域" key="3">Content of Tab Pane 3</a-tab-pane>
+    </a-tabs>
+  </div>
 </template>
-
 <script>
-  import { filterObj } from '@/utils/util';
-  import { JeecgListMixin } from '@/mixins/JeecgListMixin'
-  import DictModal from './modules/DictModal'
-  import DictItemList from './DictItemList'
-
-  export default {
-    name: "DictList",
-    mixins:[JeecgListMixin],
-    components: {DictModal, DictItemList},
-    data() {
-      return {
-        description: '这是数据字典页面',
-        visible: false,
-        // 查询条件
-        queryParam: {
-          dictCode: "",
-          dictName: "",
-        },
-        // 表头
-        columns: [
-          {
-            title: '#',
-            dataIndex: '',
-            key: 'rowIndex',
-            width: 120,
-            align: "center",
-            customRender: function (t, r, index) {
-              return parseInt(index) + 1;
-            }
-          },
-          {
-            title: '字典名称',
-            align: "left",
-            dataIndex: 'dictName',
-          },
-          {
-            title: '字典编号',
-            align: "left",
-            dataIndex: 'dictCode',
-          },
-          {
-            title: '描述',
-            align: "left",
-            dataIndex: 'description',
-          },
-          {
-            title: '操作',
-            dataIndex: 'action',
-            align: "center",
-            scopedSlots: {customRender: 'action'},
-          }
-        ],
-        dict: "",
-        labelCol: {
-          xs: {span: 8},
-          sm: {span: 5},
-        },
-        wrapperCol: {
-          xs: {span: 16},
-          sm: {span: 19},
-        },
-        url: {
-          list: "/sys/dict/list",
-          delete: "/sys/dict/delete",
-          exportXlsUrl: "sys/dict/exportXls",
-          importExcelUrl: "sys/dict/importExcel",
-        },
+function getBase64(img, callback) {
+  const reader = new FileReader();
+  reader.addEventListener('load', () => callback(reader.result));
+  reader.readAsDataURL(img);
+}
+export default {
+  data() {
+    return {
+      form: this.$form.createForm(this),
+      imageUrl: '',
+    };
+  },
+  methods: {
+    handleSubmit(e) {
+      e.preventDefault();
+      this.form.validateFields((err, values) => {
+        if (!err) {
+          console.log('Received values of form: ', values);
+        }
+      });
+    },
+    callback(key) {
+      console.log(key);
+    },
+    beforeUpload(file) {
+      const isLt2M = file.size / 1024 / 1024 < 10;
+      if (!isLt2M) {
+        this.$message.error('Image must smaller than 10MB!');
       }
+      return isLt2M;
     },
-    computed: {
-      importExcelUrl: function () {
-        return `${window._CONFIG['domianURL']}/${this.url.importExcelUrl}`;
-      }
-    },
-    methods: {
-      getQueryParams() {
-        var param = Object.assign({}, this.queryParam, this.isorter);
-        param.field = this.getQueryField();
-        param.pageNo = this.ipagination.current;
-        param.pageSize = this.ipagination.pageSize;
-        return filterObj(param);
-      },
-      //取消选择
-      cancelDict() {
-        this.dict = "";
-        this.visible = false;
-        this.loadData();
-      },
-      //编辑字典数据
-      editDictItem(record) {
-        this.$refs.dictItemList.edit(record);
-      },
-      // 重置字典类型搜索框的内容
-      searchReset() {
-        var that = this;
-        that.queryParam.dictName = "";
-        that.queryParam.dictCode = "";
-        that.loadData(this.ipagination.current);
-      },
-    },
-    watch: {
-      openKeys(val) {
-        console.log('openKeys', val)
-      },
-    },
-  }
+    handleChange(info) {
+        getBase64(info.file.originFileObj, imageUrl => {
+          this.imageUrl = imageUrl;
+        });
+    }
+  },
+}
 </script>
-<style scoped>
-  @import '~@assets/less/common.less'
+<style lang="less" scoped>
+#DictList{
+  padding: 0 20px;
+
+}
 </style>

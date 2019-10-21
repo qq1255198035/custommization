@@ -6,20 +6,7 @@ import SellerLayout from "@/layouts/SellerLayout.vue";
  * 基础路由
  * @type { *[] }
  */
-/*const data = [
-  {
-    path: '/seller',
-    name: 'seller',
-    hidden: false,
-    component: () => import("@/pages/Seller/DashBored"),
-    meta: {
-      title: '',
-      icon: ''
-    },children: [
-      {}
-    ]
-  }
-];*/
+
 export const constantRouterMap = [
   {
     path: "/",

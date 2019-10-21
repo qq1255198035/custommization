@@ -38,21 +38,13 @@ const constantRouterComponents = {
   UserList:() => import("@/views/system/UserList"), //用户管理
   onlineGoods: () => import("@/views/system/onlineGoods"), // 设计师设计需求
   productTypes: () => import("@/views/system/productTypes"), //佣金审批
-
+  GoodsManagement:() => import("@/views/system/GoodsManagement"), //商品管理
   RoleUserList:() => import("@/views/system/RoleUserList"), //角色维护
   UserAnnouncementList:() => import("@/views/system/UserAnnouncementList"), //我的消息
-  SysAnnouncementList:() => import("@/views/system/SysAnnouncementList"), //系统通告
-  SysCategoryList:() => import("@/views/system/SysCategoryList"), //分类字典
-  DictList:() => import("@/views/system/DictList"), //数字字典
-  
+  DictList:() => import("@/views/system/DictList"), //商品管理，添加修改
+  //SysAnnouncementList:() => import("@/views/system/SysAnnouncementList"), //系统通告
   
   //format: () => import("@/views/management/format/format"), //商品类别
-  
-  
-  
-  
-  
-  
 }
 // 前端未找到页面路由（固定不用改）
 const notFoundRouter = {
