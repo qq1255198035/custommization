@@ -77,7 +77,6 @@
                                 <canvas id="canvas2" :width="screenWidth" :height="screenWidth"></canvas>
                                 <div class="moving-box" :style="{width: boxSize2.width + 'px',height: boxSize2.height + 'px',top: boxSize2.top + 'px', left: boxSize2.left + 'px',border:'none'}" v-show="movingBox">
                                     <div v-for="(item,index) in boxSize2.list" :key="index" :style="{width: item.width + 'px',height: item.height + 'px',top: item.top + 'px', left: item.left + 'px'}">
-                                        
                                     </div>
                                 </div>
                             </div>
@@ -487,10 +486,7 @@
                                                 <li style="width: 20%; color:#33b8b3;padding-left: 10px;">Number</li>
                                                 <li style="width: 30%; color:#33b8b3;padding-left: 10px;">Size</li>
                                             </ul>
-                                            <a-form
-                                                :form="form1"
-                                                @submit="handleSubmit"
-                                            >
+                                            <a-form :form="form1" @submit="handleSubmit">
                                                 <a-form-item v-for="k in form1.getFieldValue('keys')" :key="k" :required="false" style="width: 100%; margin: 0">
                                                     <a-input-group compact style="display: flex;width: 100%;">
                                                         <a-form-item style="width: 40%; margin: 0;min-height: 79px;">
@@ -851,8 +847,6 @@ import {
         handleDesignList,
         rmWhite
     } from "@/api/seller";
-
-
 export default {
     components:{
         MyTitle,
@@ -1132,8 +1126,6 @@ export default {
             this.onMouseUp(this.myCanvas4);
             this.setEditIcon();
             this.setEditPointer();
-            console.log(this.$route.query.res)
-            console.log(this.$route.query.res.boxSizes)
             if(this.$route.query.show){
                 let SIZE= JSON.parse(this.$route.query.res.boxSizes);
                 this.remark = this.$route.query.res.remarks;
@@ -1837,7 +1829,7 @@ export default {
                 keys: keys.filter(key => key !== k),
             });
         },
-        add  () {
+        add(){
             const { form1 } = this;
             // can use data-binding to get
             const keys = form1.getFieldValue('keys');
@@ -1849,7 +1841,7 @@ export default {
                 keys: nextKeys,
             });
         },
-        handleSubmit  (e) {
+        handleSubmit(e){
             e.preventDefault();
             this.form1.validateFields((err, values) => {
                 console.log(values)
