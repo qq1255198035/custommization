@@ -472,7 +472,11 @@ export default {
                       clearInterval(interval)
                     }
                   }, 1000);
-                  this.$message.success('Verification code has been sent, please pay attention to check!')
+                  this.$notification.success({
+                    message: "Successfully",
+                    description: 'The verification code has been sent to your email, please check your email!',
+                    duration: 4
+                  });
               }else{
                 this.$message.error(res.message);
                 this.state.time = 60;

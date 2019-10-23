@@ -7,7 +7,6 @@
                         <a-icon type="dollar" />
                     </span>
                     <div class="desc">
-                        
                         <slot name="a"></slot>
                         <h3>{{num1}}</h3>
                     </div>
@@ -23,7 +22,6 @@
                         <a-icon type="inbox" />
                     </span>
                     <div class="desc">
-                        
                         <slot name="b"></slot>
                         <h3>{{num2}}</h3>
                     </div>
@@ -35,7 +33,7 @@
             <a-col :span="6">
                 <div class="box">
                     <span>
-                        <a-icon type="pay-circle" />
+                        <i>%</i>
                     </span>
                     <div class="desc">
                         

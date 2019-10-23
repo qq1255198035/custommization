@@ -26,67 +26,131 @@
           </div>
           <div class="dosomething">
             <div class="upload-box">
-              <a-upload
-                action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                listType="picture-card"
-                @change="handleChangeDesign1"
-                accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif"
-                :beforeUpload="beforeUpload"
-                :showUploadList="false"
-              >
-                <img v-if="bgimgs[0].url" :src="bgimgs[0].url" alt="avatar" />
-                <div v-else>
-                  <a-icon type='plus'/>
-                  <div class="ant-upload-text">上传正面</div>
+              <a-form :form="form2" style="display: flex;justify-content: center;">
+                <a-form-item>
+                  <a-upload
+                    action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                    listType="picture-card"
+                    @change="handleChangeDesign1"
+                    accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif"
+                    :beforeUpload="beforeUpload"
+                    :showUploadList="false"
+                    v-decorator="['frontimg', { rules: [{ required: false, message: '请填上传正面图片!' }] }]"
+                  >
+                    <img v-if="bgimgs[0].url" :src="bgimgs[0].url" alt="avatar" />
+                    <div v-else>
+                      <a-icon type='plus'/>
+                      <div class="ant-upload-text">上传正面</div>
+                    </div>
+                  </a-upload>
+                </a-form-item>
+                <a-form-item>
+                  <a-upload
+                    action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                    listType="picture-card"
+                    @change="handleChangeDesign2"
+                    accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif"
+                    :beforeUpload="beforeUpload"
+                    :showUploadList="false"
+                    v-decorator="['backimg', { rules: [{ required: false, message: '请填上传背面图片!' }] }]"
+                  >
+                    <img v-if="bgimgs[1].url" :src="bgimgs[1].url" alt="avatar" />
+                    <div v-else>
+                      <a-icon type='plus'/>
+                      <div class="ant-upload-text">上传背面</div>
+                    </div>
+                  </a-upload>
+                </a-form-item>
+                <a-form-item>
+                  <a-upload
+                    action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                    listType="picture-card"
+                    @change="handleChangeDesign3"
+                    accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif"
+                    :beforeUpload="beforeUpload"
+                    :showUploadList="false"
+                    v-decorator="['leftimg', { rules: [{ required: false, message: '请填上传左面图片!' }] }]"
+                  >
+                    <img v-if="bgimgs[2].url" :src="bgimgs[2].url" alt="avatar" />
+                    <div v-else>
+                      <a-icon type='plus'/>
+                      <div class="ant-upload-text">上传左面</div>
+                    </div>
+                  </a-upload>
+                </a-form-item>
+                <a-form-item>
+                  <a-upload
+                    action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                    listType="picture-card"
+                    @change="handleChangeDesign4"
+                    accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif"
+                    :beforeUpload="beforeUpload"
+                    :showUploadList="false"
+                    v-decorator="['rightimg', { rules: [{ required: false, message: '请填上传右面图片!' }] }]"
+                  >
+                    <img v-if="bgimgs[3].url" :src="bgimgs[3].url" alt="avatar" />
+                    <div v-else>
+                      <a-icon type='plus'/>
+                      <div class="ant-upload-text">上传右面</div>
+                    </div>
+                  </a-upload>
+                </a-form-item>
+              </a-form>
+            </div>
+            <div class="edit">
+              <a-form :form="form2" layout="vertical">
+                <a-form-item label="Name">
+                  <a-input v-decorator="['name', { rules: [{ required: true, message: '请填写区域名称!' }] }]"/>
+                </a-form-item>
+                <div class="edit-box">
+                  <a-form-item label="Width" style="width: 49%;">
+                    <a-input-number 
+                      v-decorator="['width', { rules: [{ required: true, message: '请填写宽度!' },{ type: 'number', message: '请填写数字!' }],validateTrigger: ['change'] }]" 
+                      @change="changeSomething($event,'width')"
+                    />
+                  </a-form-item>
+                  <a-form-item label="Height" style="width: 49%;">
+                    <a-input-number 
+                      v-decorator="['height', { rules: [{ required: true, message: '请填写高度!' }] }]" type="number" 
+                      @change="changeSomething($event,'height')"
+                    />
+                  </a-form-item>
+                  <a-form-item label="Left" style="width: 49%;">
+                    <a-input-number 
+                      v-decorator="['left', { rules: [{ required: true, message: '请填写左侧坐标!' }] }]" type="number"
+                      @change="changeSomething($event,'left')"
+                    />
+                  </a-form-item>
+                  <a-form-item label="Top" style="width: 49%;">
+                    <a-input-number 
+                      v-decorator="['top', { rules: [{ required: true, message: '请填写顶部坐标!' }] }]" type="number"
+                      @change="changeSomething($event,'top')"
+                    />
+                  </a-form-item>
                 </div>
-              </a-upload>
-              <a-upload
-                action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                listType="picture-card"
-                @change="handleChangeDesign2"
-                accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif"
-                :beforeUpload="beforeUpload"
-                :showUploadList="false"
-              >
-                <img v-if="bgimgs[1].url" :src="bgimgs[1].url" alt="avatar" />
-                <div v-else>
-                  <a-icon type='plus'/>
-                  <div class="ant-upload-text">上传背面</div>
-                </div>
-              </a-upload>
-              <a-upload
-                action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                listType="picture-card"
-                @change="handleChangeDesign3"
-                accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif"
-                :beforeUpload="beforeUpload"
-                :showUploadList="false"
-              >
-                <img v-if="bgimgs[2].url" :src="bgimgs[2].url" alt="avatar" />
-                <div v-else>
-                  <a-icon type='plus'/>
-                  <div class="ant-upload-text">上传左面</div>
-                </div>
-              </a-upload>
-              <a-upload
-                action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                listType="picture-card"
-                @change="handleChangeDesign4"
-                accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif"
-                :beforeUpload="beforeUpload"
-                :showUploadList="false"
-              >
-                <img v-if="bgimgs[3].url" :src="bgimgs[3].url" alt="avatar" />
-                <div v-else>
-                  <a-icon type='plus'/>
-                  <div class="ant-upload-text">上传右面</div>
-                </div>
-              </a-upload>
+              </a-form>
+            </div>
+            <div class="list-box">
+              <a-list itemLayout="horizontal" :dataSource="dataList" style="padding: 0 50px;">
+                <a-list-item slot="renderItem" slot-scope="item">
+                  <a slot="actions">
+                    <a-icon type="delete" style="color: #666; font-size: 18px;"></a-icon>
+                  </a>
+                  <a-list-item-meta description="300*182">
+                    <span slot="title" href="https://vue.ant.design/">{{item.title}}</span>
+                  </a-list-item-meta>
+                </a-list-item>
+              </a-list>
+            </div>
+            <div style="display: flex; justify-content: flex-end;">
+              <a-button type="primary" @click="addFirstQ" :disabled="!addFlag">添加限制区域</a-button>
+              <a-button style="margin: 0 20px;" :disabled="addFlag">新增设计区域</a-button>
+            </div>
+            <div class="submitbtn-box">
+              <a-button type="primary">保存</a-button>
             </div>
           </div>
         </div>
-        
-        
       </a-tab-pane>
       <a-tab-pane tab="基本信息" key="2">
         <a-form :form="form" @submit="handleSubmit">
@@ -284,7 +348,9 @@ export default {
   data() {
     return {
       form: this.$form.createForm(this),
+      form2: this.$form.createForm(this),
       imageUrl: '',
+      addFlag: true,
       imgUrlArr:[
         {
           eximgurl:'',
@@ -318,7 +384,27 @@ export default {
           url: ''
         }
       ],
-      uploadA:false
+      uploadA:false,
+      dataList:{
+        canvas1:{
+          size:{
+            name: '',
+            width: '',
+            height: '',
+            left: '',
+            top: '',
+            list:[
+              {
+                name: '',
+                width: '',
+                height: '',
+                left: '',
+                top: ''
+              }
+            ]
+          }
+        }
+      }
     };
   },
   beforeCreate () {
@@ -335,6 +421,82 @@ export default {
     })
   },
   methods: {
+    changeSomething(e,key){
+      console.log(e)
+      this.form2.validateFields((err, values) => {
+        if(!err){
+          let obj = this.myCanvas.getActiveObject();
+          if(obj){
+            if(key == 'width'){
+              obj.scaleToWidth(e);
+              obj.set({left: values.left,top: values.top});
+              this.myCanvas.renderAll();
+              this.handleObjectMove(this.myCanvas,values.top,600 - values.top - values.height,values.left,600 - values.left - e);
+            }else if(key == 'height'){
+              obj.scaleToHeight(e);
+              obj.set({left: values.left,top: values.top});
+              this.myCanvas.renderAll();
+              this.handleObjectMove(this.myCanvas,values.top,600 - values.top - e,values.left,600 - values.left - values.width);
+            }else if(key == 'left'){
+              obj.scaleToHeight(values.height);
+              obj.scaleToWidth(values.width);
+              obj.set({left: e,top: values.top});
+              this.myCanvas.renderAll();
+              this.handleObjectMove(this.myCanvas,values.top,600 - values.top - values.height,e,600 - e - values.width);
+            }else if(key == 'top'){
+              obj.scaleToHeight(values.height);
+              obj.scaleToWidth(values.width);
+              obj.set({left: values.left,top: e});
+              this.myCanvas.renderAll();
+              this.handleObjectMove(this.myCanvas,e,600 - e - values.height,values.left,600 - values.left - values.width);
+            }
+          }
+        }
+      })
+    },
+    addFirstQ(){
+      this.form2.validateFields((err, values) => {
+        if(!err){
+          if(this.designModel == 0){
+            let rect = new fabric.Rect({
+              left: values.left,
+              top: values.top,
+              width: values.width,
+              height: values.height,
+              stroke: 'black',
+              strokeWidth: 1,
+              fill: 'rgba(0,0,0,0)',
+            });
+            this.myCanvas1.add(rect).setActiveObject(rect);
+            rect.hasControls = false;
+            this.handleObjectMove(this.myCanvas,values.top,600 - values.top - values.height,values.left,600 - values.left - values.width);
+          }
+          this.addFlag = false;
+        }
+      })
+    },
+    handleObjectMove(object,top_margin,bottom_margin,left_margin,right_margin){
+        let that = this;
+        object.on('object:moving', function (e) {
+                var obj = e.target;
+                that.movingBox = true;
+                // if object is too big ignore
+                if(obj.currentHeight > obj.canvas.height || obj.currentWidth > obj.canvas.width){
+                    return;
+                }        
+                obj.setCoords();        
+                // top-left  corner
+                if(obj.getBoundingRect().top < top_margin || obj.getBoundingRect().left < left_margin){
+                    obj.top = Math.max(obj.top, obj.top-obj.getBoundingRect().top + top_margin);
+                    obj.left = Math.max(obj.left, obj.left-obj.getBoundingRect().left + left_margin);
+                }
+                // bot-right corner
+                if(obj.getBoundingRect().top+obj.getBoundingRect().height  > 600 - bottom_margin || obj.getBoundingRect().left+obj.getBoundingRect().width  > 600 - right_margin){
+                    obj.top = Math.min(obj.top, obj.canvas.height-obj.getBoundingRect().height+obj.top-obj.getBoundingRect().top - bottom_margin);
+                    obj.left = Math.min(obj.left, obj.canvas.width-obj.getBoundingRect().width+obj.left-obj.getBoundingRect().left - right_margin);
+                } 
+        });
+    },
     changeModelDesign(i){
         console.log(i)
         this.designModel = i;
@@ -380,6 +542,8 @@ export default {
       sourceUpload(formData).then(res => {
           console.log(res)
           this.bgimgs[0].url = res.preview_url;
+          this.designModel = 0;
+          this.myCanvas = this.myCanvas1
           this.bindCanvas(this.myCanvas,0)
       })
       
@@ -391,6 +555,8 @@ export default {
       sourceUpload(formData).then(res => {
           console.log(res)
           this.bgimgs[1].url = res.preview_url;
+          this.designModel = 1;
+          this.myCanvas = this.myCanvas2;
           this.bindCanvas(this.myCanvas,1)
       })
     },
@@ -401,6 +567,8 @@ export default {
       sourceUpload(formData).then(res => {
           console.log(res)
           this.bgimgs[2].url = res.preview_url;
+          this.designModel = 2;
+          this.myCanvas = this.myCanvas3;
           this.bindCanvas(this.myCanvas,2)
       })
     },
@@ -411,6 +579,8 @@ export default {
       sourceUpload(formData).then(res => {
           console.log(res)
           this.bgimgs[3].url = res.preview_url;
+          this.designModel = 3;
+          this.myCanvas = this.myCanvas4;
           this.bindCanvas(this.myCanvas,3)
       })
     },
@@ -522,12 +692,47 @@ export default {
     .dosomething{
       width: calc(100% - 600px);
       .upload-box{
-        display: flex;
-        justify-content: center;
+        .ant-form-item{
+          margin-bottom: 5px;
+        }
         img{
           width: 86px;
           height: 86px;
         }
+      }
+      .edit{
+        padding:0 50px;
+        .edit-box{
+          display: flex;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          .ant-form-item-control-wrapper{
+            width: 100%;
+          }
+        }
+        .ant-form-item{
+          margin-bottom: 5px; 
+        }
+      }
+      .list-box{
+        height: 291px;
+        overflow-y: scroll;
+        &::-webkit-scrollbar {
+          width: 6px;
+          background-color: #fff;
+        }
+        &::-webkit-scrollbar-thumb {
+          background-color: #33b8b3;
+          border-radius:4px;
+          height: 10%;
+        }
+      }
+      .submitbtn-box{
+        padding: 10px 0;
+        margin-top: 20px;
+        text-align:right;
+        padding-right: 20px;
+        border-top: 1px solid #ccc;
       }
     }
   }

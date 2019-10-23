@@ -152,13 +152,7 @@ export const constantRouterMap = [
         component: () => import("@/pages/Seller/OrderResult"),
         meta: {  
         }
-      },
-      {
-        path: "/designList",
-        name: "designList",
-        hidden: true,
-        component: () => import("@/pages/Seller/DesignList")
-      },
+      }
     ]
   },
   {

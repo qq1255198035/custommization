@@ -1,46 +1,40 @@
 <template>
   <div class="wrapper-design">
     <div style="position: relative; height: 100%">
-      <header>
-        <router-link to="/index">
-          <p class="icon-logotxt"></p>
-        </router-link>
-        <p>
-          <User></User>
-        </p>
-      </header>
+      <my-title :title="'Design List'" :fontsize="20" style="padding: 0 20px;">
+          <a-button size="small" icon="rollback" style="font-size: 14px;" @click="$router.go(-1)">Back</a-button>
+      </my-title>
       <div class="wrapper-box">
-      <div style="padding: 30px;">
-        <a-table :columns="columns" :dataSource="dataDesign" :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}" :pagination="false">
-          <div slot="positivePicUrl" slot-scope="text" style="display: flex;">
-            <div v-for="item in text" :key="item.index" style="width: 25%;">
-              <img :src="item" style="width: 100%;" v-preview="item"/>
+        <div style="padding: 30px;">
+          <a-table :columns="columns" :dataSource="dataDesign" :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}" :pagination="false">
+            <div slot="positivePicUrl" slot-scope="text" style="display: flex;">
+              <div v-for="item in text" :key="item.index" style="width: 25%;">
+                <img :src="item" style="width: 100%;" v-preview="item"/>
+              </div>
             </div>
-          </div>
-          <div slot="goodsInfo" slot-scope="text" style="display: flex;">
-            <div style="width: 100%;">
-              <h2>{{text.title}}</h2>
-              <p>COLOUR:{{text.color}}</p>
+            <div slot="goodsInfo" slot-scope="text" style="display: flex;">
+              <div style="width: 100%;">
+                <h2>{{text.title}}</h2>
+                <p>COLOUR:{{text.color}}</p>
+              </div>
             </div>
-          </div>
-          <template slot="action" slot-scope="text,record">
-            <a-button style="margin-right: 10px;" @click="editDesign(text,record)">Edit</a-button>
-            <a-button @click="delDesign(text,record)">Delete</a-button>
-          </template>
-        </a-table>
-      </div>
-      <div style="text-align: center; padding: 20px 0;">
-        <a-button type="primary" icon="plus" @click="$router.push({path: '/neworder'})">ADDING DESIGN</a-button>
-        <a-button style="margin-left: 10px;" @click="posteDesignList(selectedRowKeys)">Submit </a-button>
+            <template slot="action" slot-scope="text,record">
+              <a-button style="margin-right: 10px;" @click="editDesign(text,record)">Edit</a-button>
+              <a-button @click="delDesign(text,record)">Delete</a-button>
+            </template>
+          </a-table>
+        </div>
+        <div style="text-align: center; padding: 20px 0;">
+          <a-button type="primary" icon="plus" @click="goNewOrder">ADDING DESIGN</a-button>
+          <a-button style="margin-left: 10px;" @click="posteDesignList(selectedRowKeys)">Submit </a-button>
+        </div>
       </div>
     </div>
-    </div>
-    
   </div>
 </template>
 <script>
-import User from "@/components/Header/User";
-import { designList,updateShow,delDesignList,handleDesignList } from "@/api/seller"
+import { designList,updateShow,delDesignList,handleDesignList,queryByIdA } from "@/api/seller"
+import MyTitle from '@/components/MyTitle/MyTitle'
 const columns = [
   {
     title: "Image",
@@ -54,13 +48,13 @@ const columns = [
     dataIndex: "goodsInfo",
     scopedSlots: { customRender: "goodsInfo" },
     key: "goodsInfo",
-    width: "30%"
+    width: "20%"
   },
   {
     title: "Active",
     dataIndex: "action",
     scopedSlots: { customRender: "action" },
-    width: "10%",
+    width: "20%",
     key: "action"
   }
 ];
@@ -74,12 +68,54 @@ export default {
     };
   },
   components: {
-    User
+    MyTitle
   },
   mounted(){
     this.getDesignList();
   },
   methods:{
+    goNewOrder(){
+        queryByIdA().then(res => {
+          console.log(res)
+          if(res.code == 0){
+            if(res.result == 1){
+              this.$router.push({path:'/neworder'});
+            }else if(res.result == 0){
+              //this.$message.error('Sorry,Not examined and approved');
+              let that = this;
+              this.$error({
+                title: 'Error',
+                content: 'Sorry,Not examined and approved',
+                onOk() {
+                  console.log(11);
+                  that.$router.push({path: '/dealerInfo'})
+                },
+              });
+            }else if(res.result == 2){
+              //this.$message.error('Sorry,Failure to pass the examination and approval');
+              let that = this;
+              this.$error({
+                title: 'Error',
+                content: 'Sorry,Failure to pass the examination and approval',
+                onOk() {
+                  console.log(11);
+                  that.$router.push({path: '/dealerInfo'})
+                },
+              });
+            }else if(res.result == 3){
+              let that = this;
+              this.$error({
+                title: 'Error',
+                content: 'Sorry, please apply first.',
+                onOk() {
+                  console.log(11);
+                  that.$router.push({path: '/dealerInfo'})
+                },
+              });
+            }
+          }
+        })
+    },
     onSelectChange (selectedRowKeys) {
       console.log('selectedRowKeys changed: ', selectedRowKeys);
       this.selectedRowKeys = selectedRowKeys
@@ -91,7 +127,6 @@ export default {
         if(res.code == 0){
           this.$router.push({path:'/neworder', query:{res: res.result,show: true}})
         }
-        // 
       })
     },
     delDesign(a,b){
@@ -149,7 +184,7 @@ export default {
 .wrapper-design {
   width: 100%;
   height: 100%;
-  padding: 40px;
+  
   
   header {
       display: flex;
@@ -175,21 +210,6 @@ export default {
     height: 100%;
     background: #fff;
     border-radius: 10px;
-    padding-top: 139px;
-    overflow-y: scroll;
-    
-    &::-webkit-scrollbar {  /*滚动条整体样式*/
-        width: 6px;  /*宽分别对应竖滚动条的尺寸*/
-        /*高分别对应横滚动条的尺寸*/
-        background-color: #33b8b3;
-        
-    }
-    &::-webkit-scrollbar-thumb {
-        background-color: #33b8b3;
-        border-radius:4px;
-        height: 10%;
-    }
-    
   }
 }
 </style>

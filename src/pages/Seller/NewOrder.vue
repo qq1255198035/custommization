@@ -25,7 +25,7 @@
 
                     <div class="right">
                         <my-title :title="'New Order'" :fontsize="20">
-                            <a-button size="small" icon="rollback" style="font-size: 14px;" @click="$router.push({path:'/grouporder'})">Back</a-button>
+                            <a-button size="small" icon="rollback" style="font-size: 14px;" @click="$router.go(-1)">Back</a-button>
                         </my-title>
                         <goods-list :goodsArr="goodsList" @on-click="openDesignModal($event)"></goods-list>
                         <div class="btn-box">
@@ -159,17 +159,6 @@
                                         <div  style="padding-bottom: 10px; border-bottom: 1px solid #ccc;">
                                             <a-input-search @search="onSearch"/>
                                         </div>
-                                        <dl v-for="(img,index) in imgs" :key="img.catalog">
-                                            <dt>
-                                                <p @click="moreImgs(index)">
-                                                    <span>{{img.catalog}}</span>
-                                                    <a-icon type="right" />
-                                                </p>
-                                            </dt>
-                                            <dd v-for="(item,index) in img.pic.length > 4 ? img.pic.slice(0,4) : img.pic" :key="item + index" @click="addImg(item.pic_url,'img'+index)">
-                                                <img :src="item.pic_url" alt="">
-                                            </dd>
-                                        </dl>
                                         <div class="upload-box">
                                             <h4>PLEASE SELECT THE FILE TO UPLOAD</h4>
                                             <a-upload-dragger name="file" class="my-upload" :beforeUpload="beforeUpload" accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif">
@@ -191,6 +180,18 @@
                                                 <span>.EPS</span>
                                             </p>
                                         </div>
+                                        <dl v-for="(img,index) in imgs" :key="img.catalog">
+                                            <dt>
+                                                <p @click="moreImgs(index)">
+                                                    <span>{{img.catalog}}</span>
+                                                    <a-icon type="right" />
+                                                </p>
+                                            </dt>
+                                            <dd v-for="(item,index) in img.pic.length > 4 ? img.pic.slice(0,4) : img.pic" :key="item + index" @click="addImg(item.pic_url,'img'+index)">
+                                                <img :src="item.pic_url" alt="">
+                                            </dd>
+                                        </dl>
+                                        
 
                                     </div>
                                     <div class="tool-box8" v-show="visibletype == 2">
@@ -741,7 +742,7 @@
                         <p>Additional tips. This success prompt appears after a series of tasks, such as a step-by-step form task in the pop-up window, and a prompt after completing the final step. Simple pop-up tasks use the Message prompt directly.</p>
                     </div>
                     <div class="btn-box">
-                        <a-button icon="file-text" @click="$router.push({path:'/designList'})">Order list</a-button>
+                        <a-button icon="file-text" @click="$router.push({path:'/grouporder/designList'})">Order list</a-button>
                         <a-button type="primary" icon="" style="vertical-align: middle;" @click="posteDesignList">
                             <img src="@/assets/monry-icon-bar.png" alt="" width="12" height="19" style="margin-right: 5px;">
                             Order now
@@ -1666,7 +1667,8 @@ export default {
             console.log(id)
             this.postId = id;
             this.show = true;
-            setTimeout(() => {
+            if(!this.getCookie('introFlag')){
+                setTimeout(() => {
                     this.$intro().setOptions({
                         prevLabel: "Previous",
                         nextLabel: "Next",
@@ -1676,9 +1678,28 @@ export default {
                         highlightClass: "white",
                         tooltipClass:"tool-tip",
                         disableInteraction: false,
+                    }).oncomplete(() => {
+                        this.setCookie("introFlag", true,7)
+                    }).onexit(() => {
+                        this.setCookie("introFlag", true,7)
                     }).start();
-            },10)
+                },10)
+            }
             this.getSelectById(id);
+        },
+        setCookie(name, value, day){
+            if(day !== 0){
+                let expires = day * 24 * 60 * 60 * 1000;
+                let date = new Date(+new Date()+expires);
+                document.cookie = name + "=" + escape(value) + ";expires=" + date.toUTCString();
+            }else{
+                document.cookie = name + "=" + escape(value);
+            }
+        },
+        getCookie(name){
+            let arr = document.cookie.match(new RegExp("(^| )"+name+"=([^;]*)(;|$)"));
+            if(arr != null) return unescape(arr[2]); 
+            return false;
         },
         loadMore(){
             let that = this;
@@ -2677,8 +2698,7 @@ export default {
             let that = this;
             fabric.Canvas.prototype.customiseControls({
                 br: {
-                        action: "scale"
-
+                    action: "scale"
                 },
                 ml:{
                     action: "scale"

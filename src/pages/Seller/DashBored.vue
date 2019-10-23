@@ -9,7 +9,11 @@
     <my-title :title="'Order - In Progress'">
       <router-link to="/grouporder" style="text-decoration: underline;color: #33b8b3">All Orders</router-link>
     </my-title>
-    <order-list :orderList="orderList" @openShareBox="openMyshareBox"></order-list>
+    <order-list :orderList="orderList" @openShareBox="openMyshareBox" />
+    <my-title :title="'Design - In Progress'">
+      <router-link to="/grouporder/designList" style="text-decoration: underline;color: #33b8b3">Design List</router-link>
+    </my-title>
+    <design-list :designList="designList" />
     <a-modal
       :visible="openShare"
       :footer="null"
@@ -37,13 +41,15 @@ import MyHeader from "@/components/MyHeader/MyHeader";
 import OrderTotal from "@/components/OrderTotal/OrderTotal";
 import MyTitle from "@/components/MyTitle/MyTitle";
 import OrderList from "@/components/OrderList/OrderList";
+import DesignList from "@/components/DesignList/DesignList";
 import { salesDate, userInfo, orderingList } from "@/api/seller";
 export default {
   components: {
     MyHeader,
     OrderTotal,
     MyTitle,
-    OrderList
+    OrderList,
+    DesignList
   },
   data() {
     return {
@@ -55,6 +61,7 @@ export default {
       intro: "",
       imgUrl: "",
       orderList: [],
+      designList: [],
       openShare: false,
       config: {
         url: "", // 网址，默认使用 window.location.href
@@ -120,7 +127,9 @@ export default {
       orderingList().then(res => {
         console.log(res);
         if (res.code == 0) {
-          this.orderList = res.result;
+          console.log(res)
+          this.orderList = res.result.orderList;
+          this.designList = res.result.desginList;
         }
       });
     }

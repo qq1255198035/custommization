@@ -20,8 +20,7 @@ const constantRouterComponents = {
   grouporder: () => import("@/pages/Seller/GroupOrder"),
   commissions: () => import("@/pages/Seller/Commissions"),
   commissionsdetails: () => import("@/pages/Seller/CommissionsDeatils"),
-  
-  
+  designList: () => import("@/pages/Seller/DesignList"),
   orders: () => import("@/pages/userSystem/orders/orders"),
   personSet: () => import("@/pages/person/person"),
   dealerInfo: () => import("@/pages/common/dealerInfo/dealerInfo"),

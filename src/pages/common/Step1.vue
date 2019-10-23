@@ -58,7 +58,7 @@ export default {
             if (res.code == 0) {
               this.$notification["success"]({
                 message: "Successful",
-                description: "Verification code has been sent, please check！",
+                description: "The verification code has been sent to your email, please check your email!",
                 duration: 4
               });
             }
