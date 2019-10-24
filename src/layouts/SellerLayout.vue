@@ -2,7 +2,7 @@
   <div id="SellerLayout">
     <div class="content" v-if="mobileShow">
       <a-row type="flex" justify="space-between" align="top" style="min-height: 100%;height: 100%;">
-        <a-col :span="6" style="height: 100%;">
+        <a-col :span="5" style="height: 100%;">
           <div class="left-menu" ref="left">
             <My-Header :showNav="false"></My-Header>
             <div class="menu-scroll">
@@ -17,7 +17,7 @@
             
           </div>
         </a-col>
-        <a-col :span="18" style="height: 100%;">
+        <a-col :span="19" style="height: 100%;">
           <div class="right-menu" ref="right">
             <User></User>
             <!--<transition name="page-transition">

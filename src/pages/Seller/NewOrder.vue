@@ -155,10 +155,6 @@
                                         </div>
                                     </div>
                                     <div class="tool-box6" v-show="visibletype == 1">
-                                        <h3>Insert Clipart：</h3>
-                                        <div  style="padding-bottom: 10px; border-bottom: 1px solid #ccc;">
-                                            <a-input-search @search="onSearch"/>
-                                        </div>
                                         <div class="upload-box">
                                             <h4>PLEASE SELECT THE FILE TO UPLOAD</h4>
                                             <a-upload-dragger name="file" class="my-upload" :beforeUpload="beforeUpload" accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif">
@@ -180,6 +176,11 @@
                                                 <span>.EPS</span>
                                             </p>
                                         </div>
+                                        <h3>Insert Clipart：</h3>
+                                        <div  style="padding-bottom: 10px; border-bottom: 1px solid #ccc;">
+                                            <a-input-search @search="onSearch"/>
+                                        </div>
+                                        
                                         <dl v-for="(img,index) in imgs" :key="img.catalog">
                                             <dt>
                                                 <p @click="moreImgs(index)">
@@ -290,9 +291,7 @@
                                             <div class="text-tool">
                                                 <a-input v-model="addText" style="width: 70%"></a-input>
                                                 <a-button type="primary" @click="addItext(addText,true)" :disabled="!addText" style="border-radius: 12px;">Modifying text</a-button>
-                                                
                                             </div>
-
                                         </div>
                                         <ul class="tool-list">
                                             <li @click="openFontFamilyBox">
@@ -1328,7 +1327,6 @@ export default {
         },
         showEdModal(id) {
             console.log(id);
-
             this.showVisible = true;
             discount().then(res => {
                 console.log(res);
@@ -1402,7 +1400,6 @@ export default {
                     img.src = res.result+"?timeStamp="+new Date().getTime();
                     img.onload = function () {
                         if(isAdd){
-                            
                             if(that.myCanvas.getActiveObject()){
                                 let obj = that.myCanvas.getActiveObject();
                                 let left = obj.left;
@@ -1414,24 +1411,62 @@ export default {
                                     lockUniScaling:true, // When `true`, object non-uniform scaling is locked
                                     left: left,
                                     top: top,
-                                    // width: width,
-                                    // height: height,
                                     myId: 'Text',
                                     crossOrigin: '*'
                                 });
-                                imgInstance.scaleToWidth(width)
+                                imgInstance.scaleToWidth(width);
                             }
                         }else{
-                            imgInstance = new fabric.Image(img, {
-                                lockUniScaling:true, // When `true`, object non-uniform scaling is locked
-                                left: 200,
-                                top: 150,
-                                mytext:that.addText,
-                                myId: 'Text',
-                                crossOrigin: '*'
-                            });
+                            if(that.designModel == 0){
+                                imgInstance = new fabric.Image(img, {
+                                    lockUniScaling:true, // When `true`, object non-uniform scaling is locked
+                                    left: that.boxSize1.left + 5,
+                                    top: that.boxSize1.top + 5,
+                                    mytext:that.addText,
+                                    myId: 'Text',
+                                    crossOrigin: '*'
+                                });
+                                if(imgInstance.width > that.boxSize1.width){
+                                    imgInstance.scaleToWidth(that.boxSize1.width/2)
+                                }
+                            }else if(that.designModel == 1){
+                                imgInstance = new fabric.Image(img, {
+                                    lockUniScaling:true, // When `true`, object non-uniform scaling is locked
+                                    left: that.boxSize2.left + 5,
+                                    top: that.boxSize2.top + 5,
+                                    mytext:that.addText,
+                                    myId: 'Text',
+                                    crossOrigin: '*'
+                                });
+                                if(imgInstance.width > that.boxSize2.width){
+                                    imgInstance.scaleToWidth(that.boxSize2.width/2)
+                                }
+                            }else if(that.designModel == 2){
+                                imgInstance = new fabric.Image(img, {
+                                    lockUniScaling:true, // When `true`, object non-uniform scaling is locked
+                                    left: that.boxSize3.left + 5,
+                                    top: that.boxSize3.top + 5,
+                                    mytext:that.addText,
+                                    myId: 'Text',
+                                    crossOrigin: '*'
+                                });
+                                if(imgInstance.width > that.boxSize3.width){
+                                    imgInstance.scaleToWidth(that.boxSize3.width/2)
+                                }
+                            }else if(that.designModel == 3){
+                                imgInstance = new fabric.Image(img, {
+                                    lockUniScaling:true, // When `true`, object non-uniform scaling is locked
+                                    left: that.boxSize4.left + 5,
+                                    top: that.boxSize4.top + 5,
+                                    mytext:that.addText,
+                                    myId: 'Text',
+                                    crossOrigin: '*'
+                                });
+                                if(imgInstance.width > that.boxSize4.width){
+                                    imgInstance.scaleToWidth(that.boxSize4.width/2)
+                                }
+                            }
                         }
-                        
                         that.myCanvas.add(imgInstance).setActiveObject(imgInstance);
                         that.myCanvas.requestRenderAll();
                         that.liClick = 0;
@@ -2224,19 +2259,22 @@ export default {
 
         // 添加图片开始
         addImg(imgUrl){
-            
             this.selectImg(imgUrl);
         },
         selectImg(imgUrl) {
             let that = this;
             let img = new Image();
             let imgInstance;
+            let left = 0;
+            let top = 0;
             that.delWhite = false;
             //设置图片跨域访问
             img.crossOrigin = 'anonymous';
             img.src = imgUrl+"?timeStamp="+new Date().getTime();
             img.onload = function () {
-                if(that.designModel == 0 || that.designModel == 1){
+                if(that.designModel == 0){
+                    left = that.boxSize1.left + 5;
+                    top = that.boxSize1.top + 5;
                     imgInstance = new fabric.Image(img, {
                         id: imgUrl,
                         flipX:false,
@@ -2244,17 +2282,18 @@ export default {
                         skewX:0,
                         skewY:0,
                         lockUniScaling:true, // When `true`, object non-uniform scaling is locked
-                        left: 200,
-                        top:  200,
-                        
+                        left: left,
+                        top:  top,
                         removeColor: false,
                         myId: 'Img',
                         crossOrigin: '*'
                     });
                     if(imgInstance.width > that.boxSize1.width){
-                        imgInstance.scaleToWidth(that.boxSize1.width - 50)
+                        imgInstance.scaleToWidth(that.boxSize1.width/2)
                     }
-                }else{
+                }else if(that.designModel == 1){
+                    left = that.boxSize2.left + 5;
+                    top = that.boxSize2.top + 5;
                     imgInstance = new fabric.Image(img, {
                         id: imgUrl,
                         flipX:false,
@@ -2262,21 +2301,57 @@ export default {
                         skewX:0,
                         skewY:0,
                         lockUniScaling:true, // When `true`, object non-uniform scaling is locked
-                        left: that.boxSize3.left + 10,
-                        top:  that.boxSize3.top + 10,
+                        left: left,
+                        top:  top,
+                        removeColor: false,
+                        myId: 'Img',
+                        crossOrigin: '*'
+                    });
+                    if(imgInstance.width > that.boxSize2.width){
+                        imgInstance.scaleToWidth(that.boxSize2.width/2)
+                    }
+                }else if(that.designModel == 2){
+                    left = that.boxSize3.left + 5;
+                    top = that.boxSize3.top + 5;
+                    imgInstance = new fabric.Image(img, {
+                        id: imgUrl,
+                        flipX:false,
+                        flipY:false,
+                        skewX:0,
+                        skewY:0,
+                        lockUniScaling:true, // When `true`, object non-uniform scaling is locked
+                        left: left,
+                        top:  top,
                         removeColor: false,
                         myId: 'Img',
                         crossOrigin: '*'
                     });
                     if(imgInstance.width > that.boxSize3.width){
-                        imgInstance.scaleToWidth(that.boxSize3.width - 10)
+                        imgInstance.scaleToWidth(that.boxSize3.width/2)
+                    }
+                }else if(that.designModel == 3){
+                    left = that.boxSize4.left + 5;
+                    top = that.boxSize4.top + 5;
+                    imgInstance = new fabric.Image(img, {
+                        id: imgUrl,
+                        flipX:false,
+                        flipY:false,
+                        skewX:0,
+                        skewY:0,
+                        lockUniScaling:true, // When `true`, object non-uniform scaling is locked
+                        left: left,
+                        top:  top,
+                        removeColor: false,
+                        myId: 'Img',
+                        crossOrigin: '*'
+                    });
+                    if(imgInstance.width > that.boxSize4.width){
+                        imgInstance.scaleToWidth(that.boxSize4.width/2)
                     }
                 }
-                
                 that.myCanvas.add(imgInstance);
                 that.myCanvas.setActiveObject(imgInstance);
                 that.myCanvas.requestRenderAll();
-                
                 that.liClick = 1;
                 that.visibletype = 10;
                 imgInstance.on("selected", function() {
@@ -2335,12 +2410,8 @@ export default {
                 return true;
             })
         },
-        
-
-
         // 切换正反左右面
         changeModelDesign(i){
-            console.log(i)
             this.designModel = i;
             if(i == 0){
                 this.myCanvas = this.myCanvas1
@@ -2355,6 +2426,8 @@ export default {
                 this.myCanvas = this.myCanvas4
                 this.bindCanvas(this.myCanvas,i);
             }
+            this.myCanvas.discardActiveObject();
+            this.visibletype = -1;
         },
         toolsBtnClick(key){
             this.liClick = key;
@@ -2450,6 +2523,13 @@ export default {
                         backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1
                     }
                     this.handleChangeFont(params,isAdd);
+                }else{
+                    let params = {
+                        text: text,style:this.bgcolor ? '' : 'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
+                        lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,
+                        backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1
+                    }
+                    this.handleChangeFont(params,false);
                 }
             }else{
                 let params = {
@@ -2459,7 +2539,7 @@ export default {
                 }
                 this.handleChangeFont(params,isAdd);
             }
-            
+            this.addText = '';
         },
         // 加载资源字体
         loadAndUse(font) {
@@ -2989,7 +3069,7 @@ export default {
                 flex-direction: column;
                 justify-content: flex-end;
                 align-items: flex-end;
-                z-index: 99;
+                z-index: 100;
                 .li{
                     border: 1px solid #ccc;
                     margin-bottom: 20px;

@@ -20,7 +20,7 @@ const err = (error) => {
     console.log("------异常响应------",error.response.status)
     switch (error.response.status) {
       case 403:
-        notification.error({ message: 'System hint', description: 'access denied',duration: 4})
+        notification.error({ message: 'System error', description: 'access denied',duration: 4})
         break
       case 500:
         
@@ -49,13 +49,13 @@ const err = (error) => {
         }
         break
       case 404:
-          notification.error({ message: 'System hint', description:'Sorry, resources are not found!',duration: 4})
+          notification.error({ message: 'System error', description:'Sorry, resources are not found!',duration: 4})
         break
       case 504:
-        notification.error({ message: 'System hint', description: 'Network Timeout'})
+        notification.error({ message: 'System error', description: 'Network Timeout'})
         break
       case 401:
-        notification.error({ message: 'System hint', description:'Unauthorized, please log in again',duration: 4})
+        notification.error({ message: 'System error', description:'Unauthorized, please log in again',duration: 4})
         /*if (token) {
           store.dispatch('Logout').then(() => {
             setTimeout(() => {
@@ -66,7 +66,7 @@ const err = (error) => {
         break
       default:
         notification.error({
-          message: 'System hint',
+          message: 'System error',
           description: data.message,
           duration: 4
         })

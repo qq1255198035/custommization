@@ -6,9 +6,6 @@ import {
   axios
 } from '@/utils/request'
 import qs from 'qs'
-
-
-
 // 前端路由表
 const constantRouterComponents = {
   // 基础页面 layout 必须引入

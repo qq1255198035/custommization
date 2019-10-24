@@ -26,7 +26,7 @@
           </div>
           <div class="dosomething">
             <div class="upload-box">
-              <a-form :form="form2" style="display: flex;justify-content: center;">
+              <a-form :form="form2" style="display: flex;justify-content: center; flex-wrap: wrap;">
                 <a-form-item>
                   <a-upload
                     action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
@@ -104,47 +104,48 @@
                 </a-form-item>
                 <div class="edit-box">
                   <a-form-item label="Width" style="width: 49%;">
-                    <a-input-number 
-                      v-decorator="['width', { rules: [{ required: true, message: '请填写宽度!' },{ type: 'number', message: '请填写数字!' }],validateTrigger: ['change'] }]" 
-                      @change="changeSomething($event,'width')"
-                    />
+                    <a-input-number v-decorator="['width', { rules: [{ required: true, message: '请填写宽度!' },{ type: 'number', message: '请填写数字!' }],validateTrigger: ['change'] }]" :min="0"/>
                   </a-form-item>
                   <a-form-item label="Height" style="width: 49%;">
-                    <a-input-number 
-                      v-decorator="['height', { rules: [{ required: true, message: '请填写高度!' }] }]" type="number" 
-                      @change="changeSomething($event,'height')"
-                    />
+                    <a-input-number v-decorator="['height', { rules: [{ required: true, message: '请填写高度!' },{ type: 'number', message: '请填写数字!' }],validateTrigger: ['change']}]" :min="0"/>
                   </a-form-item>
                   <a-form-item label="Left" style="width: 49%;">
-                    <a-input-number 
-                      v-decorator="['left', { rules: [{ required: true, message: '请填写左侧坐标!' }] }]" type="number"
-                      @change="changeSomething($event,'left')"
-                    />
+                    <a-input-number v-decorator="['left', { rules: [{ required: true, message: '请填写左侧坐标!' },{ type: 'number', message: '请填写数字!' }],validateTrigger: ['change']}]" :min="0"/>
                   </a-form-item>
                   <a-form-item label="Top" style="width: 49%;">
-                    <a-input-number 
-                      v-decorator="['top', { rules: [{ required: true, message: '请填写顶部坐标!' }] }]" type="number"
-                      @change="changeSomething($event,'top')"
-                    />
+                    <a-input-number v-decorator="['top', { rules: [{ required: true, message: '请填写顶部坐标!' },{ type: 'number', message: '请填写数字!' }],validateTrigger: ['change'] }]" :min="0"/>
                   </a-form-item>
                 </div>
               </a-form>
             </div>
             <div class="list-box">
-              <a-list itemLayout="horizontal" :dataSource="dataList" style="padding: 0 50px;">
-                <a-list-item slot="renderItem" slot-scope="item">
+              <a-list itemLayout="horizontal" :dataSource="showList" style="padding: 0 50px;">
+                <a-list-item slot="renderItem" slot-scope="item,index">
                   <a slot="actions">
-                    <a-icon type="delete" style="color: #666; font-size: 18px;"></a-icon>
+                    <a-icon type="edit" style="color: #666; font-size: 18px; margin-right: 10px;" @click="editCanvasObj(index)"></a-icon>
+                    <a-icon type="delete" style="color: #666; font-size: 18px;" @click="deleteCanvasObj(index)" v-if="index !== 0"></a-icon>
                   </a>
-                  <a-list-item-meta description="300*182">
-                    <span slot="title" href="https://vue.ant.design/">{{item.title}}</span>
+                  <a-list-item-meta :description="item.width +'*'+ item.height">
+                    <span slot="title">{{item.name}}</span>
                   </a-list-item-meta>
                 </a-list-item>
               </a-list>
             </div>
-            <div style="display: flex; justify-content: flex-end;">
-              <a-button type="primary" @click="addFirstQ" :disabled="!addFlag">添加限制区域</a-button>
-              <a-button style="margin: 0 20px;" :disabled="addFlag">新增设计区域</a-button>
+            <div style="display: flex; justify-content: flex-end;" v-show="designModel == 0">
+              <a-button type="primary" @click="addFirstQ(1)" :disabled="!addFlag1">添加限制区域</a-button>
+              <a-button style="margin: 0 20px;" :disabled="addFlag1" @click="addDesignQ">新增设计区域</a-button>
+            </div>
+            <div style="display: flex; justify-content: flex-end;" v-show="designModel == 1">
+              <a-button type="primary" @click="addFirstQ(2)" :disabled="!addFlag2">添加限制区域</a-button>
+              <a-button style="margin: 0 20px;" :disabled="addFlag2" @click="addDesignQ">新增设计区域</a-button>
+            </div>
+            <div style="display: flex; justify-content: flex-end;" v-show="designModel == 2">
+              <a-button type="primary" @click="addFirstQ(3)" :disabled="!addFlag3">添加限制区域</a-button>
+              <a-button style="margin: 0 20px;" :disabled="addFlag3" @click="addDesignQ">新增设计区域</a-button>
+            </div>
+            <div style="display: flex; justify-content: flex-end;" v-show="designModel == 3">
+              <a-button type="primary" @click="addFirstQ(4)" :disabled="!addFlag4">添加限制区域</a-button>
+              <a-button style="margin: 0 20px;" :disabled="addFlag4" @click="addDesignQ">新增设计区域</a-button>
             </div>
             <div class="submitbtn-box">
               <a-button type="primary">保存</a-button>
@@ -333,6 +334,36 @@
       </a-tab-pane>
       
     </a-tabs>
+    <a-drawer
+      title="修改区域"
+      placement="right"
+      :closable="false"
+      :visible="visible"
+      :mask="false"
+      :width="300"
+    >
+      <a-form layout="vertical" class="edit-form-box">
+        <a-form-item label="Name">
+          <a-input placeholder="输入名字" v-model="editName" />
+        </a-form-item>
+        <a-form-item label="Width">
+          <a-input-number placeholder="输入宽度" v-model="editWidth" @change="changeSomething($event,'width')" :min="0"/>
+        </a-form-item>
+        <a-form-item label="Height">
+          <a-input-number placeholder="输入高度" v-model="editHeight" @change="changeSomething($event,'height')" :min="0"/>
+        </a-form-item>
+        <a-form-item label="Left">
+          <a-input-number placeholder="输入左侧坐标值" v-model="editLeft" @change="changeSomething($event,'left')" :min="0"/>
+        </a-form-item>
+        <a-form-item label="Top">
+          <a-input-number placeholder="输入顶部坐标值" v-model="editTop" @change="changeSomething($event,'top')" :min="0"/>
+        </a-form-item>
+        <a-form-item>
+          <a-button type="primary" @click="cancleEdit">确 定</a-button>
+          <a-button type="primary" @click="confirmEdit">确 定</a-button>
+        </a-form-item>
+      </a-form>
+    </a-drawer>
   </div>
 </template>
 <script>
@@ -347,10 +378,19 @@ import { sourceUpload } from "@/api/seller";
 export default {
   data() {
     return {
+      editName: '',
+      editWidth: '',
+      editHeight: '',
+      editLeft: '',
+      editTop: '',
       form: this.$form.createForm(this),
       form2: this.$form.createForm(this),
+      visible: false,
       imageUrl: '',
-      addFlag: true,
+      addFlag1: true,
+      addFlag2: true,
+      addFlag3: true,
+      addFlag4: true,
       imgUrlArr:[
         {
           eximgurl:'',
@@ -361,6 +401,7 @@ export default {
         }
       ],
       key: 0,
+      isFirst: -1,
       screenWidth: 600,
       designModel: 0,
       myCanvas1: null,
@@ -370,41 +411,12 @@ export default {
       myCanvas: null,
       previewVisible: false,
       previewImage: '',
-      bgimgs:[
-        {
-          url: ''
-        },
-        {
-          url: ''
-        },
-        {
-          url: ''
-        },
-        {
-          url: ''
-        }
-      ],
+      bgimgs:[{url: ''},{url: ''},{url: ''},{url: ''}],
       uploadA:false,
       dataList:{
-        canvas1:{
-          size:{
-            name: '',
-            width: '',
-            height: '',
-            left: '',
-            top: '',
-            list:[
-              {
-                name: '',
-                width: '',
-                height: '',
-                left: '',
-                top: ''
-              }
-            ]
-          }
-        }
-      }
+        canvas1:[],canvas2:[],canvas3:[],canvas4:[]
+      },
+      showList:[]
     };
   },
   beforeCreate () {
@@ -421,44 +433,211 @@ export default {
     })
   },
   methods: {
-    changeSomething(e,key){
-      console.log(e)
-      this.form2.validateFields((err, values) => {
-        if(!err){
-          let obj = this.myCanvas.getActiveObject();
-          if(obj){
-            if(key == 'width'){
-              obj.scaleToWidth(e);
-              obj.set({left: values.left,top: values.top});
-              this.myCanvas.renderAll();
-              this.handleObjectMove(this.myCanvas,values.top,600 - values.top - values.height,values.left,600 - values.left - e);
-            }else if(key == 'height'){
-              obj.scaleToHeight(e);
-              obj.set({left: values.left,top: values.top});
-              this.myCanvas.renderAll();
-              this.handleObjectMove(this.myCanvas,values.top,600 - values.top - e,values.left,600 - values.left - values.width);
-            }else if(key == 'left'){
-              obj.scaleToHeight(values.height);
-              obj.scaleToWidth(values.width);
-              obj.set({left: e,top: values.top});
-              this.myCanvas.renderAll();
-              this.handleObjectMove(this.myCanvas,values.top,600 - values.top - values.height,e,600 - e - values.width);
-            }else if(key == 'top'){
-              obj.scaleToHeight(values.height);
-              obj.scaleToWidth(values.width);
-              obj.set({left: values.left,top: e});
-              this.myCanvas.renderAll();
-              this.handleObjectMove(this.myCanvas,e,600 - e - values.height,values.left,600 - values.left - values.width);
-            }
-          }
-        }
-      })
+    cancleEdit(){
+      let obj = this.myCanvas.getActiveObject();
+      if(this.designModel == 0){
+        this.editWidth = this.dataList.canvas1[this.isFirst].width;
+        this.editHeight = this.dataList.canvas1[this.isFirst].height;
+        this.editLeft = this.dataList.canvas1[this.isFirst].left;
+        this.editTop = this.dataList.canvas1[this.isFirst].top;
+      }else if(this.designModel == 1){
+        this.editWidth = this.dataList.canvas2[this.isFirst].width;
+        this.editHeight = this.dataList.canvas2[this.isFirst].height;
+        this.editLeft = this.dataList.canvas2[this.isFirst].left;
+        this.editTop = this.dataList.canvas2[this.isFirst].top;
+      }else if(this.designModel == 2){
+        this.editWidth = this.dataList.canvas3[this.isFirst].width;
+        this.editHeight = this.dataList.canvas3[this.isFirst].height;
+        this.editLeft = this.dataList.canvas3[this.isFirst].left;
+        this.editTop = this.dataList.canvas3[this.isFirst].top;
+      }else if(this.designModel == 3){
+        this.editWidth = this.dataList.canvas4[this.isFirst].width;
+        this.editHeight = this.dataList.canvas4[this.isFirst].height;
+        this.editLeft = this.dataList.canvas4[this.isFirst].left;
+        this.editTop = this.dataList.canvas4[this.isFirst].top;
+      }
+      obj.set({width: this.editWidth,height: this.editHeight,left: this.editLeft,top: this.editTop});
+      this.myCanvas.renderAll();
+      this.myCanvas.discardActiveObject();
+      this.visible = false;
     },
-    addFirstQ(){
+    confirmEdit(){
+      let obj = this.myCanvas.getActiveObject();
+      let calcWidth1 = this.editWidth + this.editLeft;
+      let calcHeight1 = this.editHeight + this.editTop;
+      if(this.designModel == 0){
+        if(this.isFirst == 0){
+          this.dataList.canvas1[this.isFirst].width = this.editWidth;
+          this.dataList.canvas1[this.isFirst].height = this.editHeight;
+          this.dataList.canvas1[this.isFirst].left = this.editLeft;
+          this.dataList.canvas1[this.isFirst].top = this.editTop;
+          this.dataList.canvas1[this.isFirst].name = this.editName;
+          this.showList = this.dataList.canvas1;
+          this.handleObjectMove(this.myCanvas,this.dataList.canvas1[0].top,600 - this.dataList.canvas1[0].top - this.dataList.canvas1[0].height,this.dataList.canvas1[0].left,600 - this.dataList.canvas1[0].left - this.dataList.canvas1[0].width);
+        }else{
+          let calcHeight2 = this.dataList.canvas1[0].height + this.dataList.canvas1[0].top;
+          let calcWidth2 = this.dataList.canvas1[0].width + this.dataList.canvas1[0].left;
+          if(calcWidth1 > calcWidth2 || calcHeight1 > calcHeight2 || this.editLeft < this.dataList.canvas1[0].left || this.editTop < this.dataList.canvas1[0].top){
+            this.$message.error('您输入的值已超出限制区域，请重新输入！')
+            return
+          }
+          this.dataList.canvas1[this.isFirst].width = this.editWidth;
+          this.dataList.canvas1[this.isFirst].height = this.editHeight;
+          this.dataList.canvas1[this.isFirst].left = this.editLeft;
+          this.dataList.canvas1[this.isFirst].top = this.editTop;
+          this.dataList.canvas1[this.isFirst].name = this.editName;
+          this.showList = this.dataList.canvas1;
+        }
+      }else if(this.designModel == 1){
+        if(this.isFirst == 0){
+          this.dataList.canvas2[this.isFirst].width = this.editWidth;
+          this.dataList.canvas2[this.isFirst].height = this.editHeight;
+          this.dataList.canvas2[this.isFirst].left = this.editLeft;
+          this.dataList.canvas2[this.isFirst].top = this.editTop;
+          this.dataList.canvas2[this.isFirst].name = this.editName;
+          this.showList = this.dataList.canvas2;
+          this.handleObjectMove(this.myCanvas,this.dataList.canvas2[0].top,600 - this.dataList.canvas2[0].top - this.dataList.canvas2[0].height,this.dataList.canvas2[0].left,600 - this.dataList.canvas2[0].left - this.dataList.canvas2[0].width);
+        }else{
+          let calcHeight2 = this.dataList.canvas2[0].height + this.dataList.canvas2[0].top;
+          let calcWidth2 = this.dataList.canvas2[0].width + this.dataList.canvas2[0].left;
+          if(calcWidth1 > calcWidth2 || calcHeight1 > calcHeight2){
+            this.$message.error('您输入的值已超出限制区域，请重新输入！')
+            return
+          }
+          this.dataList.canvas2[this.isFirst].width = this.editWidth;
+          this.dataList.canvas2[this.isFirst].height = this.editHeight;
+          this.dataList.canvas2[this.isFirst].left = this.editLeft;
+          this.dataList.canvas2[this.isFirst].top = this.editTop;
+          this.dataList.canvas2[this.isFirst].name = this.editName;
+          this.showList = this.dataList.canvas2;
+        }
+      }else if(this.designModel == 2){
+        if(this.isFirst == 0){
+          this.dataList.canvas3[this.isFirst].width = this.editWidth;
+          this.dataList.canvas3[this.isFirst].height = this.editHeight;
+          this.dataList.canvas3[this.isFirst].left = this.editLeft;
+          this.dataList.canvas3[this.isFirst].top = this.editTop;
+          this.dataList.canvas3[this.isFirst].name = this.editName;
+          this.showList = this.dataList.canvas3;
+          this.handleObjectMove(this.myCanvas,this.dataList.canvas3[0].top,600 - this.dataList.canvas3[0].top - this.dataList.canvas3[0].height,this.dataList.canvas3[0].left,600 - this.dataList.canvas3[0].left - this.dataList.canvas3[0].width);
+        }else{
+          let calcHeight2 = this.dataList.canvas3[0].height + this.dataList.canvas3[0].top;
+          let calcWidth2 = this.dataList.canvas3[0].width + this.dataList.canvas3[0].left;
+          if(calcWidth1 > calcWidth2 || calcHeight1 > calcHeight2){
+            this.$message.error('您输入的值已超出限制区域，请重新输入！')
+            return
+          }
+          this.dataList.canvas3[this.isFirst].width = this.editWidth;
+          this.dataList.canvas3[this.isFirst].height = this.editHeight;
+          this.dataList.canvas3[this.isFirst].left = this.editLeft;
+          this.dataList.canvas3[this.isFirst].top = this.editTop;
+          this.dataList.canvas3[this.isFirst].name = this.editName;
+          this.showList = this.dataList.canvas3;
+        }
+      }else if(this.designModel == 3){
+        if(this.isFirst == 0){
+          this.dataList.canvas4[this.isFirst].width = this.editWidth;
+          this.dataList.canvas4[this.isFirst].height = this.editHeight;
+          this.dataList.canvas4[this.isFirst].left = this.editLeft;
+          this.dataList.canvas4[this.isFirst].top = this.editTop;
+          this.dataList.canvas4[this.isFirst].name = this.editName;
+          this.showList = this.dataList.canvas4;
+          this.handleObjectMove(this.myCanvas,this.dataList.canvas4[0].top,600 - this.dataList.canvas4[0].top - this.dataList.canvas4[0].height,this.dataList.canvas4[0].left,600 - this.dataList.canvas4[0].left - this.dataList.canvas4[0].width);
+        }else{
+          let calcHeight2 = this.dataList.canvas4[0].height + this.dataList.canvas4[0].top;
+          let calcWidth2 = this.dataList.canvas4[0].width + this.dataList.canvas4[0].left;
+          if(calcWidth1 > calcWidth2 || calcHeight1 > calcHeight2){
+            this.$message.error('您输入的值已超出限制区域，请重新输入！')
+            return
+          }
+          this.dataList.canvas4[this.isFirst].width = this.editWidth;
+          this.dataList.canvas4[this.isFirst].height = this.editHeight;
+          this.dataList.canvas4[this.isFirst].left = this.editLeft;
+          this.dataList.canvas4[this.isFirst].top = this.editTop;
+          this.dataList.canvas4[this.isFirst].name = this.editName;
+          this.showList = this.dataList.canvas4;
+        }
+      }
+      obj.set({width: this.editWidth,height: this.editHeight,left: this.editLeft,top: this.editTop});
+      this.myCanvas.renderAll();
+      this.myCanvas.discardActiveObject();
+      this.visible = false;
+    },
+    editCanvasObj(index){
+      console.log(index);
+      let items = this.myCanvas.getObjects();
+      this.isFirst = index;
+      this.myCanvas.setActiveObject(items[index]);
+      this.visible = true;
+      if(this.designModel == 0){
+        this.editName = this.dataList.canvas1[index].name;
+        this.editWidth = this.dataList.canvas1[index].width;
+        this.editHeight = this.dataList.canvas1[index].height;
+        this.editLeft = this.dataList.canvas1[index].left;
+        this.editTop = this.dataList.canvas1[index].top;
+      }else if(this.designModel == 1){
+        this.editName = this.dataList.canvas2[index].name;
+        this.editWidth = this.dataList.canvas2[index].width;
+        this.editHeight = this.dataList.canvas2[index].height;
+        this.editLeft = this.dataList.canvas2[index].left;
+        this.editTop = this.dataList.canvas2[index].top;
+      }else if(this.designModel == 2){
+        this.editName = this.dataList.canvas3[index].name;
+        this.editWidth = this.dataList.canvas3[index].width;
+        this.editHeight = this.dataList.canvas3[index].height;
+        this.editLeft = this.dataList.canvas3[index].left;
+        this.editTop = this.dataList.canvas3[index].top;
+      }else if(this.designModel == 3){
+        this.editName = this.dataList.canvas4[index].name;
+        this.editWidth = this.dataList.canvas4[index].width;
+        this.editHeight = this.dataList.canvas4[index].height;
+        this.editLeft = this.dataList.canvas4[index].left;
+        this.editTop = this.dataList.canvas4[index].top;
+      }
+    },
+    deleteCanvasObj(index){
+      console.log(index);
+      let items = this.myCanvas.getObjects();
+      this.myCanvas.remove(items[index]);
+      if(this.designModel == 0){
+        this.dataList.canvas1.splice(index,1);
+        this.showList = this.dataList.canvas1;
+      }else if(this.designModel == 1){
+        this.dataList.canvas2.splice(index,1);
+        this.showList = this.dataList.canvas2;
+      }else if(this.designModel == 2){
+        this.dataList.canvas3.splice(index,1);
+        this.showList = this.dataList.canvas3;
+      }else if(this.designModel == 3){
+        this.dataList.canvas4.splice(index,1);
+        this.showList = this.dataList.canvas4;
+      }
+    },
+    changeSomething(e,key){
+      let obj = this.myCanvas.getActiveObject();
+      if(obj){
+        if(key == 'width'){
+          obj.set({width: e});
+        }else if(key == 'height'){
+          obj.set({height: e});
+        }else if(key == 'left'){
+          obj.set({left: e});
+        }else if(key == 'top'){
+          obj.set({top: e});
+        }
+        this.myCanvas.renderAll();
+      }
+    },
+    addFirstQ(key){
       this.form2.validateFields((err, values) => {
         if(!err){
-          if(this.designModel == 0){
-            let rect = new fabric.Rect({
+          let json = {name: '',width: '',height: '',left: '',top: ''};
+          json.name = values.name;
+          json.width = values.width;
+          json.height = values.height;
+          json.left = values.left;
+          json.top = values.top;
+          let rect = new fabric.Rect({
               left: values.left,
               top: values.top,
               width: values.width,
@@ -466,12 +645,94 @@ export default {
               stroke: 'black',
               strokeWidth: 1,
               fill: 'rgba(0,0,0,0)',
+              id: values.name
             });
-            this.myCanvas1.add(rect).setActiveObject(rect);
+            this.myCanvas1.add(rect);
             rect.hasControls = false;
+            rect.selectable = false;
             this.handleObjectMove(this.myCanvas,values.top,600 - values.top - values.height,values.left,600 - values.left - values.width);
+          if(this.designModel == 0){
+            this.dataList.canvas1.push(json);
+            this.showList = this.dataList.canvas1;
+          }else if(this.designModel == 1){
+            this.dataList.canvas2.push(json);
+            this.showList = this.dataList.canvas2;
+          }else if(this.designModel == 2){
+            this.dataList.canvas3.push(json);
+            this.showList = this.dataList.canvas3;
+          }else if(this.designModel == 3){
+            this.dataList.canvas4.push(json);
+            this.showList = this.dataList.canvas4;
           }
-          this.addFlag = false;
+          if(key == 1){
+            this.addFlag1 = false;
+          }else if(key == 2){
+            this.addFlag2 = false;
+          }else if(key == 3){
+            this.addFlag3 = false;
+          }else if(key == 4){
+            this.addFlag4 = false;
+          }
+        }
+      })
+    },
+    addDesignQ(){
+      this.form2.validateFields((err, values) => {
+        if(!err){
+          let calcWidth1 = values.width + values.left;
+          let calcHeight1 = values.height + values.top;
+          let json = {name: '',width: '',height: '',left: '',top: ''};
+          json.name = values.name;
+          json.width = values.width;
+          json.height = values.height;
+          json.left = values.left;
+          json.top = values.top;
+          if(this.designModel == 0){
+            let calcHeight2 = this.dataList.canvas1[0].height + this.dataList.canvas1[0].top;
+            let calcWidth2 = this.dataList.canvas1[0].width + this.dataList.canvas1[0].left;
+            if(calcWidth1 > calcWidth2 || calcHeight1 > calcHeight2 || values.left < this.dataList.canvas1[0].left || values.top < this.dataList.canvas1[0].top){
+              this.$message.error('您输入的值已超出限制区域，请重新输入！')
+              return
+            }
+            this.dataList.canvas1.push(json);
+          }else if(this.designModel == 1){
+            let calcHeight2 = this.dataList.canvas2[0].height + this.dataList.canvas2[0].top;
+            let calcWidth2 = this.dataList.canvas2[0].width + this.dataList.canvas2[0].left;
+            if(calcWidth1 > calcWidth2 || calcHeight1 > calcHeight2 || values.left < this.dataList.canvas2[0].left || values.top < this.dataList.canvas2[0].top){
+              this.$message.error('您输入的值已超出限制区域，请重新输入！')
+              return
+            }
+            this.dataList.canvas2.push(json);
+          }else if(this.designModel == 2){
+            let calcHeight2 = this.dataList.canvas3[0].height + this.dataList.canvas3[0].top;
+            let calcWidth2 = this.dataList.canvas3[0].width + this.dataList.canvas3[0].left;
+            if(calcWidth1 > calcWidth2 || calcHeight1 > calcHeight2 || values.left < this.dataList.canvas3[0].left || values.top < this.dataList.canvas3[0].top){
+              this.$message.error('您输入的值已超出限制区域，请重新输入！')
+              return
+            }
+            this.dataList.canvas3.push(json);
+          }else if(this.designModel == 3){
+            let calcHeight2 = this.dataList.canvas4[0].height + this.dataList.canvas4[0].top;
+            let calcWidth2 = this.dataList.canvas4[0].width + this.dataList.canvas4[0].left;
+            if(calcWidth1 > calcWidth2 || calcHeight1 > calcHeight2 || values.left < this.dataList.canvas4[0].left || values.top < this.dataList.canvas4[0].top){
+              this.$message.error('您输入的值已超出限制区域，请重新输入！')
+              return
+            }
+            this.dataList.canvas4.push(json);
+          }
+          let rect = new fabric.Rect({
+              left: values.left,
+              top: values.top,
+              width: values.width,
+              height: values.height,
+              stroke: 'black',
+              strokeWidth: 1,
+              fill: 'rgba(0,0,0,0)',
+              id: values.name
+            });
+            this.myCanvas.add(rect);
+            rect.hasControls = false;
+            rect.selectable = false;
         }
       })
     },
@@ -501,17 +762,21 @@ export default {
         console.log(i)
         this.designModel = i;
         if(i == 0){
-            this.myCanvas = this.myCanvas1
+            this.myCanvas = this.myCanvas1;
             this.bindCanvas(this.myCanvas,i);
+            this.showList = this.dataList.canvas1
         }else if(i == 1){
-            this.myCanvas = this.myCanvas2
+            this.myCanvas = this.myCanvas2;
             this.bindCanvas(this.myCanvas,i);
+            this.showList = this.dataList.canvas2
         }else if(i == 2){
-            this.myCanvas = this.myCanvas3
+            this.myCanvas = this.myCanvas3;
             this.bindCanvas(this.myCanvas,i);
+            this.showList = this.dataList.canvas3
         }else if(i == 3){
-            this.myCanvas = this.myCanvas4
+            this.myCanvas = this.myCanvas4;
             this.bindCanvas(this.myCanvas,i);
+            this.showList = this.dataList.canvas4
         }
     },
     bindCanvas(canvas,i) {
@@ -686,6 +951,11 @@ export default {
 }
 </script>
 <style lang="less">
+.edit-form-box{
+  .ant-input-number{
+    width: 100%;
+  }
+}
 #DictList{
   padding: 0 20px;
   .tab-pane-1{
@@ -707,6 +977,9 @@ export default {
           justify-content: space-between;
           flex-wrap: wrap;
           .ant-form-item-control-wrapper{
+            width: 100%;
+          }
+          .ant-input-number{
             width: 100%;
           }
         }

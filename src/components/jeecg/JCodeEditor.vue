@@ -256,11 +256,6 @@
             this.hasCode=false
           }
         })
-
-       /* this.coder.on('cursorActivity',()=>{
-          this.coder.showHint()
-        })*/
-
       },
       getCodeContent(){
         return this.code
