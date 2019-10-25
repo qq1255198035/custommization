@@ -82,6 +82,9 @@ export default {
     this.getSalesDate();
     this.getUserInfo();
     this.getOrderingList();
+    //this.$loading('正在加载中...');
+    //this.$loading.close();
+    
   },
   methods: {
     onCopy() {

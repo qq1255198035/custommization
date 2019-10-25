@@ -3850,46 +3850,46 @@ export default {
     }
 }
 .show-details {
-  .number {
-    display: flex;
-    align-items: center;
-    padding: 20px 0 10px 0;
-    .number-box {
-      display: flex;
-      align-items: center;
-      .common-radio {
-        width: 24px;
-        height: 24px;
-        border-radius: 50%;
-        background: #33b8b3;
-        text-align: center;
-        line-height: 24px;
-        color: #fff;
-        margin: 4px 0;
-        cursor: pointer;
-      }
-      .num {
-        margin: 0 10px;
-        text-align: center;
-      }
+    .number {
+        display: flex;
+        align-items: center;
+        padding: 20px 0 10px 0;
+        .number-box {
+            display: flex;
+            align-items: center;
+            .common-radio {
+                width: 24px;
+                height: 24px;
+                border-radius: 50%;
+                background: #33b8b3;
+                text-align: center;
+                line-height: 24px;
+                color: #fff;
+                margin: 4px 0;
+            cursor: pointer;
+            }
+            .num {
+                margin: 0 10px;
+                text-align: center;
+            }
+        }
     }
-  }
-  .prices {
-    display: flex;
-    align-items: center;
-    margin: 20px 0 10px 0;
-    .price-box {
-      display: flex;
-      align-items: center;
-      .price-input {
-        padding: 0 10px;
-        width: 100px;
-      }
+    .prices {
+        display: flex;
+        align-items: center;
+        margin: 20px 0 10px 0;
+        .price-box {
+            display: flex;
+            align-items: center;
+            .price-input {
+                padding: 0 10px;
+                width: 100px;
+            }
+        }
     }
-  }
-  .price-right {
-    flex: 1;
-    text-align: right;
-}
+    .price-right {
+        flex: 1;
+        text-align: right;
+    }
 }
 </style>

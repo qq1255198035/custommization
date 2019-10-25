@@ -11,6 +11,10 @@ import 'intro.js/introjs.css';
 import '@/utils/filter';
 import hasPermission from '@/utils/hasPermission'
 import vuePicturePreview from 'vue-picture-preview'
+// Loading
+import Loading from '@/components/Loading/Loading';
+Vue.use(Loading);
+
 Vue.use(vuePicturePreview)
 Vue.use(Share);
 Vue.use(VueIntro);
