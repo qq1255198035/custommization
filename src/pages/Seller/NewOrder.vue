@@ -2267,7 +2267,7 @@ export default {
                     if(res.preview_url){
                         this.selectImg(res.preview_url);
                     }else{
-                        this.$message.error('Upload timeout, please try again!')
+                        this.$message.error('System Error , Image conversion error!')
                     }
                 })
             }else{
