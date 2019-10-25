@@ -157,7 +157,7 @@
                                     <div class="tool-box6" v-show="visibletype == 1">
                                         <div class="upload-box">
                                             <h4>PLEASE SELECT THE FILE TO UPLOAD</h4>
-                                            <a-upload-dragger name="file" class="my-upload" :beforeUpload="beforeUpload" accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif">
+                                            <a-upload-dragger name="file" class="my-upload" :beforeUpload="beforeUpload" accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif" action="https://www.mocky.io/v2/5cc8019d300000980a055e76">
                                                     <p class="ant-upload-drag-icon">
                                                         <a-icon type="cloud-upload" />
                                                     </p>
@@ -2264,7 +2264,11 @@ export default {
                 formData.append("file", file);
                 sourceUpload(formData).then(res => {
                     console.log(res)
-                    this.selectImg(res.preview_url);
+                    if(res.preview_url){
+                        this.selectImg(res.preview_url);
+                    }else{
+                        this.$message.error('Upload timeout, please try again!')
+                    }
                 })
             }else{
                 this.$message.error('Image Size Exceeds Limit')
@@ -2738,8 +2742,6 @@ export default {
                 }
                 console.log(key,title);
             })
-            
-            
         },
         // 打开改变描边样式盒子
         // openFontOutlineBox(){
