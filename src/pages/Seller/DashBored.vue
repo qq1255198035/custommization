@@ -119,10 +119,13 @@ export default {
       userInfo().then(res => {
         console.log(res);
         if (res.code == 0) {
-          this.name = res.result.username;
-          this.level = res.result.levelName;
-          this.intro = res.result.intro;
-          this.imgUrl = res.result.img;
+          console.log(res)
+          if(res.result){
+            this.name = res.result.username;
+            this.level = res.result.levelName;
+            this.intro = res.result.intro;
+            this.imgUrl = res.result.img;
+          }
         }
       });
     },

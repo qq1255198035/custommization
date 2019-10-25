@@ -29,7 +29,6 @@
               <a-form :form="form2" style="display: flex;justify-content: center; flex-wrap: wrap;">
                 <a-form-item>
                   <a-upload
-                    action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                     listType="picture-card"
                     @change="handleChangeDesign1"
                     accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif"
@@ -46,7 +45,6 @@
                 </a-form-item>
                 <a-form-item>
                   <a-upload
-                    action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                     listType="picture-card"
                     @change="handleChangeDesign2"
                     accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif"
@@ -63,7 +61,6 @@
                 </a-form-item>
                 <a-form-item>
                   <a-upload
-                    action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                     listType="picture-card"
                     @change="handleChangeDesign3"
                     accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif"
@@ -80,7 +77,6 @@
                 </a-form-item>
                 <a-form-item>
                   <a-upload
-                    action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                     listType="picture-card"
                     @change="handleChangeDesign4"
                     accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif"
@@ -125,7 +121,7 @@
                     <a-icon type="edit" style="color: #666; font-size: 18px; margin-right: 10px;" @click="editCanvasObj(index)"></a-icon>
                     <a-icon type="delete" style="color: #666; font-size: 18px;" @click="deleteCanvasObj(index)" v-if="index !== 0"></a-icon>
                   </a>
-                  <a-list-item-meta :description="item.width +'*'+ item.height">
+                  <a-list-item-meta :description="'Width:' + item.width +','+ 'Height:' + item.height +','+'Left:' + item.left +','+ 'Top:' + item.top">
                     <span slot="title">{{item.name}}</span>
                   </a-list-item-meta>
                 </a-list-item>
@@ -148,7 +144,7 @@
               <a-button style="margin: 0 20px;" :disabled="addFlag4" @click="addDesignQ">新增设计区域</a-button>
             </div>
             <div class="submitbtn-box">
-              <a-button type="primary">保存</a-button>
+              <a-button type="primary" @click="postDesignSize">保存</a-button>
             </div>
           </div>
         </div>
@@ -359,7 +355,7 @@
           <a-input-number placeholder="输入顶部坐标值" v-model="editTop" @change="changeSomething($event,'top')" :min="0"/>
         </a-form-item>
         <a-form-item>
-          <a-button type="primary" @click="cancleEdit">确 定</a-button>
+          <a-button @click="cancleEdit" style="margin-right: 10px;">取消</a-button>
           <a-button type="primary" @click="confirmEdit">确 定</a-button>
         </a-form-item>
       </a-form>
@@ -433,6 +429,60 @@ export default {
     })
   },
   methods: {
+    postDesignSize(){
+      let dataList = this.dataList;
+      let params = {
+        canvas1:{width: '',height: '',top: '',left: '',name: '',list:[]},
+        canvas2:{width: '',height: '',top: '',left: '',name: '',list:[]},
+        canvas3:{width: '',height: '',top: '',left: '',name: '',list:[]},
+        canvas4:{width: '',height: '',top: '',left: '',name: '',list:[]},
+      }
+      let json1 = this.myCanvas1.toJSON();
+      let json2 = this.myCanvas2.toJSON();
+      let json3 = this.myCanvas3.toJSON();
+      let json4 = this.myCanvas4.toJSON();
+      params.canvas1.list = dataList.canvas1.slice(1);
+      params.canvas2.list = dataList.canvas2.slice(1);
+      params.canvas3.list = dataList.canvas3.slice(1);
+      params.canvas4.list = dataList.canvas4.slice(1);
+      params.canvas1.width = dataList.canvas1.length > 0 ? dataList.canvas1[0].width : '';
+      params.canvas1.height = dataList.canvas1.length > 0 ? dataList.canvas1[0].height : '';
+      params.canvas1.left = dataList.canvas1.length > 0 ? dataList.canvas1[0].left : '';
+      params.canvas1.top = dataList.canvas1.length > 0 ? dataList.canvas1[0].top : '';
+      params.canvas1.name = dataList.canvas1.length > 0 ? dataList.canvas1[0].name : '';
+      params.canvas2.width = dataList.canvas2.length > 0 ? dataList.canvas2[0].width : '';
+      params.canvas2.height = dataList.canvas2.length > 0 ? dataList.canvas2[0].height : '';
+      params.canvas2.left = dataList.canvas2.length > 0 ? dataList.canvas2[0].left : '';
+      params.canvas2.top = dataList.canvas2.length > 0 ? dataList.canvas2[0].top : '';
+      params.canvas2.name = dataList.canvas2.length > 0 ? dataList.canvas2[0].name : '';
+      params.canvas3.width = dataList.canvas3.length > 0 ? dataList.canvas3[0].width : '';
+      params.canvas3.height = dataList.canvas3.length > 0 ? dataList.canvas3[0].height : '';
+      params.canvas3.left = dataList.canvas3.length > 0 ? dataList.canvas3[0].left : '';
+      params.canvas3.top = dataList.canvas3.length > 0 ? dataList.canvas3[0].top : '';
+      params.canvas3.name = dataList.canvas3.length > 0 ? dataList.canvas3[0].name : '';
+      params.canvas4.width = dataList.canvas4.length > 0 ? dataList.canvas4[0].width : '';
+      params.canvas4.height = dataList.canvas4.length > 0 ? dataList.canvas4[0].height : '';
+      params.canvas4.left = dataList.canvas4.length > 0 ? dataList.canvas4[0].left : '';
+      params.canvas4.top = dataList.canvas4.length > 0 ? dataList.canvas4[0].top : '';
+      params.canvas4.name = dataList.canvas4.length > 0 ? dataList.canvas4[0].name: '';
+      params.canvas1.list.forEach(item => {
+        item.left = item.left - params.canvas1.left;
+        item.top = item.top - params.canvas1.top;
+      });
+      params.canvas2.list.forEach(item => {
+        item.left = item.left - params.canvas2.left;
+        item.top = item.top - params.canvas2.top;
+      })
+      params.canvas3.list.forEach(item => {
+        item.left = item.left - params.canvas3.left;
+        item.top = item.top - params.canvas3.top;
+      })
+      params.canvas4.list.forEach(item => {
+        item.left = item.left - params.canvas4.left;
+        item.top = item.top - params.canvas4.top;
+      })
+      console.log(json1,json2,json3,json4)
+    },
     cancleEdit(){
       let obj = this.myCanvas.getActiveObject();
       if(this.designModel == 0){
@@ -473,7 +523,7 @@ export default {
           this.dataList.canvas1[this.isFirst].top = this.editTop;
           this.dataList.canvas1[this.isFirst].name = this.editName;
           this.showList = this.dataList.canvas1;
-          this.handleObjectMove(this.myCanvas,this.dataList.canvas1[0].top,600 - this.dataList.canvas1[0].top - this.dataList.canvas1[0].height,this.dataList.canvas1[0].left,600 - this.dataList.canvas1[0].left - this.dataList.canvas1[0].width);
+          //this.handleObjectMove(this.myCanvas,this.dataList.canvas1[0].top,600 - this.dataList.canvas1[0].top - this.dataList.canvas1[0].height,this.dataList.canvas1[0].left,600 - this.dataList.canvas1[0].left - this.dataList.canvas1[0].width);
         }else{
           let calcHeight2 = this.dataList.canvas1[0].height + this.dataList.canvas1[0].top;
           let calcWidth2 = this.dataList.canvas1[0].width + this.dataList.canvas1[0].left;
@@ -496,11 +546,11 @@ export default {
           this.dataList.canvas2[this.isFirst].top = this.editTop;
           this.dataList.canvas2[this.isFirst].name = this.editName;
           this.showList = this.dataList.canvas2;
-          this.handleObjectMove(this.myCanvas,this.dataList.canvas2[0].top,600 - this.dataList.canvas2[0].top - this.dataList.canvas2[0].height,this.dataList.canvas2[0].left,600 - this.dataList.canvas2[0].left - this.dataList.canvas2[0].width);
+          //this.handleObjectMove(this.myCanvas,this.dataList.canvas2[0].top,600 - this.dataList.canvas2[0].top - this.dataList.canvas2[0].height,this.dataList.canvas2[0].left,600 - this.dataList.canvas2[0].left - this.dataList.canvas2[0].width);
         }else{
           let calcHeight2 = this.dataList.canvas2[0].height + this.dataList.canvas2[0].top;
           let calcWidth2 = this.dataList.canvas2[0].width + this.dataList.canvas2[0].left;
-          if(calcWidth1 > calcWidth2 || calcHeight1 > calcHeight2){
+          if(calcWidth1 > calcWidth2 || calcHeight1 > calcHeight2 || this.editLeft < this.dataList.canvas2[0].left || this.editTop < this.dataList.canvas2[0].top){
             this.$message.error('您输入的值已超出限制区域，请重新输入！')
             return
           }
@@ -519,11 +569,11 @@ export default {
           this.dataList.canvas3[this.isFirst].top = this.editTop;
           this.dataList.canvas3[this.isFirst].name = this.editName;
           this.showList = this.dataList.canvas3;
-          this.handleObjectMove(this.myCanvas,this.dataList.canvas3[0].top,600 - this.dataList.canvas3[0].top - this.dataList.canvas3[0].height,this.dataList.canvas3[0].left,600 - this.dataList.canvas3[0].left - this.dataList.canvas3[0].width);
+          //this.handleObjectMove(this.myCanvas,this.dataList.canvas3[0].top,600 - this.dataList.canvas3[0].top - this.dataList.canvas3[0].height,this.dataList.canvas3[0].left,600 - this.dataList.canvas3[0].left - this.dataList.canvas3[0].width);
         }else{
           let calcHeight2 = this.dataList.canvas3[0].height + this.dataList.canvas3[0].top;
           let calcWidth2 = this.dataList.canvas3[0].width + this.dataList.canvas3[0].left;
-          if(calcWidth1 > calcWidth2 || calcHeight1 > calcHeight2){
+          if(calcWidth1 > calcWidth2 || calcHeight1 > calcHeight2 || this.editLeft < this.dataList.canvas3[0].left || this.editTop < this.dataList.canvas3[0].top){
             this.$message.error('您输入的值已超出限制区域，请重新输入！')
             return
           }
@@ -542,11 +592,11 @@ export default {
           this.dataList.canvas4[this.isFirst].top = this.editTop;
           this.dataList.canvas4[this.isFirst].name = this.editName;
           this.showList = this.dataList.canvas4;
-          this.handleObjectMove(this.myCanvas,this.dataList.canvas4[0].top,600 - this.dataList.canvas4[0].top - this.dataList.canvas4[0].height,this.dataList.canvas4[0].left,600 - this.dataList.canvas4[0].left - this.dataList.canvas4[0].width);
+          //this.handleObjectMove(this.myCanvas,this.dataList.canvas4[0].top,600 - this.dataList.canvas4[0].top - this.dataList.canvas4[0].height,this.dataList.canvas4[0].left,600 - this.dataList.canvas4[0].left - this.dataList.canvas4[0].width);
         }else{
           let calcHeight2 = this.dataList.canvas4[0].height + this.dataList.canvas4[0].top;
           let calcWidth2 = this.dataList.canvas4[0].width + this.dataList.canvas4[0].left;
-          if(calcWidth1 > calcWidth2 || calcHeight1 > calcHeight2){
+          if(calcWidth1 > calcWidth2 || calcHeight1 > calcHeight2 || this.editLeft < this.dataList.canvas4[0].left || this.editTop < this.dataList.canvas4[0].top){
             this.$message.error('您输入的值已超出限制区域，请重新输入！')
             return
           }
@@ -647,10 +697,10 @@ export default {
               fill: 'rgba(0,0,0,0)',
               id: values.name
             });
-            this.myCanvas1.add(rect);
+            this.myCanvas.add(rect);
             rect.hasControls = false;
             rect.selectable = false;
-            this.handleObjectMove(this.myCanvas,values.top,600 - values.top - values.height,values.left,600 - values.left - values.width);
+            //this.handleObjectMove(this.myCanvas,values.top,600 - values.top - values.height,values.left,600 - values.left - values.width);
           if(this.designModel == 0){
             this.dataList.canvas1.push(json);
             this.showList = this.dataList.canvas1;
@@ -733,31 +783,32 @@ export default {
             this.myCanvas.add(rect);
             rect.hasControls = false;
             rect.selectable = false;
+            console.log(this.dataList)
         }
       })
     },
-    handleObjectMove(object,top_margin,bottom_margin,left_margin,right_margin){
-        let that = this;
-        object.on('object:moving', function (e) {
-                var obj = e.target;
-                that.movingBox = true;
-                // if object is too big ignore
-                if(obj.currentHeight > obj.canvas.height || obj.currentWidth > obj.canvas.width){
-                    return;
-                }        
-                obj.setCoords();        
-                // top-left  corner
-                if(obj.getBoundingRect().top < top_margin || obj.getBoundingRect().left < left_margin){
-                    obj.top = Math.max(obj.top, obj.top-obj.getBoundingRect().top + top_margin);
-                    obj.left = Math.max(obj.left, obj.left-obj.getBoundingRect().left + left_margin);
-                }
-                // bot-right corner
-                if(obj.getBoundingRect().top+obj.getBoundingRect().height  > 600 - bottom_margin || obj.getBoundingRect().left+obj.getBoundingRect().width  > 600 - right_margin){
-                    obj.top = Math.min(obj.top, obj.canvas.height-obj.getBoundingRect().height+obj.top-obj.getBoundingRect().top - bottom_margin);
-                    obj.left = Math.min(obj.left, obj.canvas.width-obj.getBoundingRect().width+obj.left-obj.getBoundingRect().left - right_margin);
-                } 
-        });
-    },
+    // handleObjectMove(object,top_margin,bottom_margin,left_margin,right_margin){
+    //     let that = this;
+    //     object.on('object:moving', function (e) {
+    //             var obj = e.target;
+    //             that.movingBox = true;
+    //             // if object is too big ignore
+    //             if(obj.currentHeight > obj.canvas.height || obj.currentWidth > obj.canvas.width){
+    //                 return;
+    //             }        
+    //             obj.setCoords();        
+    //             // top-left  corner
+    //             if(obj.getBoundingRect().top < top_margin || obj.getBoundingRect().left < left_margin){
+    //                 obj.top = Math.max(obj.top, obj.top-obj.getBoundingRect().top + top_margin);
+    //                 obj.left = Math.max(obj.left, obj.left-obj.getBoundingRect().left + left_margin);
+    //             }
+    //             // bot-right corner
+    //             if(obj.getBoundingRect().top+obj.getBoundingRect().height  > 600 - bottom_margin || obj.getBoundingRect().left+obj.getBoundingRect().width  > 600 - right_margin){
+    //                 obj.top = Math.min(obj.top, obj.canvas.height-obj.getBoundingRect().height+obj.top-obj.getBoundingRect().top - bottom_margin);
+    //                 obj.left = Math.min(obj.left, obj.canvas.width-obj.getBoundingRect().width+obj.left-obj.getBoundingRect().left - right_margin);
+    //             } 
+    //     });
+    // },
     changeModelDesign(i){
         console.log(i)
         this.designModel = i;
@@ -816,7 +867,9 @@ export default {
     handleChangeDesign2(file) {
       let formData = new FormData();
       console.log(file)
+      
       formData.append("file", file.file.originFileObj);
+      
       sourceUpload(formData).then(res => {
           console.log(res)
           this.bgimgs[1].url = res.preview_url;
@@ -849,6 +902,7 @@ export default {
           this.bindCanvas(this.myCanvas,3)
       })
     },
+    
     handleSubmit(e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {

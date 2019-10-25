@@ -694,3 +694,11 @@ export function approveWithdraw(id,remark,status) {
         data:qs.stringify({id:id,remark:remark,status:status})
     })
 }
+
+export function queryByUrl(url) {
+    return axios({
+        url: '/iso/jeecgWordart/queryByUrl',
+        method: 'post',
+        data:qs.stringify({url:url})
+    })
+}

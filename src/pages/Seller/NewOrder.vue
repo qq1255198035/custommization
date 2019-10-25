@@ -289,8 +289,8 @@
                                         <my-title :title="'Edit Text'"></my-title>
                                         <div class="second">
                                             <div class="text-tool">
-                                                <a-input v-model="addText" style="width: 70%"></a-input>
-                                                <a-button type="primary" @click="addItext(addText,true)" :disabled="!addText" style="border-radius: 12px;">Modifying text</a-button>
+                                                <a-input v-model="editText" style="width: 70%"></a-input>
+                                                <a-button type="primary" @click="addItext(editText,true)" :disabled="!editText" style="border-radius: 12px;">Modifying text</a-button>
                                             </div>
                                         </div>
                                         <ul class="tool-list">
@@ -845,7 +845,8 @@ import {
         discount,
         getPic,
         handleDesignList,
-        rmWhite
+        rmWhite,
+        queryByUrl
     } from "@/api/seller";
 export default {
     components:{
@@ -857,6 +858,7 @@ export default {
     },
     data () {
         return {
+            editText: '',
             sizePicUrl:'',
             show: false,
             loading:false,
@@ -900,7 +902,6 @@ export default {
             previewImage:'',
             example:false,
             uploadId:0,
-            colorIcon: -1,
             productColorIcon: -1,
             productColor: '',
             productColorName: '',
@@ -1393,6 +1394,7 @@ export default {
             changeFont(params).then(res => {
                 console.log(res)
                 if(res.code == 0){
+
                     let img = new Image();
                     let imgInstance;
                     //设置图片跨域访问
@@ -1407,7 +1409,7 @@ export default {
                                 let width = obj.getBoundingRect().width;
                                 that.myCanvas.remove(obj);
                                 imgInstance = new fabric.Image(img, {
-                                    mytext:that.addText,
+                                    mytext: res.result,
                                     lockUniScaling:true, // When `true`, object non-uniform scaling is locked
                                     left: left,
                                     top: top,
@@ -1422,7 +1424,7 @@ export default {
                                     lockUniScaling:true, // When `true`, object non-uniform scaling is locked
                                     left: that.boxSize1.left + 5,
                                     top: that.boxSize1.top + 5,
-                                    mytext:that.addText,
+                                    mytext: res.result,
                                     myId: 'Text',
                                     crossOrigin: '*'
                                 });
@@ -1434,7 +1436,7 @@ export default {
                                     lockUniScaling:true, // When `true`, object non-uniform scaling is locked
                                     left: that.boxSize2.left + 5,
                                     top: that.boxSize2.top + 5,
-                                    mytext:that.addText,
+                                    mytext: res.result,
                                     myId: 'Text',
                                     crossOrigin: '*'
                                 });
@@ -1446,7 +1448,7 @@ export default {
                                     lockUniScaling:true, // When `true`, object non-uniform scaling is locked
                                     left: that.boxSize3.left + 5,
                                     top: that.boxSize3.top + 5,
-                                    mytext:that.addText,
+                                    mytext: res.result,
                                     myId: 'Text',
                                     crossOrigin: '*'
                                 });
@@ -1458,7 +1460,7 @@ export default {
                                     lockUniScaling:true, // When `true`, object non-uniform scaling is locked
                                     left: that.boxSize4.left + 5,
                                     top: that.boxSize4.top + 5,
-                                    mytext:that.addText,
+                                    mytext: res.result,
                                     myId: 'Text',
                                     crossOrigin: '*'
                                 });
@@ -1469,13 +1471,19 @@ export default {
                         }
                         that.myCanvas.add(imgInstance).setActiveObject(imgInstance);
                         that.myCanvas.requestRenderAll();
+                        queryByUrl(res.result).then(res => {
+                            console.log(res)
+                            if(res.code == 0){
+                                that.editText = res.result.text;
+                            }
+                        })
                         that.liClick = 0;
                         that.visibletype = 3;
                         imgInstance.on("selected", function() {
-                            let obj = that.myCanvas.getActiveObject();
+                            
+                            that.colorKey = 1;
                             that.liClick = 0;
                             that.visibletype = 3;
-                            that.addText = obj.mytext;
                         });
                     }
                 }
@@ -1483,12 +1491,12 @@ export default {
         },
         saveFontShapeDesign(fontShape,isAdd){
             //fontShape
-            let params = {text: this.addText,style:this.bgcolor ? '' : 'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: fontShape,backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1}
+            let params = {text: this.editText,style:this.bgcolor ? '' : 'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: fontShape,backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1}
             this.handleChangeFont(params,isAdd)
         },
         removeShape(){
             this.fontShape = '';
-            let params = {text: this.addText,style:this.bgcolor ? '' : 'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1}
+            let params = {text: this.editText,style:this.bgcolor ? '' : 'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1}
             this.handleChangeFont(params,true)
         },
         getArtFontList(){
@@ -1588,9 +1596,6 @@ export default {
             this.dataPost2 = JSON.stringify(json2)
             this.dataPost3 = JSON.stringify(json3)
             this.dataPost4 = JSON.stringify(json4)
-            let a = this.myCanvas1.getObjects();
-            console.log(json1.object);
-            console.log(a)
         },
         postSaveDesign(params){
             saveDesign(params).then(res => {
@@ -1813,6 +1818,29 @@ export default {
                 if(!obj.target){
                     that.visibletype = -1;
                     that.liClick = -1;
+                }else{
+                    queryByUrl(obj.target.mytext).then(res => {
+                        console.log(res)
+                        if(res.code == 0){
+                            if(res.result.text){
+                                that.editText = res.result.text;
+                                that.fontfamily = res.result.fontName;
+                                that.color = res.result.fontColor;
+                                that.colorName = res.result.fontColorName;
+                                that.fontShape = res.result.effect;
+                                that.bgcolor = res.result.backGround;
+                                that.fontBgColorName = res.result.backGroundName;
+                                that.strokeWidth = parseInt(res.result.lineweight);
+                                that.strokeColor = res.result.outLineColor;
+                                that.strokeColorName = res.result.outLineColorName;
+                                that.shadowColor = res.result.shadowColor;
+                                that.shadowColorName = res.result.shadowColorName;
+                                that.Shadow1 = parseInt(res.result.smudge);
+                                console.log(that.colorKey)
+                                console.log(that.colorName)
+                            }
+                        }
+                    })
                 }
             })
         },
@@ -1998,7 +2026,7 @@ export default {
         },
         changeTextBgColor(val,name,isAdd){
             let params = {
-                text: this.addText,style:this.bgcolor ? '' : 'softshadow',fontName:this.fontfamily,
+                text: this.editText,style:this.bgcolor ? '' : 'softshadow',fontName:this.fontfamily,
                 fontHeight: 50, fontColor: this.color.substr(1), 
                 lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), 
                 effect: this.fontShape,backGround: val.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1}
@@ -2009,7 +2037,7 @@ export default {
             this.bgcolor = '';
             this.fontColorIcon2 = -1;
             let params = {
-                text: this.addText,style:this.bgcolor ? '' : 'softshadow',fontName:this.fontfamily,
+                text: this.editText,style:this.bgcolor ? '' : 'softshadow',fontName:this.fontfamily,
                 fontHeight: 50, fontColor: this.color.substr(1), 
                 lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), 
                 effect: this.fontShape,backGround: this.bgcolor,shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1}
@@ -2018,7 +2046,7 @@ export default {
         // 设置字体阴影开始
         changeShadowColor(val,name,isAdd){
             let params = {
-                    text: this.addText,style:this.bgcolor ? '' : 'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
+                    text: this.editText,style:this.bgcolor ? '' : 'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
                     lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,
                     backGround: this.bgcolor.substr(1),shadowColor: val.substr(1),smudge: this.Shadow1
                 }
@@ -2030,7 +2058,7 @@ export default {
             this.fontColorIcon4 = -1;
             this.Shadow1 = 0;
             let params = {
-                    text: this.addText,style:this.bgcolor ? '' : 'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
+                    text: this.editText,style:this.bgcolor ? '' : 'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
                     lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,
                     backGround: this.bgcolor.substr(1),shadowColor: this.shadowColorName,smudge: this.Shadow1
                 }
@@ -2437,6 +2465,7 @@ export default {
             if(key == 4){
                 this.getColorList(7);
             }
+            this.myCanvas.discardActiveObject();
         },
         // 设置设计背景图
         bindCanvas(canvas,i) {
@@ -2515,7 +2544,10 @@ export default {
         },
         // 添加文字
         addItext(text,isAdd) {
+            console.log(this.editText)
             if(isAdd){
+                console.log(text);
+                
                 if(this.myCanvas.getActiveObject()){
                     let params = {
                         text: text,style:this.bgcolor ? '' : 'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
@@ -2532,6 +2564,22 @@ export default {
                     this.handleChangeFont(params,false);
                 }
             }else{
+                this.fontfamily = 'FZCHYFW';
+                this.color = '#B17700';
+                this.colorName = 'Pantone 1395';
+                this.fontShape = 'normal';
+                this.bgcolor = '';
+                this.fontBgColorName = '';
+                this.strokeWidth = 0;
+                this.strokeColor = '';
+                this.strokeColorName = '';
+                this.shadowColor = '';
+                this.shadowColorName = '';
+                this.Shadow1 = 0;
+                this.fontColorIcon1 = -1;
+                this.fontColorIcon2 = -1;
+                this.fontColorIcon3 = -1;
+                this.fontColorIcon4 = -1;
                 let params = {
                     text: text,style:this.bgcolor ? '' : 'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
                     lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,
@@ -2539,6 +2587,7 @@ export default {
                 }
                 this.handleChangeFont(params,isAdd);
             }
+            
             this.addText = '';
         },
         // 加载资源字体
@@ -2596,66 +2645,101 @@ export default {
         openChangeColorBox(key,title){
             console.log(key)
             this.changeWidthShow = key;
-            if(key == 5){
-                console.log(this.keyId)
-                if(this.addNameData){
-                    if(this.keyId == 'Name'){
-                        this.visibletype = 8;
-                        this.colorTitle = title;
-                        this.colorKey = key;
-                    }else{
-                        this.$message.error('Please select name first.')
-                    }
-                }
-            }else if(key == 6){
-                if(this.addNumberData){
+            colorList(key).then(res => {
+                console.log(res)
+                this.colorList = res.result
+                let colors = this.colorList.list;
+                if(key == 5){
                     console.log(this.keyId)
-                    if(this.keyId == 'Number'){
+                    if(this.addNameData){
+                        if(this.keyId == 'Name'){
+                            this.visibletype = 8;
+                            this.colorTitle = title;
+                            this.colorKey = key;
+                        }else{
+                            this.$message.error('Please select name first.')
+                        }
+                    }
+                }else if(key == 6){
+                    if(this.addNumberData){
+                        console.log(this.keyId)
+                        if(this.keyId == 'Number'){
+                            this.visibletype = 8;
+                            this.colorTitle = title;
+                            this.colorKey = key;
+                        }else{
+                            this.$message.error('Please select number first.')
+                        }
+                    }
+                }else if(key == 2){
+                    //后加 不严谨
+                    if(this.shadowColorName){
+                        this.$message.error('Please remove the shadows first.')
+                    }else if(this.strokeColorName){
+                        this.$message.error('Please remove the outline first.')
+                    }else{
                         this.visibletype = 8;
                         this.colorTitle = title;
                         this.colorKey = key;
+                        if(this.bgcolor){
+                            for(let i = 0; i < colors.length; i++) {
+                                if (colors[i].itemValue === this.bgcolor) {
+                                    console.log(i);
+                                    this.fontColorIcon2 = i
+                                }
+                            }
+                        }
+                    }
+                }else if(key == 3){
+                    //后加 不严谨
+                    if(this.bgcolor){
+                        this.$message.error('Please remove the Text Background Colour first.')
                     }else{
-                        this.$message.error('Please select number first.')
+                        this.visibletype = 8;
+                        this.colorTitle = title;
+                        this.colorKey = key;
+                        if(this.strokeColor){
+                            for(let i = 0; i < colors.length; i++) {
+                                if (colors[i].itemValue === this.strokeColor) {
+                                    console.log(i);
+                                    this.fontColorIcon3 = i
+                                }
+                            }
+                        }
+                    }
+                }else if(key == 4){
+                    if(this.bgcolor){
+                        this.$message.error('Please remove the Text Background Colour first.')
+                    }else{
+                        this.visibletype = 8;
+                        this.colorTitle = title;
+                        this.colorKey = key;
+                        if(this.shadowColor){
+                            for(let i = 0; i < colors.length; i++) {
+                                if (colors[i].itemValue === this.shadowColor) {
+                                    console.log(i);
+                                    this.fontColorIcon4 = i
+                                }
+                            }
+                        }
+                    }
+                }else if(key == 1){
+                    this.visibletype = 8;
+                    this.colorTitle = title;
+                    this.colorKey = key;
+                    if(this.color){
+                        for(let i = 0; i < colors.length; i++) {
+                            if (colors[i].itemValue === this.color){
+                                console.log(i);
+                                this.fontColorIcon1 = i
+                            }
+                        }
                     }
                 }
-            }else if(key == 2){
-                //后加 不严谨
-                if(this.shadowColorName){
-                    this.$message.error('Please remove the shadows first.')
-                }else if(this.strokeColorName){
-                    this.$message.error('Please remove the outline first.')
-                }else{
-                    this.visibletype = 8;
-                    this.colorTitle = title;
-                    this.colorKey = key;
-                }
-            }else if(key == 3){
-                //后加 不严谨
-                if(this.bgcolor){
-                    this.$message.error('Please remove the Text Background Colour first.')
-                }else{
-                    this.visibletype = 8;
-                    this.colorTitle = title;
-                    this.colorKey = key;
-                }
-            }
-            else if(key == 4){
-                if(this.bgcolor){
-                    this.$message.error('Please remove the Text Background Colour first.')
-                }else{
-                    this.visibletype = 8;
-                    this.colorTitle = title;
-                    this.colorKey = key;
-                }
-            }else{
-                this.visibletype = 8;
-                this.colorTitle = title;
-                this.colorKey = key;
-            }
-            console.log(key,title);
-            this.getColorList(key);
-            //this.handleColorShow();
-
+                console.log(key,title);
+            })
+            
+            
         },
         // 打开改变描边样式盒子
         // openFontOutlineBox(){
@@ -2713,7 +2797,7 @@ export default {
         },
         PostChangeFontFamily(){
             let params = {
-                    text:  this.addText,style:this.bgcolor ? '' : 'softshadow',fontName: this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
+                    text:  this.editText,style:this.bgcolor ? '' : 'softshadow',fontName: this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
                     lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,
                     backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1
                 }
@@ -2723,7 +2807,7 @@ export default {
             this.fontfamily = 'FZCHYFW';
             this.fontfamilydata = -1;
             let params = {
-                    text:  this.addText,style:this.bgcolor ? '' : 'softshadow',fontName: this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
+                    text:  this.editText,style:this.bgcolor ? '' : 'softshadow',fontName: this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
                     lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,
                     backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1
                 }
@@ -2731,7 +2815,7 @@ export default {
         },
         changeFillColor(val,name,isAdd){
             let params = {
-                    text:  this.addText,style:this.bgcolor ? '' : 'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: val.substr(1), 
+                    text:  this.editText,style:this.bgcolor ? '' : 'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: val.substr(1), 
                     lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,
                     backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1
                 }
@@ -2742,7 +2826,7 @@ export default {
             this.colorName = 'BLACK';
             this.fontColorIcon1 = -1;
             let params = {
-                    text:  this.addText,style:this.bgcolor ? '' : 'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
+                    text:  this.editText,style:this.bgcolor ? '' : 'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
                     lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), effect: this.fontShape,
                     backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1
                 }
@@ -2751,7 +2835,7 @@ export default {
         // 改变描边样式开始
         changestrokeColor(val,name,isAdd){
             let params = {
-                    text:  this.addText,style:this.bgcolor ? '' : 'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1),
+                    text:  this.editText,style:this.bgcolor ? '' : 'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1),
                     lineweight: this.strokeWidth, outLineColor: val.substr(1), effect: this.fontShape,
                     backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1
                 }
@@ -2763,7 +2847,7 @@ export default {
             this.fontColorIcon3 = -1;
             this.strokeWidth = 0;
             let params = {
-                    text:  this.addText,style:this.bgcolor ? '' : 'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1),
+                    text:  this.editText,style:this.bgcolor ? '' : 'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1),
                     lineweight: this.strokeWidth, outLineColor: this.strokeColor, effect: this.fontShape,
                     backGround: this.bgcolor.substr(1),shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1
                 }
@@ -2924,8 +3008,6 @@ export default {
     font-family:'UA-Cadet';
     src:url('./../../fonts/UACadet.ttf')
 }
-@normal-fontsize: 18px;
-@normal-fontcolor: #999;
 .white{
     background-color:rgba(255,255,255,.0);
     border-color: #33b8b3;
@@ -2937,7 +3019,6 @@ export default {
         }
     }
 }
-
 #NewOrder{
     width: 100%;
     height: 100%;
@@ -3784,7 +3865,6 @@ export default {
         }
     }
 }
-
 .upLoadExampleImg{
     padding: 20px;
     .btn-box{
