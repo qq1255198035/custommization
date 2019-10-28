@@ -741,7 +741,7 @@
                         <p>Additional tips. This success prompt appears after a series of tasks, such as a step-by-step form task in the pop-up window, and a prompt after completing the final step. Simple pop-up tasks use the Message prompt directly.</p>
                     </div>
                     <div class="btn-box">
-                        <a-button icon="file-text" @click="$router.push({path:'/grouporder/designList'})">Order list</a-button>
+                        <a-button icon="file-text" @click="$router.push({path:'/OrderManagement/designList'})">Order list</a-button>
                         <a-button type="primary" icon="" style="vertical-align: middle;" @click="posteDesignList">
                             <img src="@/assets/monry-icon-bar.png" alt="" width="12" height="19" style="margin-right: 5px;">
                             Order now

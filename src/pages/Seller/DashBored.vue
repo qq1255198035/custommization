@@ -7,11 +7,11 @@
       <p slot="c" style="color:#727272;font-size: 16px;margin:0;">Total Commission</p>
     </order-total>
     <my-title :title="'Order - In Progress'">
-      <router-link to="/grouporder" style="text-decoration: underline;color: #33b8b3">All Orders</router-link>
+      <router-link to="/OrderManagement/grouporder" style="text-decoration: underline;color: #33b8b3">All Orders</router-link>
     </my-title>
     <order-list :orderList="orderList" @openShareBox="openMyshareBox" />
     <my-title :title="'Design - In Progress'">
-      <router-link to="/grouporder/designList" style="text-decoration: underline;color: #33b8b3">Design List</router-link>
+      <router-link to="/OrderManagement/designList" style="text-decoration: underline;color: #33b8b3">Design List</router-link>
     </my-title>
     <design-list :designList="designList" />
     <a-modal

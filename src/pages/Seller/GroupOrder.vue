@@ -142,7 +142,7 @@ export default {
               let that = this;
               this.$error({
                 title: 'Error',
-                content: 'Sorry,Not examined and approved',
+                content: 'Sorry,Not examined and approved,Please go to the account settings page to apply.',
                 onOk() {
                   console.log(11);
                   that.$router.push({path: '/dealerInfo'})

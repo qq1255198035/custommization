@@ -27,7 +27,7 @@
                         <p>We will provide a design mockup within 4 working days.</p>
                         <div class="btn-box">
                             <a-button @click="$router.push({path: '/neworder'})">Order Again</a-button>
-                            <a-button @click="$router.push({path: '/grouporder'})">Back</a-button>
+                            <a-button @click="$router.push({path: '/OrderManagement/grouporder'})">Back</a-button>
                         </div>
                     </div>
                 </div>

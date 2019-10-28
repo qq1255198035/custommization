@@ -30,9 +30,8 @@
                 <a-form-item>
                   <a-upload
                     listType="picture-card"
-                    @change="handleChangeDesign1"
                     accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif"
-                    :beforeUpload="beforeUpload"
+                    :beforeUpload="handleChangeDesign1"
                     :showUploadList="false"
                     v-decorator="['frontimg', { rules: [{ required: false, message: '请填上传正面图片!' }] }]"
                   >
@@ -46,9 +45,8 @@
                 <a-form-item>
                   <a-upload
                     listType="picture-card"
-                    @change="handleChangeDesign2"
                     accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif"
-                    :beforeUpload="beforeUpload"
+                    :beforeUpload="handleChangeDesign2"
                     :showUploadList="false"
                     v-decorator="['backimg', { rules: [{ required: false, message: '请填上传背面图片!' }] }]"
                   >
@@ -62,9 +60,8 @@
                 <a-form-item>
                   <a-upload
                     listType="picture-card"
-                    @change="handleChangeDesign3"
                     accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif"
-                    :beforeUpload="beforeUpload"
+                    :beforeUpload="handleChangeDesign3"
                     :showUploadList="false"
                     v-decorator="['leftimg', { rules: [{ required: false, message: '请填上传左面图片!' }] }]"
                   >
@@ -78,9 +75,8 @@
                 <a-form-item>
                   <a-upload
                     listType="picture-card"
-                    @change="handleChangeDesign4"
                     accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif"
-                    :beforeUpload="beforeUpload"
+                    :beforeUpload="handleChangeDesign4"
                     :showUploadList="false"
                     v-decorator="['rightimg', { rules: [{ required: false, message: '请填上传右面图片!' }] }]"
                   >
@@ -618,6 +614,7 @@ export default {
       let items = this.myCanvas.getObjects();
       this.isFirst = index;
       this.myCanvas.setActiveObject(items[index]);
+      items[index].hasControls = true;
       this.visible = true;
       if(this.designModel == 0){
         this.editName = this.dataList.canvas1[index].name;
@@ -698,9 +695,9 @@ export default {
               id: values.name
             });
             this.myCanvas.add(rect);
-            rect.hasControls = false;
-            rect.selectable = false;
-            //this.handleObjectMove(this.myCanvas,values.top,600 - values.top - values.height,values.left,600 - values.left - values.width);
+            // rect.hasControls = false;
+            // rect.selectable = false;
+            this.handleObjectMove(this.myCanvas,values.top,600 - values.top - values.height,values.left,600 - values.left - values.width);
           if(this.designModel == 0){
             this.dataList.canvas1.push(json);
             this.showList = this.dataList.canvas1;
@@ -787,28 +784,28 @@ export default {
         }
       })
     },
-    // handleObjectMove(object,top_margin,bottom_margin,left_margin,right_margin){
-    //     let that = this;
-    //     object.on('object:moving', function (e) {
-    //             var obj = e.target;
-    //             that.movingBox = true;
-    //             // if object is too big ignore
-    //             if(obj.currentHeight > obj.canvas.height || obj.currentWidth > obj.canvas.width){
-    //                 return;
-    //             }        
-    //             obj.setCoords();        
-    //             // top-left  corner
-    //             if(obj.getBoundingRect().top < top_margin || obj.getBoundingRect().left < left_margin){
-    //                 obj.top = Math.max(obj.top, obj.top-obj.getBoundingRect().top + top_margin);
-    //                 obj.left = Math.max(obj.left, obj.left-obj.getBoundingRect().left + left_margin);
-    //             }
-    //             // bot-right corner
-    //             if(obj.getBoundingRect().top+obj.getBoundingRect().height  > 600 - bottom_margin || obj.getBoundingRect().left+obj.getBoundingRect().width  > 600 - right_margin){
-    //                 obj.top = Math.min(obj.top, obj.canvas.height-obj.getBoundingRect().height+obj.top-obj.getBoundingRect().top - bottom_margin);
-    //                 obj.left = Math.min(obj.left, obj.canvas.width-obj.getBoundingRect().width+obj.left-obj.getBoundingRect().left - right_margin);
-    //             } 
-    //     });
-    // },
+    handleObjectMove(object,top_margin,bottom_margin,left_margin,right_margin){
+        let that = this;
+        object.on('object:moving', function (e) {
+                var obj = e.target;
+                that.movingBox = true;
+                // if object is too big ignore
+                if(obj.currentHeight > obj.canvas.height || obj.currentWidth > obj.canvas.width){
+                    return;
+                }        
+                obj.setCoords();        
+                // top-left  corner
+                if(obj.getBoundingRect().top < top_margin || obj.getBoundingRect().left < left_margin){
+                    obj.top = Math.max(obj.top, obj.top-obj.getBoundingRect().top + top_margin);
+                    obj.left = Math.max(obj.left, obj.left-obj.getBoundingRect().left + left_margin);
+                }
+                // bot-right corner
+                if(obj.getBoundingRect().top+obj.getBoundingRect().height  > 600 - bottom_margin || obj.getBoundingRect().left+obj.getBoundingRect().width  > 600 - right_margin){
+                    obj.top = Math.min(obj.top, obj.canvas.height-obj.getBoundingRect().height+obj.top-obj.getBoundingRect().top - bottom_margin);
+                    obj.left = Math.min(obj.left, obj.canvas.width-obj.getBoundingRect().width+obj.left-obj.getBoundingRect().left - right_margin);
+                } 
+        });
+    },
     changeModelDesign(i){
         console.log(i)
         this.designModel = i;
@@ -853,56 +850,70 @@ export default {
         }
     },
     handleChangeDesign1(file) {
-      let formData = new FormData();
-      formData.append("file", file.file.originFileObj);
-      sourceUpload(formData).then(res => {
+      if(file.size / 1024 / 1024 < 10){
+        let formData = new FormData();
+        formData.append("file", file);
+        sourceUpload(formData).then(res => {
           console.log(res)
           this.bgimgs[0].url = res.preview_url;
           this.designModel = 0;
           this.myCanvas = this.myCanvas1
           this.bindCanvas(this.myCanvas,0)
-      })
-      
+        })
+      }else{
+          this.$message.error('图片大小超出限制！')
+          return false
+      }
     },
     handleChangeDesign2(file) {
-      let formData = new FormData();
-      console.log(file)
-      
-      formData.append("file", file.file.originFileObj);
-      
-      sourceUpload(formData).then(res => {
-          console.log(res)
-          this.bgimgs[1].url = res.preview_url;
-          this.designModel = 1;
-          this.myCanvas = this.myCanvas2;
-          this.bindCanvas(this.myCanvas,1)
-      })
+      if(file.size / 1024 / 1024 < 10){
+        let formData = new FormData();
+        formData.append("file", file);
+        sourceUpload(formData).then(res => {
+            this.bgimgs[1].url = res.preview_url;
+            this.designModel = 1;
+            this.myCanvas = this.myCanvas2;
+            this.bindCanvas(this.myCanvas,1)
+        })
+      }else{
+        this.$message.error('图片大小超出限制！')
+        return false
+      }
     },
     handleChangeDesign3(file) {
-      let formData = new FormData();
-      console.log(file)
-      formData.append("file", file.file.originFileObj);
-      sourceUpload(formData).then(res => {
-          console.log(res)
-          this.bgimgs[2].url = res.preview_url;
-          this.designModel = 2;
-          this.myCanvas = this.myCanvas3;
-          this.bindCanvas(this.myCanvas,2)
-      })
+      if(file.size / 1024 / 1024 < 10){
+        let formData = new FormData();
+        console.log(file)
+        formData.append("file", file);
+        sourceUpload(formData).then(res => {
+            console.log(res)
+            this.bgimgs[2].url = res.preview_url;
+            this.designModel = 2;
+            this.myCanvas = this.myCanvas3;
+            this.bindCanvas(this.myCanvas,2)
+        })
+      }else{
+        this.$message.error('图片大小超出限制！')
+        return false
+      }
     },
     handleChangeDesign4(file) {
-      let formData = new FormData();
-      console.log(file)
-      formData.append("file", file.file.originFileObj);
-      sourceUpload(formData).then(res => {
-          console.log(res)
-          this.bgimgs[3].url = res.preview_url;
-          this.designModel = 3;
-          this.myCanvas = this.myCanvas4;
-          this.bindCanvas(this.myCanvas,3)
-      })
+      if(file.size / 1024 / 1024 < 10){
+        let formData = new FormData();
+        console.log(file)
+        formData.append("file", file);
+        sourceUpload(formData).then(res => {
+            console.log(res)
+            this.bgimgs[3].url = res.preview_url;
+            this.designModel = 3;
+            this.myCanvas = this.myCanvas4;
+            this.bindCanvas(this.myCanvas,3)
+        })
+      }else{
+        this.$message.error('图片大小超出限制！')
+        return false
+      }
     },
-    
     handleSubmit(e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {
