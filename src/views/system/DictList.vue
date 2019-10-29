@@ -107,6 +107,9 @@
                   <a-form-item label="Top" style="width: 49%;">
                     <a-input-number v-decorator="['top', { rules: [{ required: true, message: '请填写顶部坐标!' },{ type: 'number', message: '请填写数字!' }],validateTrigger: ['change'] }]" :min="0"/>
                   </a-form-item>
+                  <a-form-item style="width: 100%; text-align: right;">
+                    <a-button>确定修改</a-button>
+                  </a-form-item>
                 </div>
               </a-form>
             </div>
@@ -210,7 +213,7 @@
           </a-form-item>
         </a-form>
       </a-tab-pane>
-      <a-tab-pane tab="添加颜色" key="3" forceRender>
+      <a-tab-pane tab="其他信息" key="3" forceRender>
         <div class="tab-pane-2">
           <a-form :form="form1" @submit="handleSubmitColor">
             <a-form-item v-for="k in form1.getFieldValue('keys')" :key="k" :required="false" style="display:flex;width: 100%;">
@@ -376,7 +379,7 @@ export default {
       editLeft: '',
       editTop: '',
       form: this.$form.createForm(this),
-      form2: this.$form.createForm(this),
+      
       visible: false,
       imageUrl: '',
       addFlag1: true,
@@ -412,6 +415,7 @@ export default {
     };
   },
   beforeCreate () {
+      this.form2 = this.$form.createForm(this),
       this.form1 = this.$form.createForm(this,{ name: 'dynamic_form_item' });
       this.form1.getFieldDecorator('keys', { initialValue: [id], preserve: true });
   },
@@ -421,8 +425,19 @@ export default {
       this.myCanvas2 = new fabric.Canvas("canvas2");
       this.myCanvas3 = new fabric.Canvas("canvas3");
       this.myCanvas4 = new fabric.Canvas("canvas4");
-      this.myCanvas = this.myCanvas1
+      this.myCanvas = this.myCanvas1;
+      console.log(this.form2)
+      this.monitorObjectMove(this.myCanvas1);
+      this.monitorObjectMove(this.myCanvas2);
+      this.monitorObjectMove(this.myCanvas3);
+      this.monitorObjectMove(this.myCanvas4);
+      this.monitorObjectScale(this.myCanvas1);
+      this.monitorObjectScale(this.myCanvas2);
+      this.monitorObjectScale(this.myCanvas3);
+      this.monitorObjectScale(this.myCanvas4);
+      
     })
+    
   },
   methods: {
     postDesignSize(){
@@ -614,8 +629,9 @@ export default {
       let items = this.myCanvas.getObjects();
       this.isFirst = index;
       this.myCanvas.setActiveObject(items[index]);
-      items[index].hasControls = true;
-      this.visible = true;
+      this.myCanvas.renderAll();
+      //items[index].hasControls = true;
+      //this.visible = true;
       if(this.designModel == 0){
         this.editName = this.dataList.canvas1[index].name;
         this.editWidth = this.dataList.canvas1[index].width;
@@ -692,12 +708,12 @@ export default {
               stroke: 'black',
               strokeWidth: 1,
               fill: 'rgba(0,0,0,0)',
-              id: values.name
+              id: values.name,
+              hasRotatingPoint: false
             });
-            this.myCanvas.add(rect);
-            // rect.hasControls = false;
-            // rect.selectable = false;
-            this.handleObjectMove(this.myCanvas,values.top,600 - values.top - values.height,values.left,600 - values.left - values.width);
+            this.myCanvas.add(rect).setActiveObject();
+            rect.selectable = false;
+            //this.handleObjectMove(this.myCanvas,values.top,600 - values.top - values.height,values.left,600 - values.left - values.width);
           if(this.designModel == 0){
             this.dataList.canvas1.push(json);
             this.showList = this.dataList.canvas1;
@@ -775,35 +791,61 @@ export default {
               stroke: 'black',
               strokeWidth: 1,
               fill: 'rgba(0,0,0,0)',
-              id: values.name
+              id: values.name,
+              hasRotatingPoint: false
             });
             this.myCanvas.add(rect);
-            rect.hasControls = false;
             rect.selectable = false;
             console.log(this.dataList)
         }
       })
     },
+    monitorObjectMove(object){
+      let that = this;
+      object.on('object:moving', function (e) {
+        let obj = e.target;
+        console.log(e.target.left)
+        that.form2.setFieldsValue({
+          width:parseInt(obj.width),
+          height:parseInt(obj.height),
+          left:parseInt(obj.left),
+          top:parseInt(obj.top)
+        });
+      })
+    },
+    monitorObjectScale(object){
+      let that = this;
+      object.on('object:scaling', function (e) {
+        let obj = e.target;
+        console.log(e.target);
+        console.log(obj.getBoundingRect().width);
+        that.form2.setFieldsValue({
+          width:parseInt(obj.width),
+          height:parseInt(obj.height),
+          left:parseInt(obj.left),
+          top:parseInt(obj.top)
+        });
+      })
+    },
     handleObjectMove(object,top_margin,bottom_margin,left_margin,right_margin){
-        let that = this;
         object.on('object:moving', function (e) {
-                var obj = e.target;
-                that.movingBox = true;
-                // if object is too big ignore
-                if(obj.currentHeight > obj.canvas.height || obj.currentWidth > obj.canvas.width){
-                    return;
-                }        
-                obj.setCoords();        
-                // top-left  corner
-                if(obj.getBoundingRect().top < top_margin || obj.getBoundingRect().left < left_margin){
-                    obj.top = Math.max(obj.top, obj.top-obj.getBoundingRect().top + top_margin);
-                    obj.left = Math.max(obj.left, obj.left-obj.getBoundingRect().left + left_margin);
-                }
-                // bot-right corner
-                if(obj.getBoundingRect().top+obj.getBoundingRect().height  > 600 - bottom_margin || obj.getBoundingRect().left+obj.getBoundingRect().width  > 600 - right_margin){
-                    obj.top = Math.min(obj.top, obj.canvas.height-obj.getBoundingRect().height+obj.top-obj.getBoundingRect().top - bottom_margin);
-                    obj.left = Math.min(obj.left, obj.canvas.width-obj.getBoundingRect().width+obj.left-obj.getBoundingRect().left - right_margin);
-                } 
+          var obj = e.target;
+          console.log(obj)
+          // if object is too big ignore
+          if(obj.currentHeight > obj.canvas.height || obj.currentWidth > obj.canvas.width){
+              return;
+          }        
+          obj.setCoords();        
+          // top-left  corner
+          if(obj.getBoundingRect().top < top_margin || obj.getBoundingRect().left < left_margin){
+              obj.top = Math.max(obj.top, obj.top-obj.getBoundingRect().top + top_margin);
+              obj.left = Math.max(obj.left, obj.left-obj.getBoundingRect().left + left_margin);
+          }
+          // bot-right corner
+          if(obj.getBoundingRect().top+obj.getBoundingRect().height  > 600 - bottom_margin || obj.getBoundingRect().left+obj.getBoundingRect().width  > 600 - right_margin){
+              obj.top = Math.min(obj.top, obj.canvas.height-obj.getBoundingRect().height+obj.top-obj.getBoundingRect().top - bottom_margin);
+              obj.left = Math.min(obj.left, obj.canvas.width-obj.getBoundingRect().width+obj.left-obj.getBoundingRect().left - right_margin);
+          } 
         });
     },
     changeModelDesign(i){

@@ -49,7 +49,7 @@
             >
                 <template slot="title">
                     <div>
-                            <img src="@/assets/logo-title.png" alt="" height="60">
+                        <img src="@/assets/logo-title.png" alt="" height="60">
                     </div>
                 </template>
                 <div id="DesignBox">
@@ -95,6 +95,7 @@
                             <ul class="top">
                                 <li v-for="(item,index) in bgimgs" :key="index" class="li" @click="changeModelDesign(index)">
                                     <img :src="item" alt="">
+                                    <span style="display: block; text-align:center; margin-top: 5px; font-size: 10px; color:#999;">{{index == 0 ? 'Front' : index == 1 ? 'Back' : index == 2 ? 'Left' : index == 3 ? 'Right' : ''}}</span>
                                 </li>
                             </ul>
                             <!-- <ul class="bottom">
@@ -132,7 +133,7 @@
                                                 Change Product
                                             </li>
                                         </ul>
-                                        <p>OR<a @click="reStart">START OVER</a></p>
+                                        <p>OR <a @click="reStart">START OVER</a></p>
                                     </div>
                                     <div class="tool-box1" v-show="visibletype == 0">
                                         <!-- <div v-if="visibletype !== -1">
@@ -350,7 +351,7 @@
                                     </div>
                                     <div class="tool-box11" v-show="visibletype == 5">
                                         <h2>Design notes：</h2>
-                                        <a-textarea placeholder="Please Add Notes" :rows="8" v-model="remark"/>
+                                        <a-textarea placeholder="Enter your design note here" :rows="8" v-model="remark"/>
                                         <div style="text-align: center;margin-top: 10px;">
                                             <a-button type="primary" :disabled="!remark" @click="postAddRemarksBtn">Save changes</a-button>
                                         </div>
@@ -455,7 +456,7 @@
                                             <a-button type="primary" @click="changeFillColor(color,colorName,true)">Change</a-button>
                                         </p>
                                         <p class="bottom-btn-box" v-if="changeWidthShow == 2">
-                                            <a-button style="margin-right: 10px;" @click="removeFontBgColor">Remove FontBg Color</a-button>
+                                            <a-button style="margin-right: 10px;" @click="removeFontBgColor">Remove Text Background</a-button>
                                             <a-button type="primary" @click="changeTextBgColor(bgcolor,fontBgColorName,true)">Change</a-button>
                                         </p>
                                         <p class="bottom-btn-box" v-if="changeWidthShow == 3">
@@ -734,8 +735,8 @@
                         <div class="title">
                             <a-icon type="smile" theme="filled"/>
                             <div>
-                                <h3>Successful！</h3>
-                                <p>Thank you for your trust.</p>
+                                <h3>Design Saved!</h3>
+                                <p>Thank your for submitting your awesome design!</p>
                             </div>
                         </div>
                         <p>Additional tips. This success prompt appears after a series of tasks, such as a step-by-step form task in the pop-up window, and a prompt after completing the final step. Simple pop-up tasks use the Message prompt directly.</p>
@@ -1537,7 +1538,8 @@ export default {
                 if(res.code == 200){
                     this.$message.success('Successful！')
                     if(res.result){
-                        this.designId = res.result
+                        this.designId = res.result;
+                        this.remark = '';
                     }
                 }
             })

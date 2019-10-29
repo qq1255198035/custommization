@@ -16,18 +16,36 @@
           </a-col>
           <a-col :md="8">
             <a-button type="primary" icon="plus">添加</a-button>
-            <a-button type="primary" icon="edit" style="margin-left: 8px">修改</a-button>
-            <a-button type="danger" icon="delete" style="margin-left: 8px">删除</a-button>
           </a-col>
         </a-row>
       </a-form>
     </div>
+    <!-- :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}" -->
     <a-table
-      :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
       :columns="columns"
       :dataSource="data"
       :pagination="ipagination"
-    />
+    >
+    <span slot="action" slot-scope="text, record">
+        <a-dropdown>
+          <a class="ant-dropdown-link" style="color: #333;">
+            更多 <a-icon type="down"/>
+          </a>
+          <a-menu slot="overlay">
+            <!-- record.id -->
+            <a-menu-item>
+              <a href="javascript:;" style="color: #333;">修改</a>
+            </a-menu-item>
+            <a-menu-item>
+              <a href="javascript:;" style="color: #333;">颜色</a>
+            </a-menu-item>
+            <a-menu-item>
+              <a href="javascript:;" style="color: #333;">删除</a>
+            </a-menu-item>
+          </a-menu>
+        </a-dropdown>
+      </span>
+    </a-table>
   </div>
 </template>
 <script>
@@ -59,6 +77,12 @@
     {
       title: '商品简介',
       dataIndex: 'goods_brief',
+    },
+    {
+      title: '操作',
+      dataIndex: 'action',
+      scopedSlots: { customRender: 'action' },
+      align: 'center'
     }
   ];
 
@@ -81,7 +105,7 @@
       return {
         data,
         columns,
-        selectedRowKeys: [],
+        //selectedRowKeys: [],
         queryParam: {
           name: '',
           status: ''
@@ -99,9 +123,9 @@
       };
     },
     computed: {
-      hasSelected() {
-        return this.selectedRowKeys.length > 0;
-      },
+      // hasSelected() {
+      //   return this.selectedRowKeys.length > 0;
+      // },
     },
     methods: {
       searchQuery(){
@@ -113,17 +137,17 @@
         this.queryParam.status = '';
         this.getDealerList('','',1)
       },
-      onSelectChange(selectedRowKeys,selectedRows) {
-        console.log('selectedRowKeys changed: ', selectedRowKeys);
-        console.log(selectedRows);
-        this.selectedRowKeys = selectedRowKeys;
-      },
+      // onSelectChange(selectedRowKeys,selectedRows) {
+      //   console.log('selectedRowKeys changed: ', selectedRowKeys);
+      //   console.log(selectedRows);
+      //   this.selectedRowKeys = selectedRowKeys;
+      // },
     },
   };
 </script>
 <style lang="less" scoped>
 #GoodsManagement{
-  padding-top: 30px;
+  padding: 30px 20px 0;
   .table-page-search-wrapper{
     padding-bottom: 20px;
   }

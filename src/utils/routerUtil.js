@@ -22,6 +22,9 @@ const constantRouterComponents = {
   personSet: () => import("@/pages/person/person"),
   dealerInfo: () => import("@/pages/common/dealerInfo/dealerInfo"),
   noticeList: () => import("@/pages/common/noticeList/noticeList"),
+  //工厂
+  Workplace: () => import('@/views/dashboard/Workplace'),
+  Analysis: () => import('@/views/dashboard/Analysis'),
   //系统
   workbench:() => import("@/views/salessystem/workbench/workbench"),
   specification: () => import("@/views/system/specification"), //设计需求
