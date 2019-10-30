@@ -1,15 +1,15 @@
 <template>
       <div id="OrderList">
-            <a-row :gutter="60" class="list-row">
+            <a-row :gutter="60" class="list-row" v-if="orderList.length > 0">
                   <a-col :span="8" v-for="item in orderList" :key="item.id">
                         <div class="order-item">
-                              <div style="height:330px">
+                              <div>
                                     <img :src="item.topic_url" v-preview="item.topic_url" alt="">
                               </div>
                               <div class="desc">
                                     <p>
                                           <span style="color: #33b8b3;font-size: 18px; min-height: 27px;">{{item.topic}}</span>
-                                          <span>{{item.pay_end_date}}</span>
+                                          <span>{{item.pay_end_date | formatTime}}</span>
                                     </p>
                                     <p>{{item.introduction}}</p>
                                     <p>
@@ -24,6 +24,9 @@
                         </div>
                   </a-col>
             </a-row>
+            <div v-else style="text-align:center; padding: 20px 0;">
+                  No Data
+            </div>
       </div>
 </template>
 <script>
@@ -53,6 +56,34 @@ export default {
                   
             }
             
+      },
+      filters: {
+            formatTime(time){
+                  if(time){
+                        let d = new Date(time);
+                        let localTime = d.getTime();
+                        let localOffset = d.getTimezoneOffset()*60000;
+                        let utc = localTime + localOffset;
+                        let offset = d.getTimezoneOffset() / 60;
+                        let korean = utc + (3600000 * offset);
+                        let date = new Date(korean);
+                        let y = date.getFullYear();  
+                        let m = date.getMonth() + 1;  
+                        m = m < 10 ? ('0' + m) : m;  
+                        let dr = date.getDate();  
+                        dr = dr < 10 ? ('0' + dr) : dr;  
+                        let h = date.getHours();  
+                        h=h < 10 ? ('0' + h) : h;  
+                        let minute = date.getMinutes();  
+                        minute = minute < 10 ? ('0' + minute) : minute;  
+                        let second=date.getSeconds();  
+                        second=second < 10 ? ('0' + second) : second;  
+                        return y + '-' + m + '-' + dr +' '+ h +':'+ minute + ':' + second; 
+                  }else{
+                        return ' '
+                  }
+                   
+            }
       }
 }
 </script>
@@ -68,8 +99,7 @@ export default {
                   margin-top: 20px;
                   text-align: center;
                   img{
-                        width: 80%;
-                        height: 100%;
+                        width: 90%;
                   }
                   .desc{
                         margin-top: 15px;

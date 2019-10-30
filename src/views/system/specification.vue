@@ -750,6 +750,7 @@ export default {
         border:1px solid #ccc;
         padding: 10px;
         cursor: pointer;
+        max-height: 160px;
       }
     }
     .btn-box{

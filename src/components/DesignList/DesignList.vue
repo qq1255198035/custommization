@@ -1,9 +1,9 @@
 <template>
       <div id="design-list">
-            <a-row :gutter="60" class="list-row">
+            <a-row :gutter="60" class="list-row" v-if="designList.length > 0">
                   <a-col :span="8" v-for="item in designList" :key="item.id">
                         <div class="order-item">
-                              <div style="height:330px">
+                              <div>
                                     <img :src="item.positivePicUrl" v-preview="item.positivePicUrl" />
                               </div>
                               <div class="desc">
@@ -21,6 +21,9 @@
                         </div>
                   </a-col>
             </a-row>
+            <div v-else style="text-align:center; padding: 20px 0;">
+                  No Data
+            </div>
       </div>
 </template>
 <script>
@@ -33,12 +36,12 @@ export default {
       },
       methods:{
             goEdit(id){
-                updateShow(id).then(res => {
-                    console.log(res)
-                    if(res.code == 0){
-                        this.$router.push({path:'/neworder', query:{res: res.result,show: true}})
-                    }
-                })
+                  updateShow(id).then(res => {
+                        console.log(res)
+                        if(res.code == 0){
+                              this.$router.push({path:'/neworder', query:{res: res.result,show: true}})
+                        }
+                  })
             }
       }
 }
@@ -54,8 +57,8 @@ export default {
                   margin-top: 20px;
                   text-align: center;
                   img{
-                        width: 80%;
-                        height: 100%;
+                        width: 90%;
+                        
                   }
                   .desc{
                         margin-top: 15px;

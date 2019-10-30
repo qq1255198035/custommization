@@ -108,7 +108,8 @@
                     <a-input-number v-decorator="['top', { rules: [{ required: true, message: '请填写顶部坐标!' },{ type: 'number', message: '请填写数字!' }],validateTrigger: ['change'] }]" :min="0"/>
                   </a-form-item>
                   <a-form-item style="width: 100%; text-align: right;">
-                    <a-button>确定修改</a-button>
+                    <a-button :disabled="abledCancel" @click="cancleEdit" style="margin-right: 10px;">取消修改</a-button>
+                    <a-button :disabled="abledEdit" @click="confirmEdit" type="primary">确定修改</a-button>
                   </a-form-item>
                 </div>
               </a-form>
@@ -329,7 +330,7 @@
       </a-tab-pane>
       
     </a-tabs>
-    <a-drawer
+    <!-- <a-drawer
       title="修改区域"
       placement="right"
       :closable="false"
@@ -358,7 +359,7 @@
           <a-button type="primary" @click="confirmEdit">确 定</a-button>
         </a-form-item>
       </a-form>
-    </a-drawer>
+    </a-drawer> -->
   </div>
 </template>
 <script>
@@ -379,8 +380,9 @@ export default {
       editLeft: '',
       editTop: '',
       form: this.$form.createForm(this),
-      
-      visible: false,
+      abledEdit: true,
+      abledCancel: true,
+      //visible: false,
       imageUrl: '',
       addFlag1: true,
       addFlag2: true,
@@ -426,18 +428,15 @@ export default {
       this.myCanvas3 = new fabric.Canvas("canvas3");
       this.myCanvas4 = new fabric.Canvas("canvas4");
       this.myCanvas = this.myCanvas1;
-      console.log(this.form2)
-      this.monitorObjectMove(this.myCanvas1);
-      this.monitorObjectMove(this.myCanvas2);
-      this.monitorObjectMove(this.myCanvas3);
-      this.monitorObjectMove(this.myCanvas4);
+      // this.monitorObjectMove(this.myCanvas1);
+      // this.monitorObjectMove(this.myCanvas2);
+      // this.monitorObjectMove(this.myCanvas3);
+      // this.monitorObjectMove(this.myCanvas4);
       this.monitorObjectScale(this.myCanvas1);
       this.monitorObjectScale(this.myCanvas2);
       this.monitorObjectScale(this.myCanvas3);
       this.monitorObjectScale(this.myCanvas4);
-      
     })
-    
   },
   methods: {
     postDesignSize(){
@@ -497,33 +496,50 @@ export default {
     cancleEdit(){
       let obj = this.myCanvas.getActiveObject();
       if(this.designModel == 0){
-        this.editWidth = this.dataList.canvas1[this.isFirst].width;
-        this.editHeight = this.dataList.canvas1[this.isFirst].height;
-        this.editLeft = this.dataList.canvas1[this.isFirst].left;
-        this.editTop = this.dataList.canvas1[this.isFirst].top;
+        this.form2.setFieldsValue({
+          width: this.dataList.canvas1[this.isFirst].width,
+          height: this.dataList.canvas1[this.isFirst].height,
+          left: this.dataList.canvas1[this.isFirst].left,
+          top: this.dataList.canvas1[this.isFirst].top,
+        })
       }else if(this.designModel == 1){
-        this.editWidth = this.dataList.canvas2[this.isFirst].width;
-        this.editHeight = this.dataList.canvas2[this.isFirst].height;
-        this.editLeft = this.dataList.canvas2[this.isFirst].left;
-        this.editTop = this.dataList.canvas2[this.isFirst].top;
+        this.form2.setFieldsValue({
+          width: this.dataList.canvas2[this.isFirst].width,
+          height: this.dataList.canvas2[this.isFirst].height,
+          left: this.dataList.canvas2[this.isFirst].left,
+          top: this.dataList.canvas2[this.isFirst].top,
+        })
       }else if(this.designModel == 2){
-        this.editWidth = this.dataList.canvas3[this.isFirst].width;
-        this.editHeight = this.dataList.canvas3[this.isFirst].height;
-        this.editLeft = this.dataList.canvas3[this.isFirst].left;
-        this.editTop = this.dataList.canvas3[this.isFirst].top;
+        this.form2.setFieldsValue({
+          width: this.dataList.canvas3[this.isFirst].width,
+          height: this.dataList.canvas3[this.isFirst].height,
+          left: this.dataList.canvas3[this.isFirst].left,
+          top: this.dataList.canvas3[this.isFirst].top,
+        })
       }else if(this.designModel == 3){
-        this.editWidth = this.dataList.canvas4[this.isFirst].width;
-        this.editHeight = this.dataList.canvas4[this.isFirst].height;
-        this.editLeft = this.dataList.canvas4[this.isFirst].left;
-        this.editTop = this.dataList.canvas4[this.isFirst].top;
+        this.form2.setFieldsValue({
+          width: this.dataList.canvas4[this.isFirst].width,
+          height: this.dataList.canvas4[this.isFirst].height,
+          left: this.dataList.canvas4[this.isFirst].left,
+          top: this.dataList.canvas4[this.isFirst].top,
+        })
       }
-      obj.set({width: this.editWidth,height: this.editHeight,left: this.editLeft,top: this.editTop});
+      let width = this.form2.getFieldValue('width');
+      let height = this.form2.getFieldValue('height')
+      let left = this.form2.getFieldValue('left')
+      let top = this.form2.getFieldValue('top')
+      obj.set({width: width,height: height,left: left,top: top});
       this.myCanvas.renderAll();
       this.myCanvas.discardActiveObject();
-      this.visible = false;
+      this.abledEdit = true;
+      this.abledCancel = true;
     },
     confirmEdit(){
-      let obj = this.myCanvas.getActiveObject();
+      this.editWidth = this.form2.getFieldValue("width");
+      this.editHeight = this.form2.getFieldValue("height");
+      this.editLeft = this.form2.getFieldValue("left");
+      this.editTop = this.form2.getFieldValue("top");
+      this.editName = this.form2.getFieldValue("name");
       let calcWidth1 = this.editWidth + this.editLeft;
       let calcHeight1 = this.editHeight + this.editTop;
       if(this.designModel == 0){
@@ -534,7 +550,7 @@ export default {
           this.dataList.canvas1[this.isFirst].top = this.editTop;
           this.dataList.canvas1[this.isFirst].name = this.editName;
           this.showList = this.dataList.canvas1;
-          //this.handleObjectMove(this.myCanvas,this.dataList.canvas1[0].top,600 - this.dataList.canvas1[0].top - this.dataList.canvas1[0].height,this.dataList.canvas1[0].left,600 - this.dataList.canvas1[0].left - this.dataList.canvas1[0].width);
+          this.handleObjectMove(this.myCanvas,true,this.dataList.canvas1[0].top,600 - this.dataList.canvas1[0].top - this.dataList.canvas1[0].height,this.dataList.canvas1[0].left,600 - this.dataList.canvas1[0].left - this.dataList.canvas1[0].width);
         }else{
           let calcHeight2 = this.dataList.canvas1[0].height + this.dataList.canvas1[0].top;
           let calcWidth2 = this.dataList.canvas1[0].width + this.dataList.canvas1[0].left;
@@ -548,6 +564,7 @@ export default {
           this.dataList.canvas1[this.isFirst].top = this.editTop;
           this.dataList.canvas1[this.isFirst].name = this.editName;
           this.showList = this.dataList.canvas1;
+          this.handleObjectMove(this.myCanvas,false,0,600,0,600);
         }
       }else if(this.designModel == 1){
         if(this.isFirst == 0){
@@ -557,7 +574,7 @@ export default {
           this.dataList.canvas2[this.isFirst].top = this.editTop;
           this.dataList.canvas2[this.isFirst].name = this.editName;
           this.showList = this.dataList.canvas2;
-          //this.handleObjectMove(this.myCanvas,this.dataList.canvas2[0].top,600 - this.dataList.canvas2[0].top - this.dataList.canvas2[0].height,this.dataList.canvas2[0].left,600 - this.dataList.canvas2[0].left - this.dataList.canvas2[0].width);
+          this.handleObjectMove(this.myCanvas,true,this.dataList.canvas2[0].top,600 - this.dataList.canvas2[0].top - this.dataList.canvas2[0].height,this.dataList.canvas2[0].left,600 - this.dataList.canvas2[0].left - this.dataList.canvas2[0].width);
         }else{
           let calcHeight2 = this.dataList.canvas2[0].height + this.dataList.canvas2[0].top;
           let calcWidth2 = this.dataList.canvas2[0].width + this.dataList.canvas2[0].left;
@@ -580,7 +597,7 @@ export default {
           this.dataList.canvas3[this.isFirst].top = this.editTop;
           this.dataList.canvas3[this.isFirst].name = this.editName;
           this.showList = this.dataList.canvas3;
-          //this.handleObjectMove(this.myCanvas,this.dataList.canvas3[0].top,600 - this.dataList.canvas3[0].top - this.dataList.canvas3[0].height,this.dataList.canvas3[0].left,600 - this.dataList.canvas3[0].left - this.dataList.canvas3[0].width);
+          this.handleObjectMove(this.myCanvas,true,this.dataList.canvas3[0].top,600 - this.dataList.canvas3[0].top - this.dataList.canvas3[0].height,this.dataList.canvas3[0].left,600 - this.dataList.canvas3[0].left - this.dataList.canvas3[0].width);
         }else{
           let calcHeight2 = this.dataList.canvas3[0].height + this.dataList.canvas3[0].top;
           let calcWidth2 = this.dataList.canvas3[0].width + this.dataList.canvas3[0].left;
@@ -603,7 +620,7 @@ export default {
           this.dataList.canvas4[this.isFirst].top = this.editTop;
           this.dataList.canvas4[this.isFirst].name = this.editName;
           this.showList = this.dataList.canvas4;
-          //this.handleObjectMove(this.myCanvas,this.dataList.canvas4[0].top,600 - this.dataList.canvas4[0].top - this.dataList.canvas4[0].height,this.dataList.canvas4[0].left,600 - this.dataList.canvas4[0].left - this.dataList.canvas4[0].width);
+          this.handleObjectMove(this.myCanvas,true,this.dataList.canvas4[0].top,600 - this.dataList.canvas4[0].top - this.dataList.canvas4[0].height,this.dataList.canvas4[0].left,600 - this.dataList.canvas4[0].left - this.dataList.canvas4[0].width);
         }else{
           let calcHeight2 = this.dataList.canvas4[0].height + this.dataList.canvas4[0].top;
           let calcWidth2 = this.dataList.canvas4[0].width + this.dataList.canvas4[0].left;
@@ -619,43 +636,73 @@ export default {
           this.showList = this.dataList.canvas4;
         }
       }
-      obj.set({width: this.editWidth,height: this.editHeight,left: this.editLeft,top: this.editTop});
       this.myCanvas.renderAll();
       this.myCanvas.discardActiveObject();
-      this.visible = false;
+      this.abledEdit = true;
+      this.abledCancel = true;
     },
     editCanvasObj(index){
       console.log(index);
       let items = this.myCanvas.getObjects();
+      this.abledEdit = false;
+      this.abledCancel = false;
       this.isFirst = index;
       this.myCanvas.setActiveObject(items[index]);
       this.myCanvas.renderAll();
-      //items[index].hasControls = true;
-      //this.visible = true;
       if(this.designModel == 0){
-        this.editName = this.dataList.canvas1[index].name;
-        this.editWidth = this.dataList.canvas1[index].width;
-        this.editHeight = this.dataList.canvas1[index].height;
-        this.editLeft = this.dataList.canvas1[index].left;
-        this.editTop = this.dataList.canvas1[index].top;
+        if(index == 0){
+          console.log(11)
+          this.handleObjectMove(this.myCanvas,false,0,600,0,600);
+        }else{
+          this.handleObjectMove(this.myCanvas,true,this.dataList.canvas1[0].top,600 - this.dataList.canvas1[0].top - this.dataList.canvas1[0].height,this.dataList.canvas1[0].left,600 - this.dataList.canvas1[0].left - this.dataList.canvas1[0].width);
+        }
+        this.form2.setFieldsValue({
+          name: this.dataList.canvas1[index].name,
+          width: this.dataList.canvas1[index].width,
+          height:this.dataList.canvas1[index].height,
+          left:this.dataList.canvas1[index].left,
+          top: this.dataList.canvas1[index].top
+        });
       }else if(this.designModel == 1){
-        this.editName = this.dataList.canvas2[index].name;
-        this.editWidth = this.dataList.canvas2[index].width;
-        this.editHeight = this.dataList.canvas2[index].height;
-        this.editLeft = this.dataList.canvas2[index].left;
-        this.editTop = this.dataList.canvas2[index].top;
+        if(index == 0){
+          
+          this.handleObjectMove(this.myCanvas,false,0,600,0,600)
+        }else{
+          this.handleObjectMove(this.myCanvas,true,this.dataList.canvas2[0].top,600 - this.dataList.canvas2[0].top - this.dataList.canvas2[0].height,this.dataList.canvas2[0].left,600 - this.dataList.canvas2[0].left - this.dataList.canvas2[0].width);
+        }
+        this.form2.setFieldsValue({
+          name: this.dataList.canvas2[index].name,
+          width: this.dataList.canvas2[index].width,
+          height:this.dataList.canvas2[index].height,
+          left:this.dataList.canvas2[index].left,
+          top: this.dataList.canvas2[index].top
+        });
       }else if(this.designModel == 2){
-        this.editName = this.dataList.canvas3[index].name;
-        this.editWidth = this.dataList.canvas3[index].width;
-        this.editHeight = this.dataList.canvas3[index].height;
-        this.editLeft = this.dataList.canvas3[index].left;
-        this.editTop = this.dataList.canvas3[index].top;
+        if(index == 0){
+          this.handleObjectMove(this.myCanvas,false,0,600,0,600)
+        }else{
+          this.handleObjectMove(this.myCanvas,true,this.dataList.canvas3[0].top,600 - this.dataList.canvas3[0].top - this.dataList.canvas3[0].height,this.dataList.canvas3[0].left,600 - this.dataList.canvas3[0].left - this.dataList.canvas3[0].width);
+        }
+        this.form2.setFieldsValue({
+          name: this.dataList.canvas3[index].name,
+          width: this.dataList.canvas3[index].width,
+          height:this.dataList.canvas3[index].height,
+          left:this.dataList.canvas3[index].left,
+          top: this.dataList.canvas3[index].top
+        });
       }else if(this.designModel == 3){
-        this.editName = this.dataList.canvas4[index].name;
-        this.editWidth = this.dataList.canvas4[index].width;
-        this.editHeight = this.dataList.canvas4[index].height;
-        this.editLeft = this.dataList.canvas4[index].left;
-        this.editTop = this.dataList.canvas4[index].top;
+        if(index == 0){
+          this.handleObjectMove(this.myCanvas,false,0,600,0,600)
+        }else{
+          this.handleObjectMove(this.myCanvas,true,this.dataList.canvas4[0].top,600 - this.dataList.canvas4[0].top - this.dataList.canvas4[0].height,this.dataList.canvas4[0].left,600 - this.dataList.canvas4[0].left - this.dataList.canvas4[0].width);
+        }
+        this.form2.setFieldsValue({
+          name: this.dataList.canvas4[index].name,
+          width: this.dataList.canvas4[index].width,
+          height:this.dataList.canvas4[index].height,
+          left:this.dataList.canvas4[index].left,
+          top: this.dataList.canvas4[index].top
+        });
       }
     },
     deleteCanvasObj(index){
@@ -676,21 +723,21 @@ export default {
         this.showList = this.dataList.canvas4;
       }
     },
-    changeSomething(e,key){
-      let obj = this.myCanvas.getActiveObject();
-      if(obj){
-        if(key == 'width'){
-          obj.set({width: e});
-        }else if(key == 'height'){
-          obj.set({height: e});
-        }else if(key == 'left'){
-          obj.set({left: e});
-        }else if(key == 'top'){
-          obj.set({top: e});
-        }
-        this.myCanvas.renderAll();
-      }
-    },
+    // changeSomething(e,key){
+    //   let obj = this.myCanvas.getActiveObject();
+    //   if(obj){
+    //     if(key == 'width'){
+    //       obj.set({width: e});
+    //     }else if(key == 'height'){
+    //       obj.set({height: e});
+    //     }else if(key == 'left'){
+    //       obj.set({left: e});
+    //     }else if(key == 'top'){
+    //       obj.set({top: e});
+    //     }
+    //     this.myCanvas.renderAll();
+    //   }
+    // },
     addFirstQ(key){
       this.form2.validateFields((err, values) => {
         if(!err){
@@ -709,11 +756,12 @@ export default {
               strokeWidth: 1,
               fill: 'rgba(0,0,0,0)',
               id: values.name,
-              hasRotatingPoint: false
+              hasRotatingPoint: false,
+              padding: 0
             });
-            this.myCanvas.add(rect).setActiveObject();
+            this.myCanvas.add(rect);
             rect.selectable = false;
-            //this.handleObjectMove(this.myCanvas,values.top,600 - values.top - values.height,values.left,600 - values.left - values.width);
+            this.handleObjectMove(this.myCanvas,true,values.top,600 - values.top - values.height,values.left,600 - values.left - values.width);
           if(this.designModel == 0){
             this.dataList.canvas1.push(json);
             this.showList = this.dataList.canvas1;
@@ -792,7 +840,8 @@ export default {
               strokeWidth: 1,
               fill: 'rgba(0,0,0,0)',
               id: values.name,
-              hasRotatingPoint: false
+              hasRotatingPoint: false,
+              padding: 0
             });
             this.myCanvas.add(rect);
             rect.selectable = false;
@@ -800,52 +849,59 @@ export default {
         }
       })
     },
-    monitorObjectMove(object){
-      let that = this;
-      object.on('object:moving', function (e) {
-        let obj = e.target;
-        console.log(e.target.left)
-        that.form2.setFieldsValue({
-          width:parseInt(obj.width),
-          height:parseInt(obj.height),
-          left:parseInt(obj.left),
-          top:parseInt(obj.top)
-        });
-      })
-    },
+    // monitorObjectMove(object){
+    //   let that = this;
+    //   object.on('object:moving', function (e) {
+    //     let obj = e.target;
+    //     console.log(e.target.left)
+    //     that.form2.setFieldsValue({
+    //       width:parseInt(obj.width),
+    //       height:parseInt(obj.height),
+    //       left:parseInt(obj.left),
+    //       top:parseInt(obj.top)
+    //     });
+    //   })
+    // },
     monitorObjectScale(object){
       let that = this;
-      object.on('object:scaling', function (e) {
+      object.on('object:modified', function (e) {
         let obj = e.target;
         console.log(e.target);
         console.log(obj.getBoundingRect().width);
         that.form2.setFieldsValue({
-          width:parseInt(obj.width),
-          height:parseInt(obj.height),
+          width:parseInt(obj.getBoundingRect().width) - 1,
+          height:parseInt(obj.getBoundingRect().height) - 1,
           left:parseInt(obj.left),
           top:parseInt(obj.top)
         });
       })
     },
-    handleObjectMove(object,top_margin,bottom_margin,left_margin,right_margin){
+    handleObjectMove(object,flag,top_margin,bottom_margin,left_margin,right_margin){
+        let that = this;
         object.on('object:moving', function (e) {
           var obj = e.target;
-          console.log(obj)
-          // if object is too big ignore
-          if(obj.currentHeight > obj.canvas.height || obj.currentWidth > obj.canvas.width){
+          
+          if(flag){
+            console.log(88)
+            if(obj.currentHeight > obj.canvas.height || obj.currentWidth > obj.canvas.width){
               return;
-          }        
-          obj.setCoords();        
-          // top-left  corner
-          if(obj.getBoundingRect().top < top_margin || obj.getBoundingRect().left < left_margin){
+            }        
+            obj.setCoords();        
+            if(obj.getBoundingRect().top < top_margin || obj.getBoundingRect().left < left_margin){
               obj.top = Math.max(obj.top, obj.top-obj.getBoundingRect().top + top_margin);
               obj.left = Math.max(obj.left, obj.left-obj.getBoundingRect().left + left_margin);
-          }
-          // bot-right corner
-          if(obj.getBoundingRect().top+obj.getBoundingRect().height  > 600 - bottom_margin || obj.getBoundingRect().left+obj.getBoundingRect().width  > 600 - right_margin){
+            }
+            if(obj.getBoundingRect().top+obj.getBoundingRect().height  > 600 - bottom_margin || obj.getBoundingRect().left+obj.getBoundingRect().width  > 600 - right_margin){
               obj.top = Math.min(obj.top, obj.canvas.height-obj.getBoundingRect().height+obj.top-obj.getBoundingRect().top - bottom_margin);
               obj.left = Math.min(obj.left, obj.canvas.width-obj.getBoundingRect().width+obj.left-obj.getBoundingRect().left - right_margin);
-          } 
+            } 
+          }else{
+            console.log(obj.getBoundingRect().left)
+            console.log(99)
+            that.myCanvas.requestRenderAll();
+            obj.left = obj.getBoundingRect().left;
+            obj.top = obj.getBoundingRect().top;
+          }
         });
     },
     changeModelDesign(i){

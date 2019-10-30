@@ -284,7 +284,6 @@
                                             </a-button>
                                         </div>
                                     </div>
-
                                     <div class="tool-box9" v-show="visibletype == 3">
                                         <!-- 文字编辑栏 -->
                                         <my-title :title="'Edit Text'"></my-title>
@@ -739,7 +738,7 @@
                                 <p>Thank your for submitting your awesome design!</p>
                             </div>
                         </div>
-                        <p>Additional tips. This success prompt appears after a series of tasks, such as a step-by-step form task in the pop-up window, and a prompt after completing the final step. Simple pop-up tasks use the Message prompt directly.</p>
+                        <p>Tips: You can now view or edit your saved design anytime. Once you've submitted your design, we will provide a mockup for your confirmation within 36 hours.</p>
                     </div>
                     <div class="btn-box">
                         <a-button icon="file-text" @click="$router.push({path:'/OrderManagement/designList'})">Order list</a-button>
@@ -907,14 +906,14 @@ export default {
             productColor: '',
             productColorName: '',
             //字体颜色值 | 颜色名
-            color:'#B17700',
-            colorName:'Pantone 1395',
+            color:'#221814',
+            colorName:'BLACK',
             //字体背景颜色值 | 颜色名
             bgcolor:'',
             fontBgColorName:'',
             // 选择展示的颜色及颜色名
             fontShape: '',
-            colorShow: '#000',
+            colorShow: '#221814',
             colorShowName: 'BLACK',
             resize,
             remove,
@@ -942,59 +941,82 @@ export default {
             fontFamilyArr:[
                 {
                     id:1,
-                    name: 'College-Regular'
+                    name: '845-CAI978'
                 },
                 {
                     id:2,
-                    name: 'NBA-Cavaliers'
+                    name: 'AmazDooMLeft'
                 },
                 {
                     id:3,
-                    name: 'NBA-Grizzlies'
+                    name: 'American-Captain'
                 },
                 {
                     id:4,
-                    name: 'NBA-Hawks'
+                    name: 'Army-Rangers-Academy-Regular'
                 },
                 {
                     id:5,
-                    name: 'NBA-Knicks'
+                    name: 'Bernard-MT-Condensed'
                 },
                 {
                     id:6,
-                    name: 'NBA-Pacers'
+                    name: 'Candice'
                 },
                 {
                     id:7,
-                    name: 'NBA-Pistons'
+                    name: 'Empera-Regular'
                 },
                 {
                     id:8,
-                    name: 'NBA-Rockets'
+                    name: 'Impact'
                 },
                 {
                     id:9,
-                    name: 'NBA-Trailblazers'
+                    name: 'Lobster1.4'
                 },
                 {
                     id:10,
-                    name: 'NCAA-Utah-Utes'
+                    name: 'NBA-Bulls'
                 },
                 {
                     id:11,
-                    name: 'Stahls-Tiffany---2000'
+                    name: 'NBA-Lakers'
                 },
                 {
                     id:12,
-                    name: 'UA-Cadet'
+                    name: 'NBA-Mavericks'
+                },
+                {
+                    id:13,
+                    name: 'NBA-Pacers'
+                },
+                {
+                    id:14,
+                    name: 'NCAA-Michigan-St-Spartans'
+                },
+                {
+                    id:15,
+                    name: 'Stahls-Tiffany---2000'
+                },
+                {
+                    id:16,
+                    name: 'Superstar-M54'
+                },
+                {
+                    id:17,
+                    name: 'yorkwhiteletter'
+                },
+                {
+                    id:18,
+                    name: 'DFPYaSongW9-GB'
                 }
             ],
             colorList:{},
             fileList: [],
             filpx:false,
             filpy:false,
-            fontfamily:'FZCHYFW',
-
+            fontfamily:'845-CAI978',
             // 旋转数值
             rotateNum:0,
             addText:'',
@@ -1059,10 +1081,10 @@ export default {
             twoPrice: "",
             prices: '',
             shapeActive: -1,
-            numberColorName: 'Pantone 1395',
-            numberColor: '#B17700',
-            nameColorName: 'Pantone 1395',
-            nameColor: '#B17700',
+            numberColorName: 'BLACK',
+            numberColor: '#221814',
+            nameColorName: 'BLACK',
+            nameColor: '#221814',
             discounts: '',
             fontfamilydata: -1,
             imgIndex: 0,
@@ -1395,7 +1417,6 @@ export default {
             changeFont(params).then(res => {
                 console.log(res)
                 if(res.code == 0){
-
                     let img = new Image();
                     let imgInstance;
                     //设置图片跨域访问
@@ -1481,7 +1502,6 @@ export default {
                         that.liClick = 0;
                         that.visibletype = 3;
                         imgInstance.on("selected", function() {
-                            
                             that.colorKey = 1;
                             that.liClick = 0;
                             that.visibletype = 3;
@@ -1992,7 +2012,7 @@ export default {
             }
         },
         removeNumberColor(){
-            this.numberColor = '#000';
+            this.numberColor = '#221814';
             this.numberColorName = 'BLACK';
             this.fontColorIcon6 = -1;
             let obj = this.myCanvas.getActiveObject();
@@ -2016,7 +2036,7 @@ export default {
         },
         removeNameColor(){
             this.nameColorName = 'BLACK';
-            this.nameColor = '#000';
+            this.nameColor = '#221814';
             this.fontColorIcon5 = -1;
             let obj = this.myCanvas.getActiveObject();
             if (obj) {
@@ -2553,7 +2573,6 @@ export default {
             console.log(this.editText)
             if(isAdd){
                 console.log(text);
-                
                 if(this.myCanvas.getActiveObject()){
                     let params = {
                         text: text,style:this.bgcolor ? '' : 'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
@@ -2570,9 +2589,9 @@ export default {
                     this.handleChangeFont(params,false);
                 }
             }else{
-                this.fontfamily = 'FZCHYFW';
-                this.color = '#B17700';
-                this.colorName = 'Pantone 1395';
+                this.fontfamily = '845-CAI978';
+                this.color = '#221814';
+                this.colorName = 'BLACK';
                 this.fontShape = 'normal';
                 this.bgcolor = '';
                 this.fontBgColorName = '';
@@ -2808,7 +2827,7 @@ export default {
             this.handleChangeFont(params,true)
         },
         removeFontFamily(){
-            this.fontfamily = 'FZCHYFW';
+            this.fontfamily = '845-CAI978';
             this.fontfamilydata = -1;
             let params = {
                     text:  this.editText,style:this.bgcolor ? '' : 'softshadow',fontName: this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
@@ -2826,7 +2845,7 @@ export default {
             this.handleChangeFont(params,isAdd)
         },
         removeFontColor(){
-            this.color = '#000';
+            this.color = '#221814';
             this.colorName = 'BLACK';
             this.fontColorIcon1 = -1;
             let params = {
@@ -2954,7 +2973,7 @@ export default {
                 this.colorShowName = this.numberColorName;
             }
             else{
-                this.colorShow = '#000';
+                this.colorShow = '#221814';
                 this.colorShowName = 'BLACK';
             }
         }
@@ -2965,53 +2984,77 @@ export default {
 @import url("./../../components/index.less");
 @import url("./../../assets/style.css");
 @font-face {
-    font-family:'College-Regular';
-    src:url('./../../fonts/CHEISF.ttf')format('truetype')
+    font-family:'845-CAI978';
+    src:url('./../../fonts/845-CAI978_1.TTF')
 }
 @font-face {
-    font-family:'NBA-Cavaliers';
-    src:url('./../../fonts/NBACAVAL.TTF')
+    font-family:'AmazDooMLeft';
+    src:url('./../../fonts/AmazDooMLeft.ttf')
 }
 @font-face {
-    font-family:'NBA-Grizzlies';
-    src:url('./../../fonts/NBAGRIZZ_0.TTF')
+    font-family:'American-Captain';
+    src:url('./../../fonts/AmericanCaptain.otf')
 }
 @font-face {
-    font-family:'NBA-Hawks';
-    src:url('./../../fonts/NBAHAWKS.TTF')
+    font-family:'Army-Rangers-Academy-Regular';
+    src:url('./../../fonts/armyrangersacad.ttf')
 }
 @font-face {
-    font-family:'NBA-Knicks';
-    src:url('./../../fonts/NBAKNICK.TTF')
+    font-family:'Bernard-MT-Condensed';
+    src:url('./../../fonts/BERNHC.TTF')
+}
+@font-face {
+    font-family:'Candice';
+    src:url('./../../fonts/candice.ttf')
+}
+@font-face {
+    font-family:'Empera-Regular';
+    src:url('./../../fonts/Empera-Regular.ttf')
+}
+@font-face {
+    font-family:'Impact';
+    src:url('./../../fonts/Impact.ttf')
+}
+@font-face {
+    font-family:'Lobster1.4';
+    src:url('./../../fonts/Lobster1.4.otf')
+}
+@font-face {
+    font-family:'NBA-Bulls';
+    src:url('./../../fonts/NBABULLS.TTF')
+}
+@font-face {
+    font-family:'NBA-Lakers';
+    src:url('./../../fonts/NBALAKER.TTF')
+}
+@font-face {
+    font-family:'NBA-Mavericks';
+    src:url('./../../fonts/NBAMAVER.TTF')
 }
 @font-face {
     font-family:'NBA-Pacers';
     src:url('./../../fonts/NBAPACER.TTF')
 }
 @font-face {
-    font-family:'NBA-Pistons';
-    src:url('./../../fonts/NBAPISTO.TTF')
-}
-@font-face {
-    font-family:'NBA-Rockets';
-    src:url('./../../fonts/NBAROCKE.TTF')
-}
-@font-face {
-    font-family:'NBA-Trailblazers';
-    src:url('./../../fonts/NBATRAIL.TTF')
-}
-@font-face {
-    font-family:'NCAA-Utah-Utes';
-    src:url('./../../fonts/NCAAUtahUtes.ttf')
+    font-family:'NCAA-Michigan-St-Spartans';
+    src:url('./../../fonts/NCAAMichiganStSpartans-2.otf')
 }
 @font-face {
     font-family:'Stahls-Tiffany---2000';
     src:url('./../../fonts/StahlsTiffany-2000.ttf')
 }
 @font-face {
-    font-family:'UA-Cadet';
-    src:url('./../../fonts/UACadet.ttf')
+    font-family:'Superstar-M54';
+    src:url('./../../fonts/SuperstarM54.ttf')
 }
+@font-face {
+    font-family:'yorkwhiteletter';
+    src:url('./../../fonts/yorkwhiteletter.ttf')
+}
+// @font-face {
+//     font-family:'DFPYaSongW9-GB';
+//     src:url('./../../fonts/hkystjw9.ttc')
+// }
 .white{
     background-color:rgba(255,255,255,.0);
     border-color: #33b8b3;

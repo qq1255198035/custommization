@@ -20,7 +20,7 @@
               <dt>Order ID：</dt>
               <dd>{{information.orderId}}</dd>
               <dt>Order time：</dt>
-              <dd>{{information.orderTime}}</dd>
+              <dd>{{information.orderTime | formatTime}}</dd>
             </dl>
             <ul class="bottom">
               <li v-for="item in information.list" :key="item.id">
@@ -795,6 +795,34 @@ export default {
   beforeCreate() {
     this.form = this.$form.createForm(this);
     this.form.getFieldDecorator("keys", { initialValue: [], preserve: true });
+  },
+  filters:{
+    formatTime(time){
+      if(time){
+        let d = new Date(time);
+        let localTime = d.getTime();
+        let localOffset = d.getTimezoneOffset()*60000;   //getTimezoneOffset()返回是以分钟为单位，需要转化成ms
+        let utc = localTime + localOffset;
+        let offset = d.getTimezoneOffset() / 60; //以韩国时间为例，东9区
+        let korean = utc + (3600000 * offset);
+        let date = new Date(korean);
+        let y = date.getFullYear();  
+        let m = date.getMonth() + 1;  
+        m = m < 10 ? ('0' + m) : m;  
+        let dr = date.getDate();  
+        dr = dr < 10 ? ('0' + dr) : dr;  
+        let h = date.getHours();  
+        h=h < 10 ? ('0' + h) : h;  
+        let minute = date.getMinutes();  
+        minute = minute < 10 ? ('0' + minute) : minute;  
+        let second=date.getSeconds();  
+        second=second < 10 ? ('0' + second) : second;  
+        return y + '-' + m + '-' + dr +' '+ h +':'+ minute + ':' + second;  
+      }else{
+        return ' '
+      }
+      
+    }
   }
 };
 </script>

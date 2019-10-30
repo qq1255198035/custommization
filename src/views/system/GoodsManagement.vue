@@ -29,7 +29,7 @@
     <span slot="action" slot-scope="text, record">
         <a-dropdown>
           <a class="ant-dropdown-link" style="color: #333;">
-            更多 <a-icon type="down"/>
+            更多 {{text}}{{record}}<a-icon type="down"/>
           </a>
           <a-menu slot="overlay">
             <!-- record.id -->

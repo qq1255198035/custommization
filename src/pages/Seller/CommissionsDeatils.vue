@@ -5,6 +5,9 @@
                 <span slot="status" slot-scope="text">
                     <a-badge :status="text | statusTypeFilter" :text="text | statusFilter" />
                 </span>
+                <span slot="times" slot-scope="text">
+                    {{text | formatTime}}
+                </span>
                 <template slot="operation" slot-scope="text, record">
                     <a href="javascript:;" @click="$router.push({path: '/myorder',query: {id: record.id}})"><a-icon type="file-search" style="font-size: 24px;"/></a>
                 </template>
@@ -45,6 +48,7 @@ export default {
                     {
                             title: 'Order time',
                             dataIndex: 'orderTime',
+                            scopedSlots: { customRender: 'times' }
                     },
                     {
                             title: 'Time Submitted',
@@ -88,6 +92,31 @@ export default {
         },
         statusTypeFilter (type) {
             return statusMap[type].status;
+        },
+        formatTime(time){
+            if(time){
+                let d = new Date(time);
+                let localTime = d.getTime();
+                let localOffset = d.getTimezoneOffset()*60000;   //getTimezoneOffset()返回是以分钟为单位，需要转化成ms
+                let utc = localTime + localOffset;
+                let offset = d.getTimezoneOffset() / 60; //以韩国时间为例，东9区
+                let korean = utc + (3600000 * offset);
+                let date = new Date(korean);
+                let y = date.getFullYear();  
+                let m = date.getMonth() + 1;  
+                m = m < 10 ? ('0' + m) : m;  
+                let dr = date.getDate();  
+                dr = dr < 10 ? ('0' + dr) : dr;  
+                let h = date.getHours();  
+                h=h < 10 ? ('0' + h) : h;  
+                let minute = date.getMinutes();  
+                minute = minute < 10 ? ('0' + minute) : minute;  
+                let second=date.getSeconds();  
+                second=second < 10 ? ('0' + second) : second;  
+                return y + '-' + m + '-' + dr +' '+ h +':'+ minute + ':' + second;  
+            }else{
+                return ' '
+            }
         }
     }
 }

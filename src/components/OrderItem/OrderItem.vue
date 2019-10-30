@@ -4,8 +4,8 @@
       <div class="order-title">
         <p>
           <span>Order number:{{items.orderSn}}</span>
-          <span>Order time: {{items.createTime}}</span>
-          <span>Order Deadline： {{items.payEndDate}}</span>
+          <span>Order time: {{items.createTime | formatTime}}</span>
+          <span>Order Deadline： {{items.payEndDate | formatTime}}</span>
           <span>Status：{{items.orderStatus | statusFilter1}}</span>
         </p>
         <hide-menu
@@ -79,6 +79,12 @@ const statusMap = {
   },
   "2": {
     text: "Confirmed"
+  },
+  "3": {
+    text: "Design completed"
+  },
+  "4": {
+    text: "Design completed"
   }
 };
 const statusMap1 = {
@@ -178,6 +184,31 @@ export default {
     },
     statusFilter1(type) {
       return statusMap1[type].text;
+    },
+    formatTime(time){
+      if(time){
+        let d = new Date(time);
+        let localTime = d.getTime();
+        let localOffset = d.getTimezoneOffset()*60000;   //getTimezoneOffset()返回是以分钟为单位，需要转化成ms
+        let utc = localTime + localOffset;
+        let offset = d.getTimezoneOffset() / 60; //以韩国时间为例，东9区
+        let korean = utc + (3600000 * offset);
+        let date = new Date(korean);
+        let y = date.getFullYear();  
+        let m = date.getMonth() + 1;  
+        m = m < 10 ? ('0' + m) : m;  
+        let dr = date.getDate();  
+        dr = dr < 10 ? ('0' + dr) : dr;  
+        let h = date.getHours();  
+        h=h < 10 ? ('0' + h) : h;  
+        let minute = date.getMinutes();  
+        minute = minute < 10 ? ('0' + minute) : minute;  
+        let second=date.getSeconds();  
+        second=second < 10 ? ('0' + second) : second;  
+        return y + '-' + m + '-' + dr +' '+ h +':'+ minute + ':' + second;  
+      }else{
+        return ' '
+      }
     }
   }
 };
