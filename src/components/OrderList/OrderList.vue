@@ -3,7 +3,7 @@
             <a-row :gutter="60" class="list-row" v-if="orderList.length > 0">
                   <a-col :span="8" v-for="item in orderList" :key="item.id">
                         <div class="order-item">
-                              <div>
+                              <div style="height:330px">
                                     <img :src="item.topic_url" v-preview="item.topic_url" alt="">
                               </div>
                               <div class="desc">
