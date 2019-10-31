@@ -1006,10 +1006,6 @@ export default {
                 {
                     id:17,
                     name: 'yorkwhiteletter'
-                },
-                {
-                    id:18,
-                    name: 'DFPYaSongW9-GB'
                 }
             ],
             colorList:{},
@@ -2616,18 +2612,18 @@ export default {
             this.addText = '';
         },
         // 加载资源字体
-        loadAndUse(font) {
-            let that = this;
-            var myfont = new FontFaceObserver(font)
-            myfont.load().then(function() {
-                // when font is loaded, use it.
-                that.myCanvas.getActiveObject().set("fontFamily", font);
-                that.myCanvas.requestRenderAll();
-            }).catch(function(e) {
-                console.log(e)
-                alert('font loading failed ' + font);
-            });
-        },
+        // loadAndUse(font) {
+        //     let that = this;
+        //     var myfont = new FontFaceObserver(font)
+        //     myfont.load().then(function() {
+        //         // when font is loaded, use it.
+        //         that.myCanvas.getActiveObject().set("fontFamily", font);
+        //         that.myCanvas.requestRenderAll();
+        //     }).catch(function(e) {
+        //         console.log(e)
+        //         alert('font loading failed ' + font);
+        //     });
+        // },
         // 左右垂直居中
         setObjCenter(){
             let t = this.myCanvas.getActiveObject();
@@ -3051,10 +3047,7 @@ export default {
     font-family:'yorkwhiteletter';
     src:url('./../../fonts/yorkwhiteletter.ttf')
 }
-// @font-face {
-//     font-family:'DFPYaSongW9-GB';
-//     src:url('./../../fonts/hkystjw9.ttc')
-// }
+
 .white{
     background-color:rgba(255,255,255,.0);
     border-color: #33b8b3;

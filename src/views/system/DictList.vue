@@ -543,29 +543,20 @@ export default {
       let calcWidth1 = this.editWidth + this.editLeft;
       let calcHeight1 = this.editHeight + this.editTop;
       if(this.designModel == 0){
-        if(this.isFirst == 0){
-          this.dataList.canvas1[this.isFirst].width = this.editWidth;
-          this.dataList.canvas1[this.isFirst].height = this.editHeight;
-          this.dataList.canvas1[this.isFirst].left = this.editLeft;
-          this.dataList.canvas1[this.isFirst].top = this.editTop;
-          this.dataList.canvas1[this.isFirst].name = this.editName;
-          this.showList = this.dataList.canvas1;
-          this.handleObjectMove(this.myCanvas,true,this.dataList.canvas1[0].top,600 - this.dataList.canvas1[0].top - this.dataList.canvas1[0].height,this.dataList.canvas1[0].left,600 - this.dataList.canvas1[0].left - this.dataList.canvas1[0].width);
-        }else{
+        if(this.isFirst !== 0){
           let calcHeight2 = this.dataList.canvas1[0].height + this.dataList.canvas1[0].top;
           let calcWidth2 = this.dataList.canvas1[0].width + this.dataList.canvas1[0].left;
           if(calcWidth1 > calcWidth2 || calcHeight1 > calcHeight2 || this.editLeft < this.dataList.canvas1[0].left || this.editTop < this.dataList.canvas1[0].top){
             this.$message.error('您输入的值已超出限制区域，请重新输入！')
             return
           }
-          this.dataList.canvas1[this.isFirst].width = this.editWidth;
-          this.dataList.canvas1[this.isFirst].height = this.editHeight;
-          this.dataList.canvas1[this.isFirst].left = this.editLeft;
-          this.dataList.canvas1[this.isFirst].top = this.editTop;
-          this.dataList.canvas1[this.isFirst].name = this.editName;
-          this.showList = this.dataList.canvas1;
-          this.handleObjectMove(this.myCanvas,false,0,600,0,600);
         }
+        this.dataList.canvas1[this.isFirst].width = this.editWidth;
+        this.dataList.canvas1[this.isFirst].height = this.editHeight;
+        this.dataList.canvas1[this.isFirst].left = this.editLeft;
+        this.dataList.canvas1[this.isFirst].top = this.editTop;
+        this.dataList.canvas1[this.isFirst].name = this.editName;
+        this.showList = this.dataList.canvas1;
       }else if(this.designModel == 1){
         if(this.isFirst == 0){
           this.dataList.canvas2[this.isFirst].width = this.editWidth;
@@ -574,7 +565,7 @@ export default {
           this.dataList.canvas2[this.isFirst].top = this.editTop;
           this.dataList.canvas2[this.isFirst].name = this.editName;
           this.showList = this.dataList.canvas2;
-          this.handleObjectMove(this.myCanvas,true,this.dataList.canvas2[0].top,600 - this.dataList.canvas2[0].top - this.dataList.canvas2[0].height,this.dataList.canvas2[0].left,600 - this.dataList.canvas2[0].left - this.dataList.canvas2[0].width);
+          this.handleObjectMove(this.myCanvas,this.dataList.canvas2[0].top,600 - this.dataList.canvas2[0].top - this.dataList.canvas2[0].height,this.dataList.canvas2[0].left,600 - this.dataList.canvas2[0].left - this.dataList.canvas2[0].width);
         }else{
           let calcHeight2 = this.dataList.canvas2[0].height + this.dataList.canvas2[0].top;
           let calcWidth2 = this.dataList.canvas2[0].width + this.dataList.canvas2[0].left;
@@ -597,7 +588,7 @@ export default {
           this.dataList.canvas3[this.isFirst].top = this.editTop;
           this.dataList.canvas3[this.isFirst].name = this.editName;
           this.showList = this.dataList.canvas3;
-          this.handleObjectMove(this.myCanvas,true,this.dataList.canvas3[0].top,600 - this.dataList.canvas3[0].top - this.dataList.canvas3[0].height,this.dataList.canvas3[0].left,600 - this.dataList.canvas3[0].left - this.dataList.canvas3[0].width);
+          this.handleObjectMove(this.myCanvas,this.dataList.canvas3[0].top,600 - this.dataList.canvas3[0].top - this.dataList.canvas3[0].height,this.dataList.canvas3[0].left,600 - this.dataList.canvas3[0].left - this.dataList.canvas3[0].width);
         }else{
           let calcHeight2 = this.dataList.canvas3[0].height + this.dataList.canvas3[0].top;
           let calcWidth2 = this.dataList.canvas3[0].width + this.dataList.canvas3[0].left;
@@ -620,7 +611,7 @@ export default {
           this.dataList.canvas4[this.isFirst].top = this.editTop;
           this.dataList.canvas4[this.isFirst].name = this.editName;
           this.showList = this.dataList.canvas4;
-          this.handleObjectMove(this.myCanvas,true,this.dataList.canvas4[0].top,600 - this.dataList.canvas4[0].top - this.dataList.canvas4[0].height,this.dataList.canvas4[0].left,600 - this.dataList.canvas4[0].left - this.dataList.canvas4[0].width);
+          this.handleObjectMove(this.myCanvas,this.dataList.canvas4[0].top,600 - this.dataList.canvas4[0].top - this.dataList.canvas4[0].height,this.dataList.canvas4[0].left,600 - this.dataList.canvas4[0].left - this.dataList.canvas4[0].width);
         }else{
           let calcHeight2 = this.dataList.canvas4[0].height + this.dataList.canvas4[0].top;
           let calcWidth2 = this.dataList.canvas4[0].width + this.dataList.canvas4[0].left;
@@ -636,8 +627,8 @@ export default {
           this.showList = this.dataList.canvas4;
         }
       }
-      this.myCanvas.renderAll();
       this.myCanvas.discardActiveObject();
+      this.myCanvas.renderAll();
       this.abledEdit = true;
       this.abledCancel = true;
     },
@@ -650,12 +641,7 @@ export default {
       this.myCanvas.setActiveObject(items[index]);
       this.myCanvas.renderAll();
       if(this.designModel == 0){
-        if(index == 0){
-          console.log(11)
-          this.handleObjectMove(this.myCanvas,false,0,600,0,600);
-        }else{
-          this.handleObjectMove(this.myCanvas,true,this.dataList.canvas1[0].top,600 - this.dataList.canvas1[0].top - this.dataList.canvas1[0].height,this.dataList.canvas1[0].left,600 - this.dataList.canvas1[0].left - this.dataList.canvas1[0].width);
-        }
+        this.handleObjectMove(index,this.dataList.canvas1[0].top,600 - this.dataList.canvas1[0].top - this.dataList.canvas1[0].height,this.dataList.canvas1[0].left,600 - this.dataList.canvas1[0].left - this.dataList.canvas1[0].width);
         this.form2.setFieldsValue({
           name: this.dataList.canvas1[index].name,
           width: this.dataList.canvas1[index].width,
@@ -664,12 +650,7 @@ export default {
           top: this.dataList.canvas1[index].top
         });
       }else if(this.designModel == 1){
-        if(index == 0){
-          
-          this.handleObjectMove(this.myCanvas,false,0,600,0,600)
-        }else{
-          this.handleObjectMove(this.myCanvas,true,this.dataList.canvas2[0].top,600 - this.dataList.canvas2[0].top - this.dataList.canvas2[0].height,this.dataList.canvas2[0].left,600 - this.dataList.canvas2[0].left - this.dataList.canvas2[0].width);
-        }
+        this.handleObjectMove(index,this.dataList.canvas2[0].top,600 - this.dataList.canvas2[0].top - this.dataList.canvas2[0].height,this.dataList.canvas2[0].left,600 - this.dataList.canvas2[0].left - this.dataList.canvas2[0].width);
         this.form2.setFieldsValue({
           name: this.dataList.canvas2[index].name,
           width: this.dataList.canvas2[index].width,
@@ -678,11 +659,7 @@ export default {
           top: this.dataList.canvas2[index].top
         });
       }else if(this.designModel == 2){
-        if(index == 0){
-          this.handleObjectMove(this.myCanvas,false,0,600,0,600)
-        }else{
-          this.handleObjectMove(this.myCanvas,true,this.dataList.canvas3[0].top,600 - this.dataList.canvas3[0].top - this.dataList.canvas3[0].height,this.dataList.canvas3[0].left,600 - this.dataList.canvas3[0].left - this.dataList.canvas3[0].width);
-        }
+        this.handleObjectMove(index,this.dataList.canvas3[0].top,600 - this.dataList.canvas3[0].top - this.dataList.canvas3[0].height,this.dataList.canvas3[0].left,600 - this.dataList.canvas3[0].left - this.dataList.canvas3[0].width);
         this.form2.setFieldsValue({
           name: this.dataList.canvas3[index].name,
           width: this.dataList.canvas3[index].width,
@@ -691,11 +668,7 @@ export default {
           top: this.dataList.canvas3[index].top
         });
       }else if(this.designModel == 3){
-        if(index == 0){
-          this.handleObjectMove(this.myCanvas,false,0,600,0,600)
-        }else{
-          this.handleObjectMove(this.myCanvas,true,this.dataList.canvas4[0].top,600 - this.dataList.canvas4[0].top - this.dataList.canvas4[0].height,this.dataList.canvas4[0].left,600 - this.dataList.canvas4[0].left - this.dataList.canvas4[0].width);
-        }
+        this.handleObjectMove(index,this.dataList.canvas4[0].top,600 - this.dataList.canvas4[0].top - this.dataList.canvas4[0].height,this.dataList.canvas4[0].left,600 - this.dataList.canvas4[0].left - this.dataList.canvas4[0].width);
         this.form2.setFieldsValue({
           name: this.dataList.canvas4[index].name,
           width: this.dataList.canvas4[index].width,
@@ -761,7 +734,6 @@ export default {
             });
             this.myCanvas.add(rect);
             rect.selectable = false;
-            this.handleObjectMove(this.myCanvas,true,values.top,600 - values.top - values.height,values.left,600 - values.left - values.width);
           if(this.designModel == 0){
             this.dataList.canvas1.push(json);
             this.showList = this.dataList.canvas1;
@@ -876,31 +848,34 @@ export default {
         });
       })
     },
-    handleObjectMove(object,flag,top_margin,bottom_margin,left_margin,right_margin){
+    handleObjectMove(index,top,bottom,left,right){
+        let items = this.myCanvas.getObjects();
         let that = this;
-        object.on('object:moving', function (e) {
-          var obj = e.target;
-          
-          if(flag){
-            console.log(88)
+        let top_margin;
+        let bottom_margin;
+        let left_margin;
+        let right_margin;
+        items[index].on('moving', function(e){
+         let obj = e.target;
+         top_margin = top;
+         bottom_margin = bottom;
+        left_margin = left;
+        right_margin = right;
+          if(index !== 0){
+            that.myCanvas.requestRenderAll();
             if(obj.currentHeight > obj.canvas.height || obj.currentWidth > obj.canvas.width){
               return;
-            }        
+            }    
+            console.log(top_margin,bottom_margin,left_margin,right_margin)    
             obj.setCoords();        
-            if(obj.getBoundingRect().top < top_margin || obj.getBoundingRect().left < left_margin){
-              obj.top = Math.max(obj.top, obj.top-obj.getBoundingRect().top + top_margin);
-              obj.left = Math.max(obj.left, obj.left-obj.getBoundingRect().left + left_margin);
+            if(obj.getBoundingRect(true).top < top_margin || obj.getBoundingRect(true).left < left_margin){
+              obj.top = Math.max(obj.top, obj.top-obj.getBoundingRect(true).top + top_margin);
+              obj.left = Math.max(obj.left, obj.left-obj.getBoundingRect(true).left + left_margin);
             }
-            if(obj.getBoundingRect().top+obj.getBoundingRect().height  > 600 - bottom_margin || obj.getBoundingRect().left+obj.getBoundingRect().width  > 600 - right_margin){
-              obj.top = Math.min(obj.top, obj.canvas.height-obj.getBoundingRect().height+obj.top-obj.getBoundingRect().top - bottom_margin);
-              obj.left = Math.min(obj.left, obj.canvas.width-obj.getBoundingRect().width+obj.left-obj.getBoundingRect().left - right_margin);
+            if(obj.getBoundingRect(true).top+obj.getBoundingRect(true).height  > 600 - bottom_margin || obj.getBoundingRect(true).left+obj.getBoundingRect(true).width  > 600 - right_margin){
+              obj.top = Math.min(obj.top, obj.canvas.height-obj.getBoundingRect(true).height+obj.top-obj.getBoundingRect(true).top - bottom_margin);
+              obj.left = Math.min(obj.left, obj.canvas.width-obj.getBoundingRect(true).width+obj.left-obj.getBoundingRect(true).left - right_margin);
             } 
-          }else{
-            console.log(obj.getBoundingRect().left)
-            console.log(99)
-            that.myCanvas.requestRenderAll();
-            obj.left = obj.getBoundingRect().left;
-            obj.top = obj.getBoundingRect().top;
           }
         });
     },

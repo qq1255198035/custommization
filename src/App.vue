@@ -43,5 +43,12 @@ export default {
   }
   
 }
-
+a{
+  &:hover{
+    color: #33B8B3;
+  }
+  &:active{
+    color: #33B8B3;
+  }
+}
 </style>

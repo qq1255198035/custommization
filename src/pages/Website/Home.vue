@@ -260,12 +260,12 @@
         </div>
         <!-- //我们的品牌 -->
         <!-- 加入我们 -->
-        <div class="purchaseNow">
+        <!-- <div class="purchaseNow">
             <a-row>
                 <a-col :span="10" class="purchaseText">To start your project with us</a-col>
                 <a-col :span="14" class="purchaseBtn txtRight"><router-link to="/login">Purchase Now</router-link></a-col>
             </a-row>
-        </div>
+        </div> -->
         <!-- //加入我们 -->
         <!-- TCK -->
         <div class="tck wb_70">
@@ -282,7 +282,7 @@
                 <a-col :span="8" class="tckCenter">
                     <h3>QUICK LINK</h3>
                     <router-link to="/home">Home</router-link>
-                    <router-link to="/products">Products</router-link>
+                    <a href="#components-anchor">Products</a>
                     <router-link to="/register">Become A Seller</router-link>
                     <router-link to="/about">About Us</router-link>
                 </a-col>

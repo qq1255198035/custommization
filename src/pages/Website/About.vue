@@ -49,7 +49,7 @@ export default {
             .desc{
                   width: 50%;
                   height: 100%;
-                  padding: 5% 50px;
+                  padding: 108px 50px;
                   background-image: url("./../../assets/home-page2-bgright.png");
                   background-position: right 0;
                   background-repeat: no-repeat;
