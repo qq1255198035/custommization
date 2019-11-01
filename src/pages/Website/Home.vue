@@ -85,7 +85,7 @@
                     <div class="box_1">
                         <div class="mar_bor"></div>
                         <!--正面-->
-                        <div class="info">
+                        <div class="info1 info">
                             <div class="sm_img"></div>
                         </div>
                         <!--反面-->
@@ -99,7 +99,7 @@
                     <div class="box_1">
                         <div class="mar_bor"></div>
                         <!--正面-->
-                        <div class="info">
+                        <div class="info2 info">
                             <div class="sm_img"></div>
                         </div>
                         <!--反面-->
@@ -115,7 +115,7 @@
                     <div class="box_1">
                         <div class="mar_bor"></div>
                         <!--正面-->
-                        <div class="info">
+                        <div class="info3 info">
                             <div class="sm_img"></div>
                         </div>
                         <!--反面-->
@@ -129,7 +129,7 @@
                     <div class="box_1">
                         <div class="mar_bor"></div>
                         <!--正面-->
-                        <div class="info">
+                        <div class="info info4">
                             <div class="sm_img"></div>
                         </div>
                         <!--反面-->
@@ -143,7 +143,7 @@
                     <div class="box_1">
                         <div class="mar_bor"></div>
                         <!--正面-->
-                        <div class="info">
+                        <div class="info info5">
                             <div class="sm_img"></div>
                         </div>
                         <!--反面-->
@@ -178,18 +178,7 @@
                             </div>
                             <div class="text2">
                                 <div class="mengban"></div>
-                                <p class="desc">NIKE</p>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="kuang kuang1"></div>
-                            <div class="kuang kuang2"></div>
-                            <div class="text1">
-                                <div class="bg bg2"></div>
-                            </div>
-                            <div class="text2">
-                                <div class="mengban"></div>
-                                <p class="desc">ADIDAS</p>
+                                <p class="desc">YS</p>
                             </div>
                         </li>
                         <li>
@@ -200,9 +189,24 @@
                             </div>
                             <div class="text2">
                                     <div class="mengban"></div>
-                                    <p class="desc">PUMA</p>
+                                    <p class="desc">Champion</p>
                             </div>
                         </li>
+                        <li>
+                            <div class="kuang kuang1"></div>
+                            <div class="kuang kuang2"></div>
+                            <div class="text1">
+                                <div class="bg bg6" style="font-size: 25px; text-shadow: grey 3px 3px 2px; color:#fff;display:flex;flex-direction: column;justify-content:center;align-items:center;">
+                                    COMING
+                                    <span style="margin-top: -10px;">SOON</span>
+                                </div>
+                            </div>
+                            <div class="text2">
+                                <div class="mengban"></div>
+                                <p class="desc">COMING SOON</p>
+                            </div>
+                        </li>
+                        
                         <li class="pr_ml">
                             <div class="kuang kuang1"></div>
                             <div class="kuang kuang2"></div>
@@ -213,44 +217,51 @@
                             <div class="kuang kuang1"></div>
                             <div class="kuang kuang2"></div>
                             <div class="text1">
+                                <div class="bg bg5" style="font-size: 25px; text-shadow: grey 3px 3px 2px; color:#fff;display:flex;flex-direction: column;justify-content:center;align-items:center;">
+                                    COMING
+                                    <span style="margin-top: -10px;">SOON</span>
+                                </div>
+                            </div>
+                            <div class="text2">
+                                <div class="mengban"></div>
+                                <p class="desc">COMING SOON</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="kuang kuang1"></div>
+                            <div class="kuang kuang2"></div>
+                            <div class="text1">
                                     <div class="bg bg4"></div>
                             </div>
                             <div class="text2">
                                     <div class="mengban"></div>
-                                    <p class="desc">FILA</p>
+                                    <p class="desc">Newline</p>
                             </div>
                         </li>
                         <li>
                             <div class="kuang kuang1"></div>
                             <div class="kuang kuang2"></div>
                             <div class="text1">
-                                <div class="bg bg5"></div>
+                                <div class="bg bg2"></div>
                             </div>
                             <div class="text2">
                                 <div class="mengban"></div>
-                                <p class="desc">MIZUNO</p>
+                                <p class="desc">DJH</p>
                             </div>
                         </li>
+                        
                         <li>
                             <div class="kuang kuang1"></div>
                             <div class="kuang kuang2"></div>
                             <div class="text1">
-                                <div class="bg bg6"></div>
+                                <div class="bg bg7" style="font-size: 25px; text-shadow: grey 3px 3px 2px; color:#fff;display:flex;flex-direction: column;justify-content:center;align-items:center;">
+                                    COMING
+                                    <span style="margin-top: -10px;">SOON</span>
+                                </div>
                             </div>
                             <div class="text2">
                                 <div class="mengban"></div>
-                                <p class="desc">UMBRO</p>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="kuang kuang1"></div>
-                            <div class="kuang kuang2"></div>
-                            <div class="text1">
-                                <div class="bg bg7"></div>
-                            </div>
-                            <div class="text2">
-                                <div class="mengban"></div>
-                                <p class="desc">KAPPA</p>
+                                <p class="desc" >COMING SOON</p>
                             </div>
                         </li>
                     </ul>

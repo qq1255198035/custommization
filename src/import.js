@@ -41,8 +41,10 @@ import {
   Tooltip,
   Spin,
   TreeSelect,
-  Anchor
+  Anchor,
+  Collapse
 } from "ant-design-vue";
+Vue.use(Collapse);
 Vue.use(Anchor);
 Vue.use(TreeSelect);
 Vue.use(Alert);

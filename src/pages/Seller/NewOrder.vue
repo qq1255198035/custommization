@@ -106,7 +106,6 @@
                                     <span class="icon-zoomout"></span>
                                 </li>
                             </ul> -->
-
                         </div>
                         <div class="tools-box">
                             <div style="" class="scroll-box">
@@ -816,7 +815,7 @@
 let id = 0;
 import { fabric } from 'fabric';
 import 'fabric-customise-controls';
-import FontFaceObserver from 'fontfaceobserver';
+// import FontFaceObserver from 'fontfaceobserver';
 import MyTitle from '@/components/MyTitle/MyTitle'
 import initAligningGuidelines from "@/utils/guidelines";
 import commonBtn from "@/components/commonBtn/commonBtn"
@@ -1313,7 +1312,6 @@ export default {
             }
         },
         reStart(){
-            //console.log(1)
             this.closeDesignBox()
         },
         minus(data) {
@@ -1687,7 +1685,6 @@ export default {
             let obj2 = that.myCanvas2.getObjects();
             let obj3 = that.myCanvas3.getObjects();
             let obj4 = that.myCanvas4.getObjects();
-            //console.log(obj)
             if(obj1 || obj2 || obj3 || obj4){
                 that.$confirm({
                     title: "Are you sure you want to leave?",
@@ -1803,11 +1800,8 @@ export default {
             this.id = id;
             this.getcategoryList(id,1)
         },
-
-
         //设计
         changeNameSize(value) {
-            console.log(`selected ${value}`);
             this.nameSize = value;
             if(this.addNameData){
                 let obj = this.myCanvas.getActiveObject();
@@ -1819,7 +1813,6 @@ export default {
             }
         },
         changeNumberSize(value) {
-            console.log(`selected ${value}`);
             this.numberSize = value;
             if(this.addNumberData){
                 let obj = this.myCanvas.getActiveObject();
@@ -2695,9 +2688,9 @@ export default {
                 }else if(key == 2){
                     //后加 不严谨
                     if(this.shadowColorName){
-                        this.$message.error('Please remove the shadows first.')
+                        this.$message.error('Sorry, only 1 text effect can be added at this moment.')
                     }else if(this.strokeColorName){
-                        this.$message.error('Please remove the outline first.')
+                        this.$message.error('Sorry, only 1 text effect can be added at this moment.')
                     }else{
                         this.visibletype = 8;
                         this.colorTitle = title;
@@ -2714,7 +2707,7 @@ export default {
                 }else if(key == 3){
                     //后加 不严谨
                     if(this.bgcolor){
-                        this.$message.error('Please remove the Text Background Colour first.')
+                        this.$message.error('Sorry, only 1 text effect can be added at this moment.')
                     }else{
                         this.visibletype = 8;
                         this.colorTitle = title;
@@ -2730,7 +2723,7 @@ export default {
                     }
                 }else if(key == 4){
                     if(this.bgcolor){
-                        this.$message.error('Please remove the Text Background Colour first.')
+                        this.$message.error('Sorry, only 1 text effect can be added at this moment.')
                     }else{
                         this.visibletype = 8;
                         this.colorTitle = title;
