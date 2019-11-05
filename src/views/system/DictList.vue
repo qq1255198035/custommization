@@ -1,7 +1,7 @@
 <template>
   <div id="DictList">
     <a-tabs defaultActiveKey="1" @change="callback">
-      <a-tab-pane tab="设计区域" key="1">
+      <a-tab-pane tab="商品图片" key="1">
         <div style="display:flex;" class="tab-pane-1">
           <div class="design-box">
             <div class="container">
@@ -27,7 +27,7 @@
           </div>
           <div class="dosomething">
             <div class="upload-box">
-              <a-form :form="form2" style="display: flex; padding: 0 50px;" layout="inline">
+              <a-form :form="form" style="display: flex; padding: 0 50px;" layout="inline">
                 <a-form-item v-show="designModel == 0" label="1.上传服装">
                   <a-upload
                     listType="picture-card"
@@ -93,7 +93,7 @@
             <a-collapse :bordered="false" :activeKey="activeKey" accordion>
               <a-collapse-panel header="2.添加限定区域" key="1">
                 <div class="edit">
-                  <a-form :form="form2" layout="vertical">
+                  <a-form :form="form" layout="vertical">
                     <div class="edit-box">
                       <a-form-item label="Width" style="width: 49%;">
                         <a-input-number v-decorator="['width', { rules: [{ required: true, message: '请填写宽度!' },{ type: 'number', message: '请填写数字!' }],validateTrigger: ['change'] }]" :min="0"/>
@@ -151,7 +151,7 @@
               </a-collapse-panel>
               <a-collapse-panel header="3.添加设计区域" key="2">
                 <div class="edit">
-                  <a-form :form="form2" layout="vertical">
+                  <a-form :form="form" layout="vertical">
                     <a-form-item label="Name">
                       <a-input v-decorator="['name', { rules: [{ required: true, message: '请填写区域名称!' }] }]"/>
                     </a-form-item>
@@ -230,47 +230,75 @@
           </div>
         </div>
       </a-tab-pane>
-      <a-tab-pane tab="基本信息" key="2">
-        <a-form :form="form" @submit="handleSubmit">
-          <a-form-item label="商品名称" :label-col="{ span: 3 }" :wrapper-col="{ span: 8 }">
+      <a-tab-pane tab="通用信息" key="2">
+        <a-form :form="form" layout="vertical" class="common-info">
+          <a-form-item label="商品名称">
             <a-input v-decorator="['name', { rules: [{ required: true, message: '请填写商品名称!' }] }]"/>
           </a-form-item>
-          <a-form-item label="最小订货量" :label-col="{ span: 3 }" :wrapper-col="{ span: 8 }">
-            <a-input v-decorator="['quantify', 
-            { rules: [{ required: true, message: '请填写数量!' },{ type: 'number', message: '请填写数字!' }] }]" />
+          <a-form-item label="商品编号">
+            <a-input-number style="width: 40%;" v-decorator="['number', { rules: [{ required: true, message: '请填写商品名称!' }] }]"/>
           </a-form-item>
-          <a-form-item label="商品类别" :label-col="{ span: 3 }" :wrapper-col="{ span: 8 }">
-            <a-select v-decorator="['type', { rules: [{ required: true, message: '请选择商品类别!' }] }]" placeholder="选择商品类别">
-              <a-select-option value="jack">Jack</a-select-option>
-              <a-select-option value="lucy">Lucy</a-select-option>
-            </a-select>
+          <a-form-item label="商品类别" class="cascader">
+            <a-cascader :options="options" @change="onChange" placeholder="Please select" 
+              v-decorator="['protype', { rules: [{ required: true, message: '请填写最高价格!' }] }]"
+            />
           </a-form-item>
-          <a-form-item label="零售价格" :label-col="{ span: 3 }" :wrapper-col="{ span: 8 }">
-            <a-input
-            v-decorator="['price', 
-            { rules: [{ required: true, message: '请填写零售价格!' },{ type: 'number', message: '请填写数字!' }] }]">
-              <a-icon slot="prefix" type="dollar" style="color: rgba(0,0,0,0.4)" />
-            </a-input>
-          </a-form-item>
-          <a-form-item label="最高价格" :label-col="{ span: 3 }" :wrapper-col="{ span: 8 }">
-            <a-input
-            v-decorator="['maxprice', 
-            { rules: [{ required: true, message: '请填写最高价格!' },{ type: 'number', message: '请填写数字!' }] }]">
-              <a-icon slot="prefix" type="dollar" style="color: rgba(0,0,0,0.4)" />
-            </a-input>
-          </a-form-item>
-          <a-form-item label="最低价格" :label-col="{ span: 3 }" :wrapper-col="{ span: 8 }">
-            <a-input
-            v-decorator="['minprice', 
-            { rules: [{ required: true, message: '请填写最低价格!' },{ type: 'number', message: '请填写数字!' }] }]">
-              <a-icon slot="prefix" type="dollar" style="color: rgba(0,0,0,0.4)" />
-            </a-input>
-          </a-form-item>
-          <a-form-item label="商品简介" :label-col="{ span: 3 }" :wrapper-col="{ span: 8 }">
-            <a-textarea v-decorator="['desc', 
-            { rules: [{ required: false}]}]" />
-          </a-form-item>
-          <a-form-item label="尺寸图片" :label-col="{ span: 3 }" :wrapper-col="{ span: 8 }">
+          <a-input-group style="display: flex;align-items: flex-end;">
+            <a-form-item label="价格">
+              <a-input-number
+                placeholder="最高"
+                style="width: 100%;"
+                v-decorator="['minprice', { rules: [{ required: true, message: '请填写最高价格!' }] }]" 
+              />
+            </a-form-item>
+            <a-form-item style="margin-left: 20px;">
+              <a-input-number
+                placeholder="最低"
+                style="width: 100%;"
+                v-decorator="['maxprice', { rules: [{ required: true, message: '请填写最低价格!' }] }]" 
+              />
+            </a-form-item>
+          </a-input-group>
+          <a-input-group style="display: flex;align-items: flex-end;">
+            <a-form-item label="生产周期">
+              <a-input-number
+                placeholder="最大"
+                style="width: 100%;"
+                v-decorator="['productionTime', { rules: [{ required: true, message: '请填写最大生产周期!' }] }]" 
+              />
+            </a-form-item>
+            <a-form-item style="margin-left: 20px;">
+              <a-input-number
+                placeholder="最小"
+                style="width: 100%;"
+                v-decorator="['minProductionTime', { rules: [{ required: true, message: '请填写最小生产周期!' }] }]" 
+              />
+            </a-form-item>
+          </a-input-group>
+          <a-input-group style="display: flex;align-items: flex-end;" class="suffix">
+            <a-form-item label="单件重量">
+              <a-input
+                placeholder="最小"
+                style="width: 100%;"
+                v-decorator="['weight', { rules: [{ required: true, message: '请填写最小生产周期!' }] }]" 
+              >
+                <span slot="suffix">g</span>
+              </a-input>
+            </a-form-item>
+            <a-form-item label="起订量"  style="margin-left: 20px;">
+              <a-input 
+                style="width: 100%;"
+                v-decorator="['minOrder', { rules: [{ required: true, message: '请填写数量!' }] }]" 
+              >
+              <span slot="suffix">件</span>
+              </a-input>
+            </a-form-item>
+          </a-input-group> 
+        </a-form>
+      </a-tab-pane>
+      <a-tab-pane  tab="详细描述" key="3">
+        <a-form :form="form" layout="horizontal">
+          <a-form-item label="上传尺寸图片" style="display: flex;">
             <a-upload
               name="avatar"
               accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif"
@@ -284,132 +312,54 @@
               <img v-if="imageUrl" :src="imageUrl" alt="avatar" />
               <div v-else>
                 <a-icon type='plus'/>
-                <div class="ant-upload-text">Upload</div>
+                <div class="ant-upload-text">上传</div>
               </div>
             </a-upload>
           </a-form-item>
-          <a-form-item :wrapper-col="{ span: 8, offset: 3 }">
-            <a-button type="primary" html-type="submit">
-              Submit
-            </a-button>
-          </a-form-item>
         </a-form>
       </a-tab-pane>
-      <a-tab-pane tab="其他信息" key="3" forceRender>
+      <a-tab-pane tab="其他信息" key="4" forceRender>
         <div class="tab-pane-2">
-          <a-form :form="form1" @submit="handleSubmitColor">
-            <a-form-item v-for="k in form1.getFieldValue('keys')" :key="k" :required="false" style="display:flex;width: 100%;">
-              <a-form-item>
-                  <a-upload
-                    v-decorator="[`eximgurl[${k}]`,{rules: [{required: true,message: '请上传缩略图',}],}]"
-                    name="avatar"
-                    accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif"
-                    listType="picture-card"
-                    class="avatar-uploader"
-                    :showUploadList="false"
-                    :beforeUpload="beforeUpload"
-                    @change="handleChangeColor1"
-                    
-                  >
-                    <img v-if="imgUrlArr[k].eximgurl" :src="imgUrlArr[k].eximgurl" alt="avatar" />
-                    <div v-else @click="sendKey(k)" style="width: 100%;height: 100%;padding-top: 20px;">
-                      <a-icon type='plus'/>
-                      <div class="ant-upload-text">上传缩略图</div>
-                    </div>
-                    </a-upload>
-              </a-form-item>
-              <a-form-item>
-                <a-upload
-                  v-decorator="[`frontimgurl[${k}]`,{rules: [{required: true,message: '请上传正面图',}],}]"
-                  name="avatar"
-                  accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif"
-                  listType="picture-card"
-                  class="avatar-uploader"
-                  :showUploadList="false"
-                  :beforeUpload="beforeUpload"
-                  @change="handleChangeColor2"  
-                >
-                  <img v-if="imgUrlArr[k].frontimgurl" :src="imgUrlArr[k].frontimgurl" alt="avatar" />
-                  <div v-else>
-                    <a-icon type='plus'/>
-                    <div class="ant-upload-text">上传正面图</div>
-                  </div>
-                </a-upload>
-              </a-form-item>
-              <a-form-item>
-                <a-upload
-                  v-decorator="[`backimgurl[${k}]`,{rules: [{required: true,message: '请上传背面图',}],}]"
-                  name="avatar"
-                  accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif"
-                  listType="picture-card"
-                  class="avatar-uploader"
-                  :showUploadList="false"
-                  :beforeUpload="beforeUpload"
-                  @change="handleChangeColor3"  
-                >
-                  <img v-if="imgUrlArr[k].backimgurl" :src="imgUrlArr[k].backimgurl" alt="avatar" />
-                  <div v-else>
-                    <a-icon type='plus'/>
-                    <div class="ant-upload-text">上传背面图</div>
-                  </div>
-                </a-upload>
-              </a-form-item>
-              <a-form-item>
-                <a-upload
-                  v-decorator="[`leftimgurl[${k}]`,{rules: [{required: true,message: '请上传左面图',}],}]"
-                  name="avatar"
-                  accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif"
-                  listType="picture-card"
-                  class="avatar-uploader"
-                  :showUploadList="false"
-                  :beforeUpload="beforeUpload"
-                  @change="handleChangeColor4"  
-                >
-                  <img v-if="imgUrlArr[k].leftimgurl" :src="imgUrlArr[k].leftimgurl" alt="avatar" />
-                  <div v-else>
-                    <a-icon type='plus'/>
-                    <div class="ant-upload-text">上传左面图</div>
-                  </div>
-                </a-upload>
-              </a-form-item>
-              <a-form-item>
-                <a-upload
-                  v-decorator="[`rightimgurl[${k}]`,{rules: [{required: true,message: '请上传右面图',}],}]"
-                  name="avatar"
-                  accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif"
-                  listType="picture-card"
-                  class="avatar-uploader"
-                  :showUploadList="false"
-                  :beforeUpload="beforeUpload"
-                  @change="handleChangeColor5"  
-                >
-                  <img v-if="imgUrlArr[k].rightimgurl" :src="imgUrlArr[k].rightimgurl" alt="avatar" />
-                  <div v-else>
-                    <a-icon type='plus'/>
-                    <div class="ant-upload-text">上传右面图</div>
-                  </div>
-                </a-upload>
-              </a-form-item>
-              <a-icon
-                v-if="form1.getFieldValue('keys').length > 1"
-                class="dynamic-delete-button"
-                type="minus-circle-o"
-                :disabled="form1.getFieldValue('keys').length === 1"
-                @click="() => removeInput(k)"
-              />
+          <ul class="radio-box">
+            <li>
+              <span>
+                是否在售
+              </span>
+              <a-radio-group v-model="value1">
+                <a-radio :value="1">是</a-radio>
+                <a-radio :value="2">否</a-radio>
+              </a-radio-group>
+            </li>
+            <li>
+              <span>
+                是否热销
+              </span>
+              <a-radio-group v-model="value1">
+                <a-radio :value="1">是</a-radio>
+                <a-radio :value="2">否</a-radio>
+              </a-radio-group>
+            </li>
+            <li>
+              <span>
+                是否纯色
+              </span>
+              <a-radio-group v-model="value1">
+                <a-radio :value="1">是</a-radio>
+                <a-radio :value="2">否</a-radio>
+              </a-radio-group>
+            </li>
+          </ul>
+          <a-form>
+            <a-form-item label="关键字">
+              <a-input placeholder="请输入关键字" v-model="keywords"/>
             </a-form-item>
-            <a-form-item>
-              <a type="dashed" style="width: 60%;color: #33b8b3" @click="add">
-                <a-icon type="plus" /> Add more
-              </a>
-            </a-form-item>
-            <a-form-item style="text-align: center;">
-              <a-button type="primary" html-type="submit">保存</a-button>
+            <a-form-item label="商品简介">
+              <a-textarea placeholder="请输入简介" v-model="desc"/>
             </a-form-item>
           </a-form>
         </div>
       </a-tab-pane>
-      
+      <a-button slot="tabBarExtraContent" @click="handleSubmit">保 存</a-button>
     </a-tabs>
     <!-- <a-drawer
       title="修改区域"
@@ -444,17 +394,20 @@
   </div>
 </template>
 <script>
-let id = 0;
 function getBase64(img, callback) {
   const reader = new FileReader();
   reader.addEventListener('load', () => callback(reader.result));
   reader.readAsDataURL(img);
 }
 import { fabric } from 'fabric';
-import { sourceUpload } from "@/api/seller";
+import { sourceUpload,syscategoryList } from "@/api/seller";
 export default {
   data() {
     return {
+      desc: '',
+      keywords: '',
+      value1: '',
+      options:[],
       activeKey: '1',
       editName: '',
       editWidth: '',
@@ -512,11 +465,7 @@ export default {
       showList:[]
     };
   },
-  beforeCreate () {
-      this.form2 = this.$form.createForm(this),
-      this.form1 = this.$form.createForm(this,{ name: 'dynamic_form_item' });
-      this.form1.getFieldDecorator('keys', { initialValue: [id], preserve: true });
-  },
+  
   mounted(){
     this.$nextTick(function() {
       this.myCanvas1 = new fabric.Canvas("canvas1");
@@ -533,8 +482,23 @@ export default {
       this.monitorObjectScale(this.myCanvas3);
       this.monitorObjectScale(this.myCanvas4);
     })
+    this.getSyscategoryList();
   },
   methods: {
+    onChangeradio(e){
+      console.log('radio checked', e.target.value);
+    },
+    getSyscategoryList(){
+      syscategoryList().then(res => {
+        console.log(res)
+        if(res.code == 0){
+          this.options = res.result
+        }
+      })
+    },
+    onChange(value) {
+      console.log(value);
+    },
     postDesignSize(){
       let dataList = this.dataList;
       let params = {
@@ -633,7 +597,7 @@ export default {
     cancleEdit(){
       let obj = this.myCanvas.getActiveObject();
       if(this.designModel == 0){
-        this.form2.setFieldsValue({
+        this.form.setFieldsValue({
           width: this.dataList.canvas1[this.isFirst].width,
           height: this.dataList.canvas1[this.isFirst].height,
           left: this.dataList.canvas1[this.isFirst].left,
@@ -642,7 +606,7 @@ export default {
         this.abledEdit_1 = true;
         this.abledCancel_1 = true;
       }else if(this.designModel == 1){
-        this.form2.setFieldsValue({
+        this.form.setFieldsValue({
           width: this.dataList.canvas2[this.isFirst].width,
           height: this.dataList.canvas2[this.isFirst].height,
           left: this.dataList.canvas2[this.isFirst].left,
@@ -651,7 +615,7 @@ export default {
         this.abledEdit_2 = true;
         this.abledCancel_2 = true;
       }else if(this.designModel == 2){
-        this.form2.setFieldsValue({
+        this.form.setFieldsValue({
           width: this.dataList.canvas3[this.isFirst].width,
           height: this.dataList.canvas3[this.isFirst].height,
           left: this.dataList.canvas3[this.isFirst].left,
@@ -660,7 +624,7 @@ export default {
         this.abledEdit_3 = true;
         this.abledCancel_3 = true;
       }else if(this.designModel == 3){
-        this.form2.setFieldsValue({
+        this.form.setFieldsValue({
           width: this.dataList.canvas4[this.isFirst].width,
           height: this.dataList.canvas4[this.isFirst].height,
           left: this.dataList.canvas4[this.isFirst].left,
@@ -669,10 +633,10 @@ export default {
         this.abledEdit_4 = true;
         this.abledCancel_4 = true;
       }
-      let width = this.form2.getFieldValue('width');
-      let height = this.form2.getFieldValue('height')
-      let left = this.form2.getFieldValue('left')
-      let top = this.form2.getFieldValue('top')
+      let width = this.form.getFieldValue('width');
+      let height = this.form.getFieldValue('height')
+      let left = this.form.getFieldValue('left')
+      let top = this.form.getFieldValue('top')
       obj.set({width: width,height: height,left: left,top: top});
       this.myCanvas.discardActiveObject();
       this.myCanvas.renderAll();
@@ -680,7 +644,7 @@ export default {
     cancleDesignEdit(){
       let obj = this.myCanvas.getActiveObject();
       if(this.designModel == 0){
-        this.form2.setFieldsValue({
+        this.form.setFieldsValue({
           width1: this.dataList.canvas1[this.isFirst].width,
           height1: this.dataList.canvas1[this.isFirst].height,
           left1: this.dataList.canvas1[this.isFirst].left,
@@ -690,7 +654,7 @@ export default {
         this.abledEdit1_1 = true;
         this.abledCancel1_1 = true;
       }else if(this.designModel == 1){
-        this.form2.setFieldsValue({
+        this.form.setFieldsValue({
           width1: this.dataList.canvas2[this.isFirst].width,
           height1: this.dataList.canvas2[this.isFirst].height,
           left1: this.dataList.canvas2[this.isFirst].left,
@@ -700,7 +664,7 @@ export default {
         this.abledEdit1_2 = true;
         this.abledCancel1_2 = true;
       }else if(this.designModel == 2){
-        this.form2.setFieldsValue({
+        this.form.setFieldsValue({
           width1: this.dataList.canvas3[this.isFirst].width,
           height1: this.dataList.canvas3[this.isFirst].height,
           left1: this.dataList.canvas3[this.isFirst].left,
@@ -710,7 +674,7 @@ export default {
         this.abledEdit1_3 = true;
         this.abledCancel1_3 = true;
       }else if(this.designModel == 3){
-        this.form2.setFieldsValue({
+        this.form.setFieldsValue({
           width1: this.dataList.canvas4[this.isFirst].width,
           height1: this.dataList.canvas4[this.isFirst].height,
           left1: this.dataList.canvas4[this.isFirst].left,
@@ -720,19 +684,19 @@ export default {
         this.abledEdit1_4 = true;
         this.abledCancel1_4 = true;
       }
-      let width = this.form2.getFieldValue('width1');
-      let height = this.form2.getFieldValue('height1')
-      let left = this.form2.getFieldValue('left1')
-      let top = this.form2.getFieldValue('top1')
+      let width = this.form.getFieldValue('width1');
+      let height = this.form.getFieldValue('height1')
+      let left = this.form.getFieldValue('left1')
+      let top = this.form.getFieldValue('top1')
       obj.set({width: width,height: height,left: left,top: top});
       this.myCanvas.renderAll();
       this.myCanvas.discardActiveObject();
     },
     confirmEdit(){
-      this.editWidth = this.form2.getFieldValue("width");
-      this.editHeight = this.form2.getFieldValue("height");
-      this.editLeft = this.form2.getFieldValue("left");
-      this.editTop = this.form2.getFieldValue("top");
+      this.editWidth = this.form.getFieldValue("width");
+      this.editHeight = this.form.getFieldValue("height");
+      this.editLeft = this.form.getFieldValue("left");
+      this.editTop = this.form.getFieldValue("top");
       if(this.designModel == 0){
         this.dataList.canvas1[this.isFirst].width = this.editWidth;
         this.dataList.canvas1[this.isFirst].height = this.editHeight;
@@ -774,11 +738,11 @@ export default {
       let calcHeight1;
       let calcHeight2;
       let calcWidth2;
-      this.editWidth = this.form2.getFieldValue("width1");
-      this.editHeight = this.form2.getFieldValue("height1");
-      this.editLeft = this.form2.getFieldValue("left1");
-      this.editTop = this.form2.getFieldValue("top1");
-      this.editName = this.form2.getFieldValue("name");
+      this.editWidth = this.form.getFieldValue("width1");
+      this.editHeight = this.form.getFieldValue("height1");
+      this.editLeft = this.form.getFieldValue("left1");
+      this.editTop = this.form.getFieldValue("top1");
+      this.editName = this.form.getFieldValue("name");
       calcWidth1 = this.editWidth + this.editLeft;
       calcHeight1 = this.editHeight + this.editTop;
       if(this.designModel == 0){
@@ -854,7 +818,7 @@ export default {
       
       if(this.designModel == 0){
         if(index == 0){
-          this.form2.setFieldsValue({
+          this.form.setFieldsValue({
             width: this.dataList.canvas1[index].width,
             height:this.dataList.canvas1[index].height,
             left:this.dataList.canvas1[index].left,
@@ -864,7 +828,7 @@ export default {
           this.abledCancel_1 = false;
           this.activeKey = '1';
         }else{
-          this.form2.setFieldsValue({
+          this.form.setFieldsValue({
             name: this.dataList.canvas1[index].name,
             width1: this.dataList.canvas1[index].width,
             height1:this.dataList.canvas1[index].height,
@@ -877,7 +841,7 @@ export default {
         }
       }else if(this.designModel == 1){
         if(index == 0){
-          this.form2.setFieldsValue({
+          this.form.setFieldsValue({
             width: this.dataList.canvas2[index].width,
             height:this.dataList.canvas2[index].height,
             left:this.dataList.canvas2[index].left,
@@ -887,7 +851,7 @@ export default {
           this.abledCancel_2 = false;
           this.activeKey = '1';
         }else{
-          this.form2.setFieldsValue({
+          this.form.setFieldsValue({
             name: this.dataList.canvas2[index].name,
             width1: this.dataList.canvas2[index].width,
             height1:this.dataList.canvas2[index].height,
@@ -900,7 +864,7 @@ export default {
         }
       }else if(this.designModel == 2){
         if(index == 0){
-          this.form2.setFieldsValue({
+          this.form.setFieldsValue({
             width: this.dataList.canvas3[index].width,
             height:this.dataList.canvas3[index].height,
             left:this.dataList.canvas3[index].left,
@@ -910,7 +874,7 @@ export default {
           this.abledCancel_3 = false;
           this.activeKey = '1';
         }else{
-          this.form2.setFieldsValue({
+          this.form.setFieldsValue({
             name: this.dataList.canvas2[index].name,
             width1: this.dataList.canvas3[index].width,
             height1:this.dataList.canvas3[index].height,
@@ -923,7 +887,7 @@ export default {
         }
       }else if(this.designModel == 3){
         if(index == 0){
-          this.form2.setFieldsValue({
+          this.form.setFieldsValue({
             width: this.dataList.canvas4[index].width,
             height:this.dataList.canvas4[index].height,
             left:this.dataList.canvas4[index].left,
@@ -933,7 +897,7 @@ export default {
           this.abledCancel_4 = false;
           this.activeKey = '1';
         }else{
-          this.form2.setFieldsValue({
+          this.form.setFieldsValue({
             name: this.dataList.canvas4[index].name,
             width1: this.dataList.canvas4[index].width,
             height1:this.dataList.canvas4[index].height,
@@ -994,7 +958,7 @@ export default {
     },
     
     addFirstQ(key){
-      this.form2.validateFields(['width','height','left','top'],(err, values) => {
+      this.form.validateFields(['width','height','left','top'],(err, values) => {
         if(!err){
           let json = {name: '',width: '',height: '',left: '',top: ''};
           json.name = '限定区域';
@@ -1042,7 +1006,7 @@ export default {
       })
     },
     addDesignQ(){
-      this.form2.validateFields(['width1','height1','left1','top1','name'],(err, values) => {
+      this.form.validateFields(['width1','height1','left1','top1','name'],(err, values) => {
         if(!err){
           let calcWidth1 = values.width1 + values.left1;
           let calcHeight1 = values.height1 + values.top1;
@@ -1109,7 +1073,7 @@ export default {
     //   object.on('object:moving', function (e) {
     //     let obj = e.target;
     //     console.log(e.target.left)
-    //     that.form2.setFieldsValue({
+    //     that.form.setFieldsValue({
     //       width:parseInt(obj.width),
     //       height:parseInt(obj.height),
     //       left:parseInt(obj.left),
@@ -1122,14 +1086,14 @@ export default {
       object.on('object:modified',function(e){
         let obj = e.target;
         if(that.isFirst == 0){
-          that.form2.setFieldsValue({
+          that.form.setFieldsValue({
             width:parseInt(obj.getBoundingRect().width) - 1,
             height:parseInt(obj.getBoundingRect().height) - 1,
             left:parseInt(obj.left),
             top:parseInt(obj.top)
           });
         }else{
-          that.form2.setFieldsValue({
+          that.form.setFieldsValue({
             width1:parseInt(obj.getBoundingRect().width) - 1,
             height1:parseInt(obj.getBoundingRect().height) - 1,
             left1:parseInt(obj.left),
@@ -1172,7 +1136,7 @@ export default {
     changeModelDesign(i){
       this.designModel = i;
       this.activeKey = '1';
-      this.form2.setFieldsValue({
+      this.form.setFieldsValue({
         width: '',
         height: '',
         left: '',
@@ -1288,8 +1252,7 @@ export default {
         return false
       }
     },
-    handleSubmit(e) {
-      e.preventDefault();
+    handleSubmit() {
       this.form.validateFields((err, values) => {
         if (!err) {
           console.log('Received values of form: ', values);
@@ -1314,78 +1277,7 @@ export default {
         getBase64(info.file.originFileObj, imageUrl => {
           this.imageUrl = imageUrl;
         });
-    },
-    handleChangeColor1(info) {
-      getBase64(info.file.originFileObj, imageUrl => {
-        this.imgUrlArr[this.key].eximgurl = imageUrl;
-      });
-    },
-    handleChangeColor2(info) {
-      getBase64(info.file.originFileObj, imageUrl => {
-        this.imgUrlArr[this.key].frontimgurl = imageUrl;
-      });
-    },
-    handleChangeColor3(info) {
-      getBase64(info.file.originFileObj, imageUrl => {
-        this.imgUrlArr[this.key].backimgurl = imageUrl;
-      });
-    },
-    handleChangeColor4(info) {
-      getBase64(info.file.originFileObj, imageUrl => {
-        this.imgUrlArr[this.key].leftimgurl = imageUrl;
-      });
-    },
-    handleChangeColor5(info) {
-      getBase64(info.file.originFileObj, imageUrl => {
-        this.imgUrlArr[this.key].rightimgurl = imageUrl;
-      });
-    },
-    removeInput(k) {
-      const { form1 } = this;
-      // can use data-binding to get
-      const keys = form1.getFieldValue('keys');
-      // We need at least one passenger
-      if (keys.length === 1) {
-          return;
-      }
-      form1.setFieldsValue({
-          keys: keys.filter(key => key !== k),
-      });
-      console.log(keys)
-      console.log(k)
-      setTimeout(() => {
-        this.imgUrlArr.splice(k,1)
-        console.log(this.imgUrlArr)
-      },10)
-      
-    },
-    add(){
-      let a = {
-          eximgurl:'',
-          frontimgurl:'',
-          backimgurl: '',
-          leftimgurl: '',
-          rightimgurl: ''
-        };
-      const { form1 } = this;
-      const keys = form1.getFieldValue('keys');
-      const nextKeys = keys.concat(++id);
-      form1.setFieldsValue({
-          keys: nextKeys,
-      });
-      this.imgUrlArr.push(a)
-      console.log(keys)
-    },
-    handleSubmitColor(e){
-      e.preventDefault();
-      this.form1.validateFields((err, values) => {
-          console.log(values)
-          if (!err) {
-            console.log('Received values of form: ', values);
-            this.$message.success('successful!')
-          }
-      });
-    },
+    }
   },
 }
 </script>
@@ -1395,7 +1287,6 @@ export default {
     width: 100%;
   }
 }
-
 #DictList{
   padding: 0 20px;
   .ant-collapse .ant-collapse-item .ant-collapse-header .anticon {
@@ -1454,16 +1345,40 @@ export default {
     }
   }
   .tab-pane-2{
-    .ant-form-item-children{
-      display: flex;
-      align-items: center;
-      .ant-form-item{
-        margin: 0;
-        min-height: 131px;
-        img{
-          width: 86px;
-          height: 86px;
+    input{
+      width: 40%;
+    }
+    textarea{
+      width: 40%;
+    }
+    .radio-box{
+      li{
+        display: flex;
+        margin: 10px 0;
+        > span{
+          min-width: 80px;
         }
+      }
+    }
+  }
+  .common-info{
+    .cascader{
+      .ant-cascader-picker{
+        width: 40%;
+        input{
+          width: 100%;
+        }
+      }
+    }
+    input{
+      width: 40%;
+    }
+    textarea{
+      width: 40%;
+    }
+    .suffix{
+      input{
+        width: 100%;
       }
     }
   }

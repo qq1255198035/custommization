@@ -35,15 +35,14 @@
           </div>
           <div class="right">
             <commonBtn
-              @btnClick="btnClick(item.id,item.status)"
+              @btnClick="btnClick(item.id,item.status,item.type)"
               :width="'100%'"
-              :title="'Confirm draft'"
+              :title="item.type == 1 ? 'Check Status' : 'Confirm Draft'"
               :height="'32px'"
               :padding="'15px'"
               :radio="'12px'"
               :fontsize="'16px'"
             ></commonBtn>
-            <!--<a-button style="color: #33b8b3;" @click="btnClick(item.id)">Confirm draft</a-button>-->
           </div>
         </div>
       </div>
@@ -165,8 +164,8 @@ export default {
     checkOutDetails(id) {
       this.$router.push({ path: "/myorder", query: { id: id } });
     },
-    btnClick(id, status) {
-      this.$emit("handleMyClick", id, status);
+    btnClick(id, status,type) {
+      this.$emit("handleMyClick", id, status,type);
     },
     openMyshareBox(item) {
       console.log(item);

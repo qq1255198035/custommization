@@ -222,12 +222,14 @@ export default {
         }
       });
     },
-    openConfirmBox(id,status) {
-      this.modelShow = true;
-      this.astatus = status;
-      console.log(id);
-      console.log(status == 2)
-      this.getExampleConfirm(id);
+    openConfirmBox(id,status,type) {
+      if(type == 2){
+        this.modelShow = true;
+        this.astatus = status;
+        this.getExampleConfirm(id);
+      }else{
+        this.$message.warning('Our team is processing your awesome design, it will be available for review shortly!')
+      }
     },
     getExampleConfirm(id) {
       exampleConfirm(id).then(res => {

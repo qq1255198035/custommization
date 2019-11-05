@@ -81,7 +81,6 @@ export default {
             if(res.result == 1){
               this.$router.push({path:'/neworder'});
             }else if(res.result == 0){
-              //this.$message.error('Sorry,Not examined and approved');
               let that = this;
               this.$error({
                 title: 'Error',
@@ -92,7 +91,6 @@ export default {
                 },
               });
             }else if(res.result == 2){
-              //this.$message.error('Sorry,Failure to pass the examination and approval');
               let that = this;
               this.$error({
                 title: 'Error',

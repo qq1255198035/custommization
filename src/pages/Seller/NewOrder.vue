@@ -204,7 +204,7 @@
                                                 <span style="min-width: 52px;">Step 1：</span>
                                                 <div>
                                                     <p>
-                                                        <a-checkbox @change="addName">ADD A NAME</a-checkbox>
+                                                        <a-checkbox @change="addName">ADD a name</a-checkbox>
                                                     </p>
                                                     <p>
                                                         <a-checkbox @change="addNumber">Add a number</a-checkbox>
@@ -229,7 +229,7 @@
                                                 </div>
                                             </dd>
                                             <dd>
-                                                <span>HEIGHT：</span>
+                                                <span>Height：</span>
                                                 <div>
                                                     <p>
                                                         <a-select defaultValue="6cm" style="width: 95%;" @change="changeNameSize" :disabled="!addNameData || keyId !== 'Name'">
@@ -266,7 +266,7 @@
                                                 </div>
                                             </dd>
                                             <dd>
-                                                <span>COLOR：</span>
+                                                <span>Color：</span>
                                                 <div class="color-picker">
                                                     <p>
                                                         {{nameColorName}}<span :style="{backgroundColor: nameColor}" @click="openChangeColorBox(5,'Name Color')"></span>
@@ -678,6 +678,7 @@
                             :fileList="fileList"
                             :beforeUpload="beforeUploadEx"
                             @change="handleChange"
+                            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                             accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif"
                             v-decorator="['img',{rules: [{ required: true, message: 'Please upload pictures！' }]}]"
                             >
@@ -887,7 +888,7 @@ export default {
             // 改变颜色盒子标题
             colorTitle:'',
             // 文字阴影样式开始
-            Shadow1:0,
+            Shadow1: 15,
             shadowColorName: '',
             shadowColor: '',
             // 文字阴影样式结束
@@ -929,7 +930,7 @@ export default {
             visibletype:-1,
             form: this.$form.createForm(this),
             // 描边样式
-            strokeWidth:0,
+            strokeWidth:2,
             strokeColor: '',
             strokeColorName: '',
             nameFontFamily: 'NBA-Hawks',
@@ -1486,6 +1487,8 @@ export default {
                             }
                         }
                         that.myCanvas.add(imgInstance).setActiveObject(imgInstance);
+                        imgInstance.setControlVisible('tr',false);
+                        imgInstance.setControlVisible('bl',false);
                         that.myCanvas.requestRenderAll();
                         queryByUrl(res.result).then(res => {
                             console.log(res)
@@ -1553,7 +1556,6 @@ export default {
                     this.$message.success('Successful！')
                     if(res.result){
                         this.designId = res.result;
-                        this.remark = '';
                     }
                 }
             })
@@ -2394,6 +2396,8 @@ export default {
                 }
                 that.myCanvas.add(imgInstance);
                 that.myCanvas.setActiveObject(imgInstance);
+                imgInstance.setControlVisible('tr',false);
+                imgInstance.setControlVisible('bl',false);
                 that.myCanvas.requestRenderAll();
                 that.liClick = 1;
                 that.visibletype = 10;
@@ -2664,26 +2668,64 @@ export default {
                 this.colorList = res.result
                 let colors = this.colorList.list;
                 if(key == 5){
-                    console.log(this.keyId)
                     if(this.addNameData){
-                        if(this.keyId == 'Name'){
-                            this.visibletype = 8;
-                            this.colorTitle = title;
-                            this.colorKey = key;
+                        if(this.namePosition == 0){
+                            this.myCanvas = this.myCanvas1;
+                            let items = this.myCanvas.getObjects();
+                            console.log(items)
+                            let a = items.filter(item => {
+                                return item.myId == 'Name'
+                            })
+                            console.log(a[0])
+                            this.myCanvas.setActiveObject(a[0]);
+                            this.myCanvas.renderAll();
+                            this.designModel = 0;
+                            
                         }else{
-                            this.$message.error('Please select name first.')
+                            this.myCanvas = this.myCanvas2;
+                            this.designModel = 1;
+                            let items = this.myCanvas.getObjects();
+                            console.log(items)
+                            let a = items.filter(item => {
+                                return item.myId == 'Name'
+                            })
+                            console.log(a[0])
+                            this.myCanvas.setActiveObject(a[0]);
+                            this.myCanvas.renderAll();
                         }
+                        this.visibletype = 8;
+                        this.colorTitle = title;
+                        this.colorKey = key;
+                        
                     }
                 }else if(key == 6){
                     if(this.addNumberData){
-                        console.log(this.keyId)
-                        if(this.keyId == 'Number'){
-                            this.visibletype = 8;
-                            this.colorTitle = title;
-                            this.colorKey = key;
+                        if(this.numberPosition == 0){
+                            this.myCanvas = this.myCanvas1;
+                            let items = this.myCanvas.getObjects();
+                            console.log(items)
+                            let a = items.filter(item => {
+                                return item.myId == 'Number'
+                            })
+                            console.log(a[0])
+                            this.myCanvas.setActiveObject(a[0]);
+                            this.myCanvas.renderAll();
+                            this.designModel = 0;
                         }else{
-                            this.$message.error('Please select number first.')
+                            this.myCanvas = this.myCanvas2;
+                            this.designModel = 1;
+                            let items = this.myCanvas.getObjects();
+                            console.log(items)
+                            let a = items.filter(item => {
+                                return item.myId == 'Number'
+                            })
+                            console.log(a[0])
+                            this.myCanvas.setActiveObject(a[0]);
+                            this.myCanvas.renderAll();
                         }
+                        this.visibletype = 8;
+                        this.colorTitle = title;
+                        this.colorKey = key;
                     }
                 }else if(key == 2){
                     //后加 不严谨
@@ -2712,6 +2754,7 @@ export default {
                         this.visibletype = 8;
                         this.colorTitle = title;
                         this.colorKey = key;
+                        this.strokeWidth = 2;
                         if(this.strokeColor){
                             for(let i = 0; i < colors.length; i++) {
                                 if (colors[i].itemValue === this.strokeColor) {
@@ -2728,6 +2771,7 @@ export default {
                         this.visibletype = 8;
                         this.colorTitle = title;
                         this.colorKey = key;
+                        this.Shadow1 = 15;
                         if(this.shadowColor){
                             for(let i = 0; i < colors.length; i++) {
                                 if (colors[i].itemValue === this.shadowColor) {
@@ -2876,23 +2920,14 @@ export default {
                 br: {
                     action: "scale"
                 },
-                ml:{
-                    action: "scale"
-                },
-                mr:{
-                    action: "scale"
-                },
-                mb:{
-                    action: "scale"
-                },
                 tl: {
-                        action: function(e, target) {
-                            that.myCanvas.remove(target);
-                        },
-                        cursor: "pointer"
+                    action: function(e, target) {
+                        that.myCanvas.remove(target);
+                    },
+                    cursor: "pointer"
                 },
                 mtr: {
-                        action: "rotate"
+                    action: "rotate"
                 }
             });
         },

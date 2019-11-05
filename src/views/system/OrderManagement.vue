@@ -407,9 +407,6 @@ export default {
         query: {id: data}
       })
     },
-    passwordModalOk() {
-      //TODO 密码修改完成 不需要刷新页面，可以把datasource中的数据更新一下
-    },
     getCheckOutOrders(pageNo,content,status){
       checkOutOrders(pageNo,content,status).then(res => {
         console.log(res)

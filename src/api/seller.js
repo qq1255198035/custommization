@@ -702,3 +702,45 @@ export function queryByUrl(url) {
         data:qs.stringify({url:url})
     })
 }
+
+export function sysgoodsList(pageNo,name) {
+    return axios({
+        url: '/system/jeecgGoods/goodsList',
+        method: 'post',
+        data:qs.stringify({pageNo: pageNo,pageSize: 10,name: name})
+    })
+}
+
+export function syscategoryList() {
+    return axios({
+        url: '/system/jeecgGoods/chooseCategory',
+        method: 'post',
+    })
+}
+
+export function proTypeList(name) {
+    return axios({
+        url: '/system/jeecgGoods/chooseCategoryList',
+        method: 'post',
+        data:qs.stringify({name: name})
+    })
+}
+
+export function delProType(id) {
+    return axios({
+        url: '/system/jeecgCategory/delete',
+        method: 'post',
+        data:qs.stringify({id: id})
+    })
+}
+
+export function addProType(pid,level,name,frontDesc) {
+    return axios({
+        url: '/system/jeecgCategory/add',
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json;charset-UTF-8'
+        },
+        data: JSON.stringify({pid: pid,level:level,name:name,frontDesc:frontDesc})
+    })
+}

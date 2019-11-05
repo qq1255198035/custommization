@@ -1,9 +1,10 @@
 <template>
   <div id="GoodsManagement">
-    <div class="table-page-search-wrapper">
+    <my-title :title="'商品列表'" :fontsize="20"></my-title>
+    <div class="table-page-search-wrapper" style="margin-top: 20px;">
       <a-form layout="inline">
         <a-row style="padding-left: 20px;line-height: 39px;">
-          <a-col :md="6">
+          <a-col :md="7">
             <a-form-item label="商品类型">
               <a-input placeholder="请输入名称" v-model="queryParam.name"></a-input>
             </a-form-item>
@@ -11,10 +12,9 @@
           <a-col :md="5">
             <span style="float: left;overflow: hidden;" class="table-page-search-submitButtons">
               <a-button type="primary" @click="searchQuery" icon="search">查询</a-button>
-              <a-button type="primary" @click="searchReset" icon="reload" style="margin-left: 8px">重置</a-button>
             </span>
           </a-col>
-          <a-col :md="8">
+          <a-col :md="12" style="text-align:right;">
             <a-button type="primary" icon="plus">添加</a-button>
           </a-col>
         </a-row>
@@ -25,7 +25,13 @@
       :columns="columns"
       :dataSource="data"
       :pagination="ipagination"
+      :loading="loading"
+      @change="handleTableChange"
+      rowKey="id"
     >
+    <p slot="isOnSale" slot-scope="text, record" style="text-align: center;">
+      {{ text ? '是' : '否'}}
+    </p>
     <span slot="action" slot-scope="text, record">
         <a-dropdown>
           <a class="ant-dropdown-link" style="color: #333;">
@@ -49,34 +55,37 @@
   </div>
 </template>
 <script>
+import MyTitle from "@/components/MyTitle/MyTitle";
+import { sysgoodsList } from "@/api/seller"
   const columns = [
     {
-      title: '商品类型',
-      dataIndex: 'category_id',
+      title: '商品编号',
+      dataIndex: 'code',
     },
     {
       title: '商品名称',
       dataIndex: 'name',
     },
     {
-      title: '最小订货量',
-      dataIndex: 'min_order',
+      title: '类别',
+      dataIndex: 'categoryName',
     },
     {
-      title: '添加日期',
-      dataIndex: 'create_time',
-    },
-    {
-      title: '零售价格',
+      title: '价格',
       dataIndex: 'price',
     },
     {
-      title: '最高价格',
-      dataIndex: 'max_price',
+      title: '最小订货量',
+      dataIndex: 'minOrder',
     },
     {
-      title: '商品简介',
-      dataIndex: 'goods_brief',
+      title: '生产时间（天）',
+      dataIndex: 'productionTime',
+    },
+    {
+      title: '是否在售',
+      dataIndex: 'isOnSale',
+      scopedSlots: { customRender: 'isOnSale' }
     },
     {
       title: '操作',
@@ -85,25 +94,10 @@
       align: 'center'
     }
   ];
-
-  const data = [];
-  for (let i = 0; i < 46; i++) {
-    data.push({
-      key: i,
-      category_id: '校服',
-      name: `Edward King ${i}`,
-      create_time: '2019-10-12',
-      price: 110,
-      max_price:11,
-      goods_brief: '11',
-      min_order: 10,
-    });
-  }
-
   export default {
     data() {
       return {
-        data,
+        data:[],
         columns,
         //selectedRowKeys: [],
         queryParam: {
@@ -118,36 +112,46 @@
             return range[0] + "-" + range[1] + " 共" + total + "条"
           },
           showQuickJumper: true,
-          total: 47
+          total: 0
         },
+        current: 1
       };
     },
+    components:{
+      MyTitle
+    },
     computed: {
-      // hasSelected() {
-      //   return this.selectedRowKeys.length > 0;
-      // },
+      
+    },
+    mounted(){
+      this.getSysgoodsList(1,'');
     },
     methods: {
       searchQuery(){
         this.loading = true;
-        this.getDealerList(this.queryParam.name,this.queryParam.status,1)
+        this.getSysgoodsList(1,this.queryParam.name);
       },
-      searchReset(){
-        this.queryParam.name = '';
-        this.queryParam.status = '';
-        this.getDealerList('','',1)
+      getSysgoodsList(pageNo,name){
+        sysgoodsList(pageNo,name).then(res => {
+          console.log(res)
+          this.data = res.records;
+          this.ipagination.total = res.total;
+          this.loading = false
+        })
       },
-      // onSelectChange(selectedRowKeys,selectedRows) {
-      //   console.log('selectedRowKeys changed: ', selectedRowKeys);
-      //   console.log(selectedRows);
-      //   this.selectedRowKeys = selectedRowKeys;
-      // },
+      handleTableChange(pagination) {
+        console.log(pagination)
+        this.ipagination = pagination;
+        this.current = pagination.current;
+        this.loading = true;
+        this.getSysgoodsList(pagination.current,this.queryParam.name)
+      },
     },
   };
 </script>
 <style lang="less" scoped>
 #GoodsManagement{
-  padding: 30px 20px 0;
+  padding: 0 20px;
   .table-page-search-wrapper{
     padding-bottom: 20px;
   }

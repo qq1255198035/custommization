@@ -1,203 +1,196 @@
 <template>
-  <a-card :bordered="false">
-    <!-- 抽屉 -->
+  <div id="DictItemList">
+    <my-title :title="'商品类别'"></my-title>
+    <a-form layout="inline">
+      <a-row style="line-height: 39px;padding-top: 20px;">
+        <a-col :md="7">
+          <a-form-item label="商品类型">
+            <a-input placeholder="请输入名称" v-model="name"></a-input>
+          </a-form-item>
+        </a-col>
+        <a-col :md="5">
+          <span style="float: left;overflow: hidden;" class="table-page-search-submitButtons">
+            <a-button type="primary" @click="searchQuery" icon="search">查询</a-button>
+          </span>
+        </a-col>
+        <a-col :md="12" style="text-align:right;">
+          <a-button type="primary" icon="plus" @click="showDrawer">新 增</a-button>
+        </a-col>
+      </a-row>
+    </a-form>
+    <a-table :columns="columns" :dataSource="data" :pagination="false" rowKey="key">
+      <span slot="action" slot-scope="text, record">
+          <a style="color: #33b8b3;" @click="delType(record.value)">删除</a>
+      </span>  
+    </a-table>
     <a-drawer
-      title="字典列表"
-      :width="screenWidth"
+      title="新增"
+      :width="360"
       @close="onClose"
       :visible="visible"
+      :wrapStyle="{height: 'calc(100% - 108px)',overflow: 'auto',paddingBottom: '108px'}"
     >
-      <!-- 抽屉内容的border -->
+     <!-- hideRequiredMark 隐藏星号-->
+      <a-form :form="form" layout="vertical">
+        <a-form-item label="类型名称">
+          <a-radio-group v-model="value">
+            <a-radio :value="1">一级菜单</a-radio>
+            <a-radio :value="2">二级菜单</a-radio>
+          </a-radio-group>
+        </a-form-item>
+        <a-form-item label="类型名称">
+          <a-input placeholder="类型名称" v-decorator="['name', { rules: [{ required: true, message: '请填写类型名称!' }] }]" />
+        </a-form-item>
+        <a-form-item label="商品类别" v-if="value == 2">
+          <a-tree-select
+            style="width: 300px"
+            :dropdownStyle="{ maxHeight: '400px', overflow: 'auto' }"
+            :treeData="treeData"
+            placeholder="请选择父级类型"
+            v-decorator="['type', { rules: [{ required: true, message: '请选择父级类型!' }] }]"
+          >
+          </a-tree-select>
+        </a-form-item>
+        <a-form-item label="类型描述">
+          <a-textarea placeholder="类型描述" v-decorator="['desc', { rules: [{ required: true, message: '请填写类型描述!' }] }]" />
+        </a-form-item>
+      </a-form>
       <div
         :style="{
-          padding:'10px',
-          border: '1px solid #e9e9e9',
+          position: 'absolute',
+          left: 0,
+          bottom: 0,
+          width: '100%',
+          borderTop: '1px solid #e9e9e9',
+          padding: '10px 16px',
           background: '#fff',
-        }">
-
-        <div class="table-page-search-wrapper">
-          <a-form layout="inline" :form="form">
-            <a-row :gutter="10">
-              <a-col :md="8" :sm="12">
-                <a-form-item label="名称">
-                  <a-input style="width: 120px;" placeholder="请输入名称" v-model="queryParam.itemText"></a-input>
-                </a-form-item>
-              </a-col>
-              <a-col :md="9" :sm="24">
-                <a-form-item label="状态" style="width: 170px" :labelCol="labelCol" :wrapperCol="wrapperCol">
-                  <a-select
-                    placeholder="请选择"
-                    v-model="queryParam.status"
-                  >
-                    <a-select-option value="1">正常</a-select-option>
-                    <a-select-option value="0">禁用</a-select-option>
-                  </a-select>
-                </a-form-item>
-              </a-col>
-              <a-col :md="7" :sm="24">
-              <span style="float: left;" class="table-page-search-submitButtons">
-                <a-button type="primary" @click="searchQuery">搜索</a-button>
-                <a-button type="primary" @click="searchReset" style="margin-left: 8px">重置</a-button>
-              </span>
-              </a-col>
-            </a-row>
-            <a-row>
-              <a-col :md="2" :sm="24">
-                <a-button style="margin-bottom: 10px" type="primary" @click="handleAdd">新增</a-button>
-              </a-col>
-            </a-row>
-          </a-form>
-        </div>
-        <div>
-          <a-table
-            ref="table"
-            rowKey="id"
-            size="middle"
-            :columns="columns"
-            :dataSource="dataSource"
-            :pagination="ipagination"
-            :loading="loading"
-            @change="handleTableChange"
-          >
-
-          <span slot="action" slot-scope="text, record">
-            <a @click="handleEdit(record)">编辑</a>
-            <a-divider type="vertical"/>
-            <a-popconfirm title="确定删除吗?" @confirm="() => handleDelete(record.id)">
-              <a>删除</a>
-            </a-popconfirm>
-          </span>
-
-          </a-table>
-        </div>
+          textAlign: 'right',
+        }"
+      >
+        <a-button :style="{marginRight: '8px'}" @click="onClose">
+          取消
+        </a-button>
+        <a-button @click="save" type="primary">提交</a-button>
       </div>
     </a-drawer>
-    <dict-item-modal ref="modalForm" @ok="modalFormOk"></dict-item-modal> <!-- 字典数据 -->
-  </a-card>
+  </div>
 </template>
 
 <script>
-  import pick from 'lodash.pick'
-  import {filterObj} from '@/utils/util';
-  import DictItemModal from './modules/DictItemModal'
-  import {JeecgListMixin} from '@/mixins/JeecgListMixin'
-
-  export default {
-    name: "DictItemList",
-    mixins: [JeecgListMixin],
-    components: {DictItemModal},
-    data() {
-      return {
-        columns: [
-          {
-            title: '名称',
-            align: "center",
-            dataIndex: 'itemText',
-          },
-          {
-            title: '数据值',
-            align: "center",
-            dataIndex: 'itemValue',
-          },
-          {
-            title: '操作',
-            dataIndex: 'action',
-            align: "center",
-            scopedSlots: {customRender: 'action'},
+import MyTitle from '@/components/MyTitle/MyTitle'; 
+import { proTypeList,delProType,syscategoryList,addProType} from '@/api/seller';
+export default {
+  data() {
+    return {
+      name:'',
+      treeData:[],
+      value: 1,
+      form: this.$form.createForm(this),
+      visible: false,
+      columns:[
+        {
+          title: 'ID',
+          dataIndex: 'value',
+          key: 'value',
+        },
+        {
+          title: '分类名称',
+          dataIndex: 'label',
+          key: 'label',
+        },
+        {
+          title: '描述',
+          dataIndex: 'frontDesc',
+          key: 'frontDesc',
+        },
+        {
+          title: '操作',
+          dataIndex: 'action',
+          scopedSlots: { customRender: 'action' }
+        }
+      ],
+      data:[
+        
+      ]
+    };
+  },
+  components:{
+    MyTitle
+  },
+  mounted(){
+    this.getProTypeList(this.name);
+    this.getSyscategoryList();
+  },
+  methods: {
+    save(){
+      this.form.validateFields((err, values) => {
+        if(!err){
+          if(this.value == 1){
+            addProType('',1,values.name,values.desc).then(res => {
+              console.log(res,'1ji');
+              this.visible = false;
+              this.$message.success('添加成功！')
+              this.getProTypeList('');
+            })
+          }else{
+            addProType(values.type,2,values.name,values.desc).then(res => {
+              console.log(res,'2ji');
+              this.visible = false;
+              this.$message.success('添加成功！')
+              this.getProTypeList('');
+            })
           }
-        ],
-        queryParam: {
-          dictId: "",
-          dictName: "",
-          itemText: "",
-          delFlag: "1",
-          status: [],
-        },
-        title: "操作",
-        visible: false,
-        screenWidth: 800,
-        model: {},
-        dictId: "",
-        status: 1,
-        labelCol: {
-          xs: {span: 5},
-          sm: {span: 5},
-        },
-        wrapperCol: {
-          xs: {span: 12},
-          sm: {span: 12},
-        },
-        form: this.$form.createForm(this),
-        validatorRules: {
-          itemText: {rules: [{required: true, message: '请输入名称!'}]},
-          itemValue: {rules: [{required: true, message: '请输入数据值!'}]},
-        },
-        url: {
-          list: "/sys/dictItem/list",
-          delete: "/sys/dictItem/delete",
-          deleteBatch: "/sys/dictItem/deleteBatch",
-        },
-      }
-    },
-    created() {
-      // 当页面初始化时,根据屏幕大小来给抽屉设置宽度
-      this.resetScreenSize();
-    },
-    methods: {
-      add(dictId) {
-        this.dictId = dictId;
-        this.edit({});
-      },
-      edit(record) {
-        if (record.id) {
-          this.dictId = record.id;
         }
-        this.queryParam = {}
-        this.form.resetFields();
-        this.model = Object.assign({}, record);
-        this.model.dictId = this.dictId;
-        this.model.status = this.status;
-        this.visible = true;
-        this.$nextTick(() => {
-          this.form.setFieldsValue(pick(this.model, 'itemText', 'itemValue'))
-        });
-        // 当其它模块调用该模块时,调用此方法加载字典数据
-        this.loadData();
-      },
-
-      getQueryParams() {
-        var param = Object.assign({}, this.queryParam);
-        param.dictId = this.dictId;
-        param.field = this.getQueryField();
-        param.pageNo = this.ipagination.current;
-        param.pageSize = this.ipagination.pageSize;
-        return filterObj(param);
-      },
-
-      // 添加字典数据
-      handleAdd() {
-        this.$refs.modalForm.add(this.dictId);
-        this.$refs.modalForm.title = "新增";
-      },
-      showDrawer() {
-        this.visible = true
-      },
-      onClose() {
-        this.visible = false
-        this.form.resetFields();
-        this.dataSource = [];
-      },
-      // 抽屉的宽度随着屏幕大小来改变
-      resetScreenSize() {
-        let screenWidth = document.body.clientWidth;
-        if (screenWidth < 600) {
-          this.screenWidth = screenWidth;
-        } else {
-          this.screenWidth = 600;
+      })
+    },
+    getSyscategoryList(){
+      syscategoryList().then(res => {
+        console.log(res)
+        if(res.code == 0){
+          this.treeData = res.result
         }
-      },
+      })
+    },
+    showDrawer() {
+      this.visible = true;
+    },
+    onClose() {
+      this.visible = false;
+    },
+    delType(id){
+      console.log(id)
+      delProType(id).then(res => {
+        console.log(res)
+        if(res.code == 200){
+          this.$message.success(res.message);
+          this.getProTypeList(this.name)
+        }
+      })
+    },
+    searchQuery(){
+      this.getProTypeList(this.name)
+    },
+    getProTypeList(name){
+      proTypeList(name).then(res => {
+        console.log(res)
+        if(res.code == 0){
+          this.data = res.result;
+          this.data.forEach((item) => {
+            let key = 'key';
+            item[key] = item.value;
+            item.children.forEach((aitem) => {
+              let key1 = 'key';
+              aitem[key1] = aitem.value;
+            })
+          })
+        }
+      })
     }
   }
+}
 </script>
-<style scoped>
+<style lang="less" scoped>
+#DictItemList{
+  padding: 0 20px;
+}
 </style>

@@ -41,6 +41,7 @@ const constantRouterComponents = {
   RoleUserList:() => import("@/views/system/RoleUserList"), //角色维护
   UserAnnouncementList:() => import("@/views/system/UserAnnouncementList"), //我的消息
   DictList:() => import("@/views/system/DictList"), //商品管理，添加修改
+  DictItemList:() => import("@/views/system/DictItemList"),
   //SysAnnouncementList:() => import("@/views/system/SysAnnouncementList"), //系统通告
   
   //format: () => import("@/views/management/format/format"), //商品类别
