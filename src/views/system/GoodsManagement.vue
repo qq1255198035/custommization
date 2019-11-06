@@ -15,7 +15,7 @@
             </span>
           </a-col>
           <a-col :md="12" style="text-align:right;">
-            <a-button type="primary" icon="plus">添加</a-button>
+            <a-button type="primary" icon="plus" @click="$router.push({path: '/management/DictList'})">添加</a-button>
           </a-col>
         </a-row>
       </a-form>
@@ -29,7 +29,8 @@
       @change="handleTableChange"
       rowKey="id"
     >
-    <p slot="isOnSale" slot-scope="text, record" style="text-align: center;">
+    
+    <p slot="isOnSale" slot-scope="text" style="text-align: center;">
       {{ text ? '是' : '否'}}
     </p>
     <span slot="action" slot-scope="text, record">
@@ -40,7 +41,7 @@
           <a-menu slot="overlay">
             <!-- record.id -->
             <a-menu-item>
-              <a href="javascript:;" style="color: #333;">修改</a>
+              <a href="javascript:;" style="color: #333;" @click="$router.push({path: '/management/DictList',query:{id: record.id}})">修改</a>
             </a-menu-item>
             <a-menu-item>
               <a href="javascript:;" style="color: #333;">颜色</a>
@@ -85,7 +86,8 @@ import { sysgoodsList } from "@/api/seller"
     {
       title: '是否在售',
       dataIndex: 'isOnSale',
-      scopedSlots: { customRender: 'isOnSale' }
+      scopedSlots: { customRender: 'isOnSale' },
+      align: 'center'
     },
     {
       title: '操作',

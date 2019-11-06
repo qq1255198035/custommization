@@ -46,6 +46,7 @@
                 style="padding: 0;"
                 @cancel="closeDesignBox"
                 :getContainer="Ele"
+                :maskClosable="false"
             >
                 <template slot="title">
                     <div>
@@ -180,10 +181,9 @@
                                         <div  style="padding-bottom: 10px; border-bottom: 1px solid #ccc;">
                                             <a-input-search @search="onSearch"/>
                                         </div>
-                                        
                                         <dl v-for="(img,index) in imgs" :key="img.catalog">
                                             <dt>
-                                                <p @click="moreImgs(index)">
+                                                <p @click="moreImgs(index,img.catalog)">
                                                     <span>{{img.catalog}}</span>
                                                     <a-icon type="right" />
                                                 </p>
@@ -192,8 +192,6 @@
                                                 <img :src="item.pic_url" alt="">
                                             </dd>
                                         </dl>
-                                        
-
                                     </div>
                                     <div class="tool-box8" v-show="visibletype == 2">
                                         <dl>
@@ -216,14 +214,14 @@
                                                 <div>
                                                     <p>
                                                         <a-select defaultValue="0" style="width: 95%;" @change="changeNamePosition" :disabled="!addNameData">
-                                                            <a-select-option value="0">Chest</a-select-option>
-                                                            <a-select-option value="1">BACK</a-select-option>
+                                                            <a-select-option value="0">Front</a-select-option>
+                                                            <a-select-option value="1">Back</a-select-option>
                                                         </a-select>
                                                     </p>
                                                     <p>
                                                         <a-select defaultValue="0" style="width: 100%;" @change="changeNumberPosition" :disabled="!addNumberData">
-                                                            <a-select-option value="0">Chest</a-select-option>
-                                                            <a-select-option value="1">BACK</a-select-option>
+                                                            <a-select-option value="0">Front</a-select-option>
+                                                            <a-select-option value="1">Back</a-select-option>
                                                         </a-select>
                                                     </p>
                                                 </div>
@@ -573,8 +571,9 @@
 
                                     </div>
                                     <div class="tool-box2" v-show="visibletype == 10">
-                                        <h2 style="color: #333;text-align: left; border-bottom: 1px solid #333; padding-bottom: 5px;">
+                                        <h2 style="color: #33b8b3;text-align: left; border-bottom: 1px solid #333; padding-bottom: 5px;font-size: 18px;">
                                             <a-icon type="left" style="cursor: pointer;" @click="visibletype = 1"/>
+                                            Edit Art
                                         </h2>
                                         <ul class="first">
                                             <li class="set-obj-center">
@@ -610,6 +609,7 @@
                                         <h2 style="color: #333;text-align: left; border-bottom: 1px solid #333; padding-bottom: 5px;">
                                             <a-icon type="arrow-left" style="cursor: pointer;" @click="visibletype = 1"/>
                                         </h2>
+                                        <h2 style="color:#33b8b3; font-size: 18px;">{{imgTitle}}</h2>
                                         <ul>
                                             <li v-for="(item,index) in imgs1" :key="index" @click="addImg(item.pic_url)">
                                                 <img :src="item.pic_url" alt="">
@@ -858,6 +858,7 @@ export default {
     },
     data () {
         return {
+            imgTitle: '',
             editText: '',
             sizePicUrl:'',
             show: false,
@@ -2238,9 +2239,9 @@ export default {
             }
 
         },
-        moreImgs(index){
+        moreImgs(index,title){
             this.visibletype = 11;
-            
+            this.imgTitle = title;
             this.imgs1 = this.imgs[index].pic
             console.log(this.imgs1)
         },

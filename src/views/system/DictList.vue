@@ -34,7 +34,7 @@
                     accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif"
                     :beforeUpload="handleChangeDesign1"
                     :showUploadList="false"
-                    v-decorator="['frontimg', { rules: [{ required: false, message: '请填上传正面图片!' }] }]"
+                    v-decorator="['frontimg', { rules: [{ required: true, message: '请填上传正面图片!' }] }]"
                   >
                     <img v-if="bgimgs[0].url" :src="bgimgs[0].url" alt="avatar" />
                     <div v-else>
@@ -49,7 +49,7 @@
                     accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif"
                     :beforeUpload="handleChangeDesign2"
                     :showUploadList="false"
-                    v-decorator="['backimg', { rules: [{ required: false, message: '请填上传背面图片!' }] }]"
+                    v-decorator="['backimg', { rules: [{ required: true, message: '请填上传背面图片!' }] }]"
                   >
                     <img v-if="bgimgs[1].url" :src="bgimgs[1].url" alt="avatar" />
                     <div v-else>
@@ -64,7 +64,7 @@
                     accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif"
                     :beforeUpload="handleChangeDesign3"
                     :showUploadList="false"
-                    v-decorator="['leftimg', { rules: [{ required: false, message: '请填上传左面图片!' }] }]"
+                    v-decorator="['leftimg', { rules: [{ required: true, message: '请填上传左面图片!' }] }]"
                   >
                     <img v-if="bgimgs[2].url" :src="bgimgs[2].url" alt="avatar" />
                     <div v-else>
@@ -79,7 +79,7 @@
                     accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif"
                     :beforeUpload="handleChangeDesign4"
                     :showUploadList="false"
-                    v-decorator="['rightimg', { rules: [{ required: false, message: '请填上传右面图片!' }] }]"
+                    v-decorator="['rightimg', { rules: [{ required: true, message: '请填上传右面图片!' }] }]"
                   >
                     <img v-if="bgimgs[3].url" :src="bgimgs[3].url" alt="avatar" />
                     <div v-else>
@@ -224,9 +224,9 @@
                 </a-list-item>
               </a-list>
             </div>
-            <div class="submitbtn-box">
+            <!-- <div class="submitbtn-box">
               <a-button type="primary" @click="postDesignSize">保存</a-button>
-            </div>
+            </div> -->
           </div>
         </div>
       </a-tab-pane>
@@ -236,7 +236,7 @@
             <a-input v-decorator="['name', { rules: [{ required: true, message: '请填写商品名称!' }] }]"/>
           </a-form-item>
           <a-form-item label="商品编号">
-            <a-input-number style="width: 40%;" v-decorator="['number', { rules: [{ required: true, message: '请填写商品名称!' }] }]"/>
+            <a-input style="width: 40%;" v-decorator="['number', { rules: [{ required: true, message: '请填写商品名称!' }] }]"/>
           </a-form-item>
           <a-form-item label="商品类别" class="cascader">
             <a-cascader :options="options" @change="onChange" placeholder="Please select" 
@@ -317,6 +317,7 @@
             </a-upload>
           </a-form-item>
         </a-form>
+        <Editor></Editor>
       </a-tab-pane>
       <a-tab-pane tab="其他信息" key="4" forceRender>
         <div class="tab-pane-2">
@@ -327,25 +328,25 @@
               </span>
               <a-radio-group v-model="value1">
                 <a-radio :value="1">是</a-radio>
-                <a-radio :value="2">否</a-radio>
+                <a-radio :value="0">否</a-radio>
               </a-radio-group>
             </li>
             <li>
               <span>
                 是否热销
               </span>
-              <a-radio-group v-model="value1">
+              <a-radio-group v-model="value2">
                 <a-radio :value="1">是</a-radio>
-                <a-radio :value="2">否</a-radio>
+                <a-radio :value="0">否</a-radio>
               </a-radio-group>
             </li>
             <li>
               <span>
                 是否纯色
               </span>
-              <a-radio-group v-model="value1">
-                <a-radio :value="1">是</a-radio>
-                <a-radio :value="2">否</a-radio>
+              <a-radio-group v-model="value3">
+                <a-radio :value="0">是</a-radio>
+                <a-radio :value="1">否</a-radio>
               </a-radio-group>
             </li>
           </ul>
@@ -361,36 +362,6 @@
       </a-tab-pane>
       <a-button slot="tabBarExtraContent" @click="handleSubmit">保 存</a-button>
     </a-tabs>
-    <!-- <a-drawer
-      title="修改区域"
-      placement="right"
-      :closable="false"
-      :visible="visible"
-      :mask="false"
-      :width="300"
-    >
-      <a-form layout="vertical" class="edit-form-box">
-        <a-form-item label="Name">
-          <a-input placeholder="输入名字" v-model="editName" />
-        </a-form-item>
-        <a-form-item label="Width">
-          <a-input-number placeholder="输入宽度" v-model="editWidth" @change="changeSomething($event,'width')" :min="0"/>
-        </a-form-item>
-        <a-form-item label="Height">
-          <a-input-number placeholder="输入高度" v-model="editHeight" @change="changeSomething($event,'height')" :min="0"/>
-        </a-form-item>
-        <a-form-item label="Left">
-          <a-input-number placeholder="输入左侧坐标值" v-model="editLeft" @change="changeSomething($event,'left')" :min="0"/>
-        </a-form-item>
-        <a-form-item label="Top">
-          <a-input-number placeholder="输入顶部坐标值" v-model="editTop" @change="changeSomething($event,'top')" :min="0"/>
-        </a-form-item>
-        <a-form-item>
-          <a-button @click="cancleEdit" style="margin-right: 10px;">取消</a-button>
-          <a-button type="primary" @click="confirmEdit">确 定</a-button>
-        </a-form-item>
-      </a-form>
-    </a-drawer> -->
   </div>
 </template>
 <script>
@@ -400,13 +371,16 @@ function getBase64(img, callback) {
   reader.readAsDataURL(img);
 }
 import { fabric } from 'fabric';
-import { sourceUpload,syscategoryList } from "@/api/seller";
+import { sourceUpload,syscategoryList,editProShow } from "@/api/seller";
+import Editor from '@/components/Editor/Editor'
 export default {
   data() {
     return {
       desc: '',
       keywords: '',
       value1: '',
+      value2: '',
+      value3: '',
       options:[],
       activeKey: '1',
       editName: '',
@@ -462,7 +436,8 @@ export default {
       dataList:{
         canvas1:[],canvas2:[],canvas3:[],canvas4:[]
       },
-      showList:[]
+      showList:[],
+      resData:{}
     };
   },
   
@@ -483,8 +458,111 @@ export default {
       this.monitorObjectScale(this.myCanvas4);
     })
     this.getSyscategoryList();
+    console.log(this.$route.query.id)
+    if(this.$route.query.id){
+      editProShow(this.$route.query.id).then(res => {
+        console.log(res);
+        if(res.code == 0){
+          this.resData = res.result;
+          this.setBoxSize1(res);
+          this.setBoxSize2(res);
+          this.setBoxSize3(res);
+          this.setBoxSize4(res);
+          this.showList = this.dataList.canvas1;
+          this.setformAndImg(res);
+          // this.loadFromJSON(this.myCanvas1,res.result.positiveDesignArea);
+          // this.loadFromJSON(this.myCanvas2,res.result.backDesignArea);
+          // this.loadFromJSON(this.myCanvas3,res.result.leftDesignArea);
+          // this.loadFromJSON(this.myCanvas4,res.result.rightDesignArea);
+          this.addFlag1 = false;
+          this.addFlag2 = false;
+          this.addFlag3 = false;
+          this.addFlag4 = false;
+        }
+        
+      })
+    }
+  },
+  components:{
+    Editor
   },
   methods: {
+    loadFromJSON (canvas,json) {
+      canvas.loadFromJSON(json, canvas.renderAll.bind(canvas), function (
+          o,
+          object
+      ) {
+          console.log(o,object)
+      });
+    },
+    setformAndImg(res){
+      this.bgimgs[0].url = res.result.positivePicUrl;
+      this.bgimgs[1].url = res.result.backPicUrl;
+      this.bgimgs[2].url = res.result.leftPicUrl;
+      this.bgimgs[3].url = res.result.rightPicUrl;
+      this.form.setFieldsValue({
+        frontimg: res.result.positivePicUrl,
+        backimg: res.result.backPicUrl,
+        leftimg: res.result.leftPicUrl,
+        rightimg: res.result.rightPicUrl,
+      })
+    },
+    setBoxSize4(res,canvas){
+      let arr1 = [{width: '',height: '',left: '',top: ''}];
+      let boxSizes = JSON.parse(res.result.boxSizes);
+      arr1[0].width = boxSizes.canvas4.width;
+      arr1[0].height = boxSizes.canvas4.height;
+      arr1[0].left = boxSizes.canvas4.left;
+      arr1[0].top = boxSizes.canvas4.top;
+      boxSizes.canvas4.list.forEach(item => {
+        item.left = item.left + arr1[0].left;
+        item.top = item.left + arr1[0].top
+        arr1.push(item)
+      });
+      this.dataList.canvas4 = arr1;
+    },
+    setBoxSize3(res,canvas){
+      let arr1 = [{width: '',height: '',left: '',top: ''}];
+      let boxSizes = JSON.parse(res.result.boxSizes);
+      arr1[0].width = boxSizes.canvas3.width;
+      arr1[0].height = boxSizes.canvas3.height;
+      arr1[0].left = boxSizes.canvas3.left;
+      arr1[0].top = boxSizes.canvas3.top;
+      boxSizes.canvas3.list.forEach(item => {
+        item.left = item.left + arr1[0].left;
+        item.top = item.left + arr1[0].top
+        arr1.push(item)
+      });
+      this.dataList.canvas3 = arr1;
+    },
+    setBoxSize2(res,canvas){
+      let arr1 = [{width: '',height: '',left: '',top: ''}];
+      let boxSizes = JSON.parse(res.result.boxSizes);
+      arr1[0].width = boxSizes.canvas2.width;
+      arr1[0].height = boxSizes.canvas2.height;
+      arr1[0].left = boxSizes.canvas2.left;
+      arr1[0].top = boxSizes.canvas2.top;
+      boxSizes.canvas2.list.forEach(item => {
+        item.left = item.left + arr1[0].left;
+        item.top = item.left + arr1[0].top
+        arr1.push(item)
+      });
+      this.dataList.canvas2 = arr1;
+    },
+    setBoxSize1(res,canvas){
+      let arr1 = [{width: '',height: '',left: '',top: ''}];
+      let boxSizes = JSON.parse(res.result.boxSizes);
+      arr1[0].width = boxSizes.canvas1.width;
+      arr1[0].height = boxSizes.canvas1.height;
+      arr1[0].left = boxSizes.canvas1.left;
+      arr1[0].top = boxSizes.canvas1.top;
+      boxSizes.canvas1.list.forEach(item => {
+        item.left = item.left + arr1[0].left;
+        item.top = item.left + arr1[0].top
+        arr1.push(item)
+      });
+      this.dataList.canvas1 = arr1;
+    },
     onChangeradio(e){
       console.log('radio checked', e.target.value);
     },
@@ -551,7 +629,7 @@ export default {
         item.left = item.left - params.canvas4.left;
         item.top = item.top - params.canvas4.top;
       })
-      console.log(json1,json2,json3,json4)
+      console.log(params,this.dataList)
     },
     onUnselected(object){
       object.on('mouse:down',(obj) => {
@@ -1020,7 +1098,7 @@ export default {
           if(this.designModel == 0){
             let calcHeight2 = this.dataList.canvas1[0].height + this.dataList.canvas1[0].top;
             let calcWidth2 = this.dataList.canvas1[0].width + this.dataList.canvas1[0].left;
-            if(calcWidth1 > calcWidth2 || calcHeight1 > calcHeight2 || values.left < this.dataList.canvas1[0].left || values.top < this.dataList.canvas1[0].top){
+            if(calcWidth1 > calcWidth2 || calcHeight1 > calcHeight2 || values.left1 < this.dataList.canvas1[0].left || values.top1 < this.dataList.canvas1[0].top){
               this.$message.error('您输入的值已超出限制区域，请重新输入！')
               return
             }
@@ -1028,7 +1106,7 @@ export default {
           }else if(this.designModel == 1){
             let calcHeight2 = this.dataList.canvas2[0].height + this.dataList.canvas2[0].top;
             let calcWidth2 = this.dataList.canvas2[0].width + this.dataList.canvas2[0].left;
-            if(calcWidth1 > calcWidth2 || calcHeight1 > calcHeight2 || values.left < this.dataList.canvas2[0].left || values.top < this.dataList.canvas2[0].top){
+            if(calcWidth1 > calcWidth2 || calcHeight1 > calcHeight2 || values.left1 < this.dataList.canvas2[0].left || values.top1 < this.dataList.canvas2[0].top){
               this.$message.error('您输入的值已超出限制区域，请重新输入！')
               return
             }
@@ -1036,7 +1114,7 @@ export default {
           }else if(this.designModel == 2){
             let calcHeight2 = this.dataList.canvas3[0].height + this.dataList.canvas3[0].top;
             let calcWidth2 = this.dataList.canvas3[0].width + this.dataList.canvas3[0].left;
-            if(calcWidth1 > calcWidth2 || calcHeight1 > calcHeight2 || values.left < this.dataList.canvas3[0].left || values.top < this.dataList.canvas3[0].top){
+            if(calcWidth1 > calcWidth2 || calcHeight1 > calcHeight2 || values.left1 < this.dataList.canvas3[0].left || values.top1 < this.dataList.canvas3[0].top){
               this.$message.error('您输入的值已超出限制区域，请重新输入！')
               return
             }
@@ -1044,7 +1122,7 @@ export default {
           }else if(this.designModel == 3){
             let calcHeight2 = this.dataList.canvas4[0].height + this.dataList.canvas4[0].top;
             let calcWidth2 = this.dataList.canvas4[0].width + this.dataList.canvas4[0].left;
-            if(calcWidth1 > calcWidth2 || calcHeight1 > calcHeight2 || values.left < this.dataList.canvas4[0].left || values.top < this.dataList.canvas4[0].top){
+            if(calcWidth1 > calcWidth2 || calcHeight1 > calcHeight2 || values.left1 < this.dataList.canvas4[0].left || values.top1 < this.dataList.canvas4[0].top){
               this.$message.error('您输入的值已超出限制区域，请重新输入！')
               return
             }
@@ -1253,14 +1331,44 @@ export default {
       }
     },
     handleSubmit() {
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          console.log('Received values of form: ', values);
-        }
-      });
+      // this.form.validateFields((err, values) => {
+      //   if (!err) {
+      //     console.log('Received values of form: ', values);
+      //   }
+      // });
     },
     callback(key) {
       console.log(key);
+      if(this.$route.query.id){
+        if(key == 2){
+          setTimeout(() => {
+            this.form.setFieldsValue({
+              name: this.resData.name,
+              number: this.resData.code,
+              protype: this.resData.category,
+              minprice: this.resData.minPrice,
+              maxprice: this.resData.maxPrice,
+              productionTime: this.resData.productionTime,
+              minProductionTime: this.resData.minProductionTime,
+              weight: this.resData.weight,
+              minOrder:this.resData.minOrder
+            })
+          }, 0);
+        }else if(key == 3){
+          this.imageUrl = this.resData.sizePicUrl;
+          this.form.setFieldsValue({
+            img: this.resData.sizePicUrl
+          })
+        }else if(key == 4){
+          this.value1 = this.resData.isOnSale;
+          this.value2 = this.resData.isHot;
+          this.value3 = this.resData.colorType;
+          this.keywords = this.resData.keywords;
+          this.desc = this.resData.goodsBrief;
+        }
+      }
+      
+      
     },
     sendKey(k){
       console.log(k);
@@ -1323,8 +1431,7 @@ export default {
         }
       }
       .list-box{
-        height: 291px;
-        overflow-y: scroll;
+        padding-bottom: 20px;
         &::-webkit-scrollbar {
           width: 6px;
           background-color: #fff;

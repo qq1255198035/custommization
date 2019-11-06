@@ -744,3 +744,11 @@ export function addProType(pid,level,name,frontDesc) {
         data: JSON.stringify({pid: pid,level:level,name:name,frontDesc:frontDesc})
     })
 }
+
+export function editProShow(id) {
+    return axios({
+        url: '/system/jeecgGoods/queryById',
+        method: 'post',
+        data:qs.stringify({id: id})
+    })
+}
