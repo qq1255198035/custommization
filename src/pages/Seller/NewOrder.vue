@@ -158,7 +158,7 @@
                                     <div class="tool-box6" v-show="visibletype == 1">
                                         <div class="upload-box">
                                             <h4>PLEASE SELECT THE FILE TO UPLOAD</h4>
-                                            <a-upload-dragger name="file" class="my-upload" :beforeUpload="beforeUpload" accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif" action="https://www.mocky.io/v2/5cc8019d300000980a055e76">
+                                            <a-upload-dragger name="file" class="my-upload" :beforeUpload="beforeUpload" accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif">
                                                     <p class="ant-upload-drag-icon">
                                                         <a-icon type="cloud-upload" />
                                                     </p>
@@ -1695,12 +1695,11 @@ export default {
                     okText: "Confirm",
                     cancelText: "Cancel",
                     onOk() {
-                        that.show = false;
-                        that.$router.push({path: '/neworder'})
+                        //that.show = false;
+                        // that.$router.push({path: '/neworder'})
                         window.location.reload();
                         
-                    },
-                    onCancel() {}
+                    }
                 });
             }else{
                 that.show = false;
@@ -2440,22 +2439,24 @@ export default {
             object.on("object:scaling",function(e){
                 var scaledObject = e.target;
                 scaledObject.lockScalingFlip = true;
-                var startX = scaledObject.getBoundingRect().left;
-                var startY = scaledObject.getBoundingRect().top;
+                scaledObject.minScaleLimit = 0.1;
+                var startX = scaledObject.getBoundingRect(true,true).left;
+                var startY = scaledObject.getBoundingRect(true,true).top;
                 var maxWidth = width - startX;// scaledObject.aCoords.tl.x;
                 var maxHeight = height -startY;
                 scaledObject.setCoords();
                 var isOnScreen = scaledObject.isContainedWithinRect({x:x,y:y},{x:width + x,y:height + y},true,true);
                 if(!isOnScreen) {
-                    var w = scaledObject.getBoundingRect().width;
-                    var h = scaledObject.getBoundingRect().height;
+                    var w = scaledObject.getBoundingRect(true,true).width;
+                    var h = scaledObject.getBoundingRect(true,true).height;
                     if( (maxHeight-h) < (maxWidth-w)){
                         scaledObject.scaleToHeight(height + y - startY - 1);
                     } else{
                         scaledObject.scaleToWidth(width + x - startX - 1);
                     }
+                    return false;
                 }
-                return true;
+                
             })
         },
         // 切换正反左右面
@@ -2625,8 +2626,10 @@ export default {
         // 左右垂直居中
         setObjCenter(){
             let t = this.myCanvas.getActiveObject();
-            t.center();
-            t.setCoords();
+            if(t){
+                t.center();
+                t.setCoords();
+            }
         },
 
         setTextalignLeft(){
