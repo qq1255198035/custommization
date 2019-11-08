@@ -25,7 +25,7 @@
 
                     <div class="right">
                         <my-title :title="'New Order'" :fontsize="20">
-                            <a-button size="small" icon="rollback" style="font-size: 14px;" @click="$router.go(-1)">Back</a-button>
+                            <a-button size="small" icon="rollback" style="font-size: 14px;" @click="$router.push({path: '/OrderManagement/grouporder'})">Back</a-button>
                         </my-title>
                         <goods-list :goodsArr="goodsList" @on-click="openDesignModal($event)"></goods-list>
                         <div class="btn-box">
@@ -929,7 +929,6 @@ export default {
             myCanvas3: null,
             myCanvas4: null,
             visibletype:-1,
-            form: this.$form.createForm(this),
             // 描边样式
             strokeWidth:2,
             strokeColor: '',
@@ -1125,14 +1124,16 @@ export default {
     beforeCreate () {
         this.form1 = this.$form.createForm(this);
         this.form1.getFieldDecorator('keys', { initialValue: [0], preserve: true });
+        this.form = this.$form.createForm(this)
     },
     mounted(){
         this.$nextTick(function() {
-            this.myCanvas1 = new fabric.Canvas("canvas1");
-            this.myCanvas2 = new fabric.Canvas("canvas2");
-            this.myCanvas3 = new fabric.Canvas("canvas3");
-            this.myCanvas4 = new fabric.Canvas("canvas4");
-            this.myCanvas = this.myCanvas1
+            this.myCanvas1 = new fabric.Canvas("canvas1",{ stateful: true});
+            this.myCanvas2 = new fabric.Canvas("canvas2",{ stateful: true});
+            this.myCanvas3 = new fabric.Canvas("canvas3",{ stateful: true});
+            this.myCanvas4 = new fabric.Canvas("canvas4",{ stateful: true});
+            this.myCanvas = this.myCanvas1;
+            this.myCanvas.selection = false;
             initAligningGuidelines(this.myCanvas1);
             initAligningGuidelines(this.myCanvas2);
             initAligningGuidelines(this.myCanvas3);
@@ -1172,6 +1173,15 @@ export default {
                 this.handleObjectScale(this.myCanvas2,this.boxSize2.left,this.boxSize2.top,this.boxSize2.width,this.boxSize2.height);
                 this.handleObjectScale(this.myCanvas3,this.boxSize3.left,this.boxSize3.top,this.boxSize3.width,this.boxSize3.height);
                 this.handleObjectScale(this.myCanvas4,this.boxSize4.left,this.boxSize4.top,this.boxSize4.width,this.boxSize4.height);
+                let items1 = this.myCanvas1.getObjects();
+                let items2 = this.myCanvas2.getObjects();
+                let items3 = this.myCanvas3.getObjects();
+                let items4 = this.myCanvas4.getObjects();
+                items.map(item => {
+                    item.lockUniScaling = true;
+                    item.setControlVisible('tr',false);
+                    item.setControlVisible('bl',false);
+                })
             }
         })
         //this.getWindowScreen();
@@ -1432,7 +1442,20 @@ export default {
                                     left: left,
                                     top: top,
                                     myId: 'Text',
-                                    crossOrigin: '*'
+                                    crossOrigin: '*',
+                                    fontfamily: that.fontfamily,
+                                    fontshape: that.fontShape,
+                                    fontcolor: that.fontColor,
+                                    colorname: that.colorName,
+                                    bgcolor: that.bgcolor,
+                                    bgcolorName: that.fontBgColorName,
+                                    strokewidth:that.strokeWidth,
+                                    strokeColor: that.strokeColor,
+                                    strokeColorName: that.strokeColorName,
+                                    shadowColor:that.shadowColor,
+                                    shadowColorName:that.shadowColorName,
+                                    Shadow1: that.Shadow1 ,
+                                    itext: that.editText
                                 });
                                 imgInstance.scaleToWidth(width);
                             }
@@ -1444,7 +1467,20 @@ export default {
                                     top: that.boxSize1.top + 5,
                                     mytext: res.result,
                                     myId: 'Text',
-                                    crossOrigin: '*'
+                                    crossOrigin: '*',
+                                    fontfamily: that.fontfamily,
+                                    fontshape: that.fontShape,
+                                    fontcolor: that.fontColor,
+                                    colorname: that.colorName,
+                                    bgcolor: that.bgcolor,
+                                    bgcolorName: that.fontBgColorName,
+                                    strokewidth:that.strokeWidth,
+                                    strokeColor: that.strokeColor,
+                                    strokeColorName: that.strokeColorName,
+                                    shadowColor:that.shadowColor,
+                                    shadowColorName:that.shadowColorName,
+                                    Shadow1: that.Shadow1 ,
+                                    itext: that.addText
                                 });
                                 if(imgInstance.width > that.boxSize1.width){
                                     imgInstance.scaleToWidth(that.boxSize1.width/2)
@@ -1456,7 +1492,20 @@ export default {
                                     top: that.boxSize2.top + 5,
                                     mytext: res.result,
                                     myId: 'Text',
-                                    crossOrigin: '*'
+                                    crossOrigin: '*',
+                                    fontfamily: that.fontfamily,
+                                    fontshape: that.fontShape,
+                                    fontcolor: that.fontColor,
+                                    colorname: that.colorName,
+                                    bgcolor: that.bgcolor,
+                                    bgcolorName: that.fontBgColorName,
+                                    strokewidth:that.strokeWidth,
+                                    strokeColor: that.strokeColor,
+                                    strokeColorName: that.strokeColorName,
+                                    shadowColor:that.shadowColor,
+                                    shadowColorName:that.shadowColorName,
+                                    Shadow1: that.Shadow1 ,
+                                    itext: that.addText
                                 });
                                 if(imgInstance.width > that.boxSize2.width){
                                     imgInstance.scaleToWidth(that.boxSize2.width/2)
@@ -1468,7 +1517,20 @@ export default {
                                     top: that.boxSize3.top + 5,
                                     mytext: res.result,
                                     myId: 'Text',
-                                    crossOrigin: '*'
+                                    crossOrigin: '*',
+                                    fontfamily: that.fontfamily,
+                                    fontshape: that.fontShape,
+                                    fontcolor: that.fontColor,
+                                    colorname: that.colorName,
+                                    bgcolor: that.bgcolor,
+                                    bgcolorName: that.fontBgColorName,
+                                    strokewidth:that.strokeWidth,
+                                    strokeColor: that.strokeColor,
+                                    strokeColorName: that.strokeColorName,
+                                    shadowColor:that.shadowColor,
+                                    shadowColorName:that.shadowColorName,
+                                    Shadow1: that.Shadow1 ,
+                                    itext: that.addText
                                 });
                                 if(imgInstance.width > that.boxSize3.width){
                                     imgInstance.scaleToWidth(that.boxSize3.width/2)
@@ -1480,29 +1542,58 @@ export default {
                                     top: that.boxSize4.top + 5,
                                     mytext: res.result,
                                     myId: 'Text',
-                                    crossOrigin: '*'
+                                    crossOrigin: '*',
+                                    fontfamily: that.fontfamily,
+                                    fontshape: that.fontShape,
+                                    fontcolor: that.fontColor,
+                                    colorname: that.colorName,
+                                    bgcolor: that.bgcolor,
+                                    bgcolorName: that.fontBgColorName,
+                                    strokewidth:that.strokeWidth,
+                                    strokeColor: that.strokeColor,
+                                    strokeColorName: that.strokeColorName,
+                                    shadowColor:that.shadowColor,
+                                    shadowColorName:that.shadowColorName,
+                                    Shadow1: that.Shadow1 ,
+                                    itext: that.addText
                                 });
                                 if(imgInstance.width > that.boxSize4.width){
                                     imgInstance.scaleToWidth(that.boxSize4.width/2)
                                 }
                             }
+                            that.editText =  that.addText;
+                            that.addText = '';
                         }
                         that.myCanvas.add(imgInstance).setActiveObject(imgInstance);
                         imgInstance.setControlVisible('tr',false);
                         imgInstance.setControlVisible('bl',false);
                         that.myCanvas.requestRenderAll();
-                        queryByUrl(res.result).then(res => {
-                            console.log(res)
-                            if(res.code == 0){
-                                that.editText = res.result.text;
-                            }
-                        })
+                        
+                        // queryByUrl(res.result).then(res => {
+                        //     console.log(res)
+                        //     if(res.code == 0){
+                        //         that.editText = res.result.text;
+                        //     }
+                        // })
                         that.liClick = 0;
                         that.visibletype = 3;
                         imgInstance.on("selected", function() {
-                            that.colorKey = 1;
                             that.liClick = 0;
                             that.visibletype = 3;
+                            console.log(imgInstance)
+                            that.fontfamily = imgInstance.fontfamily,
+                            that.fontShape = imgInstance.fontshape,
+                            that.fontColor = imgInstance.fontcolor,
+                            that.colorName = imgInstance.colorname,
+                            that.bgcolor = imgInstance.bgcolor,
+                            that.fontBgColorName = imgInstance.bgcolorName,
+                            that.strokeWidth = imgInstance.strokewidth,
+                            that.strokeColor = imgInstance.strokeColor,
+                            that.strokeColorName = imgInstance.strokeColorName,
+                            that.shadowColor = imgInstance.shadowColor,
+                            that.shadowColorName = imgInstance.shadowColorName,
+                            that.Shadow1 = imgInstance.Shadow1,
+                            that.editText = imgInstance.itext
                         });
                     }
                 }
@@ -1607,14 +1698,24 @@ export default {
             this.dataUrl4 = this.myCanvas4.toDataURL();
         },
         saveImg(){
+            let arr = [];
+            let items1 = this.myCanvas1.getObjects();
+            let items2 = this.myCanvas1.getObjects();
+            let items3 = this.myCanvas1.getObjects();
+            let items4 = this.myCanvas1.getObjects();
             let json1 = this.myCanvas1.toJSON();
             let json2 = this.myCanvas2.toJSON();
             let json3 = this.myCanvas3.toJSON();
             let json4 = this.myCanvas4.toJSON();
+            json1.objects = items1;
+            json2.objects = items2;
+            json3.objects = items3;
+            json4.objects = items4;
             this.dataPost1 = JSON.stringify(json1);
             this.dataPost2 = JSON.stringify(json2)
             this.dataPost3 = JSON.stringify(json3)
             this.dataPost4 = JSON.stringify(json4)
+            console.log(json1)
         },
         postSaveDesign(params){
             saveDesign(params).then(res => {
@@ -1688,16 +1789,19 @@ export default {
             let obj2 = that.myCanvas2.getObjects();
             let obj3 = that.myCanvas3.getObjects();
             let obj4 = that.myCanvas4.getObjects();
-            if(obj1 || obj2 || obj3 || obj4){
+            console.log(obj1 || obj2 || obj3 || obj4)
+            if(obj1.length > 0|| obj2.length > 0 || obj3.length > 0 || obj4.length > 0){
                 that.$confirm({
                     title: "Are you sure you want to leave?",
                     content: "Unsaved designs will be automatically deleted!",
                     okText: "Confirm",
                     cancelText: "Cancel",
                     onOk() {
-                        //that.show = false;
-                        // that.$router.push({path: '/neworder'})
+                        that.$router.push({path: '/neworder'})
                         window.location.reload();
+                        // Object.assign(that.$data, that.$options.data());
+                        // this.getArtFontList();
+                        // this.handleGetPic('');
                         
                     }
                 });
@@ -1831,29 +1935,30 @@ export default {
                 if(!obj.target){
                     that.visibletype = -1;
                     that.liClick = -1;
-                }else{
-                    queryByUrl(obj.target.mytext).then(res => {
-                        console.log(res)
-                        if(res.code == 0){
-                            if(res.result.text){
-                                that.editText = res.result.text;
-                                that.fontfamily = res.result.fontName;
-                                that.color = res.result.fontColor;
-                                that.colorName = res.result.fontColorName;
-                                that.fontShape = res.result.effect;
-                                that.bgcolor = res.result.backGround;
-                                that.fontBgColorName = res.result.backGroundName;
-                                that.strokeWidth = parseInt(res.result.lineweight);
-                                that.strokeColor = res.result.outLineColor;
-                                that.strokeColorName = res.result.outLineColorName;
-                                that.shadowColor = res.result.shadowColor;
-                                that.shadowColorName = res.result.shadowColorName;
-                                that.Shadow1 = parseInt(res.result.smudge);
-                                console.log(that.colorKey)
-                                console.log(that.colorName)
-                            }
-                        }
-                    })
+                }
+                else{
+                    // queryByUrl(obj.target.src).then(res => {
+                    //     console.log(res)
+                    //     if(res.code == 0){
+                    //         if(res.result.text){
+                    //             that.editText = res.result.text;
+                    //             that.fontfamily = res.result.fontName;
+                    //             that.color = res.result.fontColor;
+                    //             that.colorName = res.result.fontColorName;
+                    //             that.fontShape = res.result.effect;
+                    //             that.bgcolor = res.result.backGround;
+                    //             that.fontBgColorName = res.result.backGroundName;
+                    //             that.strokeWidth = parseInt(res.result.lineweight);
+                    //             that.strokeColor = res.result.outLineColor;
+                    //             that.strokeColorName = res.result.outLineColorName;
+                    //             that.shadowColor = res.result.shadowColor;
+                    //             that.shadowColorName = res.result.shadowColorName;
+                    //             that.Shadow1 = parseInt(res.result.smudge);
+                    //             console.log(that.colorKey)
+                    //             console.log(that.colorName)
+                    //         }
+                    //     }
+                    // })
                 }
             })
         },
@@ -2331,6 +2436,7 @@ export default {
                         top:  top,
                         removeColor: false,
                         myId: 'Img',
+                        //angle: 0,
                         crossOrigin: '*'
                     });
                     if(imgInstance.width > that.boxSize1.width){
@@ -2416,47 +2522,74 @@ export default {
         handleObjectMove(object,top_margin,bottom_margin,left_margin,right_margin){
             let that = this;
             object.on('object:moving', function (e) {
-                    var obj = e.target;
+                    //var obj = e.target;
                     that.movingBox = true;
                     // if object is too big ignore
-                    if(obj.currentHeight > obj.canvas.height || obj.currentWidth > obj.canvas.width){
-                        return;
-                    }        
-                    obj.setCoords();        
-                    // top-left  corner
-                    if(obj.getBoundingRect().top < top_margin || obj.getBoundingRect().left < left_margin){
-                        obj.top = Math.max(obj.top, obj.top-obj.getBoundingRect().top + top_margin);
-                        obj.left = Math.max(obj.left, obj.left-obj.getBoundingRect().left + left_margin);
-                    }
-                    // bot-right corner
-                    if(obj.getBoundingRect().top+obj.getBoundingRect().height  > 600 - bottom_margin || obj.getBoundingRect().left+obj.getBoundingRect().width  > 600 - right_margin){
-                        obj.top = Math.min(obj.top, obj.canvas.height-obj.getBoundingRect().height+obj.top-obj.getBoundingRect().top - bottom_margin);
-                        obj.left = Math.min(obj.left, obj.canvas.width-obj.getBoundingRect().width+obj.left-obj.getBoundingRect().left - right_margin);
-                    } 
+                    // if(obj.currentHeight > obj.canvas.height || obj.currentWidth > obj.canvas.width){
+                    //     return;
+                    // }        
+                    // obj.setCoords();        
+                    // // top-left  corner
+                    // if(obj.getBoundingRect().top < top_margin || obj.getBoundingRect().left < left_margin){
+                    //     obj.top = Math.max(obj.top, obj.top-obj.getBoundingRect().top + top_margin);
+                    //     obj.left = Math.max(obj.left, obj.left-obj.getBoundingRect().left + left_margin);
+                    // }
+                    // // bot-right corner
+                    // if(obj.getBoundingRect().top+obj.getBoundingRect().height  > 600 - bottom_margin || obj.getBoundingRect().left+obj.getBoundingRect().width  > 600 - right_margin){
+                    //     obj.top = Math.min(obj.top, obj.canvas.height-obj.getBoundingRect().height+obj.top-obj.getBoundingRect().top - bottom_margin);
+                    //     obj.left = Math.min(obj.left, obj.canvas.width-obj.getBoundingRect().width+obj.left-obj.getBoundingRect().left - right_margin);
+                    // } 
             });
         },
         handleObjectScale(object,x,y,width,height){
-            object.on("object:scaling",function(e){
-                var scaledObject = e.target;
-                scaledObject.lockScalingFlip = true;
-                scaledObject.minScaleLimit = 0.1;
-                var startX = scaledObject.getBoundingRect(true,true).left;
-                var startY = scaledObject.getBoundingRect(true,true).top;
-                var maxWidth = width - startX;// scaledObject.aCoords.tl.x;
-                var maxHeight = height -startY;
-                scaledObject.setCoords();
-                var isOnScreen = scaledObject.isContainedWithinRect({x:x,y:y},{x:width + x,y:height + y},true,true);
-                if(!isOnScreen) {
-                    var w = scaledObject.getBoundingRect(true,true).width;
-                    var h = scaledObject.getBoundingRect(true,true).height;
-                    if( (maxHeight-h) < (maxWidth-w)){
-                        scaledObject.scaleToHeight(height + y - startY - 1);
-                    } else{
-                        scaledObject.scaleToWidth(width + x - startX - 1);
+            object.on('object:modified', function (e) {
+                var obj = e.target;
+                var rect = obj.getBoundingRect();
+                console.log(obj._stateProperties)
+                if (rect.left < x
+                    || rect.top < y
+                    || rect.left + rect.width > x + width
+                    || rect.top + rect.height > y + height) {
+                        console.log(obj._stateProperties,obj.angle)
+                    if(obj.angle !== obj._stateProperties['angle']) { 
+                        obj.set('angle',obj._stateProperties['angle']); 
+                        obj.set('top',obj._stateProperties.top); 
+                        obj.set('left',obj._stateProperties.left); 
+                        obj.set('scaleX',obj._stateProperties.scaleX); 
+                        obj.set('scaleY',obj._stateProperties.scaleY); 
+                    }else{ 
+                        obj.set('top',obj._stateProperties.top); 
+                        obj.set('left',obj._stateProperties.left); 
+                        obj.set('scaleX',obj._stateProperties.scaleX); 
+                        obj.set('scaleY',obj._stateProperties.scaleY); 
+                        } 
+                    }else{
+                        obj.saveState();
                     }
-                    return false;
-                }
+                    obj.setCoords();
+            
+            // object.on("object:scaling",function(e){
+            //     var scaledObject = e.target;
+            //     scaledObject.lockScalingFlip = true;
+            //     scaledObject.minScaleLimit = 0.1;
                 
+            //     var startX = scaledObject.getBoundingRect(true,true).left;
+            //     var startY = scaledObject.getBoundingRect(true,true).top;
+            //     var maxWidth = width - startX;// scaledObject.aCoords.tl.x;
+            //     var maxHeight = height -startY;
+            //     scaledObject.setCoords();
+                
+            //     var isOnScreen = scaledObject.isContainedWithinRect({x:x,y:y},{x:width + x,y:height + y},true,true);
+            //     if(!isOnScreen) {
+            //         var w = scaledObject.getBoundingRect(true,true).width;
+            //         var h = scaledObject.getBoundingRect(true,true).height;
+                    
+            //         if( (maxHeight-h) < (maxWidth-w)){
+            //             scaledObject.scaleToHeight(height + y - startY - 1);
+            //         } else{
+            //             scaledObject.scaleToWidth(width + x - startX - 1);
+            //         }
+            //     }
             })
         },
         // 切换正反左右面
@@ -2476,6 +2609,7 @@ export default {
                 this.bindCanvas(this.myCanvas,i);
             }
             this.myCanvas.discardActiveObject();
+            this.myCanvas.selection = false;
             this.visibletype = -1;
         },
         toolsBtnClick(key){
@@ -2607,8 +2741,6 @@ export default {
                 }
                 this.handleChangeFont(params,isAdd);
             }
-            
-            this.addText = '';
         },
         // 加载资源字体
         // loadAndUse(font) {
@@ -2748,6 +2880,8 @@ export default {
                                     this.fontColorIcon2 = i
                                 }
                             }
+                        }else{
+                            this.fontColorIcon2 = -1
                         }
                     }
                 }else if(key == 3){
@@ -2758,7 +2892,6 @@ export default {
                         this.visibletype = 8;
                         this.colorTitle = title;
                         this.colorKey = key;
-                        this.strokeWidth = 2;
                         if(this.strokeColor){
                             for(let i = 0; i < colors.length; i++) {
                                 if (colors[i].itemValue === this.strokeColor) {
@@ -2766,6 +2899,8 @@ export default {
                                     this.fontColorIcon3 = i
                                 }
                             }
+                        }else{
+                            this.fontColorIcon3 = -1;
                         }
                     }
                 }else if(key == 4){
@@ -2775,7 +2910,6 @@ export default {
                         this.visibletype = 8;
                         this.colorTitle = title;
                         this.colorKey = key;
-                        this.Shadow1 = 15;
                         if(this.shadowColor){
                             for(let i = 0; i < colors.length; i++) {
                                 if (colors[i].itemValue === this.shadowColor) {
@@ -2783,6 +2917,8 @@ export default {
                                     this.fontColorIcon4 = i
                                 }
                             }
+                        }else{
+                            this.fontColorIcon4 = -1
                         }
                     }
                 }else if(key == 1){
@@ -2796,6 +2932,8 @@ export default {
                                 this.fontColorIcon1 = i
                             }
                         }
+                    }else{
+                        this.fontColorIcon1 = -1
                     }
                 }
                 console.log(key,title);

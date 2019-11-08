@@ -456,6 +456,7 @@ export default {
       this.monitorObjectScale(this.myCanvas2);
       this.monitorObjectScale(this.myCanvas3);
       this.monitorObjectScale(this.myCanvas4);
+      this.monitorObjectMove(this.myCanvas1);
     })
     this.getSyscategoryList();
     console.log(this.$route.query.id)
@@ -507,7 +508,7 @@ export default {
         rightimg: res.result.rightPicUrl,
       })
     },
-    setBoxSize4(res,canvas){
+    setBoxSize4(res){
       let arr1 = [{width: '',height: '',left: '',top: ''}];
       let boxSizes = JSON.parse(res.result.boxSizes);
       arr1[0].width = boxSizes.canvas4.width;
@@ -521,7 +522,7 @@ export default {
       });
       this.dataList.canvas4 = arr1;
     },
-    setBoxSize3(res,canvas){
+    setBoxSize3(res){
       let arr1 = [{width: '',height: '',left: '',top: ''}];
       let boxSizes = JSON.parse(res.result.boxSizes);
       arr1[0].width = boxSizes.canvas3.width;
@@ -535,7 +536,7 @@ export default {
       });
       this.dataList.canvas3 = arr1;
     },
-    setBoxSize2(res,canvas){
+    setBoxSize2(res){
       let arr1 = [{width: '',height: '',left: '',top: ''}];
       let boxSizes = JSON.parse(res.result.boxSizes);
       arr1[0].width = boxSizes.canvas2.width;
@@ -549,7 +550,7 @@ export default {
       });
       this.dataList.canvas2 = arr1;
     },
-    setBoxSize1(res,canvas){
+    setBoxSize1(res){
       let arr1 = [{width: '',height: '',left: '',top: ''}];
       let boxSizes = JSON.parse(res.result.boxSizes);
       arr1[0].width = boxSizes.canvas1.width;
@@ -585,6 +586,7 @@ export default {
         canvas3:{width: '',height: '',top: '',left: '',name: '',list:[]},
         canvas4:{width: '',height: '',top: '',left: '',name: '',list:[]},
       }
+      /* eslint-disable */ 
       let json1 = this.myCanvas1.toJSON();
       let json2 = this.myCanvas2.toJSON();
       let json3 = this.myCanvas3.toJSON();
@@ -1146,23 +1148,24 @@ export default {
         }
       })
     },
-    // monitorObjectMove(object){
-    //   let that = this;
-    //   object.on('object:moving', function (e) {
-    //     let obj = e.target;
-    //     console.log(e.target.left)
-    //     that.form.setFieldsValue({
-    //       width:parseInt(obj.width),
-    //       height:parseInt(obj.height),
-    //       left:parseInt(obj.left),
-    //       top:parseInt(obj.top)
-    //     });
-    //   })
-    // },
+    monitorObjectMove(object){
+      object.on('object:scaling', (e) => {
+        var o = e.target;
+        if (!o.strokeWidthUnscaled && o.strokeWidth) {
+          o.strokeWidthUnscaled = o.strokeWidth;
+        }
+        if (o.strokeWidthUnscaled) {
+          if(o.objectCaching) o.objectCaching = false;
+          o.strokeWidth = o.strokeWidthUnscaled / ((o.scaleX + o.scaleY) / 2);
+        }
+      });
+    },
     monitorObjectScale(object){
       let that = this;
       object.on('object:modified',function(e){
         let obj = e.target;
+        if(!obj.objectCaching) obj.objectCaching = true;
+        object.renderAll();
         if(that.isFirst == 0){
           that.form.setFieldsValue({
             width:parseInt(obj.getBoundingRect().width) - 1,
