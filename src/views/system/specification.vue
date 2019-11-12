@@ -87,7 +87,7 @@
                   <span>{{item.remarks}}</span>
                 </div>
 
-                <a :href="item.fileUrl" download="img" target="_blank">下载</a>
+                <a :href="item.fileUrl" download="img">下载</a>
               </li>
             </ul>
             <div class="remarks" v-show="showKey == 2" style="margin-top: 10px;">
@@ -537,7 +537,7 @@ export default {
           }else{
             this.text = res.result.text;
             this.fontfamily = res.result.fontName;
-
+            this.fontsize = res.result.fontHeight;
             this.bgcolorName = res.result.backGroundName;
             this.bgcolor = res.result.backGround;
             this.bgcolorCMYK = res.result.backGroundCMYK;
@@ -571,7 +571,6 @@ export default {
             o,
             object
         ) {
-          console.log(o,object)
           object.lockMovementX = true;
           object.lockMovementY = true;
           object.hasControls = false;
@@ -585,14 +584,6 @@ export default {
             if(obj.target.src){
               // 图片文字
               that.getPhotoInfo(obj.target.src,obj.target);
-              that.fontsize = parseInt(obj.target.getBoundingRect().height);
-            }else{
-              // 纯文字
-              that.getColorInfo(obj.target.fill.substr(1))
-              that.text = obj.target.text
-              that.fontfamily = obj.target.fontFamily;
-              that.fontsize = parseInt(obj.target.getBoundingRect().height);
-              that.fontcolor = obj.target.fill;
             }
           }
       })
@@ -701,7 +692,6 @@ export default {
 }
 .section{
   h3{
-    padding: 20px;
     span{
       font-size: 12px;
       margin-left: 10px;

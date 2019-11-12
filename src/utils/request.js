@@ -80,6 +80,7 @@ const err = (error) => {
 service.interceptors.request.use(config => {
   const token = Vue.ls.get(ACCESS_TOKEN);//Vue.ls.get('token')
   console.log(config)
+  // 如果是微信支付页面，隐藏loading状态
   if(config.url == '/api/wx/wxOrderQuery'){
     Vue.$vLoading.hide();
   }else{
@@ -96,7 +97,6 @@ service.interceptors.request.use(config => {
   }
   return config
 },(error) => {
-  
   return Promise.reject(error)
 })
 

@@ -3,7 +3,7 @@
             <a-row :gutter="60" class="list-row" v-if="orderList.length > 0">
                   <a-col :span="8" v-for="item in orderList" :key="item.id">
                         <div class="order-item">
-                              <div style="height:383px">
+                              <div class="img-box">
                                     <img :src="item.topic_url" v-preview="item.topic_url" alt="">
                               </div>
                               <div class="desc">
@@ -82,7 +82,6 @@ export default {
                   }else{
                         return ' '
                   }
-                   
             }
       }
 }
@@ -98,9 +97,13 @@ export default {
             .order-item{
                   margin-top: 20px;
                   text-align: center;
-                  img{
-                        width: 90%;
+                  .img-box{
+                        height: 383px;
+                        img{
+                              width: 90%;
+                        }
                   }
+                  
                   .desc{
                         margin-top: 15px;
                         p{
@@ -139,5 +142,17 @@ export default {
       }
       
 }
+@media screen and (max-width: 1900px) and (min-width: 1024px){
+      #OrderList{
+            .list-row{
+                  .order-item{
+                        .img-box{
+                              height: 250px;
+                        }
+                  }
+            }
+      }
+}
+
 </style>
 

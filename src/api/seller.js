@@ -752,3 +752,11 @@ export function editProShow(id) {
         data:qs.stringify({id: id})
     })
 }
+
+export function saveNameNumber(text,fontName,fontHeight,fontColor,place) {
+    return axios({
+        url: '/system/jeecgGoods/saveNameNumber',
+        method: 'post',
+        data:qs.stringify({text:text,fontName:fontName,fontHeight:fontHeight,fontColor:fontColor,place:place})
+    })
+}

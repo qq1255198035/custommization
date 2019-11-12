@@ -35,7 +35,7 @@
               </a-form-item>
               <a-form-item>
                 <p class="auto-login">
-                  <a-checkbox @change="onChange" :checked="formLogin.rememberMe">Automatic login</a-checkbox>
+                  <a-checkbox @change="onChange" :checked="formLogin.rememberMe">Remember Me</a-checkbox>
                 </p>
                 <div class="forget">
                   <router-link class="register" :to="{ name: 'passwordSet' }">
@@ -134,7 +134,7 @@
               </div>
               <a-form-item style="margin-top: 30px;">
                 <p class="auto-login">
-                  <a-checkbox @change="onChange" :checked="formLogin.rememberMe" style="color: #fff;">Automatic login</a-checkbox>
+                  <a-checkbox @change="onChange" :checked="formLogin.rememberMe" style="color: #fff;">Remember Me</a-checkbox>
                 </p>
                 <div class="forget">
                   <router-link class="register" :to="{ name: 'passwordSet' }">
@@ -149,29 +149,26 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import { mapActions } from "vuex";
 /*import { timeFix } from '@/utils/util'*/
 import commonBtn from "@/components/commonBtn/commonBtn";
+import { ACCESS_TOKEN } from "@/store/mutation-types"
 //import { encryption } from '@/utils/encryption/aesEncrypt'
 export default {
   data() {
     return {
-      customActiveKey: "tab1",
       loginBtn: false,
-      // login type: 0 email, 1 username, 2 telephone
       loginType: 0,
-
-      // stepCaptchaVisible: false,
-      form: this.$form.createForm(this),
+      
       state: {
         time: 60,
         loginBtn: false,
-        // login type: 0 email, 1 username, 2 telephone
         loginType: 0,
         smsSendBtn: false
       },
       formLogin: {
-        rememberMe: true
+        rememberMe: false
       },
       mobileShow: false
     };
@@ -179,10 +176,13 @@ export default {
   components: {
     commonBtn
   },
-  created() {},
+  created() {
+    Vue.ls.remove(ACCESS_TOKEN);
+    this.form = this.$form.createForm(this)
+  },
   mounted() {
-    this.getCookie();
     this.getWindowScreen();
+    
   },
   methods: {
     getWindowScreen(){
@@ -190,90 +190,136 @@ export default {
       console.log(screenWidths)
       if(screenWidths > 768){
         this.mobileShow = true;
+        setTimeout(() => {
+          if(this.getCookie('remember') == 'true'){
+            this.form.setFieldsValue({
+              username: this.getCookie('username'),
+              password: '******'
+            })
+            this.formLogin.rememberMe = true;
+          }else{
+            this.form.setFieldsValue({
+              username: '',
+              password: ''
+            })
+            this.formLogin.rememberMe = false;
+          }
+        },0) 
       }else{
         this.mobileShow = false;
+        setTimeout(() => {
+          if(this.getCookie('remember') == 'true'){
+            this.form.setFieldsValue({
+              username1: this.getCookie('username'),
+              password1: '******'
+            })
+            this.formLogin.rememberMe = true;
+          }else{
+            this.form.setFieldsValue({
+              username1: '',
+              password1: ''
+            })
+            this.formLogin.rememberMe = false;
+          }
+        },0) 
       }
     },
     ...mapActions(["Login", "Logout"]),
     onChange(e) {
       this.formLogin.rememberMe = e.target.checked
     },
-    handleTabClick(key) {
-      this.customActiveKey = key;
-      // this.form.resetFields()
-    },
     submitLogin() {
       const {
         form: { validateFields },
         state,
-        customActiveKey,
         Login
       } = this;
       state.loginBtn = true;
-      const validateFieldsKey =
-        customActiveKey === "tab1"
-          ? ["username", "password"]
-          : ["mobile", "captcha"];
-      validateFields(validateFieldsKey, { force: true }, (err, values) => {
-        if (!err) {
-          if (this.formLogin.rememberMe) {
-            this.setCookie(values.username, values.password, 3);
-          } else {
-            this.clearCookie();
-            this.formLogin.rememberMe = false
+      if(this.getCookie('remember') == 'true'){
+        validateFields(["username", "password"], { force: true }, (err, values) => {
+          if (!err) {
+            const loginParams = { ...values };
+            delete loginParams.username;
+            loginParams.username = values.username;
+            loginParams.password = values.password == '******' ? '' : values.password;
+            loginParams.captcha = '0';
+            Login(loginParams)
+              .then(res => this.loginSuccess(res))
+              .finally(() => {
+                state.loginBtn = false;
+              });
           }
-          const loginParams = { ...values };
-          console.log(values)
-          console.log(loginParams)
-          delete loginParams.username;
-          loginParams.username = values.username;
-          loginParams.password = values.password;
-          Login(loginParams)
-            .then(res => this.loginSuccess(res))
-            .catch(err => this.requestFailed(err))
-            .finally(() => {
-              state.loginBtn = false;
-            });
-        }
-      });
+        });
+      }else{
+        validateFields(["username", "password"], { force: true }, (err, values) => {
+          if (!err) {
+            const loginParams = { ...values };
+            delete loginParams.username;
+            loginParams.username = values.username;
+            loginParams.password = values.password;
+            loginParams.captcha = 1;
+            Login(loginParams)
+              .then(res => this.loginSuccess(res))
+              .finally(() => {
+                state.loginBtn = false;
+              });
+          }
+        });
+      }
+      
     },
     submitLoginMobile() {
       const {
         form: { validateFields },
         state,
-        customActiveKey,
         Login
       } = this;
-
       state.loginBtn = true;
-
-      const validateFieldsKey1 =
-        customActiveKey === "tab1"
-          ? ["username1", "password1"]
-          : ["mobile", "captcha"];
-
-      validateFields(validateFieldsKey1, { force: true }, (err, values) => {
-        if (!err) {
-          if (this.formLogin.rememberMe) {
-            this.setCookie(values.username1, values.password1, 3);
-          } else {
-            this.clearCookie();
-            this.formLogin.rememberMe = false
+      if(this.getCookie('remember') == 'true'){
+        validateFields(["username1", "password1"], { force: true }, (err, values) => {
+          if (!err) {
+            const loginParams = { ...values };
+            delete loginParams.username1;
+            loginParams.username = values.username1;
+            loginParams.password = values.password1 == '******' ? '' : values.password1;
+            loginParams.captcha = '0';
+            Login(loginParams)
+              .then(res => this.loginSuccess(res))
+              .finally(() => {
+                state.loginBtn = false;
+              });
           }
-          const loginParams = { ...values };
-          console.log(values)
-          console.log(loginParams)
-          delete loginParams.username1;
-          loginParams.username = values.username1;
-          loginParams.password = values.password1;
-          Login(loginParams)
-            .then(res => this.loginSuccess(res))
-            .catch(err => this.requestFailed(err))
-            .finally(() => {
-              state.loginBtn = false;
-            });
+        });
+      }else{
+        validateFields(["username1", "password1"], { force: true }, (err, values) => {
+          if (!err) {
+            const loginParams = { ...values };
+            delete loginParams.username1;
+            loginParams.username = values.username1;
+            loginParams.password = values.password1;
+            loginParams.captcha = 1;
+            Login(loginParams)
+              .then(res => this.loginSuccess(res))
+              .finally(() => {
+                state.loginBtn = false;
+              });
+          }
+        });
+      }
+    },
+    setCookie(name, value, day){
+        if(day !== 0){
+            let expires = day * 24 * 60 * 60 * 1000;
+            let date = new Date(+new Date()+expires);
+            document.cookie = name + "=" + escape(value) + ";expires=" + date.toUTCString();
+        }else{
+            document.cookie = name + "=" + escape(value);
         }
-      });
+    },
+    getCookie(name){
+        let arr = document.cookie.match(new RegExp("(^| )"+name+"=([^;]*)(;|$)"));
+        if(arr != null) return unescape(arr[2]); 
+        return false;
     },
     loginSuccess(res) {
       if (this.$route.query.order_id) {
@@ -286,7 +332,6 @@ export default {
       } else {
         this.$router.push({ path: "/index" });
       }
-
       // 延迟 1 秒显示欢迎信息
       if (res.code !== 200) {
         this.$notification["error"]({
@@ -298,55 +343,11 @@ export default {
         this.$notification.success({
           message: "Login successfully"
         });
+        this.setCookie('username',res.result.userInfo.username,30);
+        this.setCookie('remember',this.formLogin.rememberMe,30);
       }
     },
-    requestFailed(err) {
-      this.$notification["error"]({
-        message: "The error message",
-        description: ((err.response || {}).data || {}).message || "the error message",
-        duration: 4
-      });
-    },
-    //设置cookie
-    setCookie(c_name, c_pwd, exdays) {
-      var exdate = new Date(); //获取时间
-      exdate.setTime(exdate.getTime() + 24 * 60 * 60 * 1000 * exdays); //保存的天数
-      //字符串拼接cookie
-      window.document.cookie =
-        "userName" + "=" + c_name + ";path=/;expires=" + exdate.toGMTString();
-      window.document.cookie =
-        "userPwd" + "=" + c_pwd + ";path=/;expires=" + exdate.toGMTString();
-    },
-    //读取cookie
-    getCookie: function() {
-      if (document.cookie.length > 0) {
-        var arr = document.cookie.split("; "); //这里显示的格式需要切割一下自己可输出看下
-        for (var i = 0; i < arr.length; i++) {
-          var arr2 = arr[i].split("="); //再次切割
-          //判断查找相对应的值
-          if (arr2[0] == "userName") {
-            console.log(arr2[1])
-            if(this.mobileShow){
-              this.form.setFieldsValue({['username']:arr2[1]})
-            }else{
-              this.form.setFieldsValue({['username1']:arr2[1]})
-            }
-             //保存到保存数据的地方
-          } else if (arr2[0] == "userPwd") {
-            console.log(arr2[1])
-            if(this.mobileShow){
-              this.form.setFieldsValue({['password']:arr2[1]});
-            }else{
-              this.form.setFieldsValue({['password1']:arr2[1]});
-            }
-          }
-        }
-      }
-    },
-    //清除cookie
-    clearCookie: function() {
-      this.setCookie("", "", -1); //修改2值都为空，天数为负1天就好了
-    }
+    
   }
 };
 </script>

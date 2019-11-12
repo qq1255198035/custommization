@@ -42,11 +42,11 @@ const user = {
     // 登录
     Login({ commit }, userInfo) {
       Vue.ls.set(ACCESS_TOKEN,'')
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         login(userInfo)
           .then(res => {
             // const result = response.result
-            if (res.code == 200) {
+            if(res.code == 200){
               Vue.ls.set(ACCESS_TOKEN, res.result.token, 7 * 24 * 60 * 60 * 1000)
               commit('SET_TOKEN', res.result.token)
               commit('SET_AVATAR', res.avatar)
@@ -55,9 +55,7 @@ const user = {
             }
             resolve(res)
           })
-          .catch(error => {
-            reject(error)
-          })
+          
       })
     },
     // 获取用户信息

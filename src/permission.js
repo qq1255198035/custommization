@@ -64,7 +64,6 @@ router.beforeEach((to, from, next) => {
         })
       } else {
         if (store.getters.roles.length === 0) {
-          console.log(store.getters.roles.length)
           store
             .dispatch('GetInfo')
             .then(res => {
@@ -73,10 +72,7 @@ router.beforeEach((to, from, next) => {
               store.dispatch('GenerateRoutes').then(() => {
                 // 根据roles权限生成可访问的路由表
                 // 动态添加可访问路由表
-                console.log(router)
                 router.addRoutes(store.getters.addRouters)
-  
-                console.log(store.getters.addRouters)
                 const redirect = decodeURIComponent(from.query.redirect || to.path)
                 console.log(redirect)
                 if (to.path === redirect) {
@@ -107,19 +103,15 @@ router.beforeEach((to, from, next) => {
                 })
               })
             })
-        } else {
+        }else{
           next()
         }
       }
-    } else {
-  
-      console.log(whiteList.includes(to.name))
-      if (whiteList.includes(to.name)) {
+    }else{
+      if(whiteList.includes(to.name)){
         // 在免登录白名单，直接进入
-        console.log(whiteList)
         next()
       } else {
-        console.log(22)
         next({
           path: '/login',
           query: {

@@ -3,7 +3,7 @@
             <a-row :gutter="60" class="list-row" v-if="designList.length > 0">
                   <a-col :span="8" v-for="item in designList" :key="item.id">
                         <div class="order-item">
-                              <div style="height:383px">
+                              <div class="img-box">
                                     <img :src="item.positivePicUrl" v-preview="item.positivePicUrl" />
                               </div>
                               <div class="desc">
@@ -90,6 +90,17 @@ export default {
             }
       }
       
+}
+@media screen and (max-width: 1900px) and (min-width: 1024px){
+      #design-list{
+            .list-row{
+                  .order-item{
+                        .img-box{
+                              height: 250px;
+                        }
+                  }
+            }
+      }
 }
 </style>
 

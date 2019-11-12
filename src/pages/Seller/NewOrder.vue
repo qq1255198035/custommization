@@ -73,6 +73,7 @@
                                     <div v-for="(item,index) in boxSize1.list" :key="index" :style="{width: item.width + 'px',height: item.height + 'px',top: item.top + 'px', left: item.left + 'px'}">
                                     </div>
                                 </div>
+                                
                             </div>
                             <div class="canvas-container"  v-show="designModel == 1">
                                 <canvas id="canvas2" :width="screenWidth" :height="screenWidth"></canvas>
@@ -158,7 +159,7 @@
                                     <div class="tool-box6" v-show="visibletype == 1">
                                         <div class="upload-box">
                                             <h4>PLEASE SELECT THE FILE TO UPLOAD</h4>
-                                            <a-upload-dragger name="file" class="my-upload" :beforeUpload="beforeUpload" accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif">
+                                            <a-upload-dragger class="my-upload" :customRequest="beforeUpload" accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif" :showUploadList="false">
                                                     <p class="ant-upload-drag-icon">
                                                         <a-icon type="cloud-upload" />
                                                     </p>
@@ -202,10 +203,10 @@
                                                 <span style="min-width: 52px;">Step 1：</span>
                                                 <div>
                                                     <p>
-                                                        <a-checkbox @change="addName">ADD a name</a-checkbox>
+                                                        <a-checkbox @change="addName" :checked="addNameData">Add a name</a-checkbox>
                                                     </p>
                                                     <p>
-                                                        <a-checkbox @change="addNumber">Add a number</a-checkbox>
+                                                        <a-checkbox @change="addNumber" :checked="addNumberData">Add a number</a-checkbox>
                                                     </p>
                                                 </div>
                                             </dd>
@@ -213,13 +214,13 @@
                                                 <span>Position：</span>
                                                 <div>
                                                     <p>
-                                                        <a-select defaultValue="0" style="width: 95%;" @change="changeNamePosition" :disabled="!addNameData">
+                                                        <a-select :value="namePosition" style="width: 95%;" @change="changeNamePosition" :disabled="!addNameData">
                                                             <a-select-option value="0">Front</a-select-option>
                                                             <a-select-option value="1">Back</a-select-option>
                                                         </a-select>
                                                     </p>
                                                     <p>
-                                                        <a-select defaultValue="0" style="width: 100%;" @change="changeNumberPosition" :disabled="!addNumberData">
+                                                        <a-select :value="numberPosition" style="width: 100%;" @change="changeNumberPosition" :disabled="!addNumberData">
                                                             <a-select-option value="0">Front</a-select-option>
                                                             <a-select-option value="1">Back</a-select-option>
                                                         </a-select>
@@ -230,7 +231,7 @@
                                                 <span>Height：</span>
                                                 <div>
                                                     <p>
-                                                        <a-select defaultValue="6cm" style="width: 95%;" @change="changeNameSize" :disabled="!addNameData || keyId !== 'Name'">
+                                                        <a-select :value="nameSize" style="width: 95%;" @change="changeNameSize" :disabled="!addNameData || keyId !== 'Name'">
                                                             <a-select-option value="20">6cm</a-select-option>
                                                             <a-select-option value="30">7cm</a-select-option>
                                                             <a-select-option value="40">8cm</a-select-option>
@@ -238,7 +239,7 @@
                                                         </a-select>
                                                     </p>
                                                     <p>
-                                                        <a-select defaultValue="15cm" style="width: 100%;" @change="changeNumberSize" :disabled="!addNumberData || keyId !== 'Number'">
+                                                        <a-select :value="numberSize" style="width: 100%;" @change="changeNumberSize" :disabled="!addNumberData || keyId !== 'Number'">
                                                             <a-select-option value="150">15cm</a-select-option>
                                                             <a-select-option value="170">18cm</a-select-option>
                                                             <a-select-option value="190">20cm</a-select-option>
@@ -251,13 +252,12 @@
                                                 <span>Font：</span>
                                                 <div>
                                                     <p>
-                                                        <a-select style="width: 95%;" :disabled="!addNameData || keyId !== 'Name'" placeholder="Please choose" @change="changeNameFamily">
+                                                        <a-select style="width: 95%;" :disabled="!addNameData || keyId !== 'Name'" placeholder="Please choose" @change="changeNameFamily" v-model="nameFontFamily">
                                                             <a-select-option v-for="item in fontFamilyArr" :key="item.id" :value="item.name">{{item.name}}</a-select-option>
-                                                            
                                                         </a-select>
                                                     </p>
                                                     <p>
-                                                        <a-select style="width: 100%;" :disabled="!addNumberData || keyId !== 'Number'" placeholder="Please choose" @change="changeNumberFamily">
+                                                        <a-select style="width: 100%;" :disabled="!addNumberData || keyId !== 'Number'" placeholder="Please choose" @change="changeNumberFamily" v-model="numberFontFamily">
                                                             <a-select-option v-for="item in fontFamilyArr" :key="item.id" :value="item.name">{{item.name}}</a-select-option>
                                                         </a-select>
                                                     </p>
@@ -275,7 +275,7 @@
                                                 </div>
                                             </dd>
                                         </dl>
-                                        <div style="text-align: center;">
+                                        <div style="text-align: center;" v-if="false">
                                             <a-button type="primary" :disabled="!addNameData && !addNumberData" @click="visibletype = 9">
                                                 Input Number and Name
                                             </a-button>
@@ -287,7 +287,7 @@
                                         <div class="second">
                                             <div class="text-tool">
                                                 <a-input v-model="editText" style="width: 70%"></a-input>
-                                                <a-button type="primary" @click="addItext(editText,true)" :disabled="!editText" style="border-radius: 12px;">Modifying text</a-button>
+                                                <a-button type="primary" @click="addItext(editText,true)" :disabled="!editText" style="border-radius: 12px;">Modify Text</a-button>
                                             </div>
                                         </div>
                                         <ul class="tool-list">
@@ -320,14 +320,14 @@
                                                 </p>
                                             </li>
                                             <li @click="openChangeColorBox(3,'Outline Color')">
-                                                <span>Outline Color:</span>
+                                                <span>Outline Color</span>
                                                 <p>
                                                     <span>{{strokeColorName}} <i class="square" :style="{backgroundColor: strokeColor}"></i></span>
                                                     <a-icon type="right" />
                                                 </p>
                                             </li>
                                             <li @click="openChangeColorBox(4,'Shadow Color')">
-                                                <span>Shadow：</span>
+                                                <span>Shadow</span>
                                                 <p>
                                                     <span>{{shadowColorName}} <i class="square" :style="{backgroundColor: shadowColor}"></i></span>
                                                     <a-icon type="right" />
@@ -403,7 +403,7 @@
                                             </dd>
                                             <dd style="padding: 0 10px;" v-if="changeWidthShow == 4">
                                                 <span>SIZE：</span>
-                                                <a-slider :min="0" :max="30" v-model="Shadow1" :step="5" @change="changeShadowWidth" style="width: 95%;margin:10px auto;"/>
+                                                <a-slider :min="0" :max="10" v-model="Shadow1" :step="1" @change="changeShadowWidth" style="width: 95%;margin:10px auto;"/>
                                             </dd>
                                         </dl>
                                         <!-- <my-title :title="colorTitle"></my-title> -->
@@ -673,23 +673,18 @@
                             style="width: 45%;"
                         >
                             <a-upload
-                            listType="picture-card"
-                            @preview="handlePreview"
-                            :fileList="fileList"
-                            :beforeUpload="beforeUploadEx"
-                            @change="handleChange"
-                            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                            accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif"
-                            v-decorator="['img',{rules: [{ required: true, message: 'Please upload pictures！' }]}]"
+                                listType="picture-card"
+                                accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif"
+                                :customRequest="beforeUploadEx"
+                                :showUploadList="false"
+                                v-decorator="['img',{rules: [{ required: true, message: 'Please upload pictures！' }]}]"
                             >
-                                <div v-if="fileList.length < 1">
-                                    <a-icon type="plus" />
+                                <img v-if="previewImage" :src="previewImage" alt="avatar" width="104" height="104" />
+                                <div v-else>
+                                    <a-icon type='plus'/>
                                     <div class="ant-upload-text">Upload</div>
                                 </div>
                             </a-upload>
-                            <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
-                                <img alt="example" style="width: 100%" :src="previewImage" />
-                            </a-modal>
                             <div class="desc">
                                 <p>ACCEPTED FILE TYPE(MAXIMUM SIZE: 10MB)</p>
                                 <p>
@@ -846,7 +841,8 @@ import {
         getPic,
         handleDesignList,
         rmWhite,
-        queryByUrl
+        queryByUrl,
+        saveNameNumber
     } from "@/api/seller";
 export default {
     components:{
@@ -871,10 +867,10 @@ export default {
             id:'',
             btnable:false,
             fontShapeArr:[],
-            nameSize:20,
-            numberSize:150,
-            namePosition:0,
-            numberPosition:0,
+            nameSize:'20',
+            numberSize:'150',
+            namePosition:'0',
+            numberPosition:'0',
             exampleName:'',
             exampleNumber:'',
             endDsign: false,
@@ -889,7 +885,7 @@ export default {
             // 改变颜色盒子标题
             colorTitle:'',
             // 文字阴影样式开始
-            Shadow1: 15,
+            Shadow1: 10,
             shadowColorName: '',
             shadowColor: '',
             // 文字阴影样式结束
@@ -933,8 +929,8 @@ export default {
             strokeWidth:2,
             strokeColor: '',
             strokeColorName: '',
-            nameFontFamily: 'NBA-Hawks',
-            numberFontFamily: 'NBA-Hawks',
+            nameFontFamily: '845-CAI978',
+            numberFontFamily: '845-CAI978',
             reImgColorurl: '',
             // skewx:0,
             // skewy:0,
@@ -1090,7 +1086,7 @@ export default {
             boxSize4: {},
             sizeList: false,
             changeWidthShow:0,
-            keyId:'sss'
+            keyId:''
         }
     },
     created(){
@@ -1165,23 +1161,14 @@ export default {
                 this.boxSize2 = SIZE.canvas2;
                 this.boxSize3 = SIZE.canvas3;
                 this.boxSize4 = SIZE.canvas4;
-                this.handleObjectMove(this.myCanvas1,this.boxSize1.top,600 - this.boxSize1.top - this.boxSize1.height,this.boxSize1.left,600 - this.boxSize1.left - this.boxSize1.width);
-                this.handleObjectMove(this.myCanvas2,this.boxSize2.top,600 - this.boxSize2.top - this.boxSize2.height,this.boxSize2.left,600 - this.boxSize2.left - this.boxSize2.width);
-                this.handleObjectMove(this.myCanvas3,this.boxSize3.top,600 - this.boxSize3.top - this.boxSize3.height,this.boxSize3.left,600 - this.boxSize3.left - this.boxSize3.width);
-                this.handleObjectMove(this.myCanvas4,this.boxSize4.top,600 - this.boxSize4.top - this.boxSize4.height,this.boxSize4.left,600 - this.boxSize4.left - this.boxSize4.width);
+                // this.handleObjectMove(this.myCanvas1,this.boxSize1.top,600 - this.boxSize1.top - this.boxSize1.height,this.boxSize1.left,600 - this.boxSize1.left - this.boxSize1.width);
+                // this.handleObjectMove(this.myCanvas2,this.boxSize2.top,600 - this.boxSize2.top - this.boxSize2.height,this.boxSize2.left,600 - this.boxSize2.left - this.boxSize2.width);
+                // this.handleObjectMove(this.myCanvas3,this.boxSize3.top,600 - this.boxSize3.top - this.boxSize3.height,this.boxSize3.left,600 - this.boxSize3.left - this.boxSize3.width);
+                // this.handleObjectMove(this.myCanvas4,this.boxSize4.top,600 - this.boxSize4.top - this.boxSize4.height,this.boxSize4.left,600 - this.boxSize4.left - this.boxSize4.width);
                 this.handleObjectScale(this.myCanvas1,this.boxSize1.left,this.boxSize1.top,this.boxSize1.width,this.boxSize1.height);
                 this.handleObjectScale(this.myCanvas2,this.boxSize2.left,this.boxSize2.top,this.boxSize2.width,this.boxSize2.height);
                 this.handleObjectScale(this.myCanvas3,this.boxSize3.left,this.boxSize3.top,this.boxSize3.width,this.boxSize3.height);
                 this.handleObjectScale(this.myCanvas4,this.boxSize4.left,this.boxSize4.top,this.boxSize4.width,this.boxSize4.height);
-                let items1 = this.myCanvas1.getObjects();
-                let items2 = this.myCanvas2.getObjects();
-                let items3 = this.myCanvas3.getObjects();
-                let items4 = this.myCanvas4.getObjects();
-                items.map(item => {
-                    item.lockUniScaling = true;
-                    item.setControlVisible('tr',false);
-                    item.setControlVisible('bl',false);
-                })
             }
         })
         //this.getWindowScreen();
@@ -1303,23 +1290,22 @@ export default {
         changeNameFamily(e){
             console.log(e)
             let obj = this.myCanvas.getActiveObject();
+            console.log(obj.left)
             if(obj){
                 this.nameFontFamily = e;
                 if(obj.myId == "Name"){
-                    obj.set('fontFamily', e)
-                    this.myCanvas.requestRenderAll();
+                    this.myCanvas.remove(this.exampleName)
+                    this.addExampleName(this.nameFontFamily,this.namePosition,this.nameSize,this.nameColor.slice(1),obj.left,obj.top);
                 }
             }
-            
         },
         changeNumberFamily(e){
-            console.log(e)
             let obj = this.myCanvas.getActiveObject();
             if(obj){
                 this.numberFontFamily = e;
                 if(obj.myId == 'Number'){
-                    obj.set('fontFamily', e)
-                    this.myCanvas.requestRenderAll();
+                    this.myCanvas.remove(this.exampleNumber)
+                    this.addExampleNumber(this.numberFontFamily,this.numberPosition,this.numberSize,this.numberColor.slice(1),obj.left,obj.top);
                 }
             }
         },
@@ -1415,7 +1401,9 @@ export default {
                 o,
                 object
             ) {
-                console.log(o,object)
+                object.lockUniScaling = true;
+                object.setControlVisible('tr',false);
+                object.setControlVisible('bl',false);
             });
         },
         handleChangeFont(params,isAdd){
@@ -1445,7 +1433,7 @@ export default {
                                     crossOrigin: '*',
                                     fontfamily: that.fontfamily,
                                     fontshape: that.fontShape,
-                                    fontcolor: that.fontColor,
+                                    fontcolor: that.color,
                                     colorname: that.colorName,
                                     bgcolor: that.bgcolor,
                                     bgcolorName: that.fontBgColorName,
@@ -1470,7 +1458,7 @@ export default {
                                     crossOrigin: '*',
                                     fontfamily: that.fontfamily,
                                     fontshape: that.fontShape,
-                                    fontcolor: that.fontColor,
+                                    fontcolor: that.color,
                                     colorname: that.colorName,
                                     bgcolor: that.bgcolor,
                                     bgcolorName: that.fontBgColorName,
@@ -1495,7 +1483,7 @@ export default {
                                     crossOrigin: '*',
                                     fontfamily: that.fontfamily,
                                     fontshape: that.fontShape,
-                                    fontcolor: that.fontColor,
+                                    fontcolor: that.color,
                                     colorname: that.colorName,
                                     bgcolor: that.bgcolor,
                                     bgcolorName: that.fontBgColorName,
@@ -1520,7 +1508,7 @@ export default {
                                     crossOrigin: '*',
                                     fontfamily: that.fontfamily,
                                     fontshape: that.fontShape,
-                                    fontcolor: that.fontColor,
+                                    fontcolor: that.color,
                                     colorname: that.colorName,
                                     bgcolor: that.bgcolor,
                                     bgcolorName: that.fontBgColorName,
@@ -1545,7 +1533,7 @@ export default {
                                     crossOrigin: '*',
                                     fontfamily: that.fontfamily,
                                     fontshape: that.fontShape,
-                                    fontcolor: that.fontColor,
+                                    fontcolor: that.color,
                                     colorname: that.colorName,
                                     bgcolor: that.bgcolor,
                                     bgcolorName: that.fontBgColorName,
@@ -1568,31 +1556,23 @@ export default {
                         imgInstance.setControlVisible('tr',false);
                         imgInstance.setControlVisible('bl',false);
                         that.myCanvas.requestRenderAll();
-                        
-                        // queryByUrl(res.result).then(res => {
-                        //     console.log(res)
-                        //     if(res.code == 0){
-                        //         that.editText = res.result.text;
-                        //     }
-                        // })
                         that.liClick = 0;
                         that.visibletype = 3;
                         imgInstance.on("selected", function() {
                             that.liClick = 0;
                             that.visibletype = 3;
-                            console.log(imgInstance)
-                            that.fontfamily = imgInstance.fontfamily,
-                            that.fontShape = imgInstance.fontshape,
-                            that.fontColor = imgInstance.fontcolor,
-                            that.colorName = imgInstance.colorname,
-                            that.bgcolor = imgInstance.bgcolor,
-                            that.fontBgColorName = imgInstance.bgcolorName,
-                            that.strokeWidth = imgInstance.strokewidth,
-                            that.strokeColor = imgInstance.strokeColor,
-                            that.strokeColorName = imgInstance.strokeColorName,
-                            that.shadowColor = imgInstance.shadowColor,
-                            that.shadowColorName = imgInstance.shadowColorName,
-                            that.Shadow1 = imgInstance.Shadow1,
+                            that.fontfamily = imgInstance.fontfamily;
+                            that.fontShape = imgInstance.fontshape;
+                            that.color = imgInstance.fontcolor;
+                            that.colorName = imgInstance.colorname;
+                            that.bgcolor = imgInstance.bgcolor;
+                            that.fontBgColorName = imgInstance.bgcolorName;
+                            that.strokeWidth = imgInstance.strokewidth;
+                            that.strokeColor = imgInstance.strokeColor;
+                            that.strokeColorName = imgInstance.strokeColorName;
+                            that.shadowColor = imgInstance.shadowColor;
+                            that.shadowColorName = imgInstance.shadowColorName;
+                            that.Shadow1 = imgInstance.Shadow1;
                             that.editText = imgInstance.itext
                         });
                     }
@@ -1698,24 +1678,14 @@ export default {
             this.dataUrl4 = this.myCanvas4.toDataURL();
         },
         saveImg(){
-            let arr = [];
-            let items1 = this.myCanvas1.getObjects();
-            let items2 = this.myCanvas1.getObjects();
-            let items3 = this.myCanvas1.getObjects();
-            let items4 = this.myCanvas1.getObjects();
             let json1 = this.myCanvas1.toJSON();
             let json2 = this.myCanvas2.toJSON();
             let json3 = this.myCanvas3.toJSON();
             let json4 = this.myCanvas4.toJSON();
-            json1.objects = items1;
-            json2.objects = items2;
-            json3.objects = items3;
-            json4.objects = items4;
             this.dataPost1 = JSON.stringify(json1);
-            this.dataPost2 = JSON.stringify(json2)
-            this.dataPost3 = JSON.stringify(json3)
+            this.dataPost2 = JSON.stringify(json2);
+            this.dataPost3 = JSON.stringify(json3);
             this.dataPost4 = JSON.stringify(json4)
-            console.log(json1)
         },
         postSaveDesign(params){
             saveDesign(params).then(res => {
@@ -1724,7 +1694,15 @@ export default {
                     this.endDsign = true;
                     this.visibletype = -1;
                     this.liClick = -1;
-                    this.designId = res.result.id
+                    this.designId = res.result.id;
+                    this.myCanvas.discardActiveObject();
+                    this.myCanvas.requestRenderAll();
+                }else{
+                    this.$error({
+                        title: 'Sorry',
+                        okText: 'OK',
+                        content: 'Save failed, please try again!',
+                    });
                 }
             })
         },
@@ -1773,10 +1751,10 @@ export default {
                 this.boxSize2 = SIZE.canvas2;
                 this.boxSize3 = SIZE.canvas3;
                 this.boxSize4 = SIZE.canvas4;
-                this.handleObjectMove(this.myCanvas1,this.boxSize1.top,600 - this.boxSize1.top - this.boxSize1.height,this.boxSize1.left,600 - this.boxSize1.left - this.boxSize1.width);
-                this.handleObjectMove(this.myCanvas2,this.boxSize2.top,600 - this.boxSize2.top - this.boxSize2.height,this.boxSize2.left,600 - this.boxSize2.left - this.boxSize2.width);
-                this.handleObjectMove(this.myCanvas3,this.boxSize3.top,600 - this.boxSize3.top - this.boxSize3.height,this.boxSize3.left,600 - this.boxSize3.left - this.boxSize3.width);
-                this.handleObjectMove(this.myCanvas4,this.boxSize4.top,600 - this.boxSize4.top - this.boxSize4.height,this.boxSize4.left,600 - this.boxSize4.left - this.boxSize4.width);
+                // this.handleObjectMove(this.myCanvas1,this.boxSize1.top,600 - this.boxSize1.top - this.boxSize1.height,this.boxSize1.left,600 - this.boxSize1.left - this.boxSize1.width);
+                // this.handleObjectMove(this.myCanvas2,this.boxSize2.top,600 - this.boxSize2.top - this.boxSize2.height,this.boxSize2.left,600 - this.boxSize2.left - this.boxSize2.width);
+                // this.handleObjectMove(this.myCanvas3,this.boxSize3.top,600 - this.boxSize3.top - this.boxSize3.height,this.boxSize3.left,600 - this.boxSize3.left - this.boxSize3.width);
+                // this.handleObjectMove(this.myCanvas4,this.boxSize4.top,600 - this.boxSize4.top - this.boxSize4.height,this.boxSize4.left,600 - this.boxSize4.left - this.boxSize4.width);
                 this.handleObjectScale(this.myCanvas1,this.boxSize1.left,this.boxSize1.top,this.boxSize1.width,this.boxSize1.height);
                 this.handleObjectScale(this.myCanvas2,this.boxSize2.left,this.boxSize2.top,this.boxSize2.width,this.boxSize2.height);
                 this.handleObjectScale(this.myCanvas3,this.boxSize3.left,this.boxSize3.top,this.boxSize3.width,this.boxSize3.height);
@@ -1807,6 +1785,7 @@ export default {
                 });
             }else{
                 that.show = false;
+                that.$router.push({path: '/neworder'})
             }
             // if(that.liClick == -1 && that.visibletype == -1){
             //     that.show = false;
@@ -1913,8 +1892,8 @@ export default {
                 let obj = this.myCanvas.getActiveObject();
                 console.log(obj)
                 if(obj.myId === 'Name'){
-                    obj.set('fontSize',value);
-                    this.myCanvas.requestRenderAll();
+                    this.myCanvas.remove(this.exampleName)
+                    this.addExampleName(this.nameFontFamily,this.namePosition,this.nameSize,this.nameColor.slice(1),obj.left,obj.top);
                 }
             }
         },
@@ -1923,8 +1902,8 @@ export default {
             if(this.addNumberData){
                 let obj = this.myCanvas.getActiveObject();
                 if(obj.myId === 'Number'){
-                    obj.set('fontSize',value);
-                    this.myCanvas.requestRenderAll();
+                    this.myCanvas.remove(this.exampleNumber)
+                    this.addExampleNumber(this.numberFontFamily,this.numberPosition,this.numberSize,this.numberColor.slice(1),obj.left,obj.top);
                 }
             }
         },
@@ -1937,28 +1916,122 @@ export default {
                     that.liClick = -1;
                 }
                 else{
-                    // queryByUrl(obj.target.src).then(res => {
-                    //     console.log(res)
-                    //     if(res.code == 0){
-                    //         if(res.result.text){
-                    //             that.editText = res.result.text;
-                    //             that.fontfamily = res.result.fontName;
-                    //             that.color = res.result.fontColor;
-                    //             that.colorName = res.result.fontColorName;
-                    //             that.fontShape = res.result.effect;
-                    //             that.bgcolor = res.result.backGround;
-                    //             that.fontBgColorName = res.result.backGroundName;
-                    //             that.strokeWidth = parseInt(res.result.lineweight);
-                    //             that.strokeColor = res.result.outLineColor;
-                    //             that.strokeColorName = res.result.outLineColorName;
-                    //             that.shadowColor = res.result.shadowColor;
-                    //             that.shadowColorName = res.result.shadowColorName;
-                    //             that.Shadow1 = parseInt(res.result.smudge);
-                    //             console.log(that.colorKey)
-                    //             console.log(that.colorName)
-                    //         }
-                    //     }
-                    // })
+                    that.movingBox = true;
+                    if(!obj.target.myId){
+                        if(that.$route.query.show){
+                            if(!obj.target.isShow){
+                                queryByUrl(obj.target.src).then(res => {
+                                    console.log(res)
+                                    if(res.code == 0){
+                                        if(res.result.text == 'EXAMPLE'){
+                                            that.liClick = 2;
+                                            that.visibletype = 2;
+                                            that.addNameData = true;
+                                            that.keyId = 'Name';
+                                            obj.target.set('myId','Name');
+                                            obj.target.set('isShow',true);
+                                            obj.target.set('isType','textName');
+                                            that.exampleName = obj.target;
+                                            that.namePosition = res.result.place.toString();
+                                            that.nameSize = res.result.fontHeight;
+                                            that.nameFontFamily = res.result.fontName;
+                                            that.nameColor = res.result.fontColor;
+                                            obj.target.hasControls = false;
+                                            obj.target.lockMovementX = true;
+                                            that.nameColorName = res.result.fontColorName;
+                                        }else if(res.result.text == '00'){
+                                            that.liClick = 2;
+                                            that.visibletype = 2;
+                                            that.addNumberData = true;
+                                            that.keyId = 'Number';
+                                            that.exampleNumber = obj.target;
+                                            obj.target.set('myId','Number');
+                                            obj.target.set('isShow',true);
+                                            obj.target.set('isType','textNumber');
+                                            obj.target.hasControls = false;
+                                            obj.target.lockMovementX = true;
+                                            that.numberPosition = res.result.place.toString();
+                                            that.numberSize = res.result.fontHeight;
+                                            that.numberFontFamily = res.result.fontName;
+                                            that.numberColor = res.result.fontColor;
+                                            that.numberColorName = res.result.fontColorName;
+                                        }else{
+                                            that.liClick = 0;
+                                            that.visibletype = 3;
+                                            that.editText = res.result.text;
+                                            that.fontfamily = res.result.fontName;
+                                            that.color = res.result.fontColor;
+                                            that.colorName = res.result.fontColorName;
+                                            that.fontShape = res.result.effect;
+                                            that.bgcolor = res.result.backGround;
+                                            that.fontBgColorName = res.result.backGroundName;
+                                            that.strokeWidth = parseInt(res.result.lineweight);
+                                            that.strokeColor = res.result.outLineColor;
+                                            that.strokeColorName = res.result.outLineColorName;
+                                            that.shadowColor = res.result.shadowColor;
+                                            that.shadowColorName = res.result.shadowColorName;
+                                            that.Shadow1 = parseInt(res.result.smudge);
+                                            obj.target.set('isShow',true);
+                                            obj.target.set('isType','imgText');
+                                            obj.target.set('fontfamily',that.fontfamily);
+                                            obj.target.set('fontshape',that.fontShape);
+                                            obj.target.set('fontcolor',that.color);
+                                            obj.target.set('colorname',that.colorName);
+                                            obj.target.set('bgcolor',that.bgcolor);
+                                            obj.target.set('bgcolorName',that.fontBgColorName);
+                                            obj.target.set('strokewidth',that.strokeWidth);
+                                            obj.target.set('strokeColor',that.strokeColor);
+                                            obj.target.set('strokeColorName',that.strokeColorName);
+                                            obj.target.set('shadowColor',that.shadowColor);
+                                            obj.target.set('shadowColorName',that.shadowColorName);
+                                            obj.target.set('Shadow1',that.Shadow1);
+                                            obj.target.set('itext',that.editText);
+                                        }
+                                    }else{
+                                        that.liClick = 1;
+                                        that.visibletype = 10;
+                                        obj.target.set('isShow',true);
+                                        obj.target.set('isType','img');
+                                    }
+                                })
+                            }else{
+                                if(obj.target.isType == 'img'){
+                                    that.liClick = 1;
+                                    that.visibletype = 10;
+                                }else if(obj.target.isType == 'imgText'){
+                                    that.liClick = 0;
+                                    that.visibletype = 3;
+                                    that.fontfamily = obj.target.fontfamily;
+                                    that.fontShape = obj.target.fontshape;
+                                    that.color = obj.target.fontcolor;
+                                    that.colorName = obj.target.colorname;
+                                    that.bgcolor = obj.target.bgcolor;
+                                    that.fontBgColorName = obj.target.bgcolorName;
+                                    that.strokeWidth = obj.target.strokewidth;
+                                    that.strokeColor = obj.target.strokeColor;
+                                    that.strokeColorName = obj.target.strokeColorName;
+                                    that.shadowColor = obj.target.shadowColor;
+                                    that.shadowColorName = obj.target.shadowColorName;
+                                    that.Shadow1 = obj.target.Shadow1;
+                                    that.editText = obj.target.itext;
+                                }
+                            }
+                        }
+                    }else{
+                        if(obj.target.isType == 'textName'){
+                            that.liClick = 2;
+                            that.visibletype = 2;
+                            that.addNameData = true;
+                            that.keyId = 'Name';
+                            console.log(1)
+                        }else if(obj.target.isType == 'textNumber'){
+                            that.liClick = 2;
+                            that.visibletype = 2;
+                            that.addNumberData = true;
+                            that.keyId = 'Number';
+                            console.log(2)
+                        }
+                    }
                 }
             })
         },
@@ -1969,7 +2042,6 @@ export default {
             })
         },
         changeNamePosition(value) {
-            console.log(`selected ${value}`);
             this.namePosition = value;
             if(this.addNameData){
                 if(this.namePosition == 0){
@@ -1977,13 +2049,13 @@ export default {
                     this.designModel = 0;
                     this.bindCanvas(this.myCanvas,0)
                     this.myCanvas2.remove(this.exampleName)
-                    this.addExampleName(this.nameFontFamily);
+                    this.addExampleName(this.nameFontFamily,this.namePosition,this.nameSize,this.nameColor.slice(1),300,200);
                 }else{
                     this.myCanvas = this.myCanvas2;
                     this.designModel = 1;
                     this.bindCanvas(this.myCanvas,1);
                     this.myCanvas1.remove(this.exampleName);
-                    this.addExampleName(this.nameFontFamily)
+                    this.addExampleName(this.nameFontFamily,this.namePosition,this.nameSize,this.nameColor.slice(1),300,200)
                 }
             }
         },
@@ -1996,13 +2068,13 @@ export default {
                     this.designModel = 0;
                     this.bindCanvas(this.myCanvas,0)
                     this.myCanvas2.remove(this.exampleNumber)
-                    this.addExampleNumber(this.numberFontFamily);
+                    this.addExampleNumber(this.numberFontFamily,this.numberPosition,this.numberSize,this.numberColor.slice(1),300,200);
                 }else{
                     this.myCanvas = this.myCanvas2;
                     this.designModel = 1;
                     this.bindCanvas(this.myCanvas,1);
                     this.myCanvas1.remove(this.exampleNumber);
-                    this.addExampleNumber(this.numberFontFamily);
+                    this.addExampleNumber(this.numberFontFamily,this.numberPosition,this.numberSize,this.numberColor.slice(1),300,200);
                 }
             }
         },
@@ -2101,8 +2173,8 @@ export default {
             let obj = this.myCanvas.getActiveObject();
             if (obj) {
                 if(obj.myId == 'Number'){
-                    obj.set("fill", val);
-                    this.myCanvas.requestRenderAll();
+                    this.myCanvas.remove(this.exampleNumber)
+                    this.addExampleNumber(this.numberFontFamily,this.numberPosition,this.numberSize,val.slice(1),obj.left,obj.top);
                     this.visibletype = 2;
                 }
             }
@@ -2114,8 +2186,8 @@ export default {
             let obj = this.myCanvas.getActiveObject();
             if (obj) {
                 if(obj.myId == 'Number'){
-                    obj.set("fill", this.numberColor);
-                    this.myCanvas.requestRenderAll();
+                    this.myCanvas.remove(this.exampleNumber)
+                    this.addExampleNumber(this.numberFontFamily,this.numberPosition,this.numberSize,this.numberColor.slice(1),obj.left,obj.top);
                 }
             }
         },
@@ -2123,10 +2195,9 @@ export default {
             let obj = this.myCanvas.getActiveObject();
             if (obj) {
                 if(obj.myId == 'Name'){
-                    obj.set("fill", val);
-                    this.myCanvas.requestRenderAll();
+                    this.myCanvas.remove(this.exampleName)
+                    this.addExampleName(this.nameFontFamily,this.namePosition,this.nameSize,val.slice(1),obj.left,obj.top);
                     this.visibletype = 2;
-
                 }
             }
         },
@@ -2137,8 +2208,8 @@ export default {
             let obj = this.myCanvas.getActiveObject();
             if (obj) {
                 if(obj.myId == 'Name'){
-                    obj.set("fill", this.nameColor);
-                    this.myCanvas.requestRenderAll();
+                    this.myCanvas.remove(this.exampleName)
+                    this.addExampleName(this.nameFontFamily,this.namePosition,this.nameSize,this.nameColor.slice(1),obj.left,obj.top);
                 }
             }
         },
@@ -2192,7 +2263,6 @@ export default {
             if(this.uploadA){
                 this.fileList = fileList
             }
-
         },
         handlePreview (file) {
             this.previewImage = file.url || file.thumbUrl
@@ -2211,6 +2281,11 @@ export default {
                         this.designId = res.result;
                     }
                     this.getReferencePic(this.designId);
+                    this.previewImage = '';
+                    this.form.setFieldsValue({
+                        img: '',
+                        bz: ''
+                    })
                 }
             })
         },
@@ -2243,7 +2318,6 @@ export default {
             }
         },
         addNumber (e) {
-            console.log(`checked = ${e.target.checked}`)
             let that = this;
             that.addNumberData = e.target.checked
             if(that.addNumberData){
@@ -2256,74 +2330,93 @@ export default {
                     that.bindCanvas(that.myCanvas,1);
                     that.designModel = 1;
                 }
-                that.addExampleNumber(that.numberFontFamily)
+                that.addExampleNumber(that.numberFontFamily,that.numberPosition,that.numberSize,that.numberColor.slice(1),300,200)
             }else{
                 if(that.exampleNumber){
                     that.myCanvas1.remove(that.exampleNumber);
                     that.myCanvas2.remove(that.exampleNumber);
+                    that.numberPosition = '0';
+                    that.numberSize = '150';
+                    that.numberFontFamily = '845-CAI978';
+                    that.numberColor = '#000';
+                    that.numberColorName = 'BLACK'
                 }
             }
         },
-        addExampleNumber(font){
+        addExampleNumber(font,numberPosition,numberSize,numberColor,left,top){
             let that = this;
-            // let myfont = new FontFaceObserver(font);
-            // myfont.load().then(function() {
-                // when font is loaded, use it.
-                that.exampleNumber = new fabric.Text("00", {
-                    myId: 'Number',
-                    fontFamily: font,
-                    originX:'center',
-                    originY:'center',
-                    left: that.screenWidth / 2,
-                    top: 300,
-                    fontSize: that.numberSize,
-                    fill: that.numberColor
-                });
-                that.exampleNumber.lockScalingX = true;
-                that.exampleNumber.lockScalingY = true;
-                that.exampleNumber.hasControls = false;
-                that.keyId = 'Number'
-                that.exampleNumber.lockMovementX = true;
-                that.myCanvas.add(that.exampleNumber).setActiveObject(that.exampleNumber);
-                that.exampleNumber.on("selected", function() {
-                    that.keyId = 'Number'
-                    that.liClick = 2;
-                    that.visibletype = 2;
-                })
-            
-        },
-
-        addExampleName(font){
-            let that = this;
-            that.exampleName = new fabric.Text("EXAMPLE", {
-                myId: 'Name',
-                fontFamily: font,
-                originX:'center',
-                originY:'center',
-                left: that.screenWidth / 2,
-                top: 200,
-                fontSize: that.nameSize,
-                lockUniScaling:true,
-                fill: that.nameColor
-            });
-            that.exampleName.lockScalingX = true;
-            that.exampleName.lockScalingY = true;
-            that.exampleName.hasControls = false;
-            that.keyId = 'Name'
-            that.exampleName.lockMovementX = true;
-            that.myCanvas.add(that.exampleName).setActiveObject(that.exampleName);
-            that.exampleName.on("selected", function() {
-                that.liClick = 2;
-                that.visibletype = 2;
-                that.keyId = 'Name'
+            let img = new Image();
+            saveNameNumber(1,font,numberSize,numberColor,numberPosition,left,top).then(res => {
+                if(res.code == 0){
+                    img.crossOrigin = 'anonymous';
+                    img.src = res.result+"?timeStamp="+new Date().getTime();
+                    img.onload = function () {
+                        that.exampleNumber = new fabric.Image(img, {
+                            myId: 'Number',
+                            fontFamily: font,
+                            originX:'center',
+                            originY:'center',
+                            left: left,
+                            top: top,
+                            fontSize: that.numberSize,
+                            fill: that.numberColor,
+                            padding: 0
+                        })
+                        that.exampleNumber.lockScalingX = true;
+                        that.exampleNumber.lockScalingY = true;
+                        that.exampleNumber.hasControls = false;
+                        that.keyId = 'Number'
+                        that.exampleNumber.lockMovementX = true;
+                        that.myCanvas.add(that.exampleNumber).setActiveObject(that.exampleNumber);
+                        that.exampleNumber.on("selected", function() {
+                            that.keyId = 'Number'
+                            that.liClick = 2;
+                            that.visibletype = 2;
+                        })
+                    }
+                }
             })
         },
-
-        addName (e) {
+        addExampleName(font,namePosition,nameSize,nameColor,left,top){
+            let that = this;
+            let img = new Image();
+            //设置图片跨域访问
+            saveNameNumber(0,font,nameSize,nameColor,namePosition).then(res => {
+                if(res.code == 0){
+                    img.crossOrigin = 'anonymous';
+                    img.src = res.result+"?timeStamp="+new Date().getTime();
+                    img.onload = function () {
+                        that.exampleName = new fabric.Image(img, {
+                            myId: 'Name',
+                            fontFamily: font,
+                            originX:'center',
+                            originY:'center',
+                            left: left,
+                            top: top,
+                            fontSize: that.nameSize,
+                            lockUniScaling:true,
+                            fill: that.nameColor,
+                            padding: 0,
+                        });
+                        that.exampleName.lockScalingX = true;
+                        that.exampleName.lockScalingY = true;
+                        that.exampleName.hasControls = false;
+                        that.keyId = 'Name'
+                        that.exampleName.lockMovementX = true;
+                        that.myCanvas.add(that.exampleName).setActiveObject(that.exampleName);
+                        that.exampleName.on("selected", function() {
+                            that.liClick = 2;
+                            that.visibletype = 2;
+                            that.keyId = 'Name'
+                        })
+                    }
+                }
+            })
+        },
+        addName(e){
             console.log(`checked = ${e.target.checked}`)
             let that = this;
             that.addNameData = e.target.checked;
-
             if(that.addNameData){
                 if(that.namePosition == 0){
                     that.myCanvas = that.myCanvas1;
@@ -2334,11 +2427,16 @@ export default {
                     that.bindCanvas(that.myCanvas,1);
                     that.designModel = 1;
                 }
-                that.addExampleName(that.nameFontFamily)
+                that.addExampleName(that.nameFontFamily,that.namePosition,that.nameSize,that.nameColor.slice(1),300,200)
             }else{
                 if(that.exampleName){
                     that.myCanvas1.remove(that.exampleName);
                     that.myCanvas2.remove(that.exampleName);
+                    that.namePosition = '0';
+                    that.nameSize = '20';
+                    that.nameFontFamily = '845-CAI978';
+                    that.nameColor = '#000';
+                    that.nameColorName = 'BLACK'
                 }
             }
 
@@ -2350,14 +2448,12 @@ export default {
             console.log(this.imgs1)
         },
         beforeUploadEx(file){
-            if(file.size / 1024 / 1024 < 10){
-                
+            let files = file.file;
+            if(files.size / 1024 / 1024 < 10){
                 this.uploadA = true
                 console.log(file)
-                this.postSourceUpload(file)
-
+                this.postSourceUpload(files)
             }else{
-                
                 this.$message.error('Image Size Exceeds Limit');
                 this.uploadA = false
                 return;
@@ -2371,15 +2467,17 @@ export default {
             sourceUpload(formData).then(res => {
                 console.log(res)
                 this.preview_url = res.preview_url;
+                this.previewImage = res.preview_url;
                 this.source_url = res.source_url;
             })
         },
-        beforeUpload (file) {
+        beforeUpload(file){
             console.log(file)
             this.uploadId ++;
-            if(file.size / 1024 / 1024 < 10){
+            let files = file.file;
+            if(files.size / 1024 / 1024 < 10){
                 let formData = new FormData();
-                formData.append("file", file);
+                formData.append("file", files);
                 sourceUpload(formData).then(res => {
                     console.log(res)
                     if(res.preview_url){
@@ -2519,30 +2617,30 @@ export default {
             };
         },
         // 添加图片结束
-        handleObjectMove(object,top_margin,bottom_margin,left_margin,right_margin){
-            let that = this;
-            object.on('object:moving', function (e) {
-                    //var obj = e.target;
-                    that.movingBox = true;
-                    // if object is too big ignore
-                    // if(obj.currentHeight > obj.canvas.height || obj.currentWidth > obj.canvas.width){
-                    //     return;
-                    // }        
-                    // obj.setCoords();        
-                    // // top-left  corner
-                    // if(obj.getBoundingRect().top < top_margin || obj.getBoundingRect().left < left_margin){
-                    //     obj.top = Math.max(obj.top, obj.top-obj.getBoundingRect().top + top_margin);
-                    //     obj.left = Math.max(obj.left, obj.left-obj.getBoundingRect().left + left_margin);
-                    // }
-                    // // bot-right corner
-                    // if(obj.getBoundingRect().top+obj.getBoundingRect().height  > 600 - bottom_margin || obj.getBoundingRect().left+obj.getBoundingRect().width  > 600 - right_margin){
-                    //     obj.top = Math.min(obj.top, obj.canvas.height-obj.getBoundingRect().height+obj.top-obj.getBoundingRect().top - bottom_margin);
-                    //     obj.left = Math.min(obj.left, obj.canvas.width-obj.getBoundingRect().width+obj.left-obj.getBoundingRect().left - right_margin);
-                    // } 
-            });
-        },
+        // handleObjectMove(object,top_margin,bottom_margin,left_margin,right_margin){
+        //     let that = this;
+        //     object.on('object:moving', function (e) {
+        //             //var obj = e.target;
+        //             that.movingBox = true;
+        //             // if object is too big ignore
+        //             // if(obj.currentHeight > obj.canvas.height || obj.currentWidth > obj.canvas.width){
+        //             //     return;
+        //             // }        
+        //             // obj.setCoords();        
+        //             // // top-left  corner
+        //             // if(obj.getBoundingRect().top < top_margin || obj.getBoundingRect().left < left_margin){
+        //             //     obj.top = Math.max(obj.top, obj.top-obj.getBoundingRect().top + top_margin);
+        //             //     obj.left = Math.max(obj.left, obj.left-obj.getBoundingRect().left + left_margin);
+        //             // }
+        //             // // bot-right corner
+        //             // if(obj.getBoundingRect().top+obj.getBoundingRect().height  > 600 - bottom_margin || obj.getBoundingRect().left+obj.getBoundingRect().width  > 600 - right_margin){
+        //             //     obj.top = Math.min(obj.top, obj.canvas.height-obj.getBoundingRect().height+obj.top-obj.getBoundingRect().top - bottom_margin);
+        //             //     obj.left = Math.min(obj.left, obj.canvas.width-obj.getBoundingRect().width+obj.left-obj.getBoundingRect().left - right_margin);
+        //             // } 
+        //     });
+        // },
         handleObjectScale(object,x,y,width,height){
-            object.on('object:modified', function (e) {
+            object.on('object:modified',e => {
                 var obj = e.target;
                 var rect = obj.getBoundingRect();
                 console.log(obj._stateProperties)
@@ -2550,7 +2648,7 @@ export default {
                     || rect.top < y
                     || rect.left + rect.width > x + width
                     || rect.top + rect.height > y + height) {
-                        console.log(obj._stateProperties,obj.angle)
+                        this.$message.error('The selected location has exceeded the limit area, please operate again!');
                     if(obj.angle !== obj._stateProperties['angle']) { 
                         obj.set('angle',obj._stateProperties['angle']); 
                         obj.set('top',obj._stateProperties.top); 
@@ -2699,7 +2797,12 @@ export default {
         },
         // 添加文字
         addItext(text,isAdd) {
-            console.log(this.editText)
+            for(let i=0;i<text.length;i++){
+                if(text.charCodeAt(i) >= 10000){
+                    this.$message.error('Sorry, Chinese is not supported!')
+                    return false
+                }
+            }
             if(isAdd){
                 console.log(text);
                 if(this.myCanvas.getActiveObject()){
@@ -2816,7 +2919,6 @@ export default {
                             this.myCanvas.setActiveObject(a[0]);
                             this.myCanvas.renderAll();
                             this.designModel = 0;
-                            
                         }else{
                             this.myCanvas = this.myCanvas2;
                             this.designModel = 1;
@@ -2832,7 +2934,12 @@ export default {
                         this.visibletype = 8;
                         this.colorTitle = title;
                         this.colorKey = key;
-                        
+                        for(let i = 0; i < colors.length; i++) {
+                            if (colors[i].itemValue === this.nameColor) {
+                                console.log(i);
+                                this.fontColorIcon5 = i
+                            }
+                        }
                     }
                 }else if(key == 6){
                     if(this.addNumberData){
@@ -2862,12 +2969,18 @@ export default {
                         this.visibletype = 8;
                         this.colorTitle = title;
                         this.colorKey = key;
+                        for(let i = 0; i < colors.length; i++) {
+                            if (colors[i].itemValue === this.numberColor) {
+                                console.log(i);
+                                this.fontColorIcon6 = i
+                            }
+                        }
                     }
                 }else if(key == 2){
                     //后加 不严谨
-                    if(this.shadowColorName){
+                    if(this.Shadow1 > 0){
                         this.$message.error('Sorry, only 1 text effect can be added at this moment.')
-                    }else if(this.strokeColorName){
+                    }else if(this.strokeWidth > 0){
                         this.$message.error('Sorry, only 1 text effect can be added at this moment.')
                     }else{
                         this.visibletype = 8;
@@ -3217,7 +3330,6 @@ export default {
     font-family:'yorkwhiteletter';
     src:url('./../../fonts/yorkwhiteletter.ttf')
 }
-
 .white{
     background-color:rgba(255,255,255,.0);
     border-color: #33b8b3;
@@ -3330,11 +3442,11 @@ export default {
                 position: relative;
                 .moving-box{
                     position:absolute;
-                    border: 1px solid #333;
+                    border: 1px solid #999;
                     z-index: 200;
                     > div{
                         position: absolute;
-                        border: 1px solid #333;
+                        border: 1px solid #999;
                     }
                 }
             }
