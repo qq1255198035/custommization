@@ -760,3 +760,11 @@ export function saveNameNumber(text,fontName,fontHeight,fontColor,place) {
         data:qs.stringify({text:text,fontName:fontName,fontHeight:fontHeight,fontColor:fontColor,place:place})
     })
 }
+
+export function read(id) {
+    return axios({
+        url: '/iso/jeecgNotice/read',
+        method: 'post',
+        data:qs.stringify({id: id})
+    })
+}

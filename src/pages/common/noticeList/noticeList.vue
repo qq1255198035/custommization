@@ -3,11 +3,12 @@
     <my-title :title="itemTitle"></my-title>
     <div class="content">
       <a-locale-provider :locale="locale">
-        <a-card style="margin-top: 24px;" :bordered="false">
           <a-list itemLayout="horizontal" :dataSource="data">
-            <a-list-item slot="renderItem" slot-scope="item,index">
+            <a-list-item slot="renderItem" slot-scope="item,index" @click="openMessageModel(item.title,item.content,item.id)" style="cursor: pointer;">
               <a-list-item-meta :description="item.content" :key="index">
-                <p slot="title" href="#">{{item.title}} <span style="font-size: 12px;color:#999;margin-left: 20px;font-weight: normal;">{{ item.createtime }}</span></p>
+                <a-tag color="red" slot="avatar" v-if="item.status == 0">Unread</a-tag>
+                <a-tag color="#33b8b3" slot="avatar" v-if="item.status == 1">Already read</a-tag>
+                <p slot="title" href="#">{{item.title}} <span style="font-size: 12px;color:#999;margin-left: 20px;font-weight: normal;">{{ item.createtime | formatTime }}</span></p>
               </a-list-item-meta>
             </a-list-item>
             <div slot="footer" v-if="data.length > 0" style="text-align: center; margin-top: 16px;">
@@ -18,34 +19,18 @@
               >Load More</a-button>
             </div>
           </a-list>
-        </a-card>
       </a-locale-provider>
     </div>
   </div>
 </template>
-<style lang="less" scoped>
-#notices {
-  padding: 20px;
-  .page-menu-search {
-    display: flex;
-    justify-content: flex-start;
-    padding: 50px 0;
-  }
-}
-</style>
 <script>
 import { apiNotice } from "@/api/system";
 import MyTitle from "@/components/MyTitle/MyTitle";
 import { mixinsTitle } from "@/utils/mixin.js";
+import { read } from "@/api/seller"
 /* eslint-disable */
 import enUS from "ant-design-vue/lib/locale-provider/en_US";
-// // import zhCN from "ant-design-vue/lib/locale-provider/zh_CN";
-// // import zhTW from "ant-design-vue/lib/locale-provider/zh_TW";
-// const lang = {
-//   // "zh-TW": zhTW,
-//   // "zh-CN": zhCN,
-//   "en-US": enUS
-// };
+
 export default {
   mixins: [mixinsTitle],
   components: {
@@ -57,18 +42,57 @@ export default {
       locale: enUS,
       loading: true,
       loadingMore: false,
-      data: [
-        
-      ],
+      data: [],
       offset: 1,
       btnDsiable: false,
-    
     };
   },
   created() {
     this._apiNotice();
   },
+  filters: {
+    formatTime(time){
+      if(time){
+        let d = new Date(time);
+        let localTime = d.getTime();
+        let localOffset = d.getTimezoneOffset()*60000;
+        let utc = localTime + localOffset;
+        let offset = d.getTimezoneOffset() / 60;
+        let korean = utc + (3600000 * offset);
+        let date = new Date(korean);
+        let y = date.getFullYear();  
+        let m = date.getMonth() + 1;  
+        m = m < 10 ? ('0' + m) : m;  
+        let dr = date.getDate();  
+        dr = dr < 10 ? ('0' + dr) : dr;  
+        let h = date.getHours();  
+        h=h < 10 ? ('0' + h) : h;  
+        let minute = date.getMinutes();  
+        minute = minute < 10 ? ('0' + minute) : minute;  
+        let second=date.getSeconds();  
+        second=second < 10 ? ('0' + second) : second;  
+        return y + '-' + m + '-' + dr +' '+ h +':'+ minute + ':' + second; 
+      }else{
+        return ' '
+      }
+    }
+  },
   methods: {
+    openMessageModel(title,content,id){
+      this.$info({
+        title: title,
+        content: content,
+        zIndex: 2000,
+        okText: 'Close',
+        onOk(){},
+      });
+      read(id).then(res => {
+        console.log(res);
+        if(res.code == 200){
+          this._apiNotice();
+        }
+      })
+    },
     _apiNotice() {
       const param = {
         pageNo: this.offset,
@@ -107,6 +131,15 @@ export default {
       this.getInfoList(value, 1);
     }
   },
-  updated() {}
 };
 </script>
+<style lang="less" scoped>
+#notices {
+  padding: 20px;
+  .page-menu-search {
+    display: flex;
+    justify-content: flex-start;
+    padding: 50px 0;
+  }
+}
+</style>

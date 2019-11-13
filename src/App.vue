@@ -9,9 +9,7 @@
   </div>
   </a-locale-provider>
 </template>
-
 <script>
-
 import en_US from 'ant-design-vue/lib/locale-provider/en_US'
 export default {
   name: 'app',
@@ -21,10 +19,12 @@ export default {
   data(){
     return {
       locale: en_US
-   }
+    }
   },
-  
   mounted(){
+    
+  },
+  methods:{
     
   }
 }

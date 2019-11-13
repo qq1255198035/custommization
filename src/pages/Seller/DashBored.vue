@@ -64,7 +64,7 @@ export default {
       designList: [],
       openShare: false,
       config: {
-        url: "", // 网址，默认使用 window.location.href
+        url: window.location.href, // 网址，默认使用 window.location.href
         source: "", // 来源（QQ空间会用到）, 默认读取head标签：<meta name="site" content="http://overtrue" />
         title: "title", // 标题，默认读取 document.title 或者 <meta name="title" content="share.js" />
         description: "description", // 描述, 默认读取head标签：<meta name="description" content="PHP弱类型的实现原理分析" />
@@ -107,7 +107,6 @@ export default {
     },
     getSalesDate() {
       salesDate().then(res => {
-        console.log(res);
         if (res.code == 0) {
           this.price1 = res.result.saleAll;
           this.price2 = res.result.orderAll;
@@ -117,9 +116,7 @@ export default {
     },
     getUserInfo() {
       userInfo().then(res => {
-        console.log(res);
         if (res.code == 0) {
-          console.log(res)
           if(res.result){
             this.name = res.result.username;
             this.level = res.result.levelName;
@@ -131,9 +128,7 @@ export default {
     },
     getOrderingList() {
       orderingList().then(res => {
-        console.log(res);
         if (res.code == 0) {
-          console.log(res)
           this.orderList = res.result.orderList;
           this.designList = res.result.desginList;
         }

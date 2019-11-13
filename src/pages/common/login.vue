@@ -242,7 +242,7 @@ export default {
             delete loginParams.username;
             loginParams.username = values.username;
             loginParams.password = values.password == '******' ? '' : values.password;
-            loginParams.captcha = '0';
+            loginParams.captcha = 0;
             Login(loginParams)
               .then(res => this.loginSuccess(res))
               .finally(() => {
