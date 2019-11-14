@@ -1,6 +1,7 @@
 import { constantRouterMap } from '@/config/router.config'
 import { generatorDynamicRouter } from '@/utils/routerUtil'
 
+
 const permission = {
   state: {
     routers: constantRouterMap,
@@ -22,11 +23,13 @@ const permission = {
      * @constructor
      */
     GenerateRoutes({ commit }) {
-      return new Promise(resolve => {
+      return new Promise((resolve,reject) => {
         generatorDynamicRouter().then(routers => {
           //console.log(routers)
           commit('SET_ROUTERS', routers)
-          resolve()
+          resolve(routers)
+        }).catch(err => {
+          reject(err)
         })
       })
     }

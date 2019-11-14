@@ -30,7 +30,7 @@ router.beforeEach((to, from, next) => {
         next()
         console.log(999)
         // 未通過審批，禁止進入
-        queryByIdA().then(res => {
+        queryByIdA().then(res =>{
           console.log(res)
           if(res.code == 0){
             if(res.result == 1){
@@ -66,8 +66,8 @@ router.beforeEach((to, from, next) => {
         if (store.getters.roles.length === 0) {
           store
             .dispatch('GetInfo')
-            .then(res => {
-              console.log(res)
+            // eslint-disable-next-line
+            .then(() => {
               // 动态菜单与用户信息解耦
               store.dispatch('GenerateRoutes').then(() => {
                 // 根据roles权限生成可访问的路由表

@@ -127,7 +127,7 @@
             />
             <a-avatar v-else style="backgroundColor:#23C6C8" :size="130">Sponsor Cube</a-avatar>
             <template>
-              <a-upload  accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif" name="avatar" :showUploadList="false" :beforeUpload="beforeUpload">
+              <a-upload  accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif" name="avatar" :showUploadList="false" :customRequest="beforeUpload">
                 <commonBtn
                   :icon="'upload'"
                   :width="'100%'"
@@ -317,24 +317,24 @@ export default {
     //   console.log(e.target.value);
     // },
     beforeUpload(file) {
-      const isJPG = file.type === "image/jpeg";
-      const isPNG = file.type === "image/png";
+      let files = file.file
+      const isJPG = files.type === "image/jpeg";
+      const isPNG = files.type === "image/png";
       if (!isJPG && !isPNG) {
         this.$message.error(this.$t("Unsupported Format, Please Try Again."));
         return isJPG;
       }
-      const isLt2M = file.size / 1024 / 1024 < 2;
+      const isLt2M = files.size / 1024 / 1024 < 2;
       if (!isLt2M) {
         `this`.$message.error(this.$t("Image Size Over 2MB"));
         return isLt2M;
       }
-      getBase64(file, imageUrl => {
+      getBase64(files, imageUrl => {
         this.imgurl = imageUrl;
       });
       const formData = new FormData();
-      formData.append("file", file);
+      formData.append("file", files);
       upLoad(formData).then(res => {
-        console.log(res)
         this.fileUrl = res.preview_url;
       });
     },

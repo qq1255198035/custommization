@@ -70,7 +70,7 @@
     </ul>
     <div class="design-show" v-show="show">
         <a-modal :visible="true" title="设计需求" :width="1000" :getContainer="Ele" @cancel="show = false">
-          <div class="section">
+          <div class="section1">
             <h3 style="padding-left: 20px;">{{productName}} <span>颜色：{{productColor}}</span></h3>
             <div class="img-box">
               <div class="imgs">
@@ -673,7 +673,7 @@ export default {
     }
   }
 }
-.section{
+.section1{
   h3{
     span{
       font-size: 12px;

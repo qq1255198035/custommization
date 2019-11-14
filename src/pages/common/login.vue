@@ -242,9 +242,11 @@ export default {
             delete loginParams.username;
             loginParams.username = values.username;
             loginParams.password = values.password == '******' ? '' : values.password;
-            loginParams.captcha = 0;
+            loginParams.captcha = this.getCookie('username') == values.username ? 0 : 1;
             Login(loginParams)
               .then(res => this.loginSuccess(res))
+              // eslint-disable-next-line
+              .catch(err => {})
               .finally(() => {
                 state.loginBtn = false;
               });
@@ -260,6 +262,8 @@ export default {
             loginParams.captcha = 1;
             Login(loginParams)
               .then(res => this.loginSuccess(res))
+              // eslint-disable-next-line
+              .catch(err => {})
               .finally(() => {
                 state.loginBtn = false;
               });
@@ -282,9 +286,11 @@ export default {
             delete loginParams.username1;
             loginParams.username = values.username1;
             loginParams.password = values.password1 == '******' ? '' : values.password1;
-            loginParams.captcha = '0';
+            loginParams.captcha = this.getCookie('username1') == values.username1 ? 0 : 1;
             Login(loginParams)
               .then(res => this.loginSuccess(res))
+              // eslint-disable-next-line
+              .catch(err => {})
               .finally(() => {
                 state.loginBtn = false;
               });
@@ -300,6 +306,8 @@ export default {
             loginParams.captcha = 1;
             Login(loginParams)
               .then(res => this.loginSuccess(res))
+              // eslint-disable-next-line
+              .catch(err => {})
               .finally(() => {
                 state.loginBtn = false;
               });

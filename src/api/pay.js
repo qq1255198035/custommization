@@ -1,17 +1,16 @@
 import axios from 'axios'
 axios.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded;charset=UTF-8";
 export function ajaxPost(url, params,config) {
-  return new Promise((resolve, reject) => {
+	return new Promise((resolve, reject) => {
         axios.post(url, params, config)
-              .then(response => {
+            .then(response => {
                     resolve(response.data);
-              }, err => {
+            }, err => {
                     reject(err);
-              })
-              .catch((error) => {
+            }).catch((error) => {
                     reject(error)
-              })
-  })
+            })
+	})
 }
 export function httpRequest(paramObj,fun,errFun) {
 	var xmlhttp = null;

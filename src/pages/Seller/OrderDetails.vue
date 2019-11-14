@@ -54,12 +54,12 @@
                 </a-form-item>
                 <a-form-item label="Upload photo" :label-col="{ span: 3 }" :wrapper-col="{ span: 12 }">
                   <a-upload
-                  accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif"
+                    accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif"
                     name="avatar"
                     listType="picture-card"
                     class="avatar-uploader"
                     :showUploadList="false"
-                    :beforeUpload="beforeUpload"
+                    :customRequest="beforeUpload"
                   >
                     <img width="120" height="120" v-if="imgurl" :src="imgurl" alt="avatar" />
                     <div v-else>
@@ -761,22 +761,23 @@ export default {
       this.$message.success("Address Successfully Updated!");
     },
     beforeUpload(file) {
-      const isJPG = file.type === "image/jpeg";
-      const isPNG = file.type === "image/png";
+      let files = file.file;
+      const isJPG = files.type === "image/jpeg";
+      const isPNG = files.type === "image/png";
       if (!isJPG && !isPNG) {
         this.$message.error(this.$t("Unsupported Format, Please Try Again."));
         return isJPG;
       }
-      const isLt2M = file.size / 1024 / 1024 < 10;
+      const isLt2M = files.size / 1024 / 1024 < 10;
       if (!isLt2M) {
         this.$message.error(this.$t("Image Size Over 2MB"));
         return isLt2M;
       }
-      getBase64(file, imageUrl => {
+      getBase64(files, imageUrl => {
         this.imgurl = imageUrl;
       });
       const formData = new FormData();
-      formData.append("file", file);
+      formData.append("file", files);
       console.log(formData);
       upLoad(formData).then(res => {
         console.log(res);

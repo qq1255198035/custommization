@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import { login } from '@/api/login'
 import { ACCESS_TOKEN,USER_AUTH,SYS_BUTTON_AUTH } from '@/store/mutation-types'
-
 import { loadLanguageAsync } from '@/lang'
 import { getRouterByUser } from '@/utils/routerUtil'
 const user = {
@@ -42,10 +41,9 @@ const user = {
     // 登录
     Login({ commit }, userInfo) {
       Vue.ls.set(ACCESS_TOKEN,'')
-      return new Promise((resolve) => {
+      return new Promise((resolve,reject) => {
         login(userInfo)
           .then(res => {
-            // const result = response.result
             if(res.code == 200){
               Vue.ls.set(ACCESS_TOKEN, res.result.token, 7 * 24 * 60 * 60 * 1000)
               commit('SET_TOKEN', res.result.token)
@@ -54,13 +52,15 @@ const user = {
               commit('SET_INFO', res.user)
             }
             resolve(res)
+          }).catch(err => {
+            reject(err)
           })
           
       })
     },
     // 获取用户信息
     // eslint-disable-next-line
-    GetInfo({ commit, dispatch }) {
+    GetInfo({ commit }) {
       return new Promise((resolve, reject) => {
         getRouterByUser().then(res => {
           const result = res.result.menu
@@ -78,12 +78,11 @@ const user = {
     },
 
     // 登出
-    Logout({ commit, state }) {
+    Logout({ commit }) {
       return new Promise(resolve => {
         console.log(resolve)
         commit('SET_TOKEN', '');
-        commit('SET_ROLES', []);
-        console.log(state);
+        commit('SET_ROLES', []);       
         Vue.ls.remove(ACCESS_TOKEN);
       })
     },

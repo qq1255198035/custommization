@@ -691,6 +691,7 @@ export default {
   }
 }
 .section{
+  padding: 20px;
   h3{
     span{
       font-size: 12px;

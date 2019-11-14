@@ -32,7 +32,7 @@
                   <a-upload
                     listType="picture-card"
                     accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif"
-                    :beforeUpload="handleChangeDesign1"
+                    :customRequest="handleChangeDesign1"
                     :showUploadList="false"
                     v-decorator="['frontimg', { rules: [{ required: true, message: '请填上传正面图片!' }] }]"
                   >
@@ -47,7 +47,7 @@
                   <a-upload
                     listType="picture-card"
                     accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif"
-                    :beforeUpload="handleChangeDesign2"
+                    :customRequest="handleChangeDesign2"
                     :showUploadList="false"
                     v-decorator="['backimg', { rules: [{ required: true, message: '请填上传背面图片!' }] }]"
                   >
@@ -62,7 +62,7 @@
                   <a-upload
                     listType="picture-card"
                     accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif"
-                    :beforeUpload="handleChangeDesign3"
+                    :customRequest="handleChangeDesign3"
                     :showUploadList="false"
                     v-decorator="['leftimg', { rules: [{ required: true, message: '请填上传左面图片!' }] }]"
                   >
@@ -77,7 +77,7 @@
                   <a-upload
                     listType="picture-card"
                     accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif"
-                    :beforeUpload="handleChangeDesign4"
+                    :customRequest="handleChangeDesign4"
                     :showUploadList="false"
                     v-decorator="['rightimg', { rules: [{ required: true, message: '请填上传右面图片!' }] }]"
                   >
@@ -305,11 +305,10 @@
               listType="picture-card"
               class="avatar-uploader"
               :showUploadList="false"
-              :beforeUpload="beforeUpload"
-              @change="handleChange"
+              :customRequest="beforeUpload"
               v-decorator="['img', { rules: [{ required: true,message: '请上传尺寸图片!'}]}]" 
             >
-              <img v-if="imageUrl" :src="imageUrl" alt="avatar" />
+              <img v-if="imageUrl" :src="imageUrl" alt="avatar" width="102" height="102"/>
               <div v-else>
                 <a-icon type='plus'/>
                 <div class="ant-upload-text">上传</div>
@@ -1269,9 +1268,10 @@ export default {
         }
     },
     handleChangeDesign1(file) {
-      if(file.size / 1024 / 1024 < 10){
+      let files = file.file;
+      if(files.size / 1024 / 1024 < 10){
         let formData = new FormData();
-        formData.append("file", file);
+        formData.append("file", files);
         sourceUpload(formData).then(res => {
           console.log(res)
           this.bgimgs[0].url = res.preview_url;
@@ -1285,9 +1285,10 @@ export default {
       }
     },
     handleChangeDesign2(file) {
-      if(file.size / 1024 / 1024 < 10){
+      let files = file.file;
+      if(files.size / 1024 / 1024 < 10){
         let formData = new FormData();
-        formData.append("file", file);
+        formData.append("file", files);
         sourceUpload(formData).then(res => {
             this.bgimgs[1].url = res.preview_url;
             this.designModel = 1;
@@ -1300,10 +1301,10 @@ export default {
       }
     },
     handleChangeDesign3(file) {
-      if(file.size / 1024 / 1024 < 10){
+      let files = file.file;
+      if(files.size / 1024 / 1024 < 10){
         let formData = new FormData();
-        console.log(file)
-        formData.append("file", file);
+        formData.append("file", files);
         sourceUpload(formData).then(res => {
             console.log(res)
             this.bgimgs[2].url = res.preview_url;
@@ -1317,10 +1318,11 @@ export default {
       }
     },
     handleChangeDesign4(file) {
-      if(file.size / 1024 / 1024 < 10){
+      let fils = file.file;
+      if(files.size / 1024 / 1024 < 10){
         let formData = new FormData();
         console.log(file)
-        formData.append("file", file);
+        formData.append("file", files);
         sourceUpload(formData).then(res => {
             console.log(res)
             this.bgimgs[3].url = res.preview_url;
@@ -1378,16 +1380,15 @@ export default {
       this.key = k;
     },
     beforeUpload(file) {
-      const isLt2M = file.size / 1024 / 1024 < 10;
+      let files = file.file;
+      const isLt2M = files.size / 1024 / 1024 < 10;
       if (!isLt2M) {
         this.$message.error('Image must smaller than 10MB!');
+        return isLt2M;
       }
-      return isLt2M;
-    },
-    handleChange(info) {
-        getBase64(info.file.originFileObj, imageUrl => {
+      getBase64(files, imageUrl => {
           this.imageUrl = imageUrl;
-        });
+      });
     }
   },
 }
