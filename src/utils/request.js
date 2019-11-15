@@ -16,8 +16,6 @@ const err = (error) => {
   if (error.response) {
     let data = error.response.data
     const token = Vue.ls.get(ACCESS_TOKEN)
-    console.log("------异常响应------",token)
-    console.log("------异常响应------",error.response.status)
     switch (error.response.status) {
       case 403:
         notification.error({ message: 'System error', description: 'access denied',duration: 4})
@@ -78,8 +76,7 @@ const err = (error) => {
 
 // request interceptor
 service.interceptors.request.use(config => {
-  const token = Vue.ls.get(ACCESS_TOKEN);//Vue.ls.get('token')
-  console.log(config)
+  const token = Vue.ls.get(ACCESS_TOKEN);
   // 如果是微信支付页面，隐藏loading状态
   if(config.url == '/api/wx/wxOrderQuery'){
     Vue.$vLoading.hide();

@@ -123,9 +123,10 @@ export default {
       })
     },
     initWebSocket(){                
-      var token = this.$ls.get(ACCESS_TOKEN);
+      let token = this.$ls.get(ACCESS_TOKEN);
+      let origin =  window.location.host;
       // WebSocket与普通的请求所用协议有所不同，ws等同于http，wss等同于https   
-      let url = process.env.NODE_ENV == 'production' ? 'ws://127.0.0.1:8081/jeecg-boot/sys/messages/' + token : "ws://192.168.0.9:8080/jeecg-boot/sys/messages/" + token       
+      let url = process.env.NODE_ENV == 'production' ? 'wss://' + origin + '/jeecg-boot/sys/messages/' + token : 'ws://192.168.0.9:8080/jeecg-boot/sys/messages/' + token       
       this.websock = new WebSocket(url); 
 			this.websock.onopen = this.websocketonopen;                
 			this.websock.onerror = this.websocketonerror;                
@@ -179,12 +180,10 @@ export default {
         okText: "Confirm",
         cancelText: "Cancel",
         onOk() {
-          that.$router.push({path: '/'});
-          that.Logout();
-          
-          setTimeout(() => {
-            window.location.reload();
-          },10)
+          that.Logout({}).then(() => {
+            that.$router.push({path: '/'});
+            window.location.reload()
+          });
         },
         onCancel() {}
       });

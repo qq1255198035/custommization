@@ -2641,9 +2641,9 @@ export default {
         // },
         handleObjectScale(object,x,y,width,height){
             object.on('object:modified',e => {
-                var obj = e.target;
-                var rect = obj.getBoundingRect();
-                console.log(obj._stateProperties)
+                let obj = e.target;
+                let rect = obj.getBoundingRect();
+                obj.lockScalingFlip = true;
                 if (rect.left < x
                     || rect.top < y
                     || rect.left + rect.width > x + width
@@ -2666,28 +2666,24 @@ export default {
                     }
                     obj.setCoords();
             
-            // object.on("object:scaling",function(e){
-            //     var scaledObject = e.target;
-            //     scaledObject.lockScalingFlip = true;
-            //     scaledObject.minScaleLimit = 0.1;
+            
+                // var startX = scaledObject.getBoundingRect(true,true).left;
+                // var startY = scaledObject.getBoundingRect(true,true).top;
+                // var maxWidth = width - startX;// scaledObject.aCoords.tl.x;
+                // var maxHeight = height -startY;
+                // scaledObject.setCoords();
                 
-            //     var startX = scaledObject.getBoundingRect(true,true).left;
-            //     var startY = scaledObject.getBoundingRect(true,true).top;
-            //     var maxWidth = width - startX;// scaledObject.aCoords.tl.x;
-            //     var maxHeight = height -startY;
-            //     scaledObject.setCoords();
-                
-            //     var isOnScreen = scaledObject.isContainedWithinRect({x:x,y:y},{x:width + x,y:height + y},true,true);
-            //     if(!isOnScreen) {
-            //         var w = scaledObject.getBoundingRect(true,true).width;
-            //         var h = scaledObject.getBoundingRect(true,true).height;
+                // var isOnScreen = scaledObject.isContainedWithinRect({x:x,y:y},{x:width + x,y:height + y},true,true);
+                // if(!isOnScreen) {
+                //     var w = scaledObject.getBoundingRect(true,true).width;
+                //     var h = scaledObject.getBoundingRect(true,true).height;
                     
-            //         if( (maxHeight-h) < (maxWidth-w)){
-            //             scaledObject.scaleToHeight(height + y - startY - 1);
-            //         } else{
-            //             scaledObject.scaleToWidth(width + x - startX - 1);
-            //         }
-            //     }
+                //     if( (maxHeight-h) < (maxWidth-w)){
+                //         scaledObject.scaleToHeight(height + y - startY - 1);
+                //     } else{
+                //         scaledObject.scaleToWidth(width + x - startX - 1);
+                //     }
+                // }
             })
         },
         // 切换正反左右面

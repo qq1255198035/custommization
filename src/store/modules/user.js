@@ -79,17 +79,16 @@ const user = {
 
     // 登出
     Logout({ commit }) {
-      return new Promise(resolve => {
-        console.log(resolve)
+      return new Promise((resolve) => {
         commit('SET_TOKEN', '');
-        commit('SET_ROLES', []);       
+        commit('SET_ROLES', []);     
         Vue.ls.remove(ACCESS_TOKEN);
+        resolve();
       })
     },
     SetLang({ commit }, lang) {
       console.log(lang)
       return new Promise(resolve => {
-        
         commit('SET_LANG', lang)
         loadLanguageAsync(lang)
         resolve()

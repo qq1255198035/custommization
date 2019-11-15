@@ -224,9 +224,9 @@
                 </a-list-item>
               </a-list>
             </div>
-            <!-- <div class="submitbtn-box">
+            <div class="submitbtn-box">
               <a-button type="primary" @click="postDesignSize">保存</a-button>
-            </div> -->
+            </div>
           </div>
         </div>
       </a-tab-pane>
@@ -631,6 +631,7 @@ export default {
         item.top = item.top - params.canvas4.top;
       })
       console.log(params,this.dataList)
+      console.log(dataList)
     },
     onUnselected(object){
       object.on('mouse:down',(obj) => {
@@ -1081,6 +1082,7 @@ export default {
           }else if(key == 4){
             this.addFlag4 = false;
           }
+          this.activeKey = '2'
         }
       })
     },

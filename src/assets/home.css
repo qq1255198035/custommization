@@ -209,7 +209,7 @@ nav a:hover,nav a.nav{text-shadow: gray 3px 3px 2px; }
 @media (min-width: 1200px)  {
 	.homeMenu{padding:3.75rem 3.75rem 0;}
 	.homeMenu h1 img{width: 550px;}
-	nav a{ font-size: 1.75rem; margin-left:3.75rem;}
+	nav a{ font-size: 1.75rem;}
 	nav a:hover,nav a.nav{font-size: 1.125rem;}
 	.homeBanner a{ padding: 10px 40px; font-size:1.75rem;}
 	.whatTCK{padding: 0 130px;}
@@ -218,15 +218,15 @@ nav a:hover,nav a.nav{text-shadow: gray 3px 3px 2px; }
 		justify-content: flex-end;
 		align-items: center;
 	}
-	/* .txtRight a:nth-child(2){
-		min-width: 142px;
+	.txtRight a:nth-child(2){
+		min-width: 205px;
 	}
 	.txtRight a:nth-child(3){
-		min-width: 264px;
-	}
+		min-width: 306px;
+	} 
 	.txtRight a:nth-child(4){
-		min-width: 149px;
-	} */
+		min-width: 215px;
+	} 
 }
 
 @media (min-width: 980px)  {
@@ -236,8 +236,7 @@ nav a:hover,nav a.nav{text-shadow: gray 3px 3px 2px; }
 	.tckRight ul li,.tckRight p,.whatTxt i{font-size: 16px;}
 	nav a:hover,nav a.nav{font-size:36px;}	
 	.homeMenu{padding: 40px 40px 0 ;}
-	.homeMenu h1 img{width: 400px;}
-	nav a{ margin-left:60px;}	
+	.homeMenu h1 img{width: 400px;}	
 	.homeBanner a{ padding: 10px 30px;}
 	.whatTCK{padding: 60px 130px 80px ;}
 	.homeTitle01{padding: 20px 0;}

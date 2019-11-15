@@ -24,6 +24,7 @@
     "fabric": "2.6.0",
     "fabric-customise-controls": "^2.0.6-beta",
     "fontfaceobserver": "^2.1.0",
+    "frappe-gantt": "^0.3.0",
     "intro.js": "^2.9.3",
     "js-cookie": "^2.2.0",
     "lodash.get": "^4.4.2",
