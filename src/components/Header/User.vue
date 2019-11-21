@@ -5,18 +5,18 @@
     </span> -->
     <!--<notice></notice>-->
     <a-popover
-    v-model="visible"
-    trigger="hover"
-    placement="bottomRight"
-    overlayClassName="header-notice-wrapper"
-    :autoAdjustOverflow="true"
-    :arrowPointAtCenter="true"
-    :overlayStyle="{ width: '300px', top: '50px' }"
-  >
+      v-model="visible"
+      trigger="hover"
+      placement="bottomRight"
+      overlayClassName="header-notice-wrapper"
+      :autoAdjustOverflow="true"
+      :arrowPointAtCenter="true"
+      :overlayStyle="{ width: '300px', top: '50px' }"
+    >
     <template slot="content">
       <a-spin :spinning="loadding">
             <a-list>
-              <a-list-item v-for="item in dataList" :key="item.id" @click="openMessageModel(item.title,item.content,item.id)" style="cursor: pointer;">
+              <a-list-item v-for="item in dataList.slice(0,5)" :key="item.id" @click="openMessageModel(item.title,item.content,item.id)" style="cursor: pointer;">
                 <a-list-item-meta :title="item.title" :description="item.createtime | formatTime">
                   <!-- <a-avatar style="background-color: white" slot="avatar" src="https://gw.alipayobjects.com/zos/rmsportal/ThXAXghbEsBCCSDihZxY.png"/> -->
                 </a-list-item-meta>
@@ -118,7 +118,7 @@ export default {
       read(id).then(res => {
         console.log(res);
         if(res.code == 200){
-          this.initWebSocket();
+          console.log(res)
         }
       })
     },
@@ -126,7 +126,7 @@ export default {
       let token = this.$ls.get(ACCESS_TOKEN);
       let origin =  window.location.host;
       // WebSocket与普通的请求所用协议有所不同，ws等同于http，wss等同于https   
-      let url = process.env.NODE_ENV == 'production' ? 'wss://' + origin + '/jeecg-boot/sys/messages/' + token : 'ws://192.168.0.9:8080/jeecg-boot/sys/messages/' + token       
+      let url = process.env.NODE_ENV == 'production' ? 'ws://' + origin + '/jeecg-boot/sys/messages/' + token : 'ws://192.168.0.9:8080/jeecg-boot/sys/messages/' + token       
       this.websock = new WebSocket(url); 
 			this.websock.onopen = this.websocketonopen;                
 			this.websock.onerror = this.websocketonerror;                

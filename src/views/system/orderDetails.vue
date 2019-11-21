@@ -6,7 +6,7 @@
     <div class="side">
       <p>
         <span>
-          <a-icon type="file-text" />Single number:
+          <a-icon type="file-text" />Order number:
         </span>
         {{orderId}}
       </p>
@@ -15,7 +15,7 @@
       <ul>
         <li>
           <p>
-            <span>Order number:</span>
+            <span>Contacts:</span>
             {{ contact }}
           </p>
           <p>
@@ -347,9 +347,15 @@ export default {
         align-items: center;
         > div {
           text-align: center;
+          p{
+            min-height: 42px;
+            font-size: 16px;
+          }
           span {
-            font-size: 18px;
+            font-size: 14px;
             color: #33b8b3;
+            min-height: 42px;
+            display: inline-block;
           }
         }
       }

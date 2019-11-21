@@ -266,3 +266,38 @@ export function checkCaptcha(phone,smscode) {
     data: JSON.stringify({phone:phone,smscode:smscode})
   })
 }
+
+export function colorList(pageNo,name) {
+  return axios({
+    url: '/sys/dictItem/colorList',
+    method: 'post',
+    data: qs.stringify({pageNo: pageNo,pageSize: 10,name: name})
+  })
+}
+
+export function colorDelete(id) {
+  return axios({
+    url: '/sys/dictItem/logicallyDelete',
+    method: 'post',
+    data: qs.stringify({id:id})
+  })
+}
+
+export function addColorList(itemValue,description,itemText,id) {
+  return axios({
+    url: '/sys/dictItem/addColor',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json;charset-UTF-8'
+    },
+    data: JSON.stringify({itemValue:itemValue,description:description,itemText:itemText,id:id})
+  })
+}
+
+export function editColorShow(id) {
+  return axios({
+    url: '/sys/dictItem/queryById',
+    method: 'post',
+    data: qs.stringify({id:id})
+  })
+}

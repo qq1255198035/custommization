@@ -6,29 +6,32 @@
     <div class="side">
       <p>
         <span>
-          <a-icon type="file-text" />Single number:
+          <a-icon type="file-text" />Order number：
         </span>
         {{orderId}}
       </p>
-      <a-button size="small" style="font-size: 14px;" @mouseover="hidemenu = true">Main operation</a-button>
-      <ul v-show="hidemenu" @mouseover="hidemenu = true" @mouseout="hidemenu = false">
-        <li
-          style="border-bottom: 1px solid #fff;"
-          @click="$router.push({path:'/orderdetails',query:{id: id}})"
-          v-if="orderStatus < 3"
-        >
-          <a-icon type="edit" />Edit
-        </li>
-        <li @click="openMyshareBox(id)" v-if="orderStatus == 3">
-          <a-icon type="share-alt" />Share
-        </li>
-      </ul>
+      <div>
+        <a-button size="small" style="font-size: 14px;z-index: 300" @mouseover="hidemenu = true">Main operation</a-button>
+        <ul v-show="hidemenu" @mouseover="hidemenu = true" @mouseout="hidemenu = false">
+          <li
+            style="border-bottom: 1px solid #fff;"
+            @click="$router.push({path:'/orderdetails',query:{id: id}})"
+            v-if="orderStatus < 3"
+          >
+            <a-icon type="edit" />Edit
+          </li>
+          <li @click="openMyshareBox(id)" v-if="orderStatus == 3">
+            <a-icon type="share-alt" />Share
+          </li>
+        </ul>
+      </div>
+      
     </div>
     <div class="title">
       <ul>
         <li>
           <p>
-            <span>Order number：</span>
+            <span>Contacts：</span>
             {{ contact }}
           </p>
           <p>
@@ -37,7 +40,7 @@
           </p>
         </li>
         <li>
-          <p>
+          <p :title="introduction">
             <span>Note：</span>
             {{ introduction }}
           </p>
@@ -45,17 +48,17 @@
       </ul>
       <div class="status">
         <div>
-          <div>
+          <div class="item">
             <p>Standby Closing Time</p>
             <span>{{payEndDate | formatTime}}</span>
           </div>
           <a-divider type="vertical" style="height: 40px; margin: 0 50px;" />
-          <div>
+          <div class="item">
             <p>Status</p>
             <span>Pending approval</span>
           </div>
           <a-divider type="vertical" style="height: 40px; margin: 0 50px;" />
-          <div>
+          <div class="item">
             <p>Order amount</p>
             <span>$ {{orderPrice}}</span>
           </div>
@@ -258,8 +261,7 @@ export default {
         source: "", // 来源（QQ空间会用到）, 默认读取head标签：<meta name="site" content="http://overtrue" />
         title: "Title", // 标题，默认读取 document.title 或者 <meta name="title" content="share.js" />
         description: "description", // 描述, 默认读取head标签：<meta name="description" content="PHP弱类型的实现原理分析" />
-        image:
-          "", // 图片, 默认取网页中第一个img标签
+        image:"", // 图片, 默认取网页中第一个img标签
         //sites: ["facebook", "wechat", "weibo"], // 启用的站点
         sites: ["facebook", "wechat"],
         //disabled: ['google', 'facebook', 'twitter'], // 禁用的站点
@@ -278,6 +280,9 @@ export default {
     console.log(this.config.url)
   },
   methods: {
+    closeTimeout(){
+      setTimeout(() => {this.hidemenu = false},200)
+    },
     onCopy() {
       this.$message.success("Replication success!");
     },
@@ -421,7 +426,7 @@ export default {
     justify-content: space-between;
     ul {
       display: flex;
-      width: 48%;
+      width: 55%;
       justify-content: space-between;
       padding-left: 20px;
       li {
@@ -430,6 +435,9 @@ export default {
         p {
           font-size: 14px;
           margin: 10px 0;
+          overflow: hidden;
+          text-overflow:ellipsis;
+          white-space: nowrap;
         }
         span {
           color: #666;
@@ -444,9 +452,15 @@ export default {
         align-items: center;
         > div {
           text-align: center;
+          p{
+            min-height: 42px;
+            font-size: 16px;
+          }
           span {
-            font-size: 18px;
+            font-size: 14px;
             color: #33b8b3;
+            min-height: 42px;
+            display: inline-block;
           }
         }
       }

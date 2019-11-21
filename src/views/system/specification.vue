@@ -617,7 +617,8 @@ export default {
         console.log(res)
         if(res.code == 0){
           if(res.success){
-            this.$message.success('操作成功！')
+            this.$message.success('操作成功！');
+            this.getDealerDesignList(this.id);
           }else{
             this.$message.error(res.result)
           }

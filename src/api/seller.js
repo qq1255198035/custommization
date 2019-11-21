@@ -768,3 +768,57 @@ export function read(id) {
         data:qs.stringify({id: id})
     })
 }
+
+export function deleteColor(id) {
+    return axios({
+        url: '/iso/jeecgGoodsColor/delete',
+        method: 'post',
+        data:qs.stringify({id: id})
+    })
+}
+
+export function getColorList(id) {
+    return axios({
+        url: '/system/jeecgGoods/getGoodsColorList',
+        method: 'post',
+        data:qs.stringify({goodsId: id})
+    })
+}
+
+export function addColorList(id) {
+    return axios({
+        url: '/system/jeecgGoods/getGoodsInfoForColor',
+        method: 'post',
+        data:qs.stringify({goodsId: id})
+    })
+}
+
+export function editColorList(id) {
+    return axios({
+        url: '/iso/jeecgGoodsColor/queryById',
+        method: 'post',
+        data:qs.stringify({id: id})
+    })
+}
+
+export function addColor(goodsId,colorType,name,thumbnail,positivePicUrl,backPicUrl,leftPicUrl,rightPicUrl,id) {
+    return axios({
+        url: '/iso/jeecgGoodsColor/add',
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json;charset-UTF-8'
+        },
+        data:JSON.stringify({goodsId:goodsId,colorType:colorType,name:name,thumbnail:thumbnail,positivePicUrl:positivePicUrl,backPicUrl:backPicUrl,leftPicUrl:leftPicUrl,rightPicUrl:rightPicUrl,id: id})
+    })
+}
+
+export function addProList(params) {
+    return axios({
+        url: '/system/jeecgGoods/edit',
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json;charset-UTF-8'
+        },
+        data:JSON.stringify(params)
+    })
+}

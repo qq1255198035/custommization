@@ -42,6 +42,7 @@ const constantRouterComponents = {
   UserAnnouncementList:() => import("@/views/system/UserAnnouncementList"), //我的消息
   DictList:() => import("@/views/system/DictList"), //商品管理，添加修改
   DictItemList:() => import("@/views/system/DictItemList"),
+  colorList:() => import("@/views/system/colorList"),
   //SysAnnouncementList:() => import("@/views/system/SysAnnouncementList"), //系统通告
   
   //format: () => import("@/views/management/format/format"), //商品类别

@@ -1,7 +1,7 @@
 <template>
   <div id="DictList">
     <a-tabs defaultActiveKey="1" @change="callback">
-      <a-tab-pane tab="商品图片" key="1">
+      <a-tab-pane tab="商品图片" key="1" forceRender>
         <div style="display:flex;" class="tab-pane-1">
           <div class="design-box">
             <div class="container">
@@ -153,7 +153,7 @@
                 <div class="edit">
                   <a-form :form="form" layout="vertical">
                     <a-form-item label="Name">
-                      <a-input v-decorator="['name', { rules: [{ required: true, message: '请填写区域名称!' }] }]"/>
+                      <a-input v-decorator="['quarename', { rules: [{ required: true, message: '请填写区域名称!' }] }]"/>
                     </a-form-item>
                     <div class="edit-box">
                       <a-form-item label="Width" style="width: 49%;">
@@ -224,22 +224,22 @@
                 </a-list-item>
               </a-list>
             </div>
-            <div class="submitbtn-box">
+            <!-- <div class="submitbtn-box">
               <a-button type="primary" @click="postDesignSize">保存</a-button>
-            </div>
+            </div> -->
           </div>
         </div>
       </a-tab-pane>
-      <a-tab-pane tab="通用信息" key="2">
+      <a-tab-pane tab="通用信息" key="2" forceRender>
         <a-form :form="form" layout="vertical" class="common-info">
           <a-form-item label="商品名称">
-            <a-input v-decorator="['name', { rules: [{ required: true, message: '请填写商品名称!' }] }]"/>
+            <a-input placeholder="商品名称" v-decorator="['name', { rules: [{ required: true, message: '请填写商品名称!' }] }]"/>
           </a-form-item>
           <a-form-item label="商品编号">
-            <a-input style="width: 40%;" v-decorator="['number', { rules: [{ required: true, message: '请填写商品名称!' }] }]"/>
+            <a-input placeholder="商品编号" style="width: 40%;" v-decorator="['number', { rules: [{ required: true, message: '请填写商品名称!' }] }]"/>
           </a-form-item>
           <a-form-item label="商品类别" class="cascader">
-            <a-cascader :options="options" @change="onChange" placeholder="Please select" 
+            <a-cascader :options="options" @change="onChange" placeholder="请选择" 
               v-decorator="['protype', { rules: [{ required: true, message: '请填写最高价格!' }] }]"
             />
           </a-form-item>
@@ -248,14 +248,14 @@
               <a-input-number
                 placeholder="最高"
                 style="width: 100%;"
-                v-decorator="['minprice', { rules: [{ required: true, message: '请填写最高价格!' }] }]" 
+                v-decorator="['maxprice', { rules: [{ required: true, message: '请填写最高价格!' }] }]" 
               />
             </a-form-item>
             <a-form-item style="margin-left: 20px;">
               <a-input-number
                 placeholder="最低"
                 style="width: 100%;"
-                v-decorator="['maxprice', { rules: [{ required: true, message: '请填写最低价格!' }] }]" 
+                v-decorator="['minprice', { rules: [{ required: true, message: '请填写最低价格!' }] }]" 
               />
             </a-form-item>
           </a-input-group>
@@ -296,7 +296,7 @@
           </a-input-group> 
         </a-form>
       </a-tab-pane>
-      <a-tab-pane  tab="详细描述" key="3">
+      <a-tab-pane  tab="详细描述" key="3" forceRender>
         <a-form :form="form" layout="horizontal">
           <a-form-item label="上传尺寸图片" style="display: flex;">
             <a-upload
@@ -316,7 +316,8 @@
             </a-upload>
           </a-form-item>
         </a-form>
-        <Editor></Editor>
+        <p style="color: rgba(0, 0, 0, 0.85);margin-bottom: 10px;" >商品详情：</p>
+        <Editor v-model="editor.info" :isClear="isClear" :val="val"></Editor>
       </a-tab-pane>
       <a-tab-pane tab="其他信息" key="4" forceRender>
         <div class="tab-pane-2">
@@ -370,16 +371,22 @@ function getBase64(img, callback) {
   reader.readAsDataURL(img);
 }
 import { fabric } from 'fabric';
-import { sourceUpload,syscategoryList,editProShow } from "@/api/seller";
+import { sourceUpload,syscategoryList,editProShow,addProList } from "@/api/seller";
 import Editor from '@/components/Editor/Editor'
 export default {
   data() {
     return {
+      goodsId: '',
+      editor: {
+        info: ''
+      },
+      val:'',
+      isClear: false,
       desc: '',
       keywords: '',
-      value1: '',
-      value2: '',
-      value3: '',
+      value1: 1,
+      value2: 1,
+      value3: 0,
       options:[],
       activeKey: '1',
       editName: '',
@@ -387,7 +394,6 @@ export default {
       editHeight: '',
       editLeft: '',
       editTop: '',
-      form: this.$form.createForm(this),
       abledEdit_1: true,
       abledCancel_1: true,
       abledEdit_2: true,
@@ -404,7 +410,6 @@ export default {
       abledCancel1_3: true,
       abledEdit1_4: true,
       abledCancel1_4: true,
-      //visible: false,
       imageUrl: '',
       addFlag1: true,
       addFlag2: true,
@@ -436,7 +441,8 @@ export default {
         canvas1:[],canvas2:[],canvas3:[],canvas4:[]
       },
       showList:[],
-      resData:{}
+      resData:{},
+      form:this.$form.createForm(this)
     };
   },
   
@@ -458,12 +464,13 @@ export default {
       this.monitorObjectMove(this.myCanvas1);
     })
     this.getSyscategoryList();
-    console.log(this.$route.query.id)
     if(this.$route.query.id){
+      this.goodsId = this.$route.query.id;
       editProShow(this.$route.query.id).then(res => {
         console.log(res);
         if(res.code == 0){
           this.resData = res.result;
+          this.val = res.result.goodsBrief;
           this.setBoxSize1(res);
           this.setBoxSize2(res);
           this.setBoxSize3(res);
@@ -479,7 +486,6 @@ export default {
           this.addFlag3 = false;
           this.addFlag4 = false;
         }
-        
       })
     }
   },
@@ -495,17 +501,28 @@ export default {
           console.log(o,object)
       });
     },
+    postAddProList(params){
+      addProList(params).then(res => {
+        console.log(res)
+        if(res.code == 200){
+          this.$message.success('操作成功！');
+        }
+      })
+    },
     setformAndImg(res){
       this.bgimgs[0].url = res.result.positivePicUrl;
       this.bgimgs[1].url = res.result.backPicUrl;
       this.bgimgs[2].url = res.result.leftPicUrl;
       this.bgimgs[3].url = res.result.rightPicUrl;
-      this.form.setFieldsValue({
-        frontimg: res.result.positivePicUrl,
-        backimg: res.result.backPicUrl,
-        leftimg: res.result.leftPicUrl,
-        rightimg: res.result.rightPicUrl,
-      })
+      setTimeout(() => {
+        this.form.setFieldsValue({
+          frontimg: res.result.positivePicUrl,
+          backimg: res.result.backPicUrl,
+          leftimg: res.result.leftPicUrl,
+          rightimg: res.result.rightPicUrl,
+        })
+      },0)
+      
     },
     setBoxSize4(res){
       let arr1 = [{width: '',height: '',left: '',top: ''}];
@@ -577,62 +594,7 @@ export default {
     onChange(value) {
       console.log(value);
     },
-    postDesignSize(){
-      let dataList = this.dataList;
-      let params = {
-        canvas1:{width: '',height: '',top: '',left: '',name: '',list:[]},
-        canvas2:{width: '',height: '',top: '',left: '',name: '',list:[]},
-        canvas3:{width: '',height: '',top: '',left: '',name: '',list:[]},
-        canvas4:{width: '',height: '',top: '',left: '',name: '',list:[]},
-      }
-      /* eslint-disable */ 
-      let json1 = this.myCanvas1.toJSON();
-      let json2 = this.myCanvas2.toJSON();
-      let json3 = this.myCanvas3.toJSON();
-      let json4 = this.myCanvas4.toJSON();
-      params.canvas1.list = dataList.canvas1.slice(1);
-      params.canvas2.list = dataList.canvas2.slice(1);
-      params.canvas3.list = dataList.canvas3.slice(1);
-      params.canvas4.list = dataList.canvas4.slice(1);
-      params.canvas1.width = dataList.canvas1.length > 0 ? dataList.canvas1[0].width : '';
-      params.canvas1.height = dataList.canvas1.length > 0 ? dataList.canvas1[0].height : '';
-      params.canvas1.left = dataList.canvas1.length > 0 ? dataList.canvas1[0].left : '';
-      params.canvas1.top = dataList.canvas1.length > 0 ? dataList.canvas1[0].top : '';
-      params.canvas1.name = dataList.canvas1.length > 0 ? dataList.canvas1[0].name : '';
-      params.canvas2.width = dataList.canvas2.length > 0 ? dataList.canvas2[0].width : '';
-      params.canvas2.height = dataList.canvas2.length > 0 ? dataList.canvas2[0].height : '';
-      params.canvas2.left = dataList.canvas2.length > 0 ? dataList.canvas2[0].left : '';
-      params.canvas2.top = dataList.canvas2.length > 0 ? dataList.canvas2[0].top : '';
-      params.canvas2.name = dataList.canvas2.length > 0 ? dataList.canvas2[0].name : '';
-      params.canvas3.width = dataList.canvas3.length > 0 ? dataList.canvas3[0].width : '';
-      params.canvas3.height = dataList.canvas3.length > 0 ? dataList.canvas3[0].height : '';
-      params.canvas3.left = dataList.canvas3.length > 0 ? dataList.canvas3[0].left : '';
-      params.canvas3.top = dataList.canvas3.length > 0 ? dataList.canvas3[0].top : '';
-      params.canvas3.name = dataList.canvas3.length > 0 ? dataList.canvas3[0].name : '';
-      params.canvas4.width = dataList.canvas4.length > 0 ? dataList.canvas4[0].width : '';
-      params.canvas4.height = dataList.canvas4.length > 0 ? dataList.canvas4[0].height : '';
-      params.canvas4.left = dataList.canvas4.length > 0 ? dataList.canvas4[0].left : '';
-      params.canvas4.top = dataList.canvas4.length > 0 ? dataList.canvas4[0].top : '';
-      params.canvas4.name = dataList.canvas4.length > 0 ? dataList.canvas4[0].name: '';
-      params.canvas1.list.forEach(item => {
-        item.left = item.left - params.canvas1.left;
-        item.top = item.top - params.canvas1.top;
-      });
-      params.canvas2.list.forEach(item => {
-        item.left = item.left - params.canvas2.left;
-        item.top = item.top - params.canvas2.top;
-      })
-      params.canvas3.list.forEach(item => {
-        item.left = item.left - params.canvas3.left;
-        item.top = item.top - params.canvas3.top;
-      })
-      params.canvas4.list.forEach(item => {
-        item.left = item.left - params.canvas4.left;
-        item.top = item.top - params.canvas4.top;
-      })
-      console.log(params,this.dataList)
-      console.log(dataList)
-    },
+    
     onUnselected(object){
       object.on('mouse:down',(obj) => {
         console.log(obj.target)
@@ -729,7 +691,7 @@ export default {
           height1: this.dataList.canvas1[this.isFirst].height,
           left1: this.dataList.canvas1[this.isFirst].left,
           top1: this.dataList.canvas1[this.isFirst].top,
-          name: this.dataList.canvas4[this.isFirst].name,
+          quarename: this.dataList.canvas4[this.isFirst].name,
         })
         this.abledEdit1_1 = true;
         this.abledCancel1_1 = true;
@@ -739,7 +701,7 @@ export default {
           height1: this.dataList.canvas2[this.isFirst].height,
           left1: this.dataList.canvas2[this.isFirst].left,
           top1: this.dataList.canvas2[this.isFirst].top,
-          name: this.dataList.canvas4[this.isFirst].name,
+          quarename: this.dataList.canvas4[this.isFirst].name,
         })
         this.abledEdit1_2 = true;
         this.abledCancel1_2 = true;
@@ -749,7 +711,7 @@ export default {
           height1: this.dataList.canvas3[this.isFirst].height,
           left1: this.dataList.canvas3[this.isFirst].left,
           top1: this.dataList.canvas3[this.isFirst].top,
-          name: this.dataList.canvas4[this.isFirst].name,
+          quarename: this.dataList.canvas4[this.isFirst].name,
         })
         this.abledEdit1_3 = true;
         this.abledCancel1_3 = true;
@@ -759,7 +721,7 @@ export default {
           height1: this.dataList.canvas4[this.isFirst].height,
           left1: this.dataList.canvas4[this.isFirst].left,
           top1: this.dataList.canvas4[this.isFirst].top,
-          name: this.dataList.canvas4[this.isFirst].name,
+          quarename: this.dataList.canvas4[this.isFirst].name,
         })
         this.abledEdit1_4 = true;
         this.abledCancel1_4 = true;
@@ -909,7 +871,7 @@ export default {
           this.activeKey = '1';
         }else{
           this.form.setFieldsValue({
-            name: this.dataList.canvas1[index].name,
+            quarename: this.dataList.canvas1[index].name,
             width1: this.dataList.canvas1[index].width,
             height1:this.dataList.canvas1[index].height,
             left1:this.dataList.canvas1[index].left,
@@ -932,7 +894,7 @@ export default {
           this.activeKey = '1';
         }else{
           this.form.setFieldsValue({
-            name: this.dataList.canvas2[index].name,
+            quarename: this.dataList.canvas2[index].name,
             width1: this.dataList.canvas2[index].width,
             height1:this.dataList.canvas2[index].height,
             left1:this.dataList.canvas2[index].left,
@@ -955,7 +917,7 @@ export default {
           this.activeKey = '1';
         }else{
           this.form.setFieldsValue({
-            name: this.dataList.canvas2[index].name,
+            quarename: this.dataList.canvas2[index].name,
             width1: this.dataList.canvas3[index].width,
             height1:this.dataList.canvas3[index].height,
             left1:this.dataList.canvas3[index].left,
@@ -978,7 +940,7 @@ export default {
           this.activeKey = '1';
         }else{
           this.form.setFieldsValue({
-            name: this.dataList.canvas4[index].name,
+            quarename: this.dataList.canvas4[index].name,
             width1: this.dataList.canvas4[index].width,
             height1:this.dataList.canvas4[index].height,
             left1:this.dataList.canvas4[index].left,
@@ -1054,7 +1016,6 @@ export default {
               stroke: 'black',
               strokeWidth: 1,
               fill: 'rgba(0,0,0,0)',
-              id: values.name,
               hasRotatingPoint: false,
               padding: 0
             });
@@ -1082,18 +1043,24 @@ export default {
           }else if(key == 4){
             this.addFlag4 = false;
           }
-          this.activeKey = '2'
+          this.activeKey = '2';
+          this.form.setFieldsValue({
+            width: '',
+            height: '',
+            left: '',
+            top: ''
+          })
         }
       })
     },
     addDesignQ(){
-      this.form.validateFields(['width1','height1','left1','top1','name'],(err, values) => {
+      this.form.validateFields(['width1','height1','left1','top1','quarename'],(err, values) => {
         if(!err){
           let calcWidth1 = values.width1 + values.left1;
           let calcHeight1 = values.height1 + values.top1;
           let json = {name: '',width: '',height: '',left: '',top: ''};
           console.log(values)
-          json.name = values.name;
+          json.name = values.quarename;
           json.width = values.width1;
           json.height = values.height1;
           json.left = values.left1;
@@ -1139,17 +1106,24 @@ export default {
               stroke: 'black',
               strokeWidth: 1,
               fill: 'rgba(0,0,0,0)',
-              id: values.name,
+              id: values.quarename,
               hasRotatingPoint: false,
               padding: 0
           });
-            this.myCanvas.add(rect);
-            rect.selectable = false;
-            console.log(this.dataList)
+          this.myCanvas.add(rect);
+          rect.selectable = false;
+          this.form.setFieldsValue({
+            quarename: '',
+            width1: '',
+            height1: '',
+            left1: '',
+            top1: ''
+          })
         }
       })
     },
     monitorObjectMove(object){
+      // 放大，保持描边不变
       object.on('object:scaling', (e) => {
         var o = e.target;
         if (!o.strokeWidthUnscaled && o.strokeWidth) {
@@ -1184,51 +1158,22 @@ export default {
         }
       })
     },
-    // handleObjectMove(index,top,bottom,left,right){
-    //     let items = this.myCanvas.getObjects();
-    //     let that = this;
-    //     let top_margin;
-    //     let bottom_margin;
-    //     let left_margin;
-    //     let right_margin;
-    //     items[index].on('moving', function(e){
-    //      let obj = e.target;
-    //      top_margin = top;
-    //      bottom_margin = bottom;
-    //     left_margin = left;
-    //     right_margin = right;
-    //       if(index !== 0){
-    //         that.myCanvas.requestRenderAll();
-    //         if(obj.currentHeight > obj.canvas.height || obj.currentWidth > obj.canvas.width){
-    //           return;
-    //         }    
-    //         console.log(top_margin,bottom_margin,left_margin,right_margin)    
-    //         obj.setCoords();        
-    //         if(obj.getBoundingRect(true).top < top_margin || obj.getBoundingRect(true).left < left_margin){
-    //           obj.top = Math.max(obj.top, obj.top-obj.getBoundingRect(true).top + top_margin);
-    //           obj.left = Math.max(obj.left, obj.left-obj.getBoundingRect(true).left + left_margin);
-    //         }
-    //         if(obj.getBoundingRect(true).top+obj.getBoundingRect(true).height  > 600 - bottom_margin || obj.getBoundingRect(true).left+obj.getBoundingRect(true).width  > 600 - right_margin){
-    //           obj.top = Math.min(obj.top, obj.canvas.height-obj.getBoundingRect(true).height+obj.top-obj.getBoundingRect(true).top - bottom_margin);
-    //           obj.left = Math.min(obj.left, obj.canvas.width-obj.getBoundingRect(true).width+obj.left-obj.getBoundingRect(true).left - right_margin);
-    //         } 
-    //       }
-    //     });
-    // },
     changeModelDesign(i){
       this.designModel = i;
       this.activeKey = '1';
-      this.form.setFieldsValue({
-        width: '',
-        height: '',
-        left: '',
-        top: '',
-        width1: '',
-        height1: '',
-        left1: '',
-        top1: '',
-        name: ''
-      });
+      setTimeout(() => {
+        this.form.setFieldsValue({
+          width: '',
+          height: '',
+          left: '',
+          top: '',
+          width1: '',
+          height1: '',
+          left1: '',
+          top1: '',
+          quarename: ''
+        });
+      },0)
       if(i == 0){
           this.myCanvas = this.myCanvas1;
           this.bindCanvas(this.myCanvas,i);
@@ -1277,6 +1222,9 @@ export default {
         sourceUpload(formData).then(res => {
           console.log(res)
           this.bgimgs[0].url = res.preview_url;
+          this.form.setFieldsValue({
+            frontimg: res.preview_url
+          });
           this.designModel = 0;
           this.myCanvas = this.myCanvas1
           this.bindCanvas(this.myCanvas,0)
@@ -1293,6 +1241,9 @@ export default {
         formData.append("file", files);
         sourceUpload(formData).then(res => {
             this.bgimgs[1].url = res.preview_url;
+            this.form.setFieldsValue({
+              backimg: res.preview_url
+            });
             this.designModel = 1;
             this.myCanvas = this.myCanvas2;
             this.bindCanvas(this.myCanvas,1)
@@ -1310,6 +1261,9 @@ export default {
         sourceUpload(formData).then(res => {
             console.log(res)
             this.bgimgs[2].url = res.preview_url;
+            this.form.setFieldsValue({
+              leftimg: res.preview_url
+            });
             this.designModel = 2;
             this.myCanvas = this.myCanvas3;
             this.bindCanvas(this.myCanvas,2)
@@ -1320,7 +1274,7 @@ export default {
       }
     },
     handleChangeDesign4(file) {
-      let fils = file.file;
+      let files = file.file;
       if(files.size / 1024 / 1024 < 10){
         let formData = new FormData();
         console.log(file)
@@ -1328,6 +1282,9 @@ export default {
         sourceUpload(formData).then(res => {
             console.log(res)
             this.bgimgs[3].url = res.preview_url;
+            this.form.setFieldsValue({
+              rightimg: res.preview_url
+            });
             this.designModel = 3;
             this.myCanvas = this.myCanvas4;
             this.bindCanvas(this.myCanvas,3)
@@ -1338,14 +1295,97 @@ export default {
       }
     },
     handleSubmit() {
-      // this.form.validateFields((err, values) => {
-      //   if (!err) {
-      //     console.log('Received values of form: ', values);
-      //   }
-      // });
+      
+      this.form.validateFields(['name','number','protype','maxprice','minprice','productionTime','minProductionTime','weight','minOrder','img','frontimg','backimg','leftimg','rightimg'],(err, values) => {
+        console.log('Received values of form: ', values);
+        if (!err) {
+          
+          let dataList = JSON.parse(JSON.stringify(this.dataList));
+          let params = {
+            canvas1:{width: '',height: '',top: '',left: '',name: '',list:[]},
+            canvas2:{width: '',height: '',top: '',left: '',name: '',list:[]},
+            canvas3:{width: '',height: '',top: '',left: '',name: '',list:[]},
+            canvas4:{width: '',height: '',top: '',left: '',name: '',list:[]},
+          }
+          let json1 = this.myCanvas1.toJSON();
+          let json2 = this.myCanvas2.toJSON();
+          let json3 = this.myCanvas3.toJSON();
+          let json4 = this.myCanvas4.toJSON();
+          params.canvas1.list = dataList.canvas1.slice(1);
+          params.canvas2.list = dataList.canvas2.slice(1);
+          params.canvas3.list = dataList.canvas3.slice(1);
+          params.canvas4.list = dataList.canvas4.slice(1);
+          params.canvas1.width = dataList.canvas1.length > 0 ? dataList.canvas1[0].width : '';
+          params.canvas1.height = dataList.canvas1.length > 0 ? dataList.canvas1[0].height : '';
+          params.canvas1.left = dataList.canvas1.length > 0 ? dataList.canvas1[0].left : '';
+          params.canvas1.top = dataList.canvas1.length > 0 ? dataList.canvas1[0].top : '';
+          params.canvas1.name = dataList.canvas1.length > 0 ? dataList.canvas1[0].name : '';
+          params.canvas2.width = dataList.canvas2.length > 0 ? dataList.canvas2[0].width : '';
+          params.canvas2.height = dataList.canvas2.length > 0 ? dataList.canvas2[0].height : '';
+          params.canvas2.left = dataList.canvas2.length > 0 ? dataList.canvas2[0].left : '';
+          params.canvas2.top = dataList.canvas2.length > 0 ? dataList.canvas2[0].top : '';
+          params.canvas2.name = dataList.canvas2.length > 0 ? dataList.canvas2[0].name : '';
+          params.canvas3.width = dataList.canvas3.length > 0 ? dataList.canvas3[0].width : '';
+          params.canvas3.height = dataList.canvas3.length > 0 ? dataList.canvas3[0].height : '';
+          params.canvas3.left = dataList.canvas3.length > 0 ? dataList.canvas3[0].left : '';
+          params.canvas3.top = dataList.canvas3.length > 0 ? dataList.canvas3[0].top : '';
+          params.canvas3.name = dataList.canvas3.length > 0 ? dataList.canvas3[0].name : '';
+          params.canvas4.width = dataList.canvas4.length > 0 ? dataList.canvas4[0].width : '';
+          params.canvas4.height = dataList.canvas4.length > 0 ? dataList.canvas4[0].height : '';
+          params.canvas4.left = dataList.canvas4.length > 0 ? dataList.canvas4[0].left : '';
+          params.canvas4.top = dataList.canvas4.length > 0 ? dataList.canvas4[0].top : '';
+          params.canvas4.name = dataList.canvas4.length > 0 ? dataList.canvas4[0].name: '';
+          params.canvas1.list.forEach(item => {
+            item.left = item.left - params.canvas1.left;
+            item.top = item.top - params.canvas1.top;
+          });
+          params.canvas2.list.forEach(item => {
+            item.left = item.left - params.canvas2.left;
+            item.top = item.top - params.canvas2.top;
+          })
+          params.canvas3.list.forEach(item => {
+            item.left = item.left - params.canvas3.left;
+            item.top = item.top - params.canvas3.top;
+          })
+          params.canvas4.list.forEach(item => {
+            item.left = item.left - params.canvas4.left;
+            item.top = item.top - params.canvas4.top;
+          })
+          console.log(params);
+          let obj = {
+            id: this.goodsId,
+            name: values.name,
+            code: values.number,
+            categoryId: values.protype[1],
+            maxPrice: values.maxprice,
+            minPrice: values.minprice,
+            productionTime: values.productionTime,
+            minProductionTime: values.minProductionTime,
+            weight: values.weight,
+            minOrder: values.minOrder,
+            sizePicUrl: values.img,
+            goodsDetail: this.editor.info,
+            colorType: this.value3,
+            isHot: this.value2,
+            isOnSale: this.value1,
+            keywords: this.keywords,
+            goodsBrief: this.desc,
+            positivePicUrl: values.frontimg,
+            backPicUrl: values.backimg,
+            leftPicUrl: values.leftimg,
+            rightPicUrl: values.rightimg,
+            boxSizes: JSON.stringify(params),
+            positiveDesignArea: JSON.stringify(json1),
+            backDesignArea: JSON.stringify(json2),
+            leftDesignArea: JSON.stringify(json3),
+            rightDesignArea: JSON.stringify(json4),
+          }
+          //todo 添加完后 清空数据
+          this.postAddProList(obj)
+        }
+      });
     },
     callback(key) {
-      console.log(key);
       if(this.$route.query.id){
         if(key == 2){
           setTimeout(() => {
@@ -1374,8 +1414,6 @@ export default {
           this.desc = this.resData.goodsBrief;
         }
       }
-      
-      
     },
     sendKey(k){
       console.log(k);
@@ -1383,16 +1421,23 @@ export default {
     },
     beforeUpload(file) {
       let files = file.file;
-      const isLt2M = files.size / 1024 / 1024 < 10;
-      if (!isLt2M) {
-        this.$message.error('Image must smaller than 10MB!');
-        return isLt2M;
+      if(files.size / 1024 / 1024 < 10){
+        let formData = new FormData();
+        console.log(file)
+        formData.append("file", files);
+        sourceUpload(formData).then(res => {
+            console.log(res)
+            this.imageUrl = res.preview_url;
+            this.form.setFieldsValue({
+              img: res.preview_url
+            })
+        })
+      }else{
+        this.$message.error('图片大小超出限制！')
+        return false
       }
-      getBase64(files, imageUrl => {
-          this.imageUrl = imageUrl;
-      });
     }
-  },
+  }
 }
 </script>
 <style lang="less">
