@@ -128,7 +128,7 @@
           </template>
         </a-modal>
     </div>
-    <a-modal :visible="newDesign" title="上传设计样稿" :width="700" @ok="confirmDesign" @cancel="newDesign = false" okText="确认" cancelText="关闭">
+    <a-modal :visible="newDesign" title="上传设计样稿" :width="700" @ok="confirmDesign" @cancel="newDesign = false" okText="确认" cancelText="关闭" forceRender>
       <a-form :form="form" style="display: flex;flex-wrap: wrap;padding: 20px 30px; 10px 0">
         <a-form-item
           label="上传正面"
@@ -319,7 +319,6 @@ export default {
     })
   },
   methods:{
-  
     viewDesignCase(id,key){
       console.log(id)
       if(key == 0){
@@ -387,7 +386,7 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           let params = {
-            id:this.id1,positivePicUrl:this.positivePicUrl,leftPicUrl:this.leftPicUrl,rightPicUrl:this.rightPicUrl,backPicUrl:this.backPicUrl,backPicFile:this.backPicFile,
+            id:this.id1,positivePicUrl:values.img1,leftPicUrl:values.img3,rightPicUrl:values.img4,backPicUrl:values.img2,backPicFile:this.backPicFile,
             positivePicFile:this.positivePicFile,leftPicFile:this.leftPicFile,rightPicFile:this.rightPicFile,picId:this.id2,porsitiveDescription:this.remarks1,
             backDescription:this.remarks2,leftDescription:this.remarks3,rightDescription:this.remarks4
           }
@@ -410,15 +409,27 @@ export default {
           if(type == 0){
             this.positivePicUrl = res.preview_url;
             this.positivePicFile = res.source_url;
+            this.form.setFieldsValue({
+              img1:res.preview_url
+            })
           }else if(type == 1){
             this.backPicUrl = res.preview_url;
             this.backPicFile = res.source_url;
+            this.form.setFieldsValue({
+              img2:res.preview_url
+            })
           }else if(type == 2){
             this.leftPicUrl = res.preview_url;
             this.leftPicFile = res.source_url;
+            this.form.setFieldsValue({
+              img3:res.preview_url
+            })
           }else if(type == 3){
             this.rightPicUrl = res.preview_url;
             this.rightPicFile = res.source_url;
+            this.form.setFieldsValue({
+              img4:res.preview_url
+            })
           }
       })
     },

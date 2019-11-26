@@ -18,7 +18,7 @@
                     <a-icon type="export" />Cancel
                 </li>
                 <!-- v-if="isEdit == 9" -->
-                <li @click="handleClick5">
+                <li @click="handleClick5" v-if="isEdit == 9">
                     <a-icon type="link" />Commit
                 </li>
         </ul>
@@ -68,8 +68,7 @@ export default {
         color: #33b8b3;
     }
     ul{
-        width: 74px;
-        padding: 3px 10px;
+        padding: 5px 10px;
         position: absolute;
         top: 20px;
         right: 5px;

@@ -72,16 +72,17 @@
       :visible="openDate"
       @cancel="closeDateBox"
       @ok="commitDate"
-      title="Share"
-      forceRender
+      title="Choose a delivery date"
+      destroyOnClose
     >
     <div class="select-date">
+      <p>Rush Delivery is available for a {{rate}}% surcharge.</p>
+      <span>Delivery Date:</span> 
       <a-date-picker
         @change="onClosingDate"
         :disabledDate="disabledDate"
         format="YYYY-MM-DD"
-        style="margin-left: 30px;"
-        @openChange="openhandleChange"
+        style="margin-left: 10px;"
       >
         <template slot="dateRender" slot-scope="current, today">
           <div class="ant-calendar-date" :style="getCurrentStyle(current, today)">
@@ -92,14 +93,11 @@
           <div class="show-box">
             <p>
               <span>
-
               </span>
               生产日期
             </p>
             <p>
-              <span style="background: rgba(255,0,0,0.5)">
-
-              </span>
+              <span style="background: rgba(255,0,0,0.5)"></span>
               加急日期
             </p>
           </div>
@@ -111,7 +109,7 @@
   </div>
 </template>
 <script>
-import {getProductionTime,postProductionTim} from '@/api/seller';
+import { getProductionTime, postProductionTime} from '@/api/seller';
 import commonBtn from "@/components/commonBtn/commonBtn";
 import HideMenu from "@/components/HideMenu/HideMenu";
 import moment from "moment";
@@ -194,70 +192,39 @@ export default {
   },
   methods: {
     commitDate(){
-
-    },
-    openhandleChange(open){
-      console.log(open)
-      if(open){
-        getProductionTime(this.id).then(res => {
-          console.log(res);
+      if(this.timeover){
+        postProductionTime(this.id,this.timeover).then(res => {
+          console.log(res)
           if(res.code == 200){
-            this.maxDays = 55;
-            this.minDays = 20;
-            this.rate = res.result.rate;
+            this.openDate = false;
+            this.timeover = '';
+            this.$message.success(res.message)
           }
         })
+      }else{
+        this.$message.error('Please choose a delivery date!')
       }
     },
     onClosingDate(date, dateString) {
-      console.log(dateString);
       this.timeover = dateString;
     },
     disabledDate(current) {
       // add(a,b)第一个参数为添加的天数，从后台动态获取
-      
       return current && current < moment().add(this.minDays, 'd');
     },
-    getCurrentStyle(current, today) {
-        console.log("current",current.format("YYYYMMDD"));
-        console.log("today",today.format("YYYYMMDD"));
-        console.log("maxDays",moment().add(this.maxDays, 'd').format("YYYYMMDD"));
-        console.log("minDays",moment().add(this.minDays, 'd').format("YYYYMMDD"));
-        // let a = current.date() >= 10 ? current.date() : '0' + current.date();
-        // let b = today.date() >= 10 ? today.date() : '0' + today.date();
-        // let currentdate = moment().add(this.maxDays, 'd').date() >= 10 ? moment().add(this.maxDays, 'd').date() : '0' + moment().add(this.maxDays, 'd').date();
-        // let date =  moment().add(this.minDays, 'd').date() >= 10 ? moment().add(this.minDays, 'd').date() : '0' + moment().add(this.minDays, 'd').date();
+    getCurrentStyle(current) {
         const style = {};
-        // if(current.year() >= today.year() && current.month() >= today.month()){
-        //   if (current.year() + current.month().toString() + a <= moment().add(this.maxDays, 'd').year() + moment().add(this.maxDays, 'd').month().toString() + currentdate && current.year() + current.month().toString() + a > today.year() + today.month().toString() + b) {
-        //     style.border = '1px solid #1890ff';
-        //     style.borderRadius = '50%';
-        //     style.width = '26px'
-        //   }
-        //   if(moment().add(this.minDays, 'd').year() + moment().add(this.minDays, 'd').month().toString() + date < current.year() + current.month().toString() + a && moment().add(this.maxDays, 'd').year() + moment().add(this.maxDays, 'd').month().toString() + currentdate >= current.year() + current.month().toString() + a){
-        //     style.background = 'rgba(255,0,0,0.5)';
-        //     style.color = '#fff';
-        //     style.width = '26px'
-        //   }
-        //   return style;
-        // }
-
         if (current.format("YYYYMMDD") <= moment().add(this.maxDays, 'd').format("YYYYMMDD")
               && current.format("YYYYMMDD") > moment().format("YYYYMMDD")) {
           style.border = '1px solid #1890ff';
           style.borderRadius = '50%';
           style.width = '26px';
-
-
-          if(current.format("YYYYMMDD") >= moment().add(this.minDays, 'd').format("YYYYMMDD") ){
+          if(current.format("YYYYMMDD") > moment().add(this.minDays, 'd').format("YYYYMMDD") ){
             style.background = 'rgba(255,0,0,0.5)';
             style.color = '#fff';
             style.width = '26px'
           }
-
-
         }
-        
         return style;
       },
     disabledDateTime() {
@@ -270,6 +237,14 @@ export default {
     openDatebox(id){
       this.id = id;
       this.openDate = true;
+      getProductionTime(this.id).then(res => {
+          console.log(res);
+          if(res.code == 200){
+            this.maxDays = 55;
+            this.minDays = 20;
+            this.rate = res.result.rate;
+          }
+        })
     },
     onCopy() {
       this.$message.success("Replication success");
@@ -482,5 +457,10 @@ export default {
     }
   }
 }
-
+.select-date{
+  padding: 30px;
+  p{
+    margin-bottom: 20px;
+  }
+}
 </style>
