@@ -231,18 +231,18 @@
                                                 <div>
                                                     <p>
                                                         <a-select :value="nameSize" style="width: 95%;" @change="changeNameSize" :disabled="!addNameData || keyId !== 'Name'">
-                                                            <a-select-option value="20">6cm</a-select-option>
-                                                            <a-select-option value="30">7cm</a-select-option>
-                                                            <a-select-option value="40">8cm</a-select-option>
+                                                            <a-select-option value="45">6cm</a-select-option>
+                                                            <a-select-option value="53">7cm</a-select-option>
+                                                            <a-select-option value="61">8cm</a-select-option>
                                                             <a-select-option value="50">9cm</a-select-option>
                                                         </a-select>
                                                     </p>
                                                     <p>
                                                         <a-select :value="numberSize" style="width: 100%;" @change="changeNumberSize" :disabled="!addNumberData || keyId !== 'Number'">
-                                                            <a-select-option value="150">15cm</a-select-option>
-                                                            <a-select-option value="170">18cm</a-select-option>
-                                                            <a-select-option value="190">20cm</a-select-option>
-                                                            <a-select-option value="200">25cm</a-select-option>
+                                                            <a-select-option value="114">15cm</a-select-option>
+                                                            <a-select-option value="137">18cm</a-select-option>
+                                                            <a-select-option value="152">20cm</a-select-option>
+                                                            <a-select-option value="190">25cm</a-select-option>
                                                         </a-select>
                                                     </p>
                                                 </div>
@@ -864,8 +864,8 @@ export default {
             id:'',
             btnable:false,
             fontShapeArr:[],
-            nameSize:'20',
-            numberSize:'150',
+            nameSize:'45',
+            numberSize:'114',
             namePosition:'0',
             numberPosition:'0',
             exampleName:'',

@@ -104,10 +104,10 @@
                   <p>文字： {{text}}</p>
                   <p>字体： {{fontfamily}}</p>
                   <p>字号：{{fontsize}}</p>
-                  <p>字体颜色： {{fontcolorName}}<span :style="{backgroundColor: fontcolor,width: '20px',height: '20px',border:'1px solid #ccc',display: 'inline-block'}"></span> <br /> CMYK : {{fontcolorCMYK}}</p>
-                  <p>背景色： {{bgcolorName}}<span :style="{backgroundColor:bgcolor,width: '20px',height: '20px',border:'1px solid #ccc',display: 'inline-block'}"></span> <br /> CMYK : {{bgcolorCMYK}}</p>
-                  <p>描边： {{strokecolorName}}<span :style="{backgroundColor:strokecolor,width: '20px',height: '20px',border:'1px solid #ccc',display: 'inline-block'}"></span> <br /> CMYK : {{strokecolorCMYK}} 大小： {{strokeWidth}}</p>
-                  <p>阴影： {{shadowcolorName}}<span :style="{backgroundColor:shadowcolor,width: '20px',height: '20px',border:'1px solid #ccc',display: 'inline-block'}"></span> <br /> CMYK : {{shadowcolorCMYK}} 大小： {{shadowWidth}}</p>
+                  <p v-if="fontcolorName">字体颜色： {{fontcolorName}}<span :style="{backgroundColor: fontcolor}"></span> <br /> CMYK : {{fontcolorCMYK}}</p>
+                  <p v-if="bgcolorName">背景色： {{bgcolorName}}<span :style="{backgroundColor:bgcolor}"></span> <br /> CMYK : {{bgcolorCMYK}}</p>
+                  <p v-if="strokecolorName">描边： {{strokecolorName}}<span :style="{backgroundColor:strokecolor}"></span> <br /> CMYK : {{strokecolorCMYK}} 大小： {{strokeWidth}}</p>
+                  <p v-if="shadowcolorName">阴影： {{shadowcolorName}}<span :style="{backgroundColor:shadowcolor}"></span> <br /> CMYK : {{shadowcolorCMYK}} 大小： {{shadowWidth}}</p>
                 </div>
                 <ul class="img-desc" v-show="showCode == 1">
                   <li>
@@ -709,9 +709,12 @@ export default {
         padding: 20px;
         p{
           margin: 10px 0;
-        
           span{
             margin: 0 5px;
+            width: 20px;
+            height: 20px;
+            border: 1px solid #ccc;
+            display: inline-block
           }
         }
       }
