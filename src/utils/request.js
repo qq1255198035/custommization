@@ -16,18 +16,13 @@ const err = (error) => {
   if (error.response) {
     let data = error.response.data
     const token = Vue.ls.get(ACCESS_TOKEN)
+    Vue.$vLoading.hide();
     switch (error.response.status) {
       case 403:
         notification.error({ message: 'System error', description: 'access denied',duration: 4})
         break
       case 500:
-        
-        //notification.error({ message: 'System hint', description:'Token失效，请重新登录!',duration: 4})
         if(token && data.message=="Token失效，请重新登录"){
-          // update-begin- --- author:scott ------ date:20190225 ---- for:Token失效采用弹框模式，不直接跳转----
-          // store.dispatch('Logout').then(() => {
-          //     window.location.reload()
-          // })
           Modal.error({
             title: 'Logon has expired',
             content: 'Sorry, the login has expired. Please login again.',
@@ -43,7 +38,8 @@ const err = (error) => {
               })*/
             }
           })
-          // update-end- --- author:scott ------ date:20190225 ---- for:Token失效采用弹框模式，不直接跳转----
+        }else{
+          notification.error({ message: 'System error', description: 'Network error,please login again!'})
         }
         break
       case 404:
@@ -53,7 +49,7 @@ const err = (error) => {
         notification.error({ message: 'System error', description: 'Network Timeout'})
         break
       case 401:
-        notification.error({ message: 'System error', description:'Unauthorized, please log in again',duration: 4})
+        notification.error({ message: 'System error', description:'Unauthorized, please login again',duration: 4})
         /*if (token) {
           store.dispatch('Logout').then(() => {
             setTimeout(() => {
@@ -94,14 +90,15 @@ service.interceptors.request.use(config => {
   }
   return config
 },(error) => {
-  return Promise.reject(error)
+  Vue.$vLoading.hide();
+  return Promise.reject(error);
 })
 
 // response interceptor
 service.interceptors.response.use((response) => {
     Vue.$vLoading.hide();
     return response.data
-  },err)
+},err)
 
 const installer = {
   vm: {},

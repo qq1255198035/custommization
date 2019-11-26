@@ -22,7 +22,6 @@
                 </a-col>
                 <a-col :span="18" style="height: 100%;">
                     <User style="background-color: #fff; padding-top: 20px;border-top-right-radius: 10px;"></User>
-
                     <div class="right">
                         <my-title :title="'New Order'" :fontsize="20">
                             <a-button size="small" icon="rollback" style="font-size: 14px;" @click="$router.push({path: '/OrderManagement/grouporder'})">Back</a-button>
@@ -85,13 +84,13 @@
                             <div class="canvas-container"  v-show="designModel == 2">
                                 <canvas id="canvas3" :width="screenWidth" :height="screenWidth"></canvas>
                                 <div class="moving-box" :style="{width: boxSize3.width + 'px',height: boxSize3.height + 'px',top: boxSize3.top + 'px', left: boxSize3.left + 'px'}" v-show="movingBox">
-                                    <div v-for="(item,index) in boxSize3.list" :key="index" :style="{width: item.width + 'px',height: item.height + 'px',top: item.top + 'px', left: item.left + 'px'}"></div>
+                                    <div v-for="(item,index) in boxSize3.list" :key="index" :style="{width: item.width + 'px',height: item.height + 'px',top: item.top - 1 + 'px', left: item.left - 1 + 'px'}"></div>
                                 </div>
                             </div>
                             <div class="canvas-container"  v-show="designModel == 3">
                                 <canvas id="canvas4" :width="screenWidth" :height="screenWidth"></canvas>
                                 <div class="moving-box" :style="{width: boxSize4.width + 'px',height: boxSize4.height + 'px',top: boxSize4.top + 'px', left: boxSize4.left + 'px'}" v-show="movingBox">
-                                    <div v-for="(item,index) in boxSize4.list" :key="index" :style="{width: item.width + 'px',height: item.height + 'px',top: item.top + 'px', left: item.left + 'px'}"></div>
+                                    <div v-for="(item,index) in boxSize4.list" :key="index" :style="{width: item.width + 'px',height: item.height + 'px',top: item.top - 1 + 'px', left: item.left - 1 + 'px'}"></div>
                                 </div>
                             </div>
                             <ul class="top">
@@ -264,7 +263,7 @@
                                                 </div>
                                             </dd>
                                             <dd>
-                                                <span>Color：</span>
+                                                <span>Colour：</span>
                                                 <div class="color-picker">
                                                     <p>
                                                         {{nameColorName}}<span :style="{backgroundColor: nameColor}" @click="openChangeColorBox(5,'Name Color')"></span>
@@ -320,7 +319,7 @@
                                                 </p>
                                             </li>
                                             <li @click="openChangeColorBox(3,'Outline Color')">
-                                                <span>Outline Color</span>
+                                                <span>Outline Colour</span>
                                                 <p>
                                                     <span>{{strokeColorName}} <i class="square" :style="{backgroundColor: strokeColor}"></i></span>
                                                     <a-icon type="right" />
@@ -336,8 +335,8 @@
                                         </ul>
                                     </div>
                                     <div class="tool-box10" v-show="visibletype == 4">
-                                        <h2>COLOR：</h2>
-                                        <p>Choose Color： <span :style="{backgroundColor: productColor ? productColor : '#fff'}"></span> {{productColorName ? productColorName : 'White'}}</p>
+                                        <h2>COLOUR：</h2>
+                                        <p>Choose Colour： <span :style="{backgroundColor: productColor ? productColor : '#fff'}"></span> {{productColorName ? productColorName : 'White'}}</p>
                                         <ul class="color-list">
                                             <li v-for="(item,index) in colorList.list" :key="index" :style="{backgroundColor: item.itemValue}" @click="changeProductColor(item.itemValue,item.itemText,index)">
                                                 <a-icon type="check" v-show="productColorIcon == index"/>
@@ -407,22 +406,22 @@
                                             </dd>
                                         </dl>
                                         <!-- <my-title :title="colorTitle"></my-title> -->
-                                        <p style="display:flex;align-items: center;margin-top: 20px; font-size: 18px;color: #999;" v-if="colorKey == 1">Choose Color： 
+                                        <p style="display:flex;align-items: center;margin-top: 20px; font-size: 18px;color: #999;" v-if="colorKey == 1">Choose Colour： 
                                             <span :style="{backgroundColor: color}" style="width: 20px;height: 20px;display: inline-block;margin:0 10px;border:1px solid #ccc;"></span>{{colorName}}
                                         </p>
-                                        <p style="display:flex;align-items: center;margin-top: 20px; font-size: 18px;color: #999;" v-if="colorKey == 2">Choose Color： 
+                                        <p style="display:flex;align-items: center;margin-top: 20px; font-size: 18px;color: #999;" v-if="colorKey == 2">Choose Colour： 
                                             <span :style="{backgroundColor: bgcolor}" style="width: 20px;height: 20px;display: inline-block;margin:0 10px;border:1px solid #ccc;"></span>{{fontBgColorName}}
                                         </p>
-                                        <p style="display:flex;align-items: center;margin-top: 20px; font-size: 18px;color: #999;" v-if="colorKey == 3">Choose Color： 
+                                        <p style="display:flex;align-items: center;margin-top: 20px; font-size: 18px;color: #999;" v-if="colorKey == 3">Choose Colour： 
                                             <span :style="{backgroundColor: strokeColor}" style="width: 20px;height: 20px;display: inline-block;margin:0 10px;border:1px solid #ccc;"></span>{{strokeColorName}}
                                         </p>
-                                        <p style="display:flex;align-items: center;margin-top: 20px; font-size: 18px;color: #999;" v-if="colorKey == 4">Choose Color： 
+                                        <p style="display:flex;align-items: center;margin-top: 20px; font-size: 18px;color: #999;" v-if="colorKey == 4">Choose Colour： 
                                             <span :style="{backgroundColor: shadowColor}" style="width: 20px;height: 20px;display: inline-block;margin:0 10px;border:1px solid #ccc;"></span>{{shadowColorName}}
                                         </p>
-                                        <p style="display:flex;align-items: center;margin-top: 20px; font-size: 18px;color: #999;" v-if="colorKey == 5">Choose Color： 
+                                        <p style="display:flex;align-items: center;margin-top: 20px; font-size: 18px;color: #999;" v-if="colorKey == 5">Choose Colour： 
                                             <span :style="{backgroundColor: nameColor}" style="width: 20px;height: 20px;display: inline-block;margin:0 10px;border:1px solid #ccc;"></span>{{nameColorName}}
                                         </p>
-                                        <p style="display:flex;align-items: center;margin-top: 20px; font-size: 18px;color: #999;" v-if="colorKey == 6">Choose Color： 
+                                        <p style="display:flex;align-items: center;margin-top: 20px; font-size: 18px;color: #999;" v-if="colorKey == 6">Choose Colour： 
                                             <span :style="{backgroundColor: numberColor}" style="width: 20px;height: 20px;display: inline-block;margin:0 10px;border:1px solid #ccc;"></span>{{numberColorName}}
                                         </p>
                                         <ul class="color-list-box">
@@ -448,7 +447,7 @@
                                             </li>
                                         </ul>
                                         <p class="bottom-btn-box" v-if="changeWidthShow == 1">
-                                            <a-button style="margin-right: 10px;" @click="removeFontColor">Remove Font Color</a-button>
+                                            <a-button style="margin-right: 10px;" @click="removeFontColor">Remove Font Colour</a-button>
                                             <a-button type="primary" @click="changeFillColor(color,colorName,true)">Change</a-button>
                                         </p>
                                         <p class="bottom-btn-box" v-if="changeWidthShow == 2">
@@ -464,11 +463,11 @@
                                             <a-button type="primary" @click="changeShadowColor(shadowColor,shadowColorName,true)">Change</a-button>
                                         </p>
                                         <p class="bottom-btn-box" v-if="changeWidthShow == 5">
-                                            <a-button style="margin-right: 10px;" @click="removeNameColor">Remove Name Color</a-button>
+                                            <a-button style="margin-right: 10px;" @click="removeNameColor">Remove Name Colour</a-button>
                                             <a-button type="primary" @click="changeNameColor(nameColor)">Change</a-button>
                                         </p>
                                         <p class="bottom-btn-box" v-if="changeWidthShow == 6">
-                                            <a-button style="margin-right: 10px;" @click="removeNumberColor">Remove Number Color</a-button>
+                                            <a-button style="margin-right: 10px;" @click="removeNumberColor">Remove Number Colour</a-button>
                                             <a-button type="primary" @click="changeNumberColor(numberColor)">Change</a-button>
                                         </p>
                                     </div>
@@ -649,7 +648,7 @@
                                 :fontsize="'16px'"
                                 :title="'Add Product'"
                                 :icon="'plus'"
-                                v-intro="'Here will take you to new miles'" v-intro-step="2"
+                                v-intro="'Add your products here'" v-intro-step="2"
                             >
                             </commonBtn>
                             <a-button type="primary" v-intro="'Here is the attribution of your design.'" v-intro-step="3"><span class="icon-save" style="margin-right: 10px;vertical-align: middle"></span><a @click="saveEndDesign"> Save Design</a></a-button>
@@ -711,7 +710,6 @@
                         </a-form-item>
                     </a-form>
                     <div class="btn-box">
-                        
                         <a-button style="color:#ccc;border-color: #ccc;" @click="closeUploadModal">Cancel</a-button>
                         <a-button @click="clickOk">Submit</a-button>
                     </div>
@@ -719,7 +717,7 @@
             </a-modal>
             <a-modal
                 v-model="endDsign"
-                title=" Save the design"
+                title="Save the design"
                 :centered="true"
                 width="40%"
                 :footer="null"
@@ -750,7 +748,6 @@
                 v-model="showVisible"
                 width="50%"
                 :footer="null"
-                
             >
                 <a-row :gutter="20" style="padding:20px">
                 <a-col :span="8">
@@ -779,11 +776,11 @@
                         </div>
                     </div>
                     <div class="price-right">
-                        Your Price：
+                        Your Price:
                         <span>${{onePrice | moneyFormat}}</span>
                     </div>
                     </div>
-                    <div class="font-color">Minimum Order Quantity{{designDetail.minOrder}}</div>
+                    <div class="font-color">Minimum Order Quantity:{{designDetail.minOrder}}</div>
                     <div class="prices">
                     <div class="price-box">
                         <div class="font-18">Selling Price:</div>
@@ -793,11 +790,11 @@
                         <div class="font-18">/PC</div>
                     </div>
                     <div class="price-right">
-                        Your Profit：
+                        Your Profit:
                         <span>${{twoPrice | moneyFormat}}</span>
                     </div>
                     </div>
-                    <div class="font-color">Suggested selling price：${{designDetail.price}}/PC</div>
+                    <div class="font-color">MSRP:${{designDetail.price}}/PC</div>
                 </a-col>
                 </a-row>
             </a-modal>
@@ -2298,7 +2295,12 @@ export default {
             },);
         },
         closeUploadModal(){
-            this.example = false
+            this.example = false;
+            this.previewImage = '';
+            this.form.setFieldsValue({
+                img: '',
+                bz: ''
+            })
         },
         changeProductColor(value,name,i){
             this.productColorIcon = i;
@@ -3438,11 +3440,13 @@ export default {
                 position: relative;
                 .moving-box{
                     position:absolute;
-                    border: 1px solid #999;
+                    border: 1px solid #666;
+                    box-sizing: border-box;
                     z-index: 200;
                     > div{
                         position: absolute;
-                        border: 1px solid #999;
+                        border: 1px solid #666;
+                        box-sizing: border-box;
                     }
                 }
             }

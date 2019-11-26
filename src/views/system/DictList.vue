@@ -1,6 +1,6 @@
 <template>
   <div id="DictList">
-    <a-tabs defaultActiveKey="1" @change="callback">
+    <a-tabs defaultActiveKey="1">
       <a-tab-pane tab="商品图片" key="1" forceRender>
         <div style="display:flex;" class="tab-pane-1">
           <div class="design-box">
@@ -91,7 +91,7 @@
               </a-form>
             </div>
             <a-collapse :bordered="false" :activeKey="activeKey" accordion>
-              <a-collapse-panel header="2.添加限定区域" key="1">
+              <a-collapse-panel header="2.添加限定区域" key="1" forceRender>
                 <div class="edit">
                   <a-form :form="form" layout="vertical">
                     <div class="edit-box">
@@ -149,7 +149,7 @@
                   </a-form>
                 </div>
               </a-collapse-panel>
-              <a-collapse-panel header="3.添加设计区域" key="2">
+              <a-collapse-panel header="3.添加设计区域" key="2" forceRender>
                 <div class="edit">
                   <a-form :form="form" layout="vertical">
                     <a-form-item label="Name">
@@ -317,7 +317,7 @@
           </a-form-item>
         </a-form>
         <p style="color: rgba(0, 0, 0, 0.85);margin-bottom: 10px;" >商品详情：</p>
-        <Editor v-model="editor.info" :isClear="isClear" :val="val"></Editor>
+        <Editor v-model="editor.info" :isClear="isClear"></Editor>
       </a-tab-pane>
       <a-tab-pane tab="其他信息" key="4" forceRender>
         <div class="tab-pane-2">
@@ -365,11 +365,6 @@
   </div>
 </template>
 <script>
-function getBase64(img, callback) {
-  const reader = new FileReader();
-  reader.addEventListener('load', () => callback(reader.result));
-  reader.readAsDataURL(img);
-}
 import { fabric } from 'fabric';
 import { sourceUpload,syscategoryList,editProShow,addProList } from "@/api/seller";
 import Editor from '@/components/Editor/Editor'
@@ -380,7 +375,6 @@ export default {
       editor: {
         info: ''
       },
-      val:'',
       isClear: false,
       desc: '',
       keywords: '',
@@ -441,11 +435,13 @@ export default {
         canvas1:[],canvas2:[],canvas3:[],canvas4:[]
       },
       showList:[],
-      resData:{},
-      form:this.$form.createForm(this)
+      resData:{}
+      
     };
   },
-  
+  created(){
+    this.form = this.$form.createForm(this)
+  },
   mounted(){
     this.$nextTick(function() {
       this.myCanvas1 = new fabric.Canvas("canvas1");
@@ -462,6 +458,9 @@ export default {
       this.monitorObjectScale(this.myCanvas3);
       this.monitorObjectScale(this.myCanvas4);
       this.monitorObjectMove(this.myCanvas1);
+      this.monitorObjectMove(this.myCanvas2);
+      this.monitorObjectMove(this.myCanvas3);
+      this.monitorObjectMove(this.myCanvas4);
     })
     this.getSyscategoryList();
     if(this.$route.query.id){
@@ -470,17 +469,18 @@ export default {
         console.log(res);
         if(res.code == 0){
           this.resData = res.result;
-          this.val = res.result.goodsBrief;
+          this.editor.info = res.result.goodsDetail;
           this.setBoxSize1(res);
           this.setBoxSize2(res);
           this.setBoxSize3(res);
           this.setBoxSize4(res);
           this.showList = this.dataList.canvas1;
           this.setformAndImg(res);
-          // this.loadFromJSON(this.myCanvas1,res.result.positiveDesignArea);
-          // this.loadFromJSON(this.myCanvas2,res.result.backDesignArea);
-          // this.loadFromJSON(this.myCanvas3,res.result.leftDesignArea);
-          // this.loadFromJSON(this.myCanvas4,res.result.rightDesignArea);
+          this.loadFromJSON(this.myCanvas1,res.result.positiveDesignArea);
+          this.loadFromJSON(this.myCanvas2,res.result.backDesignArea);
+          this.loadFromJSON(this.myCanvas3,res.result.leftDesignArea);
+          this.loadFromJSON(this.myCanvas4,res.result.rightDesignArea);
+          this.callback();
           this.addFlag1 = false;
           this.addFlag2 = false;
           this.addFlag3 = false;
@@ -498,7 +498,8 @@ export default {
           o,
           object
       ) {
-          console.log(o,object)
+          object.selectable = false;
+          object.hasRotatingPoint = false
       });
     },
     postAddProList(params){
@@ -506,6 +507,8 @@ export default {
         console.log(res)
         if(res.code == 200){
           this.$message.success('操作成功！');
+          this.$router.push({path:'DictList'});
+          window.location.reload();
         }
       })
     },
@@ -532,8 +535,8 @@ export default {
       arr1[0].left = boxSizes.canvas4.left;
       arr1[0].top = boxSizes.canvas4.top;
       boxSizes.canvas4.list.forEach(item => {
-        item.left = item.left + arr1[0].left;
-        item.top = item.left + arr1[0].top
+        item.left += arr1[0].left;
+        item.top += arr1[0].top
         arr1.push(item)
       });
       this.dataList.canvas4 = arr1;
@@ -546,8 +549,8 @@ export default {
       arr1[0].left = boxSizes.canvas3.left;
       arr1[0].top = boxSizes.canvas3.top;
       boxSizes.canvas3.list.forEach(item => {
-        item.left = item.left + arr1[0].left;
-        item.top = item.left + arr1[0].top
+        item.left += arr1[0].left;
+        item.top += arr1[0].top
         arr1.push(item)
       });
       this.dataList.canvas3 = arr1;
@@ -560,8 +563,8 @@ export default {
       arr1[0].left = boxSizes.canvas2.left;
       arr1[0].top = boxSizes.canvas2.top;
       boxSizes.canvas2.list.forEach(item => {
-        item.left = item.left + arr1[0].left;
-        item.top = item.left + arr1[0].top
+        item.left += arr1[0].left;
+        item.top += arr1[0].top
         arr1.push(item)
       });
       this.dataList.canvas2 = arr1;
@@ -574,8 +577,8 @@ export default {
       arr1[0].left = boxSizes.canvas1.left;
       arr1[0].top = boxSizes.canvas1.top;
       boxSizes.canvas1.list.forEach(item => {
-        item.left = item.left + arr1[0].left;
-        item.top = item.left + arr1[0].top
+        item.left += arr1[0].left;
+        item.top += arr1[0].top
         arr1.push(item)
       });
       this.dataList.canvas1 = arr1;
@@ -680,6 +683,12 @@ export default {
       let left = this.form.getFieldValue('left')
       let top = this.form.getFieldValue('top')
       obj.set({width: width,height: height,left: left,top: top});
+      this.form.setFieldsValue({
+        width: '',
+        height: '',
+        left: '',
+        top: '',
+      });
       this.myCanvas.discardActiveObject();
       this.myCanvas.renderAll();
     },
@@ -731,8 +740,15 @@ export default {
       let left = this.form.getFieldValue('left1')
       let top = this.form.getFieldValue('top1')
       obj.set({width: width,height: height,left: left,top: top});
-      this.myCanvas.renderAll();
+      this.form.setFieldsValue({
+        width1: '',
+        height1: '',
+        left1: '',
+        top1: '',
+        quarename :''
+      });
       this.myCanvas.discardActiveObject();
+      this.myCanvas.requestRenderAll();
     },
     confirmEdit(){
       this.editWidth = this.form.getFieldValue("width");
@@ -774,6 +790,12 @@ export default {
       }
       this.myCanvas.discardActiveObject();
       this.myCanvas.renderAll();
+      this.form.setFieldsValue({
+        width: '',
+        height: '',
+        left: '',
+        top: ''
+      });
     },
     confirmDesignEdit(){
       let calcWidth1;
@@ -784,7 +806,7 @@ export default {
       this.editHeight = this.form.getFieldValue("height1");
       this.editLeft = this.form.getFieldValue("left1");
       this.editTop = this.form.getFieldValue("top1");
-      this.editName = this.form.getFieldValue("name");
+      this.editName = this.form.getFieldValue("quarename");
       calcWidth1 = this.editWidth + this.editLeft;
       calcHeight1 = this.editHeight + this.editTop;
       if(this.designModel == 0){
@@ -848,6 +870,13 @@ export default {
         this.abledEdit1_4 = true;
         this.abledCancel1_4 = true;
       }
+      this.form.setFieldsValue({
+        width1: '',
+        height1: '',
+        left1: '',
+        top1: '',
+        quarename :''
+      });
       this.myCanvas.discardActiveObject();
       this.myCanvas.renderAll();
     },
@@ -857,7 +886,6 @@ export default {
       this.isFirst = index;
       this.myCanvas.setActiveObject(items[index]);
       this.myCanvas.renderAll();
-      
       if(this.designModel == 0){
         if(index == 0){
           this.form.setFieldsValue({
@@ -870,6 +898,7 @@ export default {
           this.abledCancel_1 = false;
           this.activeKey = '1';
         }else{
+          console.log(this.dataList.canvas1)
           this.form.setFieldsValue({
             quarename: this.dataList.canvas1[index].name,
             width1: this.dataList.canvas1[index].width,
@@ -1021,6 +1050,7 @@ export default {
             });
             this.myCanvas.add(rect);
             rect.selectable = false;
+            rect.hasRotatingPoint = false;
           if(this.designModel == 0){
             this.dataList.canvas1.push(json);
             this.showList = this.dataList.canvas1;
@@ -1112,6 +1142,7 @@ export default {
           });
           this.myCanvas.add(rect);
           rect.selectable = false;
+          rect.hasRotatingPoint = false;
           this.form.setFieldsValue({
             quarename: '',
             width1: '',
@@ -1140,7 +1171,9 @@ export default {
       object.on('object:modified',function(e){
         let obj = e.target;
         if(!obj.objectCaching) obj.objectCaching = true;
-        object.renderAll();
+        object.renderAll();  
+        obj.lockScalingFlip = true;
+        obj.setCoords();
         if(that.isFirst == 0){
           that.form.setFieldsValue({
             width:parseInt(obj.getBoundingRect().width) - 1,
@@ -1299,7 +1332,7 @@ export default {
       this.form.validateFields(['name','number','protype','maxprice','minprice','productionTime','minProductionTime','weight','minOrder','img','frontimg','backimg','leftimg','rightimg'],(err, values) => {
         console.log('Received values of form: ', values);
         if (!err) {
-          
+          // 解决数组指向相同，改变原数组问题
           let dataList = JSON.parse(JSON.stringify(this.dataList));
           let params = {
             canvas1:{width: '',height: '',top: '',left: '',name: '',list:[]},
@@ -1381,39 +1414,30 @@ export default {
             rightDesignArea: JSON.stringify(json4),
           }
           //todo 添加完后 清空数据
-          this.postAddProList(obj)
+          this.postAddProList(obj);
+          
         }
       });
     },
-    callback(key) {
-      if(this.$route.query.id){
-        if(key == 2){
-          setTimeout(() => {
-            this.form.setFieldsValue({
-              name: this.resData.name,
-              number: this.resData.code,
-              protype: this.resData.category,
-              minprice: this.resData.minPrice,
-              maxprice: this.resData.maxPrice,
-              productionTime: this.resData.productionTime,
-              minProductionTime: this.resData.minProductionTime,
-              weight: this.resData.weight,
-              minOrder:this.resData.minOrder
-            })
-          }, 0);
-        }else if(key == 3){
-          this.imageUrl = this.resData.sizePicUrl;
-          this.form.setFieldsValue({
-            img: this.resData.sizePicUrl
-          })
-        }else if(key == 4){
-          this.value1 = this.resData.isOnSale;
-          this.value2 = this.resData.isHot;
-          this.value3 = this.resData.colorType;
-          this.keywords = this.resData.keywords;
-          this.desc = this.resData.goodsBrief;
-        }
-      }
+    callback() {
+      this.form.setFieldsValue({
+        name: this.resData.name,
+        number: this.resData.code,
+        protype: this.resData.category,
+        minprice: this.resData.minPrice,
+        maxprice: this.resData.maxPrice,
+        productionTime: this.resData.productionTime,
+        minProductionTime: this.resData.minProductionTime,
+        weight: this.resData.weight,
+        img: this.resData.sizePicUrl,
+        minOrder: this.resData.minOrder
+      })
+      this.imageUrl = this.resData.sizePicUrl;
+      this.value1 = this.resData.isOnSale;
+      this.value2 = this.resData.isHot;
+      this.value3 = this.resData.colorType;
+      this.keywords = this.resData.keywords;
+      this.desc = this.resData.goodsBrief;
     },
     sendKey(k){
       console.log(k);

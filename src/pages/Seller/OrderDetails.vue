@@ -5,7 +5,6 @@
         <router-link to="/index">
           <p class="icon-logotxt"></p>
         </router-link>
-        
         <p>
           <User></User>
         </p>
@@ -28,9 +27,9 @@
                 <div>
                   <div>
                     <h3>{{item.name}}</h3>
-                    <p>COLOR：{{item.product_color}}</p>
-                    <p>Price：${{item.price}}</p>
-                    <p>Quantity：{{item.quantity}}</p>
+                    <p>Colour:{{item.product_color}}</p>
+                    <p>Price:${{item.price}}</p>
+                    <p>Quantity:{{item.quantity}}</p>
                   </div>
                   <p>
                     <a-icon type="edit" @click="showEdModal(item.id)" />
@@ -45,8 +44,8 @@
           <ul class="forms">
             <a-form :form="myform">
               <li>
-                <h3>Expected Order Quantity</h3>
-                <a-form-item label="Headings" :label-col="{ span: 3 }" :wrapper-col="{ span: 12 }">
+                <h3>Title & Introduction</h3>
+                <a-form-item label="Title" :label-col="{ span: 3 }" :wrapper-col="{ span: 12 }">
                   <a-input v-decorator="[ 'note', {rules: [{ required: true, message: 'Please input your Headings' }]} ]"/>
                 </a-form-item>
                 <a-form-item label="Introduction" :label-col="{ span: 3}" :wrapper-col="{ span: 12 }">
@@ -121,7 +120,8 @@
                     format="YYYY-MM-DD"
                     style="margin-left: 30px;"
                     v-decorator="['closingDate',{rules: [{ required: true, message: 'Please fill in the time' }]}]"
-                  />
+                  >
+                  </a-date-picker>
                 </a-form-item>
               </li>
             </a-form>
@@ -258,7 +258,7 @@
             </a-row>
           </a-col>
           <a-col :span="16">
-            <div class="title font-18">COLOR：{{designDetail.productColor}}</div>
+            <div class="title font-18">COLOUR：{{designDetail.productColor}}</div>
             <div class="number">
               <div class="font-18">Quantity：</div>
               <div class="number-box">
@@ -273,11 +273,11 @@
                 </div>
               </div>
               <div class="price-right">
-                We will reply you within 3 working days
-                <span>${{onePrice}}</span>
+                Your Price:
+                <span>${{onePrice | moneyFormat}}</span>
               </div>
             </div>
-            <div class="font-color">Minimum Order Quantity{{designDetail.minOrder}}</div>
+            <div class="font-color">Minimum Order Quantity:{{designDetail.minOrder}}</div>
             <div class="prices">
               <div class="price-box">
                 <div class="font-18">Price:</div>
@@ -291,11 +291,11 @@
                 <div class="font-18">/piece</div>
               </div>
               <div class="price-right">
-                Projected agency revenue：
-                <span>${{twoPrice}}</span>
+                Your Profit:
+                <span>${{twoPrice | moneyFormat}}</span>
               </div>
             </div>
-            <div class="font-color">Suggested selling price：${{designDetail.price}}/piece</div>
+            <div class="font-color">MSRP:${{designDetail.price}}/piece</div>
           </a-col>
         </a-row>
       </a-modal>
@@ -402,7 +402,6 @@ export default {
       return result;
     },
     disabledDate(current) {
-      // Can not select days before today and today
       return current && current < moment().endOf('day');
     },
     disabledDateTime() {
@@ -822,8 +821,29 @@ export default {
       }else{
         return ' '
       }
-      
-    }
+    },
+    moneyFormat(number, decimals) {
+        number = (number + '').replace(/[^0-9+-Ee.]/g, '');
+        var n = !isFinite( + number) ? 0 : +number,
+            prec = !isFinite( + decimals) ? 2 : Math.abs(decimals),
+            sep = ',',
+            dec = '.',
+            s = '',
+            toFixedFix = function(n, prec) {
+                var k = Math.pow(10, prec);
+                return '' + Math.ceil(n * k) / k;
+            };
+        s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+        var re = /(-?\d+)(\d{3})/;
+        while (re.test(s[0])) {
+            s[0] = s[0].replace(re, "$1" + sep + "$2");
+        }
+        if ((s[1] || '').length < prec) {
+            s[1] = s[1] || '';
+            s[1] += new Array(prec - s[1].length + 1).join('0');
+        }
+        return s.join(dec);
+    },
   }
 };
 </script>
@@ -938,7 +958,7 @@ input::-webkit-inner-spin-button {
             display: flex;
             align-items: flex-end;
             height: 100%;
-            width: calc(100% - 150px);
+            width: calc(100% - 130px);
             h3 {
               color: #33b8b3;
               font-size: 18px;
@@ -951,11 +971,11 @@ input::-webkit-inner-spin-button {
               }
             }
             > p {
-              width: 30%;
+              width: 100%;
               margin: 0;
               text-align: right;
               i {
-                font-size: 24px;
+                font-size: 20px;
                 margin: 0 5px;
                 cursor: pointer;
                 color: #33b8b3;

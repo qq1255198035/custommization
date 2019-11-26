@@ -132,7 +132,7 @@ export default {
       let that = this;
       that.$confirm({
         title: "Delete",
-        content: "Do you confirm deletion?",
+        content: "Are you sure to delete?",
         okText: "Confirm",
         cancelText: "Cancel",
         onOk() {
@@ -152,7 +152,6 @@ export default {
     },
     getDesignList(){
       designList().then(res => {
-        console.log(res)
         this.dataDesign = res.result;
       })
     },

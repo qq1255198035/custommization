@@ -10,8 +10,8 @@
               <a-form ref="formRegister" :form="form" id="formRegister">
                 <a-form-item
                   label="Role selection"
-                  :label-col="{ span: 4 }"
-                  :wrapper-col="{ span: 12 ,offset: 1}"
+                  :label-col="{ span: 5 }"
+                  :wrapper-col="{ span: 12}"
                 >
                   <a-radio-group @change="onChangeRadio" v-model="valueRadio">
                     <a-radio :value="1">User</a-radio>
@@ -94,12 +94,12 @@
                 </a-form-item>
                 <a-row :gutter="16" type="flex" align="bottom" style="align-items: center;">
                   <a-col class="gutter-row" :span="16">
-                    <a-form-item label="Verify code">
+                    <a-form-item label="Verification code">
                       <a-input
                         size="large"
                         type="text"
-                        placeholder="Verify code"
-                        v-decorator="['captcha', {rules: [{ required: true, message: 'verify code' }]}]"
+                        placeholder="Verification code"
+                        v-decorator="['captcha', {rules: [{ required: true, message: 'Verification code' }]}]"
                       >
                         <a-icon slot="prefix" type="mail" :style="{ color: 'rgba(0,0,0,.25)' }" />
                       </a-input>
@@ -112,27 +112,26 @@
                       :disabled="state.smsSendBtn"
                       @click.stop.prevent="getCaptcha"
                     >
-                      {{state.smsSendBtn ? state.time+'s' : 'Get verify code'}}
+                      {{state.smsSendBtn ? state.time+'s' : 'Get code'}}
                     </a-button>
                   </a-col>
                 </a-row>
-
-                <a-form-item>
+                <a-form-item style="margin-top: 20px;">
                   <a-row :gutter="16">
-                    <a-col :span="16">
+                    <a-col :span="8">
                       <router-link class="login" :to="{ path: '/login' }">Existing accounts</router-link>
                     </a-col>
-                    <a-col :span="8">
+                    <a-col :span="16">
                       <commonBtn
                         :icon="'plus'"
                         @register="register"
-                        :width="'100%'"
+                        :width="'50%'"
                         :title="'Register'"
                         :height="'44px'"
                         :padding="'10px'"
                         :radio="'12px'"
                         :fontsize="'18px'"
-                        :top="'20px'"
+                        class="borderwidth"
                       ></commonBtn>
                     </a-col>
                   </a-row>
@@ -172,8 +171,8 @@
                         style="width: 50%;"
                         size="large"
                         type="text"
-                        placeholder="verify code"
-                        v-decorator="['captcha', {rules: [{ required: true, message: 'verify code' }]}]"
+                        placeholder="Verification code"
+                        v-decorator="['captcha', {rules: [{ required: true, message: 'Verification code' }]}]"
                       >
                         <a-icon slot="prefix" type="key" style="color:#33b8b3;font-size: 15px;" />
                       </a-input>
@@ -184,7 +183,7 @@
                         @click.stop.prevent="getCaptcha"
                         style="border-radius: 0; border: none; border-left: 1px solid #33b8b3"
                       >
-                        {{state.smsSendBtn ? state.time+'s' : 'Get verify code'}}
+                        {{state.smsSendBtn ? state.time+'s' : 'Get code'}}
                       </a-button>
                     </a-form-item>
                   </a-col>
@@ -227,7 +226,7 @@
                       <a-progress
                         :percent="state.percent"
                         :showInfo="false"
-                        :strokeColor=" passwordLevelColor "
+                        :strokeColor="passwordLevelColor "
                       />
                       <div style="margin-top: 10px;">
                         <span>Enter a 6-digit password, preferably containing numbers and letters</span>
@@ -319,7 +318,7 @@ export default {
       loginBtn: false,
       // login type: 0 email, 1 username, 2 telephone
       loginType: 0,
-      getCode: "Get verify code",
+      getCode: "Get code",
       // stepCaptchaVisible: false,
       form: this.$form.createForm(this),
       state: {
@@ -525,6 +524,9 @@ export default {
       .login {
         padding-bottom: 20px;
         text-align: center;
+        &:hover{
+          color: #33b8b3;
+        }
       }
       .user-layout-login {
         label {
@@ -594,6 +596,13 @@ export default {
 
   &.success {
     color: #52c41a;
+  }
+}
+#formRegister{
+  .borderwidth{
+    a{
+      border-width: 2px;
+    }
   }
 }
 @media screen and (max-width: 768px) and (min-width: 325px){

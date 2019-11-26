@@ -28,7 +28,7 @@
       </div>
     </template>
     <span @click="fetchNotice" class="header-notice" style="position: relative;">
-      <a-icon style="font-size: 30px; padding: 4px;cursor: pointer;" type="bell" />
+      <a-icon type="bell" :style="{color: bellcolor}" />
       <a-badge v-if="count" class="diount" :count="count" showZero :overflowCount="5"></a-badge>
     </span>
   </a-popover>
@@ -126,7 +126,7 @@ export default {
       let token = this.$ls.get(ACCESS_TOKEN);
       let origin =  window.location.host;
       // WebSocket与普通的请求所用协议有所不同，ws等同于http，wss等同于https   
-      let url = process.env.NODE_ENV == 'production' ? 'ws://' + origin + '/jeecg-boot/sys/messages/' + token : 'ws://192.168.0.9:8080/jeecg-boot/sys/messages/' + token       
+      let url = process.env.NODE_ENV == 'production' ? 'wss://' + origin + '/jeecg-boot/sys/messages/' + token : 'ws://192.168.0.9:8080/jeecg-boot/sys/messages/' + token       
       this.websock = new WebSocket(url); 
 			this.websock.onopen = this.websocketonopen;                
 			this.websock.onerror = this.websocketonerror;                
@@ -139,8 +139,7 @@ export default {
 		websocketonerror(e){                
 			console.log(e,"WebSocket连接发生错误");              
 		},              
-		websocketonmessage(e){                
-        console.log(e.data);  
+		websocketonmessage(e){                  
         this.dataList = JSON.parse(e.data); 
         this.count = this.dataList.length;     
 		},              
@@ -198,10 +197,9 @@ export default {
         > span{
             margin: 0 10px;
             i{
-                color: #33b8b3;
                 font-size: 30px;
-                padding: 4px;
-                
+                padding: 4px;  
+                cursor: pointer;
             }
         }
         .header-notice{

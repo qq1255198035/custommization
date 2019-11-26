@@ -8,16 +8,19 @@
                 <li style="border-bottom: 1px solid #fff;" @click="handleClick">
                     <a-icon type="search" />View
                 </li>
-                <li @click="handleClick1" v-if="isEdit == 3">
+                <li @click="handleClick1" style="border-bottom: 1px solid #fff;" v-if="isEdit == 3">
                     <a-icon type="share-alt" />Share
                 </li>
-                <li @click="handleClick3" v-if="isEdit == 6 || isEdit == 7 || isEdit == 8">
+                <li @click="handleClick3" style="border-bottom: 1px solid #fff;" v-if="isEdit == 6 || isEdit == 7 || isEdit == 8">
                     <a-icon type="delete" />Delete
                 </li>
-                <li @click="handleClick4" v-if="isEdit == 1 || isEdit == 2">
+                <li @click="handleClick4" style="border-bottom: 1px solid #fff;" v-if="isEdit == 1 || isEdit == 2">
                     <a-icon type="export" />Cancel
                 </li>
-                
+                <!-- v-if="isEdit == 9" -->
+                <li @click="handleClick5">
+                    <a-icon type="link" />Commit
+                </li>
         </ul>
     </div>
 </template>
@@ -50,6 +53,9 @@ export default {
         },
         handleClick4(){
             this.$emit('handeCaleOrder')
+        },
+        handleClick5(){
+            this.$emit('handelCommit')
         }
     }
 }

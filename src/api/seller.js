@@ -822,3 +822,19 @@ export function addProList(params) {
         data:JSON.stringify(params)
     })
 }
+
+export function getProductionTime(id) {
+    return axios({
+        url: '/system/jeecgOrder/getProductionTime',
+        method: 'post',
+        data:qs.stringify({orderId: id})
+    })
+}
+
+export function postProductionTime(id,confirmTimeStr) {
+    return axios({
+        url: '/system/jeecgOrder/affirmProductionTime',
+        method: 'post',
+        data:qs.stringify({orderId: id,confirmTimeStr:confirmTimeStr})
+    })
+}

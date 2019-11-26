@@ -6,9 +6,9 @@
         </div>
         <div class="box1">
             <my-stpes :mycurrent="1" stpesnum="3">
-                    <p slot="p1" style="color: #fff; text-align: center;">Original design</p>
-                    <p slot="p2" style="color: #fff; text-align: center;">Proofing confirmation</p>
-                    <p slot="p3" style="color: #fff; text-align: center;">Share purchase</p>
+                    <p slot="p1" style="color: #fff; text-align: center;">Design Submitted</p>
+                    <p slot="p2" style="color: #fff; text-align: center;">Details Confirmed</p>
+                    <p slot="p3" style="color: #fff; text-align: center;">Share Link</p>
             </my-stpes>
         </div>
         <div class="content">
@@ -26,7 +26,7 @@
                         <p>We will reply you within 3 working days</p>
                         <p>We will provide a design mockup within 4 working days.</p>
                         <div class="btn-box">
-                            <a-button @click="$router.push({path: '/neworder'})">Order Again</a-button>
+                            <a-button @click="$router.push({path: '/neworder'})">Add Another Order</a-button>
                             <a-button @click="$router.push({path: '/OrderManagement/grouporder'})">Back</a-button>
                         </div>
                     </div>
@@ -83,7 +83,6 @@ export default {
         }
     }
     .box1{
-        padding: 30px;
         width: 80%;
         margin: 0 auto;
     }
@@ -113,11 +112,11 @@ export default {
             justify-content: center;
             flex-direction: column;
             align-items: center;
-            margin-top: 100px;
+            margin-top: 50px;
             span{
                 display: block;
                 height: 16px;
-                width: 30%;
+                width: 580px;
                 background-color: #71a59f;
                 border-radius: 8px;
             }

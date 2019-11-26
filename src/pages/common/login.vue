@@ -13,10 +13,10 @@
                 <a-input
                   size="large"
                   type="text"
-                  placeholder="Please fill in the account."
+                  placeholder="Please fill in your email."
                   v-decorator="[
                 'username',
-                {rules: [{ required: true, message: 'Please fill in the account.' }], validateTrigger: 'change'}
+                {rules: [{ required: true, message: 'Please fill in your email.' }], validateTrigger: 'change'}
               ]"
                 ></a-input>
               </a-form-item>
@@ -25,11 +25,11 @@
                   size="large"
                   type="password"
                   autocomplete="false"
-                  placeholder="Please fill in the password."
+                  placeholder="Please fill in your password."
                   @keyup.enter.native="submitLogin"
                   v-decorator="[
                 'password',
-                {rules: [{ required: true, message: 'Please fill in the password.'}], validateTrigger: 'blur'}
+                {rules: [{ required: true, message: 'Please fill in your password.'}], validateTrigger: 'blur'}
               ]"
                 ></a-input>
               </a-form-item>
@@ -39,7 +39,7 @@
                 </p>
                 <div class="forget">
                   <router-link class="register" :to="{ name: 'passwordSet' }">
-                    <span class="font-18">Forget password</span>
+                    <span class="font-18">Forgot Password?</span>
                   </router-link>
                 </div>
               </a-form-item>

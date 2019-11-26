@@ -4,9 +4,9 @@
       <div class="order-title">
         <p>
           <span>Order number:{{items.orderSn}}</span>
-          <span>Order time: {{items.createTime | formatTime}}</span>
-          <span>Order Deadline： {{items.payEndDate | formatTime}}</span>
-          <span>Status：{{items.orderStatus | statusFilter1}}</span>
+          <span>Order time:{{items.createTime | formatTime}}</span>
+          <span>Order Deadline:{{items.payEndDate | formatTime}}</span>
+          <span>Status:{{items.orderStatus | statusFilter1}}</span>
         </p>
         <hide-menu
           @handeDetelOrder="handeDetelOrder(items.id)"
@@ -14,6 +14,7 @@
           @myClick="checkOutDetails(items.id)"
           @myClick1="openMyshareBox(items)"
           @myClick2="goEditing(items.id)"
+          @handelCommit="openDatebox(items.id)"
           :isEdit="items.orderStatus"
         ></hide-menu>
       </div>
@@ -24,13 +25,13 @@
               <img :src="item.positivePicUrl" v-preview="item.positivePicUrl" width="150" height="150" />
               <div class="desc">
                 <h3>{{item.name}}</h3>
-                <p>COLOUR： {{item.productColor}}</p>
+                <p>COLOUR:{{item.productColor}}</p>
               </div>
             </div>
 
             <div>
               <span style="margin-right: 20px;">{{item.buyNum}}/{{item.quantity}}</span>
-              <span>Status: {{item.status | statusFilter}}</span>
+              <span>Status:{{item.status | statusFilter}}</span>
             </div>
           </div>
           <div class="right">
@@ -67,11 +68,53 @@
         </div>
       </div>
     </a-modal>
+    <a-modal
+      :visible="openDate"
+      @cancel="closeDateBox"
+      @ok="commitDate"
+      title="Share"
+      forceRender
+    >
+    <div class="select-date">
+      <a-date-picker
+        @change="onClosingDate"
+        :disabledDate="disabledDate"
+        format="YYYY-MM-DD"
+        style="margin-left: 30px;"
+        @openChange="openhandleChange"
+      >
+        <template slot="dateRender" slot-scope="current, today">
+          <div class="ant-calendar-date" :style="getCurrentStyle(current, today)">
+            {{current.date()}}
+          </div>
+        </template>
+        <template slot="renderExtraFooter">
+          <div class="show-box">
+            <p>
+              <span>
+
+              </span>
+              生产日期
+            </p>
+            <p>
+              <span style="background: rgba(255,0,0,0.5)">
+
+              </span>
+              加急日期
+            </p>
+          </div>
+        </template>
+      </a-date-picker>
+    </div>
+      
+    </a-modal>
   </div>
 </template>
 <script>
+import {getProductionTime,postProductionTim} from '@/api/seller';
 import commonBtn from "@/components/commonBtn/commonBtn";
 import HideMenu from "@/components/HideMenu/HideMenu";
+import moment from "moment";
 const statusMap = {
   "1": {
     text: "To Be Confirme"
@@ -110,6 +153,9 @@ const statusMap1 = {
   },
   "8": {
     text: "Failed"
+  },
+  "9": {
+    text: "Productive"
   }
 };
 export default {
@@ -121,6 +167,8 @@ export default {
   data() {
     return {
       openShare: false,
+      openDate: false,
+      id: '',
       config: {
         url: "", // 网址，默认使用 window.location.href
         source: "", // 来源（QQ空间会用到）, 默认读取head标签：<meta name="site" content="http://overtrue" />
@@ -133,7 +181,11 @@ export default {
         //disabled: ['google', 'facebook', 'twitter'], // 禁用的站点
         wechatQrcodeTitle: "WeChat Scan: Share", // 微信二维码提示文字
         wechatQrcodeHelper: "Scan and share this article with friends."
-      }
+      },
+      timeover: '',
+      maxDays: 10,
+      minDays: 5,
+      rate: ''
     };
   },
   components: {
@@ -141,6 +193,62 @@ export default {
     commonBtn
   },
   methods: {
+    commitDate(){
+
+    },
+    openhandleChange(open){
+      console.log(open)
+      if(open){
+        getProductionTime(this.id).then(res => {
+          console.log(res);
+          if(res.code == 200){
+            this.maxDays = 55;
+            this.minDays = 20;
+            this.rate = res.result.rate;
+          }
+        })
+      }
+    },
+    onClosingDate(date, dateString) {
+      console.log(dateString);
+      this.timeover = dateString;
+    },
+    disabledDate(current) {
+      // add(a,b)第一个参数为添加的天数，从后台动态获取
+      
+      return current && current < moment().add(this.minDays, 'd');
+    },
+    getCurrentStyle(current, today) {
+        let a = current.date() >= 10 ? current.date() : '0' + current.date();
+        let b = today.date() >= 10 ? today.date() : '0' + today.date();
+        let currentdate = moment().add(this.maxDays, 'd').date() >= 10 ? moment().add(this.maxDays, 'd').date() : '0' + moment().add(this.maxDays, 'd').date();
+        let date =  moment().add(this.minDays, 'd').date() >= 10 ? moment().add(this.minDays, 'd').date() : '0' + moment().add(this.minDays, 'd').date();
+        const style = {};
+        if(current.year() >= today.year() && current.month() >= today.month()){
+          if (current.year() + current.month().toString() + a <= moment().add(this.maxDays, 'd').year() + moment().add(this.maxDays, 'd').month().toString() + currentdate && current.year() + current.month().toString() + a > today.year() + today.month().toString() + b) {
+            style.border = '1px solid #1890ff';
+            style.borderRadius = '50%';
+            style.width = '26px'
+          }
+          if(moment().add(this.minDays, 'd').year() + moment().add(this.minDays, 'd').month().toString() + date < current.year() + current.month().toString() + a && moment().add(this.maxDays, 'd').year() + moment().add(this.maxDays, 'd').month().toString() + currentdate >= current.year() + current.month().toString() + a){
+            style.background = 'rgba(255,0,0,0.5)';
+            style.color = '#fff';
+            style.width = '26px'
+          }
+          return style;
+        }
+      },
+    disabledDateTime() {
+      return {
+        disabledHours: () => this.range(0, 24).splice(4, 20),
+        disabledMinutes: () => this.range(30, 60),
+        disabledSeconds: () => [55, 56]
+      };
+    },
+    openDatebox(id){
+      this.id = id;
+      this.openDate = true;
+    },
     onCopy() {
       this.$message.success("Replication success");
     },
@@ -161,6 +269,9 @@ export default {
     closeShareBox() {
       this.openShare = false;
     },
+    closeDateBox() {
+      this.openDate = false;
+    },
     checkOutDetails(id) {
       this.$router.push({ path: "/myorder", query: { id: id } });
     },
@@ -173,9 +284,7 @@ export default {
       this.config.url = window.location.origin + "/#/share" + "?order_id=" + item.id;
       this.config.image = item.interiorList[0].positivePicUrl;
     },
-    statusFilter(type) {
-      return statusMap[type].text;
-    }
+  
   },
   filters: {
     statusFilter(type) {
@@ -336,4 +445,20 @@ export default {
     }
   }
 }
+
+.show-box{
+  p{
+    display: flex;
+    align-items: center;
+    span{
+      width:20px;
+      height: 20px;
+      border-radius: 10px; 
+      border: 1px solid #33b8b3;
+      display: inline-block;
+      margin-right: 10px;
+    }
+  }
+}
+
 </style>

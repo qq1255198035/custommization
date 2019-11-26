@@ -93,7 +93,7 @@
               </li>
             </ul>
             <div class="remarks" v-show="showKey == 2" style="margin-top: 10px;">
-              <p>设计备注：{{remarks}}</p>
+              <p style="color: #000;">设计备注：{{remarks}}</p>
             </div>
             <div class="show-box" v-show="showKey == 1">
               <div class="canvans-box">
@@ -138,19 +138,17 @@
         >
           <img :src="positivePicUrl" alt="" width="100" height="100" v-preview="positivePicUrl" />
           <a-upload
-            :beforeUpload="beforeUploadEx"
-            @change="handleChange"
+            :customRequest="beforeUploadEx"
             accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif"
-            v-decorator="['img1',{rules: [{ required: true, message: 'Please upload pictures！'}]}]"
+            :showUploadList="false"
+            v-decorator="['img1',{rules: [{ required: true, message: '请上传图片！'}]}]"
           >
               <a-button :disabled="editDisabled">
                 <a-icon type="upload"/> 点击上传
               </a-button>
           </a-upload>
         </a-form-item>
-        <a-form-item style="width: 55%;">
-          <a-textarea :autosize="{minRows: 4}" v-decorator="['remarks1',{rules: [{ required: false, message: 'Please upload pictures！' }]}]" :disabled="true"></a-textarea>
-        </a-form-item>
+        <p style="width: 45%;">备注：{{remarks1}}</p>
         <a-form-item
           label="上传背面"
           :label-col="{ span: 7 }"
@@ -159,19 +157,17 @@
         >
           <img :src="backPicUrl" alt="" width="100" height="100" v-preview="backPicUrl" />
           <a-upload
-            :beforeUpload="beforeUploadEx1"
-            @change="handleChange1"
+            :customRequest="beforeUploadEx1"
+            :showUploadList="false"
             accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif"
-            v-decorator="['img2',{rules: [{ required: true, message: 'Please upload pictures！'}]}]"
+            v-decorator="['img2',{rules: [{ required: true, message: '请上传图片！'}]}]"
           >
               <a-button :disabled="editDisabled">
                 <a-icon type="upload" /> 点击上传
               </a-button>
           </a-upload>
         </a-form-item>
-        <a-form-item style="width: 55%;">
-          <a-textarea :autosize="{minRows: 4}" v-decorator="['remarks2',{rules: [{ required: false, message: 'Please upload pictures！' }]}]" :disabled="true"></a-textarea>
-        </a-form-item>
+        <p style="width: 45%;">备注：{{remarks2}}</p>
         <a-form-item
           label="上传左面"
           :label-col="{ span: 7 }"
@@ -180,19 +176,17 @@
         >
           <img :src="leftPicUrl" alt="" width="100" height="100" v-preview="leftPicUrl" />
           <a-upload
-            :beforeUpload="beforeUploadEx2"
-            @change="handleChange2"
+            :customRequest="beforeUploadEx2"
+            :showUploadList="false"
             accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif"
-            v-decorator="['img3',{rules: [{ required: true, message: 'Please upload pictures！'}]}]"
+            v-decorator="['img3',{rules: [{ required: true, message: '请上传图片！'}]}]"
           >
               <a-button :disabled="editDisabled">
                 <a-icon type="upload" /> 点击上传
               </a-button>
           </a-upload>
         </a-form-item>
-        <a-form-item style="width: 55%;">
-          <a-textarea :autosize="{minRows: 4}" v-decorator="['remarks3',{rules: [{ required: false, message: 'Please upload pictures！' }]}]" :disabled="true"></a-textarea>
-        </a-form-item>
+        <p style="width: 45%;">备注：{{remarks3}}</p>
         <a-form-item
           label="上传右面"
           :label-col="{ span: 7 }"
@@ -201,19 +195,17 @@
         >
           <img :src="rightPicUrl" alt="" width="100" height="100" v-preview="rightPicUrl" />
           <a-upload
-            :beforeUpload="beforeUploadEx3"
-            @change="handleChange3"
+            :customRequest="beforeUploadEx3"
+            :showUploadList="false"
             accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif"
-            v-decorator="['img4',{rules: [{ required: true, message: 'Please upload pictures！'}]}]"
+            v-decorator="['img4',{rules: [{ required: true, message: '请上传图片！'}]}]"
           >
               <a-button :disabled="editDisabled">
                 <a-icon type="upload" /> 点击上传
               </a-button>
           </a-upload>
         </a-form-item>
-        <a-form-item style="width: 55%;">
-          <a-textarea v-decorator="['remarks4',{rules: [{ required: false, message: 'Please upload pictures！' }]}]" :autosize="{minRows: 4}" :disabled="true"></a-textarea>
-        </a-form-item>
+        <p style="width: 45%;">备注：{{remarks4}}</p>
       </a-form>
     </a-modal> 
     <a-modal :visible="reject" title="设计方案" :width="700" @cancel="reject = false">
@@ -311,7 +303,11 @@ export default {
       rejrightPicUrl:'',
       rejbackPicUrl:'',
       opinion:'',
-      editDisabled: false
+      editDisabled: false,
+      remarks1:'',
+      remarks2:'',
+      remarks3:'',
+      remarks4:''
     }
   },
   mounted(){
@@ -349,15 +345,15 @@ export default {
             this.backPicUrl = res.result.backPicUrl;
             this.leftPicUrl = res.result.leftPicUrl;
             this.rightPicUrl = res.result.rightPicUrl;
+            this.remarks1 = res.result.porsitiveDescription;
+            this.remarks2 = res.result.backDescription;
+            this.remarks3 = res.result.leftDescription;
+            this.remarks4 = res.result.rightDescription;
             this.form.setFieldsValue({
               img1:res.result.positivePicUrl,
               img2:res.result.backPicUrl,
               img3:res.result.leftPicUrl,
-              img4:res.result.rightPicUrl,
-              remarks1:res.result.porsitiveDescription,
-              remarks2:res.result.backDescription,
-              remarks3:res.result.leftDescription,
-              remarks4:res.result.rightDescription
+              img4:res.result.rightPicUrl
             })
           }
         })
@@ -372,15 +368,15 @@ export default {
             this.backPicUrl = res.result.backPicUrl;
             this.leftPicUrl = res.result.leftPicUrl;
             this.rightPicUrl = res.result.rightPicUrl;
+            this.remarks1 = res.result.porsitiveDescription;
+            this.remarks2 = res.result.backDescription;
+            this.remarks3 = res.result.leftDescription;
+            this.remarks4 = res.result.rightDescription;
             this.form.setFieldsValue({
               img1:res.result.positivePicUrl,
               img2:res.result.backPicUrl,
               img3:res.result.leftPicUrl,
-              img4:res.result.rightPicUrl,
-              remarks1:res.result.porsitiveDescription,
-              remarks2:res.result.backDescription,
-              remarks3:res.result.leftDescription,
-              remarks4:res.result.rightDescription
+              img4:res.result.rightPicUrl
             })
           }
         })
@@ -392,8 +388,8 @@ export default {
         if (!err) {
           let params = {
             id:this.id1,positivePicUrl:this.positivePicUrl,leftPicUrl:this.leftPicUrl,rightPicUrl:this.rightPicUrl,backPicUrl:this.backPicUrl,backPicFile:this.backPicFile,
-            positivePicFile:this.positivePicFile,leftPicFile:this.leftPicFile,rightPicFile:this.rightPicFile,picId:this.id2,porsitiveDescription:values.remarks1,
-            backDescription:values.remarks2,leftDescription:values.remarks3,rightDescription:values.remarks4
+            positivePicFile:this.positivePicFile,leftPicFile:this.leftPicFile,rightPicFile:this.rightPicFile,picId:this.id2,porsitiveDescription:this.remarks1,
+            backDescription:this.remarks2,leftDescription:this.remarks3,rightDescription:this.remarks4
           }
           updateDespic(params).then(res => {
             console.log(res)
@@ -409,8 +405,6 @@ export default {
     postSourceUpload(file,type){
       let formData = new FormData();
       formData.append("file", file);
-      console.log(file)
-      console.log(formData.get("file"))
       sourceUpload(formData).then(res => {
           console.log(res)
           if(type == 0){
@@ -428,79 +422,50 @@ export default {
           }
       })
     },
-    handleChange ({ fileList }) {
-        if(this.uploadA){
-            this.fileList = fileList
-        }
-    },
-    handleChange1 ({ fileList }) {
-        if(this.uploadA1){
-            this.fileList1 = fileList
-        }
-    },
-    handleChange2 ({ fileList }) {
-        if(this.uploadA2){
-            this.fileList2 = fileList
-        }
-    },
-    handleChange3 ({ fileList }) {
-        if(this.uploadA3){
-            this.fileList3 = fileList
-        }
-    },
-   
     beforeUploadEx(file){
-        if(file.size / 1024 / 1024 < 10){
-            
-            this.uploadA = true
-            console.log(file)
-            this.postSourceUpload(file,0)
-
-        }else{
-            
-            this.$message.error('Image Size Exceeds Limit');
-            this.uploadA = false
-            return;
-        }
+      let files = file.file;
+      if(files.size / 1024 / 1024 < 10){
+          this.uploadA = true
+          this.postSourceUpload(files,0)
+      }else{
+          this.$message.error('图片大小超出限制，请重新选择！');
+          this.uploadA = false
+          return;
+      }
     },
     beforeUploadEx1(file){
-        if(file.size / 1024 / 1024 < 10){
-            this.uploadA1 = true
-            console.log(file)
-            this.postSourceUpload(file,1)
-        }else{
-            
-            this.$message.error('Image Size Exceeds Limit');
-            this.uploadA = false
-            return;
-        }
+      let files = file.file;
+      if(files.size / 1024 / 1024 < 10){
+          this.uploadA1 = true
+          this.postSourceUpload(files,1)
+      }else{
+          this.$message.error('图片大小超出限制，请重新选择！');
+          this.uploadA = false
+          return;
+      }
     },
     beforeUploadEx2(file){
-        if(file.size / 1024 / 1024 < 10){
-            
-            this.uploadA2 = true
-            console.log(file)
-            this.postSourceUpload(file,2)
-
-        }else{
-            
-            this.$message.error('Image Size Exceeds Limit');
-            this.uploadA = false
-            return;
-        }
+      let files = file.file;
+      if(files.size / 1024 / 1024 < 10){
+          this.uploadA2 = true
+          this.postSourceUpload(files,2)
+      }else{
+          this.$message.error('图片大小超出限制，请重新选择！');
+          this.uploadA = false
+          return;
+      }
     },
     beforeUploadEx3(file){
-        if(file.size / 1024 / 1024 < 10){
-            this.uploadA3 = true
-            console.log(file)
-            this.postSourceUpload(file,3)
-        }else{
-            this.$message.error('Image Size Exceeds Limit');
-            this.uploadA = false
-            return;
-        }
+      let files = file.file;
+      if(files.size / 1024 / 1024 < 10){
+          this.uploadA3 = true
+          this.postSourceUpload(files,3)
+      }else{
+          this.$message.error('图片大小超出限制，请重新选择！');
+          this.uploadA = false
+          return;
+      }
     },
-    
     getColorInfo(color){
       colorInfo(color).then(res => {
         console.log(res)
@@ -658,9 +623,10 @@ export default {
           display: flex;
           flex-direction: column;
           justify-content: space-between;
-          
         }
         dl{
+           margin-bottom: 0;
+          margin-left: 10px;
           dt{
             font-size: 18px;
             color: #33b8b3;

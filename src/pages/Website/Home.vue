@@ -298,18 +298,18 @@
                     <router-link to="/about">About Us</router-link>
                 </a-col>
                 <a-col :span="8" class="tckRight">                
-                        <h3>QUICK CONTACT</h3>
+                        <h3>CONTACT</h3>
                         <div class="contactCon mb_20">
                             <h4>Phone</h4>
                             <ul>
                                 <li>(647) 983-8195</li>
                             </ul>
                         </div>
-                        <div class="contactCon">
-                            <h4>E-maill</h4>
+                        <div class="contactCon mb_20">
+                            <h4>Email</h4>
                             <ul>
                                 <li>info@thecustomking.ca</li>
-                                <li>THECUSTOMKING@gmaill.com</li>
+                                <li>THECUSTOMKING@gmail.com</li>
                             </ul>
                         </div>
                         <div class="contactCon">
