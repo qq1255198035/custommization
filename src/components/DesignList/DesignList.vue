@@ -102,5 +102,16 @@ export default {
             }
       }
 }
+@media screen and (min-width: 2000px){
+      #design-list{
+            .list-row{
+                  .order-item{
+                        .img-box{
+                              height: 485px;
+                        }
+                  }
+            }
+      }
+}
 </style>
 

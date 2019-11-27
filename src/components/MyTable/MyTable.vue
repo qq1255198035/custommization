@@ -13,6 +13,7 @@
           @change="handleChange(record.key,col,$event)"
           v-if="col == 'size'"
           :key="col"
+          placeholder="Select Size"
         >
           <a-select-option
             v-for="(sitem,index) in targetList.sizess"
@@ -23,7 +24,7 @@
         <!-- <Stepper :num="record.number" @onPropsChange="change(record.key,col,)" v-if="col == 'number'" :key="col"></Stepper> -->
         <div id="steppers" v-if="col == 'number'" :key="col">
           <button class="left" @click="clickLeftbtn(record.key,col)">-</button>
-          <input type="number" min="1" max="Infinity" class="stepper-input" :value="record.number" />
+          <input type="number" min="1" max="Infinity" class="stepper-input" :value="record.number" disabled/>
           <button class="right" @click="clickRightbtn(record.key,col)">+</button>
         </div>
         <a-input

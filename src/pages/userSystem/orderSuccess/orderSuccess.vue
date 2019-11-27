@@ -50,7 +50,7 @@
     <div class="mobile-box-payment" v-else>
       <div class="mobile-title">
         <h1>
-          <a-icon type="left" />
+          <a-icon type="left" @click="$router.go(-1)"/>
           Order Fetails
         </h1>
       </div>
@@ -80,7 +80,7 @@
               </div>
               <div class="pay-btn">
                 <a-button class="buy-again" @click="alginBtn">Buy Again</a-button>
-                <a-button class="back" @click="backBtn">Back</a-button>
+                <!-- <a-button class="back" @click="backBtn">Back</a-button> -->
               </div>
             </div>
           </div>

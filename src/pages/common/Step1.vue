@@ -7,24 +7,24 @@
           v-decorator="['email',{rules: [{ required: true, message: 'Email' }]}]"
         />
       </a-form-item>
-      <a-form-item label="Verify code" :labelCol="{span: 6}" :wrapperCol="{span: 18}">
+      <a-form-item label="Verification Code" :labelCol="{span: 6}" :wrapperCol="{span: 18}">
         <a-row :gutter="32">
           <a-col :span="16">
             <a-input
               size="large"
               type="text"
-              placeholder="verify code"
+              placeholder="Input Code"
               v-model="captcha"
             >
               <a-icon slot="prefix" type="mail" :style="{ color: 'rgba(0,0,0,.25)' }" />
             </a-input>
           </a-col>
           <a-col :span="6">
-            <a-button @click="setCode">Get verify code</a-button>
+            <a-button @click="setCode">Get Code</a-button>
           </a-col>
         </a-row>
       </a-form-item>
-      <a-form-item :wrapperCol="{span: 19, offset: 5}">
+      <a-form-item :wrapperCol="{span: 18, offset: 6}">
         <a-button type="primary" @click="nextStep">Next</a-button>
       </a-form-item>
     </a-form>

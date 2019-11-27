@@ -10,66 +10,69 @@
           <User></User>
         </p>
       </header>
-      <card-header :detailList="detailList"></card-header>
-      <my-title style="margin:40px 0;" :fontsize="20" :title="itemTitle"></my-title>
-      <a-row :gutter="40" style="padding:0 8%">
-        <!--list1-->
-        <div>
-          <a-col
-            class="scroll-boxs"
-            :xxl="12"
-            :xl="24"
-            v-for="(item,index) in resultData"
-            :key="index"
-          >
-            <table-item :datas="item" ref="myTable">
-              <a
-                @click="imgShow"
-                href="javascript:;"
-                style="font-size: 18px; color: #999; text-decoration: underline"
-              >View the size chart</a>
-              <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancelImg">
-                <img alt="example" style="width: 100%" :src="item.size_chart_url" />
-              </a-modal>
-            </table-item>
-            <div v-if="!item.is_print_numbe && !item.is_print_text">
-              <my-table :dataSize="[item]" @getList="list" ref="mychild"></my-table>
-            </div>
+      <div style="padding-top: 20px;" class="artical-box">
+        <card-header :detailList="detailList" style="margin-top: 0;"></card-header>
+        <my-title style="margin:40px 0;" :fontsize="20" :title="itemTitle"></my-title>
+        <a-row :gutter="40" style="padding:0 8%">
+          <!--list1-->
+          <div>
+            <a-col
+              class="scroll-boxs"
+              :xxl="12"
+              :xl="24"
+              v-for="(item,index) in resultData"
+              :key="index"
+            >
+              <table-item :datas="item" ref="myTable">
+                <a
+                  @click="imgShow"
+                  href="javascript:;"
+                  style="font-size: 18px; color: #999; text-decoration: underline"
+                >View the size chart</a>
+                <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancelImg">
+                  <img alt="example" style="width: 100%" :src="item.size_chart_url" />
+                </a-modal>
+              </table-item>
+              <div v-if="!item.is_print_numbe && !item.is_print_text">
+                <my-table :dataSize="[item]" @getList="list" ref="mychild"></my-table>
+              </div>
 
-            <div v-if="item.is_print_numbe || item.is_print_text">
-              <my-tables :dataName="[item]" @getList="lists"></my-tables>
-            </div>
-          </a-col>
-        </div>
-      </a-row>
-      <my-title :title="itemTitle"></my-title>
-      <!--支付-->
-      <div class="paynum">
-        <a-row :gutter="20">
-          <a-col :span="18"></a-col>
-          <a-col :span="4">
-            <div class="left">
-              <div class="price-title">Total Amount</div>
-              <div class="allprice">${{allPrice}}</div>
-            </div>
-            <div class="right">
-              <commonBtn
-                @payTo="payTo"
-                :width="'100%'"
-                :title="'Pay Now'"
-                :height="'56px'"
-                :padding="'15px'"
-                :radio="'18px'"
-                :fontsize="'18px'"
-              >
-                <span class="bg-box">
-                  <span class="bg-image"></span>
-                </span>
-              </commonBtn>
-            </div>
-          </a-col>
-          <a-col :span="2"></a-col>
+              <div v-if="item.is_print_numbe || item.is_print_text">
+                <my-tables :dataName="[item]" @getList="lists"></my-tables>
+              </div>
+            </a-col>
+          </div>
         </a-row>
+        <my-title :title="itemTitle"></my-title>
+        <!--支付-->
+        <div class="paynum">
+          <a-row :gutter="20">
+            <a-col :span="18"></a-col>
+            <a-col :span="4">
+              <div class="left">
+                <div class="price-title">Total Amount</div>
+                <div class="allprice">${{allPrice}}</div>
+              </div>
+              <div class="right">
+                <commonBtn
+                  @payTo="payTo"
+                  :width="'100%'"
+                  :title="'Pay Now'"
+                  :height="'56px'"
+                  :padding="'15px'"
+                  :radio="'18px'"
+                  :fontsize="'18px'"
+                  disabled
+                >
+                  <span class="bg-box">
+                    <span class="bg-image"></span>
+                  </span>
+                </commonBtn>
+              </div>
+            </a-col>
+            <a-col :span="2"></a-col>
+          </a-row>
+        </div>
       </div>
     </div>
   </div>
@@ -204,7 +207,7 @@
         <span>Quantify</span>
         <div id="steppers">
           <button class="left" @click="clickLeftbtn">-</button>
-          <input type="number" min="1" max="Infinity" class="stepper-input" v-model="defaultNum" />
+          <input type="number" min="1" max="Infinity" class="stepper-input" v-model="defaultNum" disabled/>
           <button class="right" @click="clickRightbtn">+</button>
         </div>
       </div>
@@ -339,7 +342,6 @@ export default {
         onOk() {
           let a = [];
           let b = [];
-         
           that.mobileData['list' + index].splice(aindex,1);
           a = that.mobileData['list' + index].concat(a);
           that.$delete(that.mobileData,'list' + index);
@@ -598,9 +600,21 @@ export default {
         console.log(param);
         apiPay(param).then(res => {
           console.log(res);
-          if (res.code == 1) {
-            this.$router.push({
-              path: "/payment"
+          if(res.payEndCode == 1){
+            if (res.code == 1) {
+              this.$router.push({
+                path: "/payment"
+              });
+            }
+          }else{
+            let that = this;
+            that.$error({
+              title: 'Sorry',
+              content:'This shared link,please click here to our home page.',
+              okText: 'OK',
+              onOk(){
+                that.$router.push({path: '/index'})
+              },
             });
           }
         });
@@ -636,9 +650,21 @@ export default {
           console.log(param);
           apiPay(param).then(res => {
             console.log(res);
-            if (res.code == 1) {
-              this.$router.push({
-                path: "/payment"
+            if(res.payEndCode == 1){
+              if (res.code == 1) {
+                this.$router.push({
+                  path: "/payment"
+                });
+              }
+            }else{
+              let that = this;
+              that.$error({
+                title: 'Sorry',
+                content:'This shared link,please click here to our home page.',
+                okText: 'OK',
+                onOk(){
+                  that.$router.push({path: '/index'})
+                },
               });
             }
           });
@@ -661,7 +687,18 @@ export default {
         this.pay_mode = res.result.pay_mode;
         this.resultData = res.result.personOrderNoPrintList;
         this.detailList = res.result;
-        
+        let endDate = res.result.payEndDate;
+        if(new Date(endDate).getTime() < new Date().getTime()){
+          let that = this;
+          that.$error({
+            title: 'Sorry',
+            content:'This shared link,please click here to our home page.',
+            okText: 'OK',
+            onOk(){
+              that.$router.push({path: '/index'})
+            },
+          });
+        }
         this.resultData.forEach(el => {
           this.sizes.push(el.sizes);
           this.mobileImgArr.push(el.positive_pic_url);
@@ -700,9 +737,7 @@ export default {
 .scroll-boxs {
   overflow-y: auto;
   overflow-x: hidden;
-  
   margin-bottom: 20px;
-  max-height: 560px;
   &::-webkit-scrollbar {
     /*滚动条整体样式*/
     width: 4px; /*宽分别对应竖滚动条的尺寸*/
@@ -741,7 +776,23 @@ export default {
     height: 100%;
     background-color: #fff;
     border-radius: 10px;
-    //overflow: hidden;
+    overflow: hidden;
+    .artical-box{
+      overflow-y: scroll;
+      overflow-x: hidden;
+      height: 734px;
+      &::-webkit-scrollbar {  /*滚动条整体样式*/
+          width: 6px;  /*宽分别对应竖滚动条的尺寸*/
+          /*高分别对应横滚动条的尺寸*/
+          background-color: #fff;
+          
+      }
+      &::-webkit-scrollbar-thumb {
+          background-color: #33b8b3;
+          border-radius:4px;
+          height: 10%;
+      }
+    }
     header {
       display: flex;
       width: 100%;
@@ -777,6 +828,15 @@ export default {
     }
   }
 }
+@media screen and (max-width: 1366px){
+  .share-boxs {
+    .wrapper-box {
+      .artical-box{
+        height: 640px;
+      }
+    }
+  }
+}
 @media screen and (max-width: 768px) and (min-width: 325px){
   #contentBox{
     height: 100%;
@@ -784,7 +844,6 @@ export default {
       width: 100%;
       min-height: 100%;
       background-color: #fff;
-      
       padding-bottom: 75px;
       .total-price{
         position: fixed;

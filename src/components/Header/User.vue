@@ -150,8 +150,6 @@ export default {
 			// let url = "http://localhost:8185/api/teachStf/import?shipId=DPS007"                
 			// // 这里只是一个基于axios的ajax请求，你可以换成你的请求格式                
       // this.$ajax.get(url)   
-      
-      console.log("dddddddddd");
 		}, 
     fetchNotice () {
       if (!this.visible) {
@@ -180,8 +178,10 @@ export default {
         cancelText: "Cancel",
         onOk() {
           that.Logout({}).then(() => {
-            that.$router.push({path: '/'});
-            window.location.reload()
+            that.$router.push({name: 'home'});
+            setTimeout(() => {
+              window.location.reload();
+            },10)
           });
         },
         onCancel() {}

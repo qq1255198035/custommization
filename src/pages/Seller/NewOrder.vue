@@ -231,18 +231,29 @@
                                                 <div>
                                                     <p>
                                                         <a-select :value="nameSize" style="width: 95%;" @change="changeNameSize" :disabled="!addNameData || keyId !== 'Name'">
-                                                            <a-select-option value="45">6cm</a-select-option>
-                                                            <a-select-option value="53">7cm</a-select-option>
-                                                            <a-select-option value="61">8cm</a-select-option>
-                                                            <a-select-option value="50">9cm</a-select-option>
+                                                            <a-select-option value="29">6cm</a-select-option>
+                                                            <a-select-option value="37">7cm</a-select-option>
+                                                            <a-select-option value="45">8cm</a-select-option>
+                                                            <a-select-option value="53">9cm</a-select-option>
                                                         </a-select>
                                                     </p>
                                                     <p>
                                                         <a-select :value="numberSize" style="width: 100%;" @change="changeNumberSize" :disabled="!addNumberData || keyId !== 'Number'">
-                                                            <a-select-option value="114">15cm</a-select-option>
-                                                            <a-select-option value="137">18cm</a-select-option>
-                                                            <a-select-option value="152">20cm</a-select-option>
-                                                            <a-select-option value="190">25cm</a-select-option>
+                                                            <a-select-opt-group>
+                                                                <span slot="label">Front</span>
+                                                                <a-select-option value="61" :disabled="numberPosition == '1'">8cm</a-select-option>
+                                                                <a-select-option value="76" :disabled="numberPosition == '1'">10cm</a-select-option>
+                                                                <a-select-option value="91" :disabled="numberPosition == '1'">12cm</a-select-option>
+                                                                <a-select-option value="106" :disabled="numberPosition == '1'">14cm</a-select-option>
+                                                            </a-select-opt-group>
+                                                            <a-select-opt-group>
+                                                                <span slot="label">Back</span>
+                                                                <a-select-option value="152" :disabled="numberPosition == '0'">20cm</a-select-option>
+                                                                <a-select-option value="167" :disabled="numberPosition == '0'">22cm</a-select-option>
+                                                                <a-select-option value="182" :disabled="numberPosition == '0'">24cm</a-select-option>
+                                                                <a-select-option value="197" :disabled="numberPosition == '0'">26cm</a-select-option>
+                                                                <a-select-option value="212" :disabled="numberPosition == '0'">28cm</a-select-option>
+                                                            </a-select-opt-group>
                                                         </a-select>
                                                     </p>
                                                 </div>
@@ -864,8 +875,8 @@ export default {
             id:'',
             btnable:false,
             fontShapeArr:[],
-            nameSize:'45',
-            numberSize:'114',
+            nameSize:'29',
+            numberSize:'61',
             namePosition:'0',
             numberPosition:'0',
             exampleName:'',
@@ -1158,10 +1169,6 @@ export default {
                 this.boxSize2 = SIZE.canvas2;
                 this.boxSize3 = SIZE.canvas3;
                 this.boxSize4 = SIZE.canvas4;
-                // this.handleObjectMove(this.myCanvas1,this.boxSize1.top,600 - this.boxSize1.top - this.boxSize1.height,this.boxSize1.left,600 - this.boxSize1.left - this.boxSize1.width);
-                // this.handleObjectMove(this.myCanvas2,this.boxSize2.top,600 - this.boxSize2.top - this.boxSize2.height,this.boxSize2.left,600 - this.boxSize2.left - this.boxSize2.width);
-                // this.handleObjectMove(this.myCanvas3,this.boxSize3.top,600 - this.boxSize3.top - this.boxSize3.height,this.boxSize3.left,600 - this.boxSize3.left - this.boxSize3.width);
-                // this.handleObjectMove(this.myCanvas4,this.boxSize4.top,600 - this.boxSize4.top - this.boxSize4.height,this.boxSize4.left,600 - this.boxSize4.left - this.boxSize4.width);
                 this.handleObjectScale(this.myCanvas1,this.boxSize1.left,this.boxSize1.top,this.boxSize1.width,this.boxSize1.height);
                 this.handleObjectScale(this.myCanvas2,this.boxSize2.left,this.boxSize2.top,this.boxSize2.width,this.boxSize2.height);
                 this.handleObjectScale(this.myCanvas3,this.boxSize3.left,this.boxSize3.top,this.boxSize3.width,this.boxSize3.height);
@@ -1743,15 +1750,10 @@ export default {
                 this.bindCanvas(this.myCanvas3,2);
                 this.bindCanvas(this.myCanvas4,3);
                 let SIZE= JSON.parse(res.result.boxSizes)
-                console.log(SIZE)
                 this.boxSize1 = SIZE.canvas1;
                 this.boxSize2 = SIZE.canvas2;
                 this.boxSize3 = SIZE.canvas3;
                 this.boxSize4 = SIZE.canvas4;
-                // this.handleObjectMove(this.myCanvas1,this.boxSize1.top,600 - this.boxSize1.top - this.boxSize1.height,this.boxSize1.left,600 - this.boxSize1.left - this.boxSize1.width);
-                // this.handleObjectMove(this.myCanvas2,this.boxSize2.top,600 - this.boxSize2.top - this.boxSize2.height,this.boxSize2.left,600 - this.boxSize2.left - this.boxSize2.width);
-                // this.handleObjectMove(this.myCanvas3,this.boxSize3.top,600 - this.boxSize3.top - this.boxSize3.height,this.boxSize3.left,600 - this.boxSize3.left - this.boxSize3.width);
-                // this.handleObjectMove(this.myCanvas4,this.boxSize4.top,600 - this.boxSize4.top - this.boxSize4.height,this.boxSize4.left,600 - this.boxSize4.left - this.boxSize4.width);
                 this.handleObjectScale(this.myCanvas1,this.boxSize1.left,this.boxSize1.top,this.boxSize1.width,this.boxSize1.height);
                 this.handleObjectScale(this.myCanvas2,this.boxSize2.left,this.boxSize2.top,this.boxSize2.width,this.boxSize2.height);
                 this.handleObjectScale(this.myCanvas3,this.boxSize3.left,this.boxSize3.top,this.boxSize3.width,this.boxSize3.height);
@@ -2063,12 +2065,14 @@ export default {
                 if(this.numberPosition == 0){
                     this.myCanvas = this.myCanvas1;
                     this.designModel = 0;
+                    this.numberSize = '61'
                     this.bindCanvas(this.myCanvas,0)
                     this.myCanvas2.remove(this.exampleNumber)
                     this.addExampleNumber(this.numberFontFamily,this.numberPosition,this.numberSize,this.numberColor.slice(1),300,200);
                 }else{
                     this.myCanvas = this.myCanvas2;
                     this.designModel = 1;
+                    this.numberSize = '152'
                     this.bindCanvas(this.myCanvas,1);
                     this.myCanvas1.remove(this.exampleNumber);
                     this.addExampleNumber(this.numberFontFamily,this.numberPosition,this.numberSize,this.numberColor.slice(1),300,200);
@@ -2691,6 +2695,7 @@ export default {
         // 切换正反左右面
         changeModelDesign(i){
             this.designModel = i;
+            this.liClick = -1;
             if(i == 0){
                 this.myCanvas = this.myCanvas1
                 this.bindCanvas(this.myCanvas,i);

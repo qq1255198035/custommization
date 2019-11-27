@@ -10,179 +10,181 @@
             <User></User>
           </p>
         </header>
-        <a-row>
-          <a-col :span="2"></a-col>
-          <a-col :span="20">
-            <div class="step font-reset">Progress</div>
-            <MyPrimaryStpes :mycurrent="step">
-              <p slot="p1">Select Size</p>
-              <p slot="p2">Please Confirm Payment</p>
-              <p slot="p3">Waiting To Start Group Order</p>
-              <p slot="p4">Completed</p>
-            </MyPrimaryStpes>
-            <my-title :title="itemTitle" :fontsize="20" :paddingtop="'40px'" :paddingbottom="'20px'"></my-title>
-          </a-col>
-          <a-col :span="2"></a-col>
-        </a-row>
-        <a-row :gutter="40" type="flex" style="padding:20px 8%;" justify="start">
-          <a-col
-            :xxl="12"
-            :xl="24"
-            v-for="(item,index) in tablesList"
-            :key="index"
-            style="margin:20px 0"
-          >
-            <div v-if="!item.is_print_number && !item.is_print_text">
-              <table-item :datas="item" ref="myTable"></table-item>
-              <table-list :columns="columns" :data="[item]"></table-list>
-            </div>
-            <div v-if="item.is_print_number || item.is_print_text">
-              <table-item :datas="item" ref="myTable"></table-item>
-              <table-list :columns="columns1" :data="[item]"></table-list>
-            </div>
-          </a-col>
-        </a-row>
-        <a-row>
-          <a-col :span="2"></a-col>
-          <a-col :span="20">
-            <my-title
-              v-if="pay_mode == 2"
-              :title="payTitle"
-              :fontsize="20"
-              :paddingtop="'40px'"
-              :paddingbottom="'20px'"
-            ></my-title>
-          </a-col>
-          <a-col :span="2"></a-col>
-        </a-row>
-        <div class="payment">
-          <a-row :gutter="20" v-if="pay_mode == 2">
+        <div style="padding-top: 20px;" class="artical-box">
+          <a-row>
             <a-col :span="2"></a-col>
-            <a-col :span="8" style="display:flex">
-              <div class="pay-title font-18">Payment method:</div>
-              <div>
-                <a-radio-group @change="onChange" v-model="value">
-                  <a-radio :value="1">
-                    <img src="@assets/paypal_pay.png" alt />
-                  </a-radio>
-                  <a-radio :value="2">
-                    <img style="width:50px" src="@assets/weixin_pay.png" alt />
-                    <span class="pay-font">WeChat Pay</span>
-                  </a-radio>
-                </a-radio-group>
-              </div>
-            </a-col>
-            <a-col :span="2"></a-col>
-            <a-col :span="10">
-              <ul class="pay-list">
-                <li>
-                  <a-row>
-                    <a-col :span="12">
-                      <h3 class="font-18">Item Amount：</h3>
-                    </a-col>
-                    <a-col :span="12">
-                      <p class="textRight font-color">${{pricess.order_price}}</p>
-                    </a-col>
-                  </a-row>
-                </li>
-                <li>
-                  <a-row>
-                    <a-col :span="12">
-                      <h3 class="font-18">Service Fee：</h3>
-                    </a-col>
-                    <a-col :span="12">
-                      <p class="textRight font-color">${{pricess.commission}}</p>
-                    </a-col>
-                  </a-row>
-                </li>
-                <li style="border-bottom:solid 1px #eee;">
-                  <a-row>
-                    <a-col :span="12">
-                      <h3 class="font-18">Shipping Fee：</h3>
-                    </a-col>
-                    <a-col :span="12">
-                      <p class="textRight font-color">${{pricess.shipping_fee}}</p>
-                    </a-col>
-                  </a-row>
-                </li>
-                <li style="padding-top:20px">
-                  <a-row>
-                    <a-col :span="12">
-                      <h3 class="font-color">Total Amount：</h3>
-                    </a-col>
-                    <a-col :span="12">
-                      <p class="textRight font-color">${{pricess.all_price}}</p>
-                    </a-col>
-                  </a-row>
-                </li>
-              </ul>
+            <a-col :span="20">
+              <div class="step font-reset">Progress</div>
+              <MyPrimaryStpes :mycurrent="step">
+                <p slot="p1">Select Size</p>
+                <p slot="p2">Please Confirm Payment</p>
+                <p slot="p3">Waiting To Start Group Order</p>
+                <p slot="p4">Completed</p>
+              </MyPrimaryStpes>
+              <my-title :title="itemTitle" :fontsize="20" :paddingtop="'40px'" :paddingbottom="'20px'"></my-title>
             </a-col>
             <a-col :span="2"></a-col>
           </a-row>
-        </div>
-        <a-row v-if="pay_mode == 2">
-          <a-col :span="2"></a-col>
-          <a-col :span="20">
-            <my-title></my-title>
-          </a-col>
-          <a-col :span="2"></a-col>
-        </a-row>
-        <!--支付-->
-        <a-row :gutter="20">
-          <a-col :span="4" :offset="18">
-            <div class="paynum">
-              <div class="left textRight" v-if="pay_mode == 2">
-                <div class="font-18" style="padding-bottom:20px">Total Amount</div>
-                <div class="font-reset">${{pricess.all_price}}</div>
+          <a-row :gutter="40" type="flex" style="padding:20px 8%;" justify="start">
+            <a-col
+              :xxl="12"
+              :xl="24"
+              v-for="(item,index) in tablesList"
+              :key="index"
+              style="margin:20px 0"
+            >
+              <div v-if="!item.is_print_number && !item.is_print_text">
+                <table-item :datas="item" ref="myTable"></table-item>
+                <table-list :columns="columns" :data="[item]"></table-list>
               </div>
-              <div class="right" v-if="pay_mode == 2">
-                <commonBtn
-                  @payBtn="payBtn"
-                  :width="'100%'"
-                  :title="'Pay Now'"
-                  :height="'56px'"
-                  :padding="'10px'"
-                  :radio="'12px'"
-                  :fontsize="'18px'"
-                  :top="'20px'"
-                >
-                  <span class="bg-box">
-                    <span class="bg-image"></span>
-                  </span>
-                </commonBtn>
+              <div v-if="item.is_print_number || item.is_print_text">
+                <table-item :datas="item" ref="myTable"></table-item>
+                <table-list :columns="columns1" :data="[item]"></table-list>
               </div>
-              <div class="right" v-if="pay_mode == 1">
-                <commonBtn
-                  @payBtnOrder="payBtnOrder"
-                  :width="'100%'"
-                  :title="'Submit Order'"
-                  :height="'56px'"
-                  :padding="'10px'"
-                  :radio="'12px'"
-                  :fontsize="'18px'"
-                  :top="'20px'"
-                ></commonBtn>
+            </a-col>
+          </a-row>
+          <a-row>
+            <a-col :span="2"></a-col>
+            <a-col :span="20">
+              <my-title
+                v-if="pay_mode == 2"
+                :title="payTitle"
+                :fontsize="20"
+                :paddingtop="'40px'"
+                :paddingbottom="'20px'"
+              ></my-title>
+            </a-col>
+            <a-col :span="2"></a-col>
+          </a-row>
+          <div class="payment">
+            <a-row :gutter="20" v-if="pay_mode == 2">
+              <a-col :span="2"></a-col>
+              <a-col :span="8" style="display:flex">
+                <div class="pay-title font-18">Payment method:</div>
+                <div>
+                  <a-radio-group @change="onChange" v-model="value">
+                    <a-radio :value="1">
+                      <img src="@assets/paypal_pay.png" alt />
+                    </a-radio>
+                    <a-radio :value="2">
+                      <img style="width:50px" src="@assets/weixin_pay.png" alt />
+                      <span class="pay-font">WeChat Pay</span>
+                    </a-radio>
+                  </a-radio-group>
+                </div>
+              </a-col>
+              <a-col :span="2"></a-col>
+              <a-col :span="10">
+                <ul class="pay-list">
+                  <li>
+                    <a-row>
+                      <a-col :span="12">
+                        <h3 class="font-18">Item Amount：</h3>
+                      </a-col>
+                      <a-col :span="12">
+                        <p class="textRight font-color">${{pricess.order_price}}</p>
+                      </a-col>
+                    </a-row>
+                  </li>
+                  <li>
+                    <a-row>
+                      <a-col :span="12">
+                        <h3 class="font-18">Service Fee：</h3>
+                      </a-col>
+                      <a-col :span="12">
+                        <p class="textRight font-color">${{pricess.commission}}</p>
+                      </a-col>
+                    </a-row>
+                  </li>
+                  <li style="border-bottom:solid 1px #eee;">
+                    <a-row>
+                      <a-col :span="12">
+                        <h3 class="font-18">Shipping Fee：</h3>
+                      </a-col>
+                      <a-col :span="12">
+                        <p class="textRight font-color">${{pricess.shipping_fee}}</p>
+                      </a-col>
+                    </a-row>
+                  </li>
+                  <li style="padding-top:20px">
+                    <a-row>
+                      <a-col :span="12">
+                        <h3 class="font-color">Total Amount：</h3>
+                      </a-col>
+                      <a-col :span="12">
+                        <p class="textRight font-color">${{pricess.all_price}}</p>
+                      </a-col>
+                    </a-row>
+                  </li>
+                </ul>
+              </a-col>
+              <a-col :span="2"></a-col>
+            </a-row>
+          </div>
+          <a-row v-if="pay_mode == 2">
+            <a-col :span="2"></a-col>
+            <a-col :span="20">
+              <my-title></my-title>
+            </a-col>
+            <a-col :span="2"></a-col>
+          </a-row>
+          <!--支付-->
+          <a-row :gutter="20">
+            <a-col :span="4" :offset="18">
+              <div class="paynum">
+                <div class="left textRight" v-if="pay_mode == 2">
+                  <div class="font-18" style="padding-bottom:20px">Total Amount</div>
+                  <div class="font-reset">${{pricess.all_price}}</div>
+                </div>
+                <div class="right" v-if="pay_mode == 2">
+                  <commonBtn
+                    @payBtn="payBtn"
+                    :width="'100%'"
+                    :title="'Pay Now'"
+                    :height="'56px'"
+                    :padding="'10px'"
+                    :radio="'12px'"
+                    :fontsize="'18px'"
+                    :top="'20px'"
+                  >
+                    <span class="bg-box">
+                      <span class="bg-image"></span>
+                    </span>
+                  </commonBtn>
+                </div>
+                <div class="right" v-if="pay_mode == 1">
+                  <commonBtn
+                    @payBtnOrder="payBtnOrder"
+                    :width="'100%'"
+                    :title="'Submit Order'"
+                    :height="'56px'"
+                    :padding="'10px'"
+                    :radio="'12px'"
+                    :fontsize="'18px'"
+                    :top="'20px'"
+                  ></commonBtn>
+                </div>
               </div>
-            </div>
-          </a-col>
-        </a-row>
-        <!--展示码-->
-        <div>
-          <transition name="fade">
-            <div class="qrcode-wrapper" @click="isHide" v-show="show">
-              <div class="qrcode">
-                <canvas id="canvas"></canvas>
-                <div @click="isHide" class="close-vcode">x</div>
+            </a-col>
+          </a-row>
+          <!--展示码-->
+          <div>
+            <transition name="fade">
+              <div class="qrcode-wrapper" @click="isHide" v-show="show">
+                <div class="qrcode">
+                  <canvas id="canvas"></canvas>
+                  <div @click="isHide" class="close-vcode">x</div>
+                </div>
               </div>
-            </div>
-          </transition>
+            </transition>
+          </div>
         </div>
       </div>
     </div>
     <div class="mobile-box-payment" v-else>
       <div class="mobile-title">
         <h1>
-          <a-icon type="left" />
+          <a-icon type="left" @click="$router.go(-1)"/>
           Order Fetails
         </h1>
       </div>
@@ -432,7 +434,6 @@ export default {
       const param = {
         user_order_id: this.$route.query.user_order_id ? this.$route.query.user_order_id : ''
       }
-      console.log(param)
       paymentSessionInfos(param).then(response => {
         console.log(response)
         this.pricess = response;
@@ -596,23 +597,31 @@ export default {
   display: block;
   background-size: 100%;
 }
-
 .share-box {
-  //position: relative;
   width: 100%;
-  //height: 100%;
   padding: 40px;
-  //overflow: hidden;
-  //padding-top: 139px;
-
   .wrapper-box {
     width: 100%;
     height: 100%;
     background-color: #fff;
     border-radius: 10px;
-    //padding: 20px;
-
-    //overflow: hidden;
+    overflow: hidden;
+    .artical-box{
+      overflow-y: scroll;
+      overflow-x: hidden;
+      height: 734px;
+      &::-webkit-scrollbar {  /*滚动条整体样式*/
+          width: 6px;  /*宽分别对应竖滚动条的尺寸*/
+          /*高分别对应横滚动条的尺寸*/
+          background-color: #fff;
+          
+      }
+      &::-webkit-scrollbar-thumb {
+          background-color: #33b8b3;
+          border-radius:4px;
+          height: 10%;
+      }
+    }
     header {
       width: 100%;
       //position: fixed;
@@ -718,6 +727,17 @@ export default {
 
 .textRight {
   text-align: right;
+}
+@media screen and (max-width: 1366px){
+  #PayMent{
+    .share-box{
+      .wrapper-box {
+        .artical-box{
+          height: 640px;
+        }
+      }
+    }
+  }
 }
 @media screen and (max-width: 768px) and (min-width: 325px){
   #PayMent{

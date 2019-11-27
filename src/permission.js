@@ -17,7 +17,6 @@ NProgress.configure({
 })
 
 const whiteList = ['login', 'register', 'home', 'passwordSet', 'products', 'about','design'] // no redirect whitelist
-console.log(router)
 router.beforeEach((to, from, next) => {
   NProgress.start()
   to.meta && (typeof to.meta.title !== 'undefined' && setDocumentTitle(`${to.meta.title} - ${domTitle}`))
@@ -27,11 +26,8 @@ router.beforeEach((to, from, next) => {
         next()
         NProgress.done()
       }else if(to.path === '/neworder'){
-        next()
-        console.log(999)
         // 未通過審批，禁止進入
         queryByIdA().then(res =>{
-          console.log(res)
           if(res.code == 0){
             if(res.result == 1){
               next()

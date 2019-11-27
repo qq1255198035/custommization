@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -47,13 +46,22 @@
     window._CONFIG['domianURL'] = 'http://localhost:8080/jeecg-boot';
     window._CONFIG['imgDomainURL'] = 'http://localhost:8080/jeecg-boot/sys/common/view';
     window._CONFIG['pdfDomainURL'] = 'http://localhost:8080/jeecg-boot/sys/common/pdf/pdfPreviewIframe';
+    // 浏览器ie9以下不兼容提醒
+    // if (window.navigator.userAgent.indexOf('MSIE 8.0') >= 1) {
+    // alert('您的浏览器版本不支持此页面，您该更新浏览器了')
+    // }
+
+    // if (window.navigator.userAgent.indexOf('MSIE 9.0') >= 1) {
+    // alert('您的浏览器版本不支持此页面，您该更新浏览器了')
+    // }
   </script>
 </head>
 
 <body>
   <noscript>
-    <strong>We're sorry but ordersuits doesn't work properly without JavaScript enabled. Please enable it to
-      continue.</strong>
+    <strong>
+      We're sorry but ordersuits doesn't work properly without JavaScript enabled. Please enable it to continue.
+    </strong>
   </noscript>
   <div id="app"></div>
   <!-- built files will be auto injected -->

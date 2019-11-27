@@ -56,7 +56,6 @@
                   <template slot="content">
                     <div :style="{ width: '240px'}">
                       <div :class="['user-register', passwordLevelClass]">
-                        Password strength
                         <span>{{ passwordLevelName }}</span>
                       </div>
                       <a-progress
@@ -64,9 +63,6 @@
                         :showInfo="false"
                         :strokeColor="passwordLevelColor "
                       />
-                      <div style="margin-top: 10px;">
-                        <span>Enter a 6-digit password, preferably containing numbers and letters</span>
-                      </div>
                     </div>
                   </template>
                   <a-form-item label="Password">
@@ -220,7 +216,6 @@
                   <template slot="content">
                     <div :style="{ width: '240px'}">
                       <div :class="['user-register', passwordLevelClass]">
-                        Password strength
                         <span>{{ passwordLevelName }}</span>
                       </div>
                       <a-progress
@@ -228,9 +223,6 @@
                         :showInfo="false"
                         :strokeColor="passwordLevelColor "
                       />
-                      <div style="margin-top: 10px;">
-                        <span>Enter a 6-digit password, preferably containing numbers and letters</span>
-                      </div>
                     </div>
                   </template>
                   <a-form-item>
@@ -280,9 +272,9 @@ import MyTitle from "@/components/MyTitle/MyTitle";
 import commonBtn from "@/components/commonBtn/commonBtn";
 const levelNames = {
   0: "At least 6-digit passwords, case-sensitive",
-  1: "Password strength is insufficient",
-  2: "Cryptographic Intensity Intermediate",
-  3: "High Password Intensity"
+  1: "Password strength: WEAK",
+  2: "Password strength: MEDIUM",
+  3: "Password strength: STRONG"
 };
 const levelClass = {
   0: "error",
@@ -367,7 +359,7 @@ export default {
       let level = 0;
       let reg = /(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,}/;
       if (!reg.test(value)) {
-        callback(new Error('The password consists of 6 numbers and letters!'))
+        callback(new Error('The password must contain numbers and letters (minimum 6 digits)!'))
       }
       // 判断这个字符串中有没有数字
       if (/[0-9]/.test(value)) {

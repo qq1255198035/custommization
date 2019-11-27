@@ -110,12 +110,12 @@ export const constantRouterMap = [
         hidden: true,
         component: () => import("@/pages/userSystem/payment/payment")
       },
-      {
-        path: "/detarlsuccess",
-        name: "detarlsuccess",
-        hidden: true,
-        component: () => import("@/pages/Seller/DetarlSuccess")
-      },
+      // {
+      //   path: "/detarlsuccess",
+      //   name: "detarlsuccess",
+      //   hidden: true,
+      //   component: () => import("@/pages/Seller/DetarlSuccess")
+      // },
       {
         path: '/register',
         name: 'register',

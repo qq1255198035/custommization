@@ -9,7 +9,7 @@ export default{
             instance = new MyLoadingComponent({
                 el: document.createElement('div')
             })
-            document.body.append(instance.$el)
+            document.body.appendChild(instance.$el)
         }
         instance.isShow = false;
         let customMethods = {
