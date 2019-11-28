@@ -198,6 +198,7 @@
                                             <dt>
                                                 Name And Number：
                                             </dt>
+                                            
                                             <dd>
                                                 <span style="min-width: 52px;">Step 1：</span>
                                                 <div>
@@ -213,15 +214,19 @@
                                                 <span>Position：</span>
                                                 <div>
                                                     <p>
-                                                        <a-select :value="namePosition" style="width: 95%;" @change="changeNamePosition" :disabled="!addNameData">
+                                                        <a-select :value="namePosition" style="width: 95%;" @select="changeNamePosition" :disabled="!addNameData" mode="multiple" @deselect="delNamePosition">
                                                             <a-select-option value="0">Front</a-select-option>
                                                             <a-select-option value="1">Back</a-select-option>
+                                                            <a-select-option value="2">Left</a-select-option>
+                                                            <a-select-option value="3">Right</a-select-option>
                                                         </a-select>
                                                     </p>
                                                     <p>
-                                                        <a-select :value="numberPosition" style="width: 100%;" @change="changeNumberPosition" :disabled="!addNumberData">
+                                                        <a-select :value="numberPosition" style="width: 100%;" @select="changeNumberPosition" :disabled="!addNumberData" mode="multiple" @deselect="delNumberPosition">
                                                             <a-select-option value="0">Front</a-select-option>
                                                             <a-select-option value="1">Back</a-select-option>
+                                                            <a-select-option value="2">Left</a-select-option>
+                                                            <a-select-option value="3">Right</a-select-option>
                                                         </a-select>
                                                     </p>
                                                 </div>
@@ -239,20 +244,34 @@
                                                     </p>
                                                     <p>
                                                         <a-select :value="numberSize" style="width: 100%;" @change="changeNumberSize" :disabled="!addNumberData || keyId !== 'Number'">
-                                                            <a-select-opt-group>
+                                                            <a-select-opt-group v-show="designModel == 0">
                                                                 <span slot="label">Front</span>
-                                                                <a-select-option value="61" :disabled="numberPosition == '1'">8cm</a-select-option>
-                                                                <a-select-option value="76" :disabled="numberPosition == '1'">10cm</a-select-option>
-                                                                <a-select-option value="91" :disabled="numberPosition == '1'">12cm</a-select-option>
-                                                                <a-select-option value="106" :disabled="numberPosition == '1'">14cm</a-select-option>
+                                                                <a-select-option value="61">8cm</a-select-option>
+                                                                <a-select-option value="76">10cm</a-select-option>
+                                                                <a-select-option value="91">12cm</a-select-option>
+                                                                <a-select-option value="106">14cm</a-select-option>
                                                             </a-select-opt-group>
-                                                            <a-select-opt-group>
+                                                            <a-select-opt-group v-show="designModel == 1">
                                                                 <span slot="label">Back</span>
-                                                                <a-select-option value="152" :disabled="numberPosition == '0'">20cm</a-select-option>
-                                                                <a-select-option value="167" :disabled="numberPosition == '0'">22cm</a-select-option>
-                                                                <a-select-option value="182" :disabled="numberPosition == '0'">24cm</a-select-option>
-                                                                <a-select-option value="197" :disabled="numberPosition == '0'">26cm</a-select-option>
-                                                                <a-select-option value="212" :disabled="numberPosition == '0'">28cm</a-select-option>
+                                                                <a-select-option value="152">20cm</a-select-option>
+                                                                <a-select-option value="167">22cm</a-select-option>
+                                                                <a-select-option value="182">24cm</a-select-option>
+                                                                <a-select-option value="197">26cm</a-select-option>
+                                                                <a-select-option value="212">28cm</a-select-option>
+                                                            </a-select-opt-group>
+                                                            <a-select-opt-group v-show="designModel == 2">
+                                                                <span slot="label">Left</span>
+                                                                <a-select-option value="53">7cm</a-select-option>
+                                                                <a-select-option value="68">9cm</a-select-option>
+                                                                <a-select-option value="83">11cm</a-select-option>
+                                                                <a-select-option value="96">13cm</a-select-option>
+                                                            </a-select-opt-group>
+                                                            <a-select-opt-group v-show="designModel == 3">
+                                                                <span slot="label">Right</span>
+                                                                <a-select-option value="53">7cm</a-select-option>
+                                                                <a-select-option value="68">9cm</a-select-option>
+                                                                <a-select-option value="83">11cm</a-select-option>
+                                                                <a-select-option value="96">13cm</a-select-option>
                                                             </a-select-opt-group>
                                                         </a-select>
                                                     </p>
@@ -475,11 +494,11 @@
                                         </p>
                                         <p class="bottom-btn-box" v-if="changeWidthShow == 5">
                                             <a-button style="margin-right: 10px;" @click="removeNameColor">Remove Name Colour</a-button>
-                                            <a-button type="primary" @click="changeNameColor(nameColor)">Change</a-button>
+                                            <a-button type="primary" @click="changeNameColor(nameColor,nameColorName)">Change</a-button>
                                         </p>
                                         <p class="bottom-btn-box" v-if="changeWidthShow == 6">
                                             <a-button style="margin-right: 10px;" @click="removeNumberColor">Remove Number Colour</a-button>
-                                            <a-button type="primary" @click="changeNumberColor(numberColor)">Change</a-button>
+                                            <a-button type="primary" @click="changeNumberColor(numberColor,numberColorName)">Change</a-button>
                                         </p>
                                     </div>
                                     <div class="tool-box5" v-show="visibletype == 9">
@@ -877,10 +896,16 @@ export default {
             fontShapeArr:[],
             nameSize:'29',
             numberSize:'61',
-            namePosition:'0',
-            numberPosition:'0',
-            exampleName:'',
-            exampleNumber:'',
+            namePosition:['0'],
+            numberPosition:['0'],
+            exampleName1:'',
+            exampleNumber1:'',
+            exampleName2:'',
+            exampleNumber2:'',
+            exampleName3:'',
+            exampleNumber3:'',
+            exampleName4:'',
+            exampleNumber4:'',
             endDsign: false,
             remark: '',
             addNumberData: false,
@@ -1183,6 +1208,7 @@ export default {
 
     methods:{
         // 更换衣服，保留设计
+        
         changeProductType(){
             this.show = false;
         },
@@ -1298,8 +1324,16 @@ export default {
             if(obj){
                 this.nameFontFamily = e;
                 if(obj.myId == "Name"){
-                    this.myCanvas.remove(this.exampleName)
-                    this.addExampleName(this.nameFontFamily,this.namePosition,this.nameSize,this.nameColor.slice(1),obj.left,obj.top);
+                    if(this.designModel == 0){
+                        this.myCanvas.remove(this.exampleName1)
+                    }else if(this.designModel == 1){
+                        this.myCanvas.remove(this.exampleName2)
+                    }else if(this.designModel == 2){
+                        this.myCanvas.remove(this.exampleName3)
+                    }else if(this.designModel == 3){
+                        this.myCanvas.remove(this.exampleName4)
+                    }
+                    this.addExampleName(this.nameFontFamily,this.designModel,this.nameSize,this.nameColor.slice(1),this.nameColorName,obj.left,obj.top);
                 }
             }
         },
@@ -1308,8 +1342,16 @@ export default {
             if(obj){
                 this.numberFontFamily = e;
                 if(obj.myId == 'Number'){
-                    this.myCanvas.remove(this.exampleNumber)
-                    this.addExampleNumber(this.numberFontFamily,this.numberPosition,this.numberSize,this.numberColor.slice(1),obj.left,obj.top);
+                    if(this.designModel == 0){
+                        this.myCanvas.remove(this.exampleNumber1)
+                    }else if(this.designModel == 1){
+                        this.myCanvas.remove(this.exampleNumber2)
+                    }else if(this.designModel == 2){
+                        this.myCanvas.remove(this.exampleNumber3)
+                    }else if(this.designModel == 3){
+                        this.myCanvas.remove(this.exampleNumber4)
+                    }
+                    this.addExampleNumber(this.numberFontFamily,this.designModel,this.numberSize,this.numberColor.slice(1),this.numberColorName,obj.left,obj.top);
                 }
             }
         },
@@ -1317,7 +1359,6 @@ export default {
             this.closeDesignBox()
         },
         minus(data) {
-            console.log(data);
             if (this.nums && this.nums > data) {
                 this.nums--;
                 this.disCounts(this.nums, this.resPrice);
@@ -1334,7 +1375,6 @@ export default {
             }
         },
         onChangeValues(e) {
-            console.log("radio checked", e.target.value);
             this.prices = e.target.value;
             this.twoPrice = (e.target.value - this.onePrice) * this.nums;
         },
@@ -1452,108 +1492,51 @@ export default {
                                 imgInstance.scaleToWidth(width);
                             }
                         }else{
+                            imgInstance = new fabric.Image(img, {
+                                lockUniScaling: true, // When `true`, object non-uniform scaling is locked
+                                mytext: res.result,
+                                myId: 'Text',
+                                crossOrigin: '*',
+                                fontfamily: that.fontfamily,
+                                fontshape: that.fontShape,
+                                fontcolor: that.color,
+                                colorname: that.colorName,
+                                bgcolor: that.bgcolor,
+                                bgcolorName: that.fontBgColorName,
+                                strokewidth:that.strokeWidth,
+                                strokeColor: that.strokeColor,
+                                strokeColorName: that.strokeColorName,
+                                shadowColor:that.shadowColor,
+                                shadowColorName:that.shadowColorName,
+                                Shadow1: that.Shadow1 ,
+                                itext: that.addText
+                            });
                             if(that.designModel == 0){
-                                imgInstance = new fabric.Image(img, {
-                                    lockUniScaling:true, // When `true`, object non-uniform scaling is locked
-                                    left: that.boxSize1.left + 5,
-                                    top: that.boxSize1.top + 5,
-                                    mytext: res.result,
-                                    myId: 'Text',
-                                    crossOrigin: '*',
-                                    fontfamily: that.fontfamily,
-                                    fontshape: that.fontShape,
-                                    fontcolor: that.color,
-                                    colorname: that.colorName,
-                                    bgcolor: that.bgcolor,
-                                    bgcolorName: that.fontBgColorName,
-                                    strokewidth:that.strokeWidth,
-                                    strokeColor: that.strokeColor,
-                                    strokeColorName: that.strokeColorName,
-                                    shadowColor:that.shadowColor,
-                                    shadowColorName:that.shadowColorName,
-                                    Shadow1: that.Shadow1 ,
-                                    itext: that.addText
-                                });
+                                imgInstance.left = that.boxSize1.left + 5;
+                                imgInstance.top = that.boxSize1.top + 5;
                                 if(imgInstance.width > that.boxSize1.width){
                                     imgInstance.scaleToWidth(that.boxSize1.width/2)
                                 }
                             }else if(that.designModel == 1){
-                                imgInstance = new fabric.Image(img, {
-                                    lockUniScaling:true, // When `true`, object non-uniform scaling is locked
-                                    left: that.boxSize2.left + 5,
-                                    top: that.boxSize2.top + 5,
-                                    mytext: res.result,
-                                    myId: 'Text',
-                                    crossOrigin: '*',
-                                    fontfamily: that.fontfamily,
-                                    fontshape: that.fontShape,
-                                    fontcolor: that.color,
-                                    colorname: that.colorName,
-                                    bgcolor: that.bgcolor,
-                                    bgcolorName: that.fontBgColorName,
-                                    strokewidth:that.strokeWidth,
-                                    strokeColor: that.strokeColor,
-                                    strokeColorName: that.strokeColorName,
-                                    shadowColor:that.shadowColor,
-                                    shadowColorName:that.shadowColorName,
-                                    Shadow1: that.Shadow1 ,
-                                    itext: that.addText
-                                });
+                                imgInstance.left = that.boxSize2.left + 5;
+                                imgInstance.top = that.boxSize2.top + 5;
                                 if(imgInstance.width > that.boxSize2.width){
                                     imgInstance.scaleToWidth(that.boxSize2.width/2)
                                 }
                             }else if(that.designModel == 2){
-                                imgInstance = new fabric.Image(img, {
-                                    lockUniScaling:true, // When `true`, object non-uniform scaling is locked
-                                    left: that.boxSize3.left + 5,
-                                    top: that.boxSize3.top + 5,
-                                    mytext: res.result,
-                                    myId: 'Text',
-                                    crossOrigin: '*',
-                                    fontfamily: that.fontfamily,
-                                    fontshape: that.fontShape,
-                                    fontcolor: that.color,
-                                    colorname: that.colorName,
-                                    bgcolor: that.bgcolor,
-                                    bgcolorName: that.fontBgColorName,
-                                    strokewidth:that.strokeWidth,
-                                    strokeColor: that.strokeColor,
-                                    strokeColorName: that.strokeColorName,
-                                    shadowColor:that.shadowColor,
-                                    shadowColorName:that.shadowColorName,
-                                    Shadow1: that.Shadow1 ,
-                                    itext: that.addText
-                                });
+                                imgInstance.left = that.boxSize3.left + 5;
+                                imgInstance.top = that.boxSize3.top + 5;
                                 if(imgInstance.width > that.boxSize3.width){
                                     imgInstance.scaleToWidth(that.boxSize3.width/2)
                                 }
                             }else if(that.designModel == 3){
-                                imgInstance = new fabric.Image(img, {
-                                    lockUniScaling:true, // When `true`, object non-uniform scaling is locked
-                                    left: that.boxSize4.left + 5,
-                                    top: that.boxSize4.top + 5,
-                                    mytext: res.result,
-                                    myId: 'Text',
-                                    crossOrigin: '*',
-                                    fontfamily: that.fontfamily,
-                                    fontshape: that.fontShape,
-                                    fontcolor: that.color,
-                                    colorname: that.colorName,
-                                    bgcolor: that.bgcolor,
-                                    bgcolorName: that.fontBgColorName,
-                                    strokewidth:that.strokeWidth,
-                                    strokeColor: that.strokeColor,
-                                    strokeColorName: that.strokeColorName,
-                                    shadowColor:that.shadowColor,
-                                    shadowColorName:that.shadowColorName,
-                                    Shadow1: that.Shadow1 ,
-                                    itext: that.addText
-                                });
+                                imgInstance.left = that.boxSize4.left + 5;
+                                imgInstance.top = that.boxSize4.top + 5;
                                 if(imgInstance.width > that.boxSize4.width){
                                     imgInstance.scaleToWidth(that.boxSize4.width/2)
                                 }
                             }
-                            that.editText =  that.addText;
+                            that.editText = that.addText;
                             that.addText = '';
                         }
                         that.myCanvas.add(imgInstance).setActiveObject(imgInstance);
@@ -1651,15 +1634,11 @@ export default {
                             that.getReferencePic(that.designId);
                         }
                     })
-                },
-                onCancel() {
-                    console.log("Cancel");
                 }
             });
         },
         getReferencePic(pidStr){
             referencePic(pidStr).then(res => {
-                console.log(res)
                 this.dataList = res.result
             })
         },
@@ -1693,7 +1672,6 @@ export default {
         },
         postSaveDesign(params){
             saveDesign(params).then(res => {
-                console.log(res)
                 if(res.code == 200){
                     this.endDsign = true;
                     this.visibletype = -1;
@@ -1712,7 +1690,6 @@ export default {
         },
         postSaveDesign1(params){
             saveDesign(params).then(res => {
-                console.log(res)
                 if(res.code == 200){
                     this.visibletype = -1;
                     this.liClick = -1;
@@ -1776,31 +1753,12 @@ export default {
                     onOk() {
                         that.$router.push({path: '/neworder'})
                         window.location.reload();
-                        // Object.assign(that.$data, that.$options.data());
-                        // this.getArtFontList();
-                        // this.handleGetPic('');
-                        
                     }
                 });
             }else{
                 that.show = false;
                 that.$router.push({path: '/neworder'})
             }
-            // if(that.liClick == -1 && that.visibletype == -1){
-            //     that.show = false;
-            // }else{
-            //     that.$confirm({
-            //         title: "Are you sure you want to leave?",
-            //         content: "Unsaved designs will be automatically deleted!",
-            //         okText: "Confirm",
-            //         cancelText: "Cancel",
-            //         onOk() {
-            //             that.show = false;
-            //             window.location.reload();
-            //         },
-            //         onCancel() {}
-            //     });
-            // }
         },
         openDesignModal(id){
             console.log(id)
@@ -1861,7 +1819,6 @@ export default {
         },
         getAllList(){
             listAll().then(res => {
-                console.log(res)
                 if(res.code == 0){
                     if(res.total == 1){
                         this.btnable = true;
@@ -1876,7 +1833,6 @@ export default {
         },
         getcategoryList(id,num){
             categoryList(id,num).then(res => {
-                console.log(res)
                 this.goodsList = res.records;
             })
         },
@@ -1891,8 +1847,16 @@ export default {
                 let obj = this.myCanvas.getActiveObject();
                 console.log(obj)
                 if(obj.myId === 'Name'){
-                    this.myCanvas.remove(this.exampleName)
-                    this.addExampleName(this.nameFontFamily,this.namePosition,this.nameSize,this.nameColor.slice(1),obj.left,obj.top);
+                    if(this.designModel == 0){
+                        this.myCanvas.remove(this.exampleName1)
+                    }else if(this.designModel == 1){
+                        this.myCanvas.remove(this.exampleName2)
+                    }else if(this.designModel == 2){
+                        this.myCanvas.remove(this.exampleName3)
+                    }else if(this.designModel == 3){
+                        this.myCanvas.remove(this.exampleName4)
+                    }
+                    this.addExampleName(this.nameFontFamily,this.designModel,this.nameSize,this.nameColor.slice(1),this.nameColorName,obj.left,obj.top);
                 }
             }
         },
@@ -1901,8 +1865,16 @@ export default {
             if(this.addNumberData){
                 let obj = this.myCanvas.getActiveObject();
                 if(obj.myId === 'Number'){
-                    this.myCanvas.remove(this.exampleNumber)
-                    this.addExampleNumber(this.numberFontFamily,this.numberPosition,this.numberSize,this.numberColor.slice(1),obj.left,obj.top);
+                    if(this.designModel == 0){
+                        this.myCanvas.remove(this.exampleNumber1)
+                    }else if(this.designModel == 1){
+                        this.myCanvas.remove(this.exampleNumber2)
+                    }else if(this.designModel == 2){
+                        this.myCanvas.remove(this.exampleNumber3)
+                    }else if(this.designModel == 3){
+                        this.myCanvas.remove(this.exampleNumber4)
+                    }
+                    this.addExampleNumber(this.numberFontFamily,this.designModel,this.numberSize,this.numberColor.slice(1),this.numberColorName,obj.left,obj.top);
                 }
             }
         },
@@ -1913,8 +1885,7 @@ export default {
                 if(!obj.target){
                     that.visibletype = -1;
                     that.liClick = -1;
-                }
-                else{
+                }else{
                     that.movingBox = true;
                     if(!obj.target.myId){
                         if(that.$route.query.show){
@@ -1923,6 +1894,15 @@ export default {
                                     console.log(res)
                                     if(res.code == 0){
                                         if(res.result.text == 'EXAMPLE'){
+                                            if(this.designModel == 0){
+                                                that.exampleName1 = obj.target;
+                                            }else if(this.designModel == 1){
+                                                that.exampleName2 = obj.target;
+                                            }else if(this.designModel == 2){
+                                                that.exampleName3 = obj.target;
+                                            }else if(this.designModel == 3){
+                                                that.exampleName4 = obj.target;
+                                            }
                                             that.liClick = 2;
                                             that.visibletype = 2;
                                             that.addNameData = true;
@@ -1930,8 +1910,8 @@ export default {
                                             obj.target.set('myId','Name');
                                             obj.target.set('isShow',true);
                                             obj.target.set('isType','textName');
-                                            that.exampleName = obj.target;
-                                            that.namePosition = res.result.place.toString();
+                                            // 修改
+                                            that.namePosition.push(res.result.place.toString());
                                             that.nameSize = res.result.fontHeight;
                                             that.nameFontFamily = res.result.fontName;
                                             that.nameColor = res.result.fontColor;
@@ -1939,17 +1919,26 @@ export default {
                                             obj.target.lockMovementX = true;
                                             that.nameColorName = res.result.fontColorName;
                                         }else if(res.result.text == '00'){
+                                            if(this.designModel == 0){
+                                                that.exampleNumber1 = obj.target;
+                                            }else if(this.designModel == 1){
+                                                that.exampleNumber2 = obj.target;
+                                            }else if(this.designModel == 2){
+                                                that.exampleNumber3 = obj.target;
+                                            }else if(this.designModel == 3){
+                                                that.exampleNumber4 = obj.target;
+                                            }
                                             that.liClick = 2;
                                             that.visibletype = 2;
                                             that.addNumberData = true;
                                             that.keyId = 'Number';
-                                            that.exampleNumber = obj.target;
                                             obj.target.set('myId','Number');
                                             obj.target.set('isShow',true);
                                             obj.target.set('isType','textNumber');
                                             obj.target.hasControls = false;
                                             obj.target.lockMovementX = true;
-                                            that.numberPosition = res.result.place.toString();
+                                            // 修改
+                                            that.numberPosition.push(res.result.place.toString());
                                             that.numberSize = res.result.fontHeight;
                                             that.numberFontFamily = res.result.fontName;
                                             that.numberColor = res.result.fontColor;
@@ -2040,43 +2029,94 @@ export default {
                 that.movingBox = false;
             })
         },
+        delNamePosition(value){
+            let index = this.namePosition.indexOf(value)
+            this.namePosition.splice(index, 1);
+            if(value == 0){
+                this.myCanvas = this.myCanvas1;
+                this.designModel = 0;
+                this.bindCanvas(this.myCanvas,0)
+                this.myCanvas1.remove(this.exampleName1);
+            }else if(value == 1){
+                this.myCanvas = this.myCanvas2;
+                this.designModel = 1;
+                this.bindCanvas(this.myCanvas,1);
+                this.myCanvas2.remove(this.exampleName2);
+            }else if(value == 2){
+                this.myCanvas = this.myCanvas3;
+                this.designModel = 2;
+                this.bindCanvas(this.myCanvas,2);
+                this.myCanvas3.remove(this.exampleName3);
+            }else if(value == 3){
+                this.myCanvas = this.myCanvas4;
+                this.designModel = 3;
+                this.bindCanvas(this.myCanvas,3);
+                this.myCanvas4.remove(this.exampleName4);
+            }
+        },
+        delNumberPosition(value){
+            let index = this.numberPosition.indexOf(value)
+            this.numberPosition.splice(index, 1);
+            if(value == 0){
+                this.myCanvas = this.myCanvas1;
+                this.myCanvas1.remove(this.exampleNumber1);
+            }else if(value == 1){
+                this.myCanvas = this.myCanvas2;
+                this.myCanvas2.remove(this.exampleNumber2);
+            }else if(value == 2){
+                this.myCanvas = this.myCanvas3;
+                this.myCanvas3.remove(this.exampleNumber3);
+            }else if(value == 3){
+                this.myCanvas = this.myCanvas4;
+                this.myCanvas4.remove(this.exampleNumber4);
+            }
+            this.designModel = value;
+            this.bindCanvas(this.myCanvas,value);
+        },
         changeNamePosition(value) {
-            this.namePosition = value;
+            this.namePosition.push(value);
+            // 不同面名字大小不同需要判断修改
+            this.nameSize = '29';
+            this.nameFontFamily = '845-CAI978';
+            this.nameColor = '#221814';
+            this.nameColorName = 'BLACK'
             if(this.addNameData){
-                if(this.namePosition == 0){
+                if(value == 0){
                     this.myCanvas = this.myCanvas1;
-                    this.designModel = 0;
-                    this.bindCanvas(this.myCanvas,0)
-                    this.myCanvas2.remove(this.exampleName)
-                    this.addExampleName(this.nameFontFamily,this.namePosition,this.nameSize,this.nameColor.slice(1),300,200);
-                }else{
+                }else if(value == 1){
                     this.myCanvas = this.myCanvas2;
-                    this.designModel = 1;
-                    this.bindCanvas(this.myCanvas,1);
-                    this.myCanvas1.remove(this.exampleName);
-                    this.addExampleName(this.nameFontFamily,this.namePosition,this.nameSize,this.nameColor.slice(1),300,200)
+                }else if(value == 2){
+                    this.myCanvas = this.myCanvas3;
+                }else if(value == 3){
+                    this.myCanvas = this.myCanvas4;
                 }
+                this.designModel = value;
+                this.bindCanvas(this.myCanvas,value);
+                this.addExampleName(this.nameFontFamily,value,this.nameSize,this.nameColor.slice(1),this.nameColorName,300,200)
             }
         },
         changeNumberPosition(value){
-            console.log(`selected ${value}`);
-            this.numberPosition = value;
+            this.numberPosition.push(value);
+            this.numberFontFamily = '845-CAI978';
+            this.numberColor = '#221814';
+            this.numberColorName = 'BLACK'
             if(this.addNumberData){
-                if(this.numberPosition == 0){
+                if(value == 0){
+                    this.numberSize = '61';
                     this.myCanvas = this.myCanvas1;
-                    this.designModel = 0;
-                    this.numberSize = '61'
-                    this.bindCanvas(this.myCanvas,0)
-                    this.myCanvas2.remove(this.exampleNumber)
-                    this.addExampleNumber(this.numberFontFamily,this.numberPosition,this.numberSize,this.numberColor.slice(1),300,200);
-                }else{
+                }else if(value == 1){
                     this.myCanvas = this.myCanvas2;
-                    this.designModel = 1;
                     this.numberSize = '152'
-                    this.bindCanvas(this.myCanvas,1);
-                    this.myCanvas1.remove(this.exampleNumber);
-                    this.addExampleNumber(this.numberFontFamily,this.numberPosition,this.numberSize,this.numberColor.slice(1),300,200);
+                }else if(value == 2){
+                    this.myCanvas = this.myCanvas3;
+                    this.numberSize = '46'
+                }else if(value == 3){
+                    this.myCanvas = this.myCanvas4;
+                    this.numberSize = '46'
                 }
+                this.designModel = value;
+                this.bindCanvas(this.myCanvas,value)
+                this.addExampleNumber(this.numberFontFamily,value,this.numberSize,this.numberColor.slice(1),this.numberColorName,300,200);
             }
         },
         // delSelected(obj) {
@@ -2170,12 +2210,20 @@ export default {
             this.handleColorShow();
         },
         
-        changeNumberColor(val){
+        changeNumberColor(val,name){
             let obj = this.myCanvas.getActiveObject();
             if (obj) {
                 if(obj.myId == 'Number'){
-                    this.myCanvas.remove(this.exampleNumber)
-                    this.addExampleNumber(this.numberFontFamily,this.numberPosition,this.numberSize,val.slice(1),obj.left,obj.top);
+                    if(this.designModel == 0){
+                        this.myCanvas.remove(this.exampleNumber1)
+                    }else if(this.designModel == 1){
+                        this.myCanvas.remove(this.exampleNumber2)
+                    }else if(this.designModel == 2){
+                        this.myCanvas.remove(this.exampleNumber3)
+                    }else if(this.designModel == 3){
+                        this.myCanvas.remove(this.exampleNumber4)
+                    }
+                    this.addExampleNumber(this.numberFontFamily,this.designModel,this.numberSize,val.slice(1),name,obj.left,obj.top);
                     this.visibletype = 2;
                 }
             }
@@ -2187,17 +2235,33 @@ export default {
             let obj = this.myCanvas.getActiveObject();
             if (obj) {
                 if(obj.myId == 'Number'){
-                    this.myCanvas.remove(this.exampleNumber)
-                    this.addExampleNumber(this.numberFontFamily,this.numberPosition,this.numberSize,this.numberColor.slice(1),obj.left,obj.top);
+                    if(this.designModel == 0){
+                        this.myCanvas.remove(this.exampleNumber1)
+                    }else if(this.designModel == 1){
+                        this.myCanvas.remove(this.exampleNumber2)
+                    }else if(this.designModel == 2){
+                        this.myCanvas.remove(this.exampleNumber3)
+                    }else if(this.designModel == 3){
+                        this.myCanvas.remove(this.exampleNumber4)
+                    }
+                    this.addExampleNumber(this.numberFontFamily,this.designModel,this.numberSize,this.numberColor.slice(1),this.numberColorName,obj.left,obj.top);
                 }
             }
         },
-        changeNameColor(val){
+        changeNameColor(val,name){
             let obj = this.myCanvas.getActiveObject();
             if (obj) {
                 if(obj.myId == 'Name'){
-                    this.myCanvas.remove(this.exampleName)
-                    this.addExampleName(this.nameFontFamily,this.namePosition,this.nameSize,val.slice(1),obj.left,obj.top);
+                    if(this.designModel == 0){
+                        this.myCanvas.remove(this.exampleName1)
+                    }else if(this.designModel == 1){
+                        this.myCanvas.remove(this.exampleName2)
+                    }else if(this.designModel == 2){
+                        this.myCanvas.remove(this.exampleName3)
+                    }else if(this.designModel == 3){
+                        this.myCanvas.remove(this.exampleName4)
+                    }
+                    this.addExampleName(this.nameFontFamily,this.designModel,this.nameSize,val.slice(1),name,obj.left,obj.top);
                     this.visibletype = 2;
                 }
             }
@@ -2209,8 +2273,16 @@ export default {
             let obj = this.myCanvas.getActiveObject();
             if (obj) {
                 if(obj.myId == 'Name'){
-                    this.myCanvas.remove(this.exampleName)
-                    this.addExampleName(this.nameFontFamily,this.namePosition,this.nameSize,this.nameColor.slice(1),obj.left,obj.top);
+                    if(this.designModel == 0){
+                        this.myCanvas.remove(this.exampleName1)
+                    }else if(this.designModel == 1){
+                        this.myCanvas.remove(this.exampleName2)
+                    }else if(this.designModel == 2){
+                        this.myCanvas.remove(this.exampleName3)
+                    }else if(this.designModel == 3){
+                        this.myCanvas.remove(this.exampleName4)
+                    }
+                    this.addExampleName(this.nameFontFamily,this.designModel,this.nameSize,this.nameColor.slice(1),this.nameColorName,obj.left,obj.top);
                 }
             }
         },
@@ -2323,33 +2395,36 @@ export default {
                 this.visibletype = 2
             }
         },
-        addNumber (e) {
+        addNumber(e){
             let that = this;
             that.addNumberData = e.target.checked
             if(that.addNumberData){
-                if(that.numberPosition == 0){
-                    that.myCanvas = that.myCanvas1;
-                    that.bindCanvas(that.myCanvas,0);
-                    that.designModel = 0;
-                }else{
-                    that.myCanvas = that.myCanvas2;
-                    that.bindCanvas(that.myCanvas,1);
-                    that.designModel = 1;
-                }
-                that.addExampleNumber(that.numberFontFamily,that.numberPosition,that.numberSize,that.numberColor.slice(1),300,200)
+                that.myCanvas = that.myCanvas1;
+                that.bindCanvas(that.myCanvas,0);
+                that.designModel = 0;
+                that.addExampleNumber(that.numberFontFamily,0,that.numberSize,that.numberColor.slice(1),this.numberColorName,300,200)
             }else{
-                if(that.exampleNumber){
-                    that.myCanvas1.remove(that.exampleNumber);
-                    that.myCanvas2.remove(that.exampleNumber);
-                    that.numberPosition = '0';
-                    that.numberSize = '150';
-                    that.numberFontFamily = '845-CAI978';
-                    that.numberColor = '#000';
-                    that.numberColorName = 'BLACK'
+                
+                if(that.exampleNumber1){
+                    that.myCanvas1.remove(that.exampleNumber1);                    
                 }
+                if(that.exampleNumber2){
+                    that.myCanvas2.remove(that.exampleNumber2);
+                }
+                if(that.exampleNumber3){
+                    that.myCanvas3.remove(that.exampleNumber3);
+                }
+                if(that.exampleNumber4){
+                    that.myCanvas4.remove(that.exampleNumber4);
+                }
+                that.numberPosition = ['0'];
+                that.numberSize = '61';
+                that.numberFontFamily = '845-CAI978';
+                that.numberColor = '#221814';
+                that.numberColorName = 'BLACK'
             }
         },
-        addExampleNumber(font,numberPosition,numberSize,numberColor,left,top){
+        addExampleNumber(font,numberPosition,numberSize,numberColor,numberColorName,left,top){
             let that = this;
             let img = new Image();
             saveNameNumber(1,font,numberSize,numberColor,numberPosition,left,top).then(res => {
@@ -2357,33 +2432,47 @@ export default {
                     img.crossOrigin = 'anonymous';
                     img.src = res.result+"?timeStamp="+new Date().getTime();
                     img.onload = function () {
-                        that.exampleNumber = new fabric.Image(img, {
+                        let exampleNumber = new fabric.Image(img, {
                             myId: 'Number',
-                            fontFamily: font,
                             originX:'center',
                             originY:'center',
                             left: left,
                             top: top,
+                            padding: 0,
                             fontSize: that.numberSize,
                             fill: that.numberColor,
-                            padding: 0
+                            fontFamily: font,
+                            numberColorName:numberColorName,
+                            lockScalingX:true,
+                            lockScalingY:true,
+                            hasControls:false,
+                            lockMovementX:true
                         })
-                        that.exampleNumber.lockScalingX = true;
-                        that.exampleNumber.lockScalingY = true;
-                        that.exampleNumber.hasControls = false;
-                        that.keyId = 'Number'
-                        that.exampleNumber.lockMovementX = true;
-                        that.myCanvas.add(that.exampleNumber).setActiveObject(that.exampleNumber);
-                        that.exampleNumber.on("selected", function() {
+                        that.keyId = 'Number';
+                        that.myCanvas.add(exampleNumber).setActiveObject(exampleNumber);
+                        exampleNumber.on("selected", function() {
                             that.keyId = 'Number'
                             that.liClick = 2;
                             that.visibletype = 2;
+                            that.numberSize = exampleNumber.fontSize;
+                            that.numberColor = exampleNumber.fill; 
+                            that.numberFontFamily = exampleNumber.fontFamily;
+                            that.numberColorName = exampleNumber.numberColorName;
                         })
+                        if(numberPosition == 0){
+                            that.exampleNumber1 = exampleNumber;
+                        }else if(numberPosition == 1){
+                            that.exampleNumber2 = exampleNumber;
+                        }else if(numberPosition == 2){
+                            that.exampleNumber3 = exampleNumber;
+                        }else if(numberPosition == 3){
+                            that.exampleNumber4 = exampleNumber;
+                        }
                     }
                 }
             })
         },
-        addExampleName(font,namePosition,nameSize,nameColor,left,top){
+        addExampleName(font,namePosition,nameSize,nameColor,colorName,left,top){
             let that = this;
             let img = new Image();
             //设置图片跨域访问
@@ -2392,7 +2481,7 @@ export default {
                     img.crossOrigin = 'anonymous';
                     img.src = res.result+"?timeStamp="+new Date().getTime();
                     img.onload = function () {
-                        that.exampleName = new fabric.Image(img, {
+                        let exampleName = new fabric.Image(img, {
                             myId: 'Name',
                             fontFamily: font,
                             originX:'center',
@@ -2402,48 +2491,64 @@ export default {
                             fontSize: that.nameSize,
                             lockUniScaling:true,
                             fill: that.nameColor,
+                            nameColorName: colorName,
+                            colorName:colorName,
                             padding: 0,
+                            lockScalingX : true,
+                            lockScalingY : true,
+                            hasControls : false,
+                            lockMovementX : true
                         });
-                        that.exampleName.lockScalingX = true;
-                        that.exampleName.lockScalingY = true;
-                        that.exampleName.hasControls = false;
                         that.keyId = 'Name'
-                        that.exampleName.lockMovementX = true;
-                        that.myCanvas.add(that.exampleName).setActiveObject(that.exampleName);
-                        that.exampleName.on("selected", function() {
+                        that.myCanvas.add(exampleName).setActiveObject(exampleName);
+                        exampleName.on("selected", function() {
                             that.liClick = 2;
                             that.visibletype = 2;
-                            that.keyId = 'Name'
+                            that.keyId = 'Name';
+                            that.nameSize = exampleName.fontSize;
+                            that.nameColor = exampleName.fill;
+                            that.nameColorName = exampleName.nameColorName;
+                            that.nameFontFamily = exampleName.fontFamily;
                         })
+                        if(namePosition == 0){
+                            that.exampleName1 = exampleName;
+                        }else if(namePosition == 1){
+                            that.exampleName2 = exampleName;
+                        }else if(namePosition == 2){
+                            that.exampleName3 = exampleName;
+                        }else if(namePosition == 3){
+                            that.exampleName4 = exampleName;
+                        }
                     }
                 }
             })
         },
         addName(e){
-            console.log(`checked = ${e.target.checked}`)
             let that = this;
             that.addNameData = e.target.checked;
             if(that.addNameData){
-                if(that.namePosition == 0){
-                    that.myCanvas = that.myCanvas1;
-                    that.bindCanvas(that.myCanvas,0);
-                    that.designModel = 0;
-                }else{
-                    that.myCanvas = that.myCanvas2;
-                    that.bindCanvas(that.myCanvas,1);
-                    that.designModel = 1;
-                }
-                that.addExampleName(that.nameFontFamily,that.namePosition,that.nameSize,that.nameColor.slice(1),300,200)
+                that.myCanvas = that.myCanvas1;
+                that.bindCanvas(that.myCanvas,0);
+                that.designModel = 0;
+                that.addExampleName(that.nameFontFamily,0,that.nameSize,that.nameColor.slice(1),this.nameColorName,300,200)
             }else{
-                if(that.exampleName){
-                    that.myCanvas1.remove(that.exampleName);
-                    that.myCanvas2.remove(that.exampleName);
-                    that.namePosition = '0';
-                    that.nameSize = '20';
-                    that.nameFontFamily = '845-CAI978';
-                    that.nameColor = '#000';
-                    that.nameColorName = 'BLACK'
+                if(that.exampleName1){
+                    that.myCanvas1.remove(that.exampleName1);                    
                 }
+                if(that.exampleName2){
+                    that.myCanvas2.remove(that.exampleName2);
+                }
+                if(that.exampleName3){
+                    that.myCanvas3.remove(that.exampleName3);
+                }
+                if(that.exampleName4){
+                    that.myCanvas4.remove(that.exampleName4);
+                }
+                that.namePosition = ['0'];
+                that.nameSize = '29';
+                that.nameFontFamily = '845-CAI978';
+                that.nameColor = '#221814';
+                that.nameColorName = 'BLACK'
             }
 
         },
@@ -2911,26 +3016,11 @@ export default {
                 let colors = this.colorList.list;
                 if(key == 5){
                     if(this.addNameData){
-                        if(this.namePosition == 0){
-                            this.myCanvas = this.myCanvas1;
-                            let items = this.myCanvas.getObjects();
-                            console.log(items)
-                            let a = items.filter(item => {
-                                return item.myId == 'Name'
-                            })
-                            console.log(a[0])
-                            this.myCanvas.setActiveObject(a[0]);
-                            this.myCanvas.renderAll();
-                            this.designModel = 0;
-                        }else{
-                            this.myCanvas = this.myCanvas2;
-                            this.designModel = 1;
-                            let items = this.myCanvas.getObjects();
-                            console.log(items)
-                            let a = items.filter(item => {
-                                return item.myId == 'Name'
-                            })
-                            console.log(a[0])
+                        let items = this.myCanvas.getObjects();
+                        let a = items.filter(item => {
+                            return item.myId == 'Name'
+                        })
+                        if(a.length > 0){
                             this.myCanvas.setActiveObject(a[0]);
                             this.myCanvas.renderAll();
                         }
@@ -2939,33 +3029,17 @@ export default {
                         this.colorKey = key;
                         for(let i = 0; i < colors.length; i++) {
                             if (colors[i].itemValue === this.nameColor) {
-                                console.log(i);
                                 this.fontColorIcon5 = i
                             }
                         }
                     }
                 }else if(key == 6){
                     if(this.addNumberData){
-                        if(this.numberPosition == 0){
-                            this.myCanvas = this.myCanvas1;
-                            let items = this.myCanvas.getObjects();
-                            console.log(items)
-                            let a = items.filter(item => {
-                                return item.myId == 'Number'
-                            })
-                            console.log(a[0])
-                            this.myCanvas.setActiveObject(a[0]);
-                            this.myCanvas.renderAll();
-                            this.designModel = 0;
-                        }else{
-                            this.myCanvas = this.myCanvas2;
-                            this.designModel = 1;
-                            let items = this.myCanvas.getObjects();
-                            console.log(items)
-                            let a = items.filter(item => {
-                                return item.myId == 'Number'
-                            })
-                            console.log(a[0])
+                        let items = this.myCanvas.getObjects();
+                        let a = items.filter(item => {
+                            return item.myId == 'Number'
+                        })
+                        if(a.length > 0){
                             this.myCanvas.setActiveObject(a[0]);
                             this.myCanvas.renderAll();
                         }
@@ -2974,7 +3048,6 @@ export default {
                         this.colorKey = key;
                         for(let i = 0; i < colors.length; i++) {
                             if (colors[i].itemValue === this.numberColor) {
-                                console.log(i);
                                 this.fontColorIcon6 = i
                             }
                         }
