@@ -69,15 +69,14 @@
                             <div class="canvas-container"  v-show="designModel == 0">
                                 <canvas id="canvas1" :width="screenWidth" :height="screenWidth"></canvas>
                                 <div class="moving-box" :style="{width: boxSize1.width + 'px',height: boxSize1.height + 'px',top: boxSize1.top + 'px', left: boxSize1.left + 'px'}" v-show="movingBox">
-                                    <div v-for="(item,index) in boxSize1.list" :key="index" :style="{width: item.width + 'px',height: item.height + 'px',top: item.top + 'px', left: item.left + 'px'}">
+                                    <div v-for="(item,index) in boxSize1.list" :key="index" :style="{width: item.width + 'px',height: item.height + 'px',top: item.top - 1 + 'px', left: item.left - 1 + 'px'}">
                                     </div>
                                 </div>
-                                
                             </div>
                             <div class="canvas-container"  v-show="designModel == 1">
                                 <canvas id="canvas2" :width="screenWidth" :height="screenWidth"></canvas>
-                                <div class="moving-box" :style="{width: boxSize2.width + 'px',height: boxSize2.height + 'px',top: boxSize2.top + 'px', left: boxSize2.left + 'px',border:'none'}" v-show="movingBox">
-                                    <div v-for="(item,index) in boxSize2.list" :key="index" :style="{width: item.width + 'px',height: item.height + 'px',top: item.top + 'px', left: item.left + 'px'}">
+                                <div class="moving-box" :style="{width: boxSize2.width + 'px',height: boxSize2.height + 'px',top: boxSize2.top + 'px', left: boxSize2.left + 'px'}" v-show="movingBox">
+                                    <div v-for="(item,index) in boxSize2.list" :key="index" :style="{width: item.width + 'px',height: item.height + 'px',top: item.top - 1 + 'px', left: item.left - 1 + 'px'}">
                                     </div>
                                 </div>
                             </div>
@@ -99,14 +98,15 @@
                                     <span style="display: block; text-align:center; margin-top: 5px; font-size: 10px; color:#999;">{{index == 0 ? 'Front' : index == 1 ? 'Back' : index == 2 ? 'Left' : index == 3 ? 'Right' : ''}}</span>
                                 </li>
                             </ul>
-                            <!-- <ul class="bottom">
-                                <li @click="zoomIn">
+                            <ul class="bottom">
+                                <!-- <li>
                                     <span class="icon-zoomin"></span>
                                 </li>
-                                <li @click="zoomOut">
+                                <li>
                                     <span class="icon-zoomout"></span>
-                                </li>
-                            </ul> -->
+                                </li> -->
+                                <p>{{widthCm}}cm * {{heightCm}}cm</p>
+                            </ul>
                         </div>
                         <div class="tools-box">
                             <div style="" class="scroll-box">
@@ -196,9 +196,8 @@
                                     <div class="tool-box8" v-show="visibletype == 2">
                                         <dl>
                                             <dt>
-                                                Name And Number：
+                                                Name And Number:
                                             </dt>
-                                            
                                             <dd>
                                                 <span style="min-width: 52px;">Step 1：</span>
                                                 <div>
@@ -214,7 +213,7 @@
                                                 <span>Position：</span>
                                                 <div>
                                                     <p>
-                                                        <a-select :value="namePosition" style="width: 95%;" @select="changeNamePosition" :disabled="!addNameData" mode="multiple" @deselect="delNamePosition">
+                                                        <a-select placeholder="Select Position" :value="namePosition" style="width: 95%;" @select="changeNamePosition" :disabled="!addNameData" mode="multiple" @deselect="delNamePosition">
                                                             <a-select-option value="0">Front</a-select-option>
                                                             <a-select-option value="1">Back</a-select-option>
                                                             <a-select-option value="2">Left</a-select-option>
@@ -222,7 +221,7 @@
                                                         </a-select>
                                                     </p>
                                                     <p>
-                                                        <a-select :value="numberPosition" style="width: 100%;" @select="changeNumberPosition" :disabled="!addNumberData" mode="multiple" @deselect="delNumberPosition">
+                                                        <a-select placeholder="Select Position" :value="numberPosition" style="width: 100%;" @select="changeNumberPosition" :disabled="!addNumberData" mode="multiple" @deselect="delNumberPosition">
                                                             <a-select-option value="0">Front</a-select-option>
                                                             <a-select-option value="1">Back</a-select-option>
                                                             <a-select-option value="2">Left</a-select-option>
@@ -261,14 +260,14 @@
                                                             </a-select-opt-group>
                                                             <a-select-opt-group v-show="designModel == 2">
                                                                 <span slot="label">Left</span>
-                                                                <a-select-option value="53">7cm</a-select-option>
+                                                                <a-select-option value="42">7cm</a-select-option>
                                                                 <a-select-option value="68">9cm</a-select-option>
                                                                 <a-select-option value="83">11cm</a-select-option>
                                                                 <a-select-option value="96">13cm</a-select-option>
                                                             </a-select-opt-group>
                                                             <a-select-opt-group v-show="designModel == 3">
                                                                 <span slot="label">Right</span>
-                                                                <a-select-option value="53">7cm</a-select-option>
+                                                                <a-select-option value="42">7cm</a-select-option>
                                                                 <a-select-option value="68">9cm</a-select-option>
                                                                 <a-select-option value="83">11cm</a-select-option>
                                                                 <a-select-option value="96">13cm</a-select-option>
@@ -881,6 +880,8 @@ export default {
     },
     data () {
         return {
+            widthCm:0,
+            heightCm:0,
             imgTitle: '',
             editText: '',
             sizePicUrl:'',
@@ -896,8 +897,8 @@ export default {
             fontShapeArr:[],
             nameSize:'29',
             numberSize:'61',
-            namePosition:['0'],
-            numberPosition:['0'],
+            namePosition:[],
+            numberPosition:[],
             exampleName1:'',
             exampleNumber1:'',
             exampleName2:'',
@@ -1441,13 +1442,94 @@ export default {
             this.postSaveDesign1(params)
         },
         loadFromJSON (canvas,json) {
-            canvas.loadFromJSON(json, canvas.renderAll.bind(canvas), function (
-                o,
-                object
-            ) {
+            canvas.loadFromJSON(json, canvas.renderAll.bind(canvas), (o,object) => {
                 object.lockUniScaling = true;
                 object.setControlVisible('tr',false);
-                object.setControlVisible('bl',false);
+                object.setControlVisible('bl',false); 
+                queryByUrl(object.src).then(res => {
+                    console.log(res)
+                    if(res.code == 0){
+                        let arr = Object.keys(res.result)
+                        arr.forEach(item => {
+                            object.set(item,res.result[item])
+                        })
+                        if(res.result.place >= 0 && res.result.text == 'EXAMPLE'){
+                            this.addNameData = true;
+                            this.namePosition.push(res.result.place.toString())
+                            object.hasControls = false;
+                            object.set('myId','Name')
+                            if(res.result.place === 0){
+                                this.exampleName1 = object
+                            }else if(res.result.place == 1){
+                                this.exampleName2 = object
+                            }else if(res.result.place == 2){
+                                this.exampleName3 = object
+                            }else if(res.result.place == 3){
+                                this.exampleName4 = object
+                            }
+                        }
+                        if(res.result.place >= 0 && res.result.text == '00'){
+                            this.addNumberData = true;
+                            this.numberPosition.push(res.result.place.toString())
+                            object.hasControls = false;
+                            object.set('myId','Number')
+                            if(res.result.place === 0){
+                                this.exampleNumber1 = object
+                            }else if(res.result.place == 1){
+                                this.exampleNumber2 = object
+                            }else if(res.result.place == 2){
+                                this.exampleNumber3 = object
+                            }else if(res.result.place == 3){
+                                this.exampleNumber4 = object
+                            }
+                        }
+                    }
+                })
+                object.on("selected",() => {
+                    if(object.place >= 0){
+                        if(object.text == 'EXAMPLE'){
+                            this.nameColorName = object.fontColorName;
+                            this.nameColor = object.fontColor;
+                            this.nameSize = object.fontHeight;
+                            this.nameFontFamily = object.fontName;
+                            this.liClick = 2;
+                            this.visibletype = 2;
+                            this.keyId = 'Name';
+                            
+                        }else if(object.text == '00'){
+                            this.numberColorName = object.fontColorName;
+                            this.numberColor = object.fontColor;
+                            this.numberSize = object.fontHeight;
+                            this.numberFontFamily = object.fontName;
+                            this.liClick = 2;
+                            this.visibletype = 2;
+                            this.keyId = 'Number';
+                        }
+                    }
+                    if(object.place === null){
+                        if(object.text){
+                            this.liClick = 0;
+                            this.visibletype = 3;
+                            this.colorName = object.fontColorName;
+                            this.color = object.fontColor;
+                            this.bgcolor = object.backGround;
+                            this.fontBgColorName = object.backGroundName;
+                            this.fontShape = object.effect;
+                            this.shadowColorName = object.shadowColorName;
+                            this.shadowColor = object.shadowColor;
+                            this.strokeColor = object.outLineColor;
+                            this.strokeColorName = object.outLineColorName;
+                            this.Shadow1 = object.smudge;
+                            this.strokeWidth = object.lineweight;
+                            this.editText = object.text;
+                            this.fontfamily = object.fontName;
+                        }
+                    }
+                    if(!object.fontColor){
+                        this.liClick = 1;
+                        this.visibletype = 10;
+                    }
+                })
             });
         },
         handleChangeFont(params,isAdd){
@@ -1648,8 +1730,8 @@ export default {
             let params = {
                 positivePicUrl: this.dataUrl1,backPicUrl: this.dataUrl2,leftPicUrl: this.dataUrl3,rightPicUrl: this.dataUrl4,
                 positiveDesignArea: this.dataPost1, backDesignArea: this.dataPost2, leftDesignArea: this.dataPost3, rightDesignArea: this.dataPost4,
-                goodsId: this.postId, id: this.designId,textFront: this.nameFontFamily, textColor: this.nameColor, textLocation: this.namePosition,textHeight: this.nameSize,
-                numberLocation: this.numberPosition,numberHeight: this.numberSize,numberFront:this.numberFontFamily, numberColor: this.numberColor, isPrintText: this.addNameData ? 1 : 0,isPrintNumber: this.addNumberData ? 1 : 0,
+                goodsId: this.postId, id: this.designId,textFront: this.nameFontFamily, textColor: this.nameColor, textLocation: this.namePosition.join(','),textHeight: this.nameSize,
+                numberLocation: this.numberPosition.join(','),numberHeight: this.numberSize,numberFront:this.numberFontFamily, numberColor: this.numberColor, isPrintText: this.addNameData ? 1 : 0,isPrintNumber: this.addNumberData ? 1 : 0,
                 productColor: this.productColorName
             }
             this.postSaveDesign(params)
@@ -1751,8 +1833,11 @@ export default {
                     okText: "Confirm",
                     cancelText: "Cancel",
                     onOk() {
-                        that.$router.push({path: '/neworder'})
-                        window.location.reload();
+                        that.$router.push({path: '/neworder',query:{}})
+                        setTimeout(() => {
+                            window.location.reload();
+                        },500)
+                        
                     }
                 });
             }else{
@@ -1881,145 +1966,14 @@ export default {
         onUnselected(object){
             let that = this;
             object.on('mouse:down',function(obj){
-                console.log(obj.target)
                 if(!obj.target){
                     that.visibletype = -1;
                     that.liClick = -1;
                 }else{
+                    let rect = obj.target.getBoundingRect();
                     that.movingBox = true;
-                    if(!obj.target.myId){
-                        if(that.$route.query.show){
-                            if(!obj.target.isShow){
-                                queryByUrl(obj.target.src).then(res => {
-                                    console.log(res)
-                                    if(res.code == 0){
-                                        if(res.result.text == 'EXAMPLE'){
-                                            if(this.designModel == 0){
-                                                that.exampleName1 = obj.target;
-                                            }else if(this.designModel == 1){
-                                                that.exampleName2 = obj.target;
-                                            }else if(this.designModel == 2){
-                                                that.exampleName3 = obj.target;
-                                            }else if(this.designModel == 3){
-                                                that.exampleName4 = obj.target;
-                                            }
-                                            that.liClick = 2;
-                                            that.visibletype = 2;
-                                            that.addNameData = true;
-                                            that.keyId = 'Name';
-                                            obj.target.set('myId','Name');
-                                            obj.target.set('isShow',true);
-                                            obj.target.set('isType','textName');
-                                            // 修改
-                                            that.namePosition.push(res.result.place.toString());
-                                            that.nameSize = res.result.fontHeight;
-                                            that.nameFontFamily = res.result.fontName;
-                                            that.nameColor = res.result.fontColor;
-                                            obj.target.hasControls = false;
-                                            obj.target.lockMovementX = true;
-                                            that.nameColorName = res.result.fontColorName;
-                                        }else if(res.result.text == '00'){
-                                            if(this.designModel == 0){
-                                                that.exampleNumber1 = obj.target;
-                                            }else if(this.designModel == 1){
-                                                that.exampleNumber2 = obj.target;
-                                            }else if(this.designModel == 2){
-                                                that.exampleNumber3 = obj.target;
-                                            }else if(this.designModel == 3){
-                                                that.exampleNumber4 = obj.target;
-                                            }
-                                            that.liClick = 2;
-                                            that.visibletype = 2;
-                                            that.addNumberData = true;
-                                            that.keyId = 'Number';
-                                            obj.target.set('myId','Number');
-                                            obj.target.set('isShow',true);
-                                            obj.target.set('isType','textNumber');
-                                            obj.target.hasControls = false;
-                                            obj.target.lockMovementX = true;
-                                            // 修改
-                                            that.numberPosition.push(res.result.place.toString());
-                                            that.numberSize = res.result.fontHeight;
-                                            that.numberFontFamily = res.result.fontName;
-                                            that.numberColor = res.result.fontColor;
-                                            that.numberColorName = res.result.fontColorName;
-                                        }else{
-                                            that.liClick = 0;
-                                            that.visibletype = 3;
-                                            that.editText = res.result.text;
-                                            that.fontfamily = res.result.fontName;
-                                            that.color = res.result.fontColor;
-                                            that.colorName = res.result.fontColorName;
-                                            that.fontShape = res.result.effect;
-                                            that.bgcolor = res.result.backGround;
-                                            that.fontBgColorName = res.result.backGroundName;
-                                            that.strokeWidth = parseInt(res.result.lineweight);
-                                            that.strokeColor = res.result.outLineColor;
-                                            that.strokeColorName = res.result.outLineColorName;
-                                            that.shadowColor = res.result.shadowColor;
-                                            that.shadowColorName = res.result.shadowColorName;
-                                            that.Shadow1 = parseInt(res.result.smudge);
-                                            obj.target.set('isShow',true);
-                                            obj.target.set('isType','imgText');
-                                            obj.target.set('fontfamily',that.fontfamily);
-                                            obj.target.set('fontshape',that.fontShape);
-                                            obj.target.set('fontcolor',that.color);
-                                            obj.target.set('colorname',that.colorName);
-                                            obj.target.set('bgcolor',that.bgcolor);
-                                            obj.target.set('bgcolorName',that.fontBgColorName);
-                                            obj.target.set('strokewidth',that.strokeWidth);
-                                            obj.target.set('strokeColor',that.strokeColor);
-                                            obj.target.set('strokeColorName',that.strokeColorName);
-                                            obj.target.set('shadowColor',that.shadowColor);
-                                            obj.target.set('shadowColorName',that.shadowColorName);
-                                            obj.target.set('Shadow1',that.Shadow1);
-                                            obj.target.set('itext',that.editText);
-                                        }
-                                    }else{
-                                        that.liClick = 1;
-                                        that.visibletype = 10;
-                                        obj.target.set('isShow',true);
-                                        obj.target.set('isType','img');
-                                    }
-                                })
-                            }else{
-                                if(obj.target.isType == 'img'){
-                                    that.liClick = 1;
-                                    that.visibletype = 10;
-                                }else if(obj.target.isType == 'imgText'){
-                                    that.liClick = 0;
-                                    that.visibletype = 3;
-                                    that.fontfamily = obj.target.fontfamily;
-                                    that.fontShape = obj.target.fontshape;
-                                    that.color = obj.target.fontcolor;
-                                    that.colorName = obj.target.colorname;
-                                    that.bgcolor = obj.target.bgcolor;
-                                    that.fontBgColorName = obj.target.bgcolorName;
-                                    that.strokeWidth = obj.target.strokewidth;
-                                    that.strokeColor = obj.target.strokeColor;
-                                    that.strokeColorName = obj.target.strokeColorName;
-                                    that.shadowColor = obj.target.shadowColor;
-                                    that.shadowColorName = obj.target.shadowColorName;
-                                    that.Shadow1 = obj.target.Shadow1;
-                                    that.editText = obj.target.itext;
-                                }
-                            }
-                        }
-                    }else{
-                        if(obj.target.isType == 'textName'){
-                            that.liClick = 2;
-                            that.visibletype = 2;
-                            that.addNameData = true;
-                            that.keyId = 'Name';
-                            console.log(1)
-                        }else if(obj.target.isType == 'textNumber'){
-                            that.liClick = 2;
-                            that.visibletype = 2;
-                            that.addNumberData = true;
-                            that.keyId = 'Number';
-                            console.log(2)
-                        }
-                    }
+                    that.widthCm = Math.round(rect.width / 6.08888889);
+                    that.heightCm = Math.round(rect.height / 6.08888889);
                 }
             })
         },
@@ -2074,6 +2028,8 @@ export default {
             this.bindCanvas(this.myCanvas,value);
         },
         changeNamePosition(value) {
+            let left;
+            let top;
             this.namePosition.push(value);
             // 不同面名字大小不同需要判断修改
             this.nameSize = '29';
@@ -2083,19 +2039,29 @@ export default {
             if(this.addNameData){
                 if(value == 0){
                     this.myCanvas = this.myCanvas1;
+                    left = this.boxSize1.left;
+                    top = this.boxSize1.top;
                 }else if(value == 1){
                     this.myCanvas = this.myCanvas2;
+                    left = this.boxSize2.left;
+                    top = this.boxSize2.top;
                 }else if(value == 2){
                     this.myCanvas = this.myCanvas3;
+                    left = this.boxSize3.left;
+                    top = this.boxSize3.top;
                 }else if(value == 3){
                     this.myCanvas = this.myCanvas4;
+                    left = this.boxSize4.left;
+                    top = this.boxSize4.top;
                 }
                 this.designModel = value;
                 this.bindCanvas(this.myCanvas,value);
-                this.addExampleName(this.nameFontFamily,value,this.nameSize,this.nameColor.slice(1),this.nameColorName,300,200)
+                this.addExampleName(this.nameFontFamily,value,this.nameSize,this.nameColor.slice(1),this.nameColorName,left,top)
             }
         },
         changeNumberPosition(value){
+            let left;
+            let top;
             this.numberPosition.push(value);
             this.numberFontFamily = '845-CAI978';
             this.numberColor = '#221814';
@@ -2104,19 +2070,27 @@ export default {
                 if(value == 0){
                     this.numberSize = '61';
                     this.myCanvas = this.myCanvas1;
+                    left = this.boxSize1.left;
+                    top = this.boxSize1.top;
                 }else if(value == 1){
                     this.myCanvas = this.myCanvas2;
-                    this.numberSize = '152'
+                    this.numberSize = '152';
+                    left = this.boxSize2.left;
+                    top = this.boxSize2.top;
                 }else if(value == 2){
                     this.myCanvas = this.myCanvas3;
-                    this.numberSize = '46'
+                    this.numberSize = '42';
+                    left = this.boxSize3.left;
+                    top = this.boxSize3.top;
                 }else if(value == 3){
                     this.myCanvas = this.myCanvas4;
-                    this.numberSize = '46'
+                    this.numberSize = '42';
+                    left = this.boxSize4.left;
+                    top = this.boxSize4.top;
                 }
                 this.designModel = value;
                 this.bindCanvas(this.myCanvas,value)
-                this.addExampleNumber(this.numberFontFamily,value,this.numberSize,this.numberColor.slice(1),this.numberColorName,300,200);
+                this.addExampleNumber(this.numberFontFamily,value,this.numberSize,this.numberColor.slice(1),this.numberColorName,left,top);
             }
         },
         // delSelected(obj) {
@@ -2397,12 +2371,13 @@ export default {
         },
         addNumber(e){
             let that = this;
+            that.numberPosition = ['0'];
             that.addNumberData = e.target.checked
             if(that.addNumberData){
                 that.myCanvas = that.myCanvas1;
                 that.bindCanvas(that.myCanvas,0);
                 that.designModel = 0;
-                that.addExampleNumber(that.numberFontFamily,0,that.numberSize,that.numberColor.slice(1),this.numberColorName,300,200)
+                that.addExampleNumber(that.numberFontFamily,0,that.numberSize,that.numberColor.slice(1),that.numberColorName,that.boxSize1.left,that.boxSize1.top)
             }else{
                 
                 if(that.exampleNumber1){
@@ -2417,7 +2392,7 @@ export default {
                 if(that.exampleNumber4){
                     that.myCanvas4.remove(that.exampleNumber4);
                 }
-                that.numberPosition = ['0'];
+                that.numberPosition = [];
                 that.numberSize = '61';
                 that.numberFontFamily = '845-CAI978';
                 that.numberColor = '#221814';
@@ -2434,11 +2409,10 @@ export default {
                     img.onload = function () {
                         let exampleNumber = new fabric.Image(img, {
                             myId: 'Number',
-                            originX:'center',
-                            originY:'center',
                             left: left,
                             top: top,
                             padding: 0,
+                            crossOrigin: '*',
                             fontSize: that.numberSize,
                             fill: that.numberColor,
                             fontFamily: font,
@@ -2446,7 +2420,6 @@ export default {
                             lockScalingX:true,
                             lockScalingY:true,
                             hasControls:false,
-                            lockMovementX:true
                         })
                         that.keyId = 'Number';
                         that.myCanvas.add(exampleNumber).setActiveObject(exampleNumber);
@@ -2484,20 +2457,16 @@ export default {
                         let exampleName = new fabric.Image(img, {
                             myId: 'Name',
                             fontFamily: font,
-                            originX:'center',
-                            originY:'center',
                             left: left,
                             top: top,
+                            crossOrigin: '*',
                             fontSize: that.nameSize,
                             lockUniScaling:true,
                             fill: that.nameColor,
                             nameColorName: colorName,
                             colorName:colorName,
                             padding: 0,
-                            lockScalingX : true,
-                            lockScalingY : true,
                             hasControls : false,
-                            lockMovementX : true
                         });
                         that.keyId = 'Name'
                         that.myCanvas.add(exampleName).setActiveObject(exampleName);
@@ -2525,12 +2494,14 @@ export default {
         },
         addName(e){
             let that = this;
+            that.namePosition = ['0'];
             that.addNameData = e.target.checked;
             if(that.addNameData){
                 that.myCanvas = that.myCanvas1;
                 that.bindCanvas(that.myCanvas,0);
                 that.designModel = 0;
-                that.addExampleName(that.nameFontFamily,0,that.nameSize,that.nameColor.slice(1),this.nameColorName,300,200)
+                console.log(that.boxSize1.left)
+                that.addExampleName(that.nameFontFamily,0,that.nameSize,that.nameColor.slice(1),that.nameColorName,parseInt(that.boxSize1.left),parseInt(that.boxSize1.top))
             }else{
                 if(that.exampleName1){
                     that.myCanvas1.remove(that.exampleName1);                    
@@ -2544,7 +2515,7 @@ export default {
                 if(that.exampleName4){
                     that.myCanvas4.remove(that.exampleName4);
                 }
-                that.namePosition = ['0'];
+                that.namePosition = [];
                 that.nameSize = '29';
                 that.nameFontFamily = '845-CAI978';
                 that.nameColor = '#221814';
@@ -2774,27 +2745,11 @@ export default {
                         } 
                     }else{
                         obj.saveState();
+                        let rect = obj.getBoundingRect();
+                        this.widthCm = Math.round(rect.width / 6.08888889);
+                        this.heightCm = Math.round(rect.height / 6.08888889);
                     }
                     obj.setCoords();
-            
-            
-                // var startX = scaledObject.getBoundingRect(true,true).left;
-                // var startY = scaledObject.getBoundingRect(true,true).top;
-                // var maxWidth = width - startX;// scaledObject.aCoords.tl.x;
-                // var maxHeight = height -startY;
-                // scaledObject.setCoords();
-                
-                // var isOnScreen = scaledObject.isContainedWithinRect({x:x,y:y},{x:width + x,y:height + y},true,true);
-                // if(!isOnScreen) {
-                //     var w = scaledObject.getBoundingRect(true,true).width;
-                //     var h = scaledObject.getBoundingRect(true,true).height;
-                    
-                //     if( (maxHeight-h) < (maxWidth-w)){
-                //         scaledObject.scaleToHeight(height + y - startY - 1);
-                //     } else{
-                //         scaledObject.scaleToWidth(width + x - startX - 1);
-                //     }
-                // }
             })
         },
         // 切换正反左右面
@@ -3517,7 +3472,7 @@ export default {
                 z-index: 100;
                 position: relative;
                 .moving-box{
-                    position:absolute;
+                    position: absolute;
                     border: 1px solid #666;
                     box-sizing: border-box;
                     z-index: 200;
