@@ -98,15 +98,15 @@
                                     <span style="display: block; text-align:center; margin-top: 5px; font-size: 10px; color:#999;">{{index == 0 ? 'Front' : index == 1 ? 'Back' : index == 2 ? 'Left' : index == 3 ? 'Right' : ''}}</span>
                                 </li>
                             </ul>
-                            <ul class="bottom">
-                                <!-- <li>
+                            <!-- <ul class="bottom">
+                                <li>
                                     <span class="icon-zoomin"></span>
                                 </li>
                                 <li>
                                     <span class="icon-zoomout"></span>
-                                </li> -->
-                                <p>{{widthCm}}cm * {{heightCm}}cm</p>
-                            </ul>
+                                </li>
+                                
+                            </ul> -->
                         </div>
                         <div class="tools-box">
                             <div style="" class="scroll-box">
@@ -235,10 +235,31 @@
                                                 <div>
                                                     <p>
                                                         <a-select :value="nameSize" style="width: 95%;" @change="changeNameSize" :disabled="!addNameData || keyId !== 'Name'">
-                                                            <a-select-option value="29">6cm</a-select-option>
-                                                            <a-select-option value="37">7cm</a-select-option>
-                                                            <a-select-option value="45">8cm</a-select-option>
-                                                            <a-select-option value="53">9cm</a-select-option>
+                                                            <a-select-opt-group v-show="designModel == 0">
+                                                                <span slot="label">Front</span>
+                                                                <a-select-option value="42">8cm</a-select-option>
+                                                                <a-select-option value="48">10cm</a-select-option>
+                                                                <a-select-option value="54">15cm</a-select-option>
+                                                            </a-select-opt-group>
+                                                            <a-select-opt-group v-show="designModel == 1">
+                                                                <span slot="label">Back</span>
+                                                                <a-select-option value="38">6cm</a-select-option>
+                                                                <a-select-option value="40">7cm</a-select-option>
+                                                                <a-select-option value="42">8cm</a-select-option>
+                                                                <a-select-option value="44">9cm</a-select-option>
+                                                            </a-select-opt-group>
+                                                            <a-select-opt-group v-show="designModel == 2">
+                                                                <span slot="label">Back</span>
+                                                                <a-select-option value="10">3cm</a-select-option>
+                                                                <a-select-option value="13">4cm</a-select-option>
+                                                                <a-select-option value="15">5cm</a-select-option>
+                                                            </a-select-opt-group>
+                                                            <a-select-opt-group v-show="designModel == 3">
+                                                                <span slot="label">Back</span>
+                                                                <a-select-option value="10">3cm</a-select-option>
+                                                                <a-select-option value="13">4cm</a-select-option>
+                                                                <a-select-option value="15">5cm</a-select-option>
+                                                            </a-select-opt-group>
                                                         </a-select>
                                                     </p>
                                                     <p>
@@ -260,17 +281,17 @@
                                                             </a-select-opt-group>
                                                             <a-select-opt-group v-show="designModel == 2">
                                                                 <span slot="label">Left</span>
-                                                                <a-select-option value="42">7cm</a-select-option>
-                                                                <a-select-option value="68">9cm</a-select-option>
-                                                                <a-select-option value="83">11cm</a-select-option>
-                                                                <a-select-option value="96">13cm</a-select-option>
+                                                                <a-select-option value="20">3cm</a-select-option>
+                                                                <a-select-option value="36">6cm</a-select-option>
+                                                                <a-select-option value="52">9cm</a-select-option>
+                                                                <a-select-option value="68">12cm</a-select-option>
                                                             </a-select-opt-group>
                                                             <a-select-opt-group v-show="designModel == 3">
                                                                 <span slot="label">Right</span>
-                                                                <a-select-option value="42">7cm</a-select-option>
-                                                                <a-select-option value="68">9cm</a-select-option>
-                                                                <a-select-option value="83">11cm</a-select-option>
-                                                                <a-select-option value="96">13cm</a-select-option>
+                                                                <a-select-option value="20">3cm</a-select-option>
+                                                                <a-select-option value="36">6cm</a-select-option>
+                                                                <a-select-option value="52">9cm</a-select-option>
+                                                                <a-select-option value="68">12cm</a-select-option>
                                                             </a-select-opt-group>
                                                         </a-select>
                                                     </p>
@@ -303,6 +324,7 @@
                                                 </div>
                                             </dd>
                                         </dl>
+                                        <!-- <p style="margin-top: 20px;text-align:center;">{{widthCm}}cm * {{heightCm}}cm</p> -->
                                         <div style="text-align: center;" v-if="false">
                                             <a-button type="primary" :disabled="!addNameData && !addNumberData" @click="visibletype = 9">
                                                 Input Number and Name
@@ -361,7 +383,12 @@
                                                     <a-icon type="right" />
                                                 </p>
                                             </li>
+                                            <li>
+                                                <span>Size</span>
+                                                <p>{{widthCm}}cm * {{heightCm}}cm</p>
+                                            </li>
                                         </ul>
+                                        
                                     </div>
                                     <div class="tool-box10" v-show="visibletype == 4">
                                         <h2>COLOUR：</h2>
@@ -631,6 +658,10 @@
                                                 <span>Remove white</span>
                                                 <a-switch v-model="delWhite" @change='removeColor'/>
                                             </li>
+                                            <li>
+                                                <span>Size</span>
+                                                <p>{{widthCm}}cm * {{heightCm}}cm</p>
+                                            </li>
                                         </ul>
                                     </div>
                                     <div class="tool-box7" v-show="visibletype == 11">
@@ -895,7 +926,7 @@ export default {
             id:'',
             btnable:false,
             fontShapeArr:[],
-            nameSize:'29',
+            nameSize:'42',
             numberSize:'61',
             namePosition:[],
             numberPosition:[],
@@ -2032,24 +2063,28 @@ export default {
             let top;
             this.namePosition.push(value);
             // 不同面名字大小不同需要判断修改
-            this.nameSize = '29';
+            
             this.nameFontFamily = '845-CAI978';
             this.nameColor = '#221814';
             this.nameColorName = 'BLACK'
             if(this.addNameData){
                 if(value == 0){
+                    this.nameSize = '42';
                     this.myCanvas = this.myCanvas1;
                     left = this.boxSize1.left;
                     top = this.boxSize1.top;
                 }else if(value == 1){
+                    this.nameSize = '38';
                     this.myCanvas = this.myCanvas2;
                     left = this.boxSize2.left;
                     top = this.boxSize2.top;
                 }else if(value == 2){
+                    this.nameSize = '10';
                     this.myCanvas = this.myCanvas3;
                     left = this.boxSize3.left;
                     top = this.boxSize3.top;
                 }else if(value == 3){
+                    this.nameSize = '10';
                     this.myCanvas = this.myCanvas4;
                     left = this.boxSize4.left;
                     top = this.boxSize4.top;
@@ -2079,12 +2114,12 @@ export default {
                     top = this.boxSize2.top;
                 }else if(value == 2){
                     this.myCanvas = this.myCanvas3;
-                    this.numberSize = '42';
+                    this.numberSize = '20';
                     left = this.boxSize3.left;
                     top = this.boxSize3.top;
                 }else if(value == 3){
                     this.myCanvas = this.myCanvas4;
-                    this.numberSize = '42';
+                    this.numberSize = '20';
                     left = this.boxSize4.left;
                     top = this.boxSize4.top;
                 }
@@ -3672,7 +3707,7 @@ export default {
                         li{
                             display: flex;
                             justify-content: space-between;
-                            padding: 5px 0;
+                            padding: 10px 0;
                             border-bottom: 1px solid #ccc;
                             
                         }
