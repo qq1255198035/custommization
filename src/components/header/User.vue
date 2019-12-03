@@ -8,17 +8,17 @@
       v-model="visible"
       trigger="hover"
       placement="bottomRight"
-      overlayClassName="header-notice-wrapper"
+      overlayClassName="user-notice-wrapper"
       :autoAdjustOverflow="true"
       :arrowPointAtCenter="true"
-      :overlayStyle="{ width: '300px', top: '50px' }"
+      :overlayStyle="{ width: '350px', top: '50px' }"
     >
     <template slot="content">
       <a-spin :spinning="loadding">
             <a-list>
               <a-list-item v-for="item in dataList.slice(0,5)" :key="item.id" @click="openMessageModel(item.title,item.content,item.id)" style="cursor: pointer;">
-                <a-list-item-meta :title="item.title" :description="item.createtime | formatTime">
-                  <!-- <a-avatar style="background-color: white" slot="avatar" src="https://gw.alipayobjects.com/zos/rmsportal/ThXAXghbEsBCCSDihZxY.png"/> -->
+                <a-list-item-meta :description="item.content">
+                  <p slot="title">{{item.title}} <span style="font-size: 12px;color:#999;margin-left: 20px;font-weight: normal;">{{ item.createtime | formatTime }}</span></p>
                 </a-list-item-meta>
               </a-list-item>
             </a-list>
@@ -27,7 +27,7 @@
         <router-link to="/notice" style="color: #33b8b3;text-decoration: underline;">See All</router-link>
       </div>
     </template>
-    <span @click="fetchNotice" class="header-notice" style="position: relative;">
+    <span @click="fetchNotice" class="header-notice">
       <a-icon type="bell" :style="{color: bellcolor}" />
       <a-badge v-if="count" class="diount" :count="count" showZero :overflowCount="5"></a-badge>
     </span>
@@ -141,7 +141,7 @@ export default {
 		},              
 		websocketonmessage(e){                  
         this.dataList = JSON.parse(e.data); 
-        this.count = this.dataList.length;     
+        this.count = this.dataList.length; 
 		},              
 		websocketclose(e){                
 			console.log("connection closed (" + e + ")");              
@@ -191,32 +191,32 @@ export default {
 };
 </script>
 <style lang="less" scope>
-    #User{
-        text-align: right;
-        padding: 20px 0;
-        > span{
-            margin: 0 10px;
-            i{
-                font-size: 30px;
-                padding: 4px;  
-                cursor: pointer;
-            }
-        }
-        .header-notice{
-            position: relative;
-            .diount{
-                position: absolute;
-                top: -15px;
-                right: 0px;
-            }
-        }
-    }
-  .header-notice {
+#User{
+  text-align: right;
+  padding: 20px 0;
+  > span{
+    margin: 0 10px;
+    i{
+      font-size: 30px;
+      padding: 4px;  
+      cursor: pointer;
+      }
+  }
+  .header-notice{
     position: relative;
-    .diount {
+    .diount{
       position: absolute;
-      top: 10px;
+      top: -15px;
       right: 0px;
     }
   }
+}
+.user-notice-wrapper{
+  .ant-list-item-meta-description{
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+    width: 90%;
+  }
+}
 </style>

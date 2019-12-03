@@ -152,7 +152,7 @@ export default {
       }
     },
     onCopy() {
-      this.$message.success("Replication success");
+      this.$message.success("Shareable link Copied.");
     },
     onError() {
       this.$message.error("copy failed");

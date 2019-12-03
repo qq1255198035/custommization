@@ -27,17 +27,17 @@
                 <a
                   @click="imgShow"
                   href="javascript:;"
-                  style="font-size: 18px; color: #999; text-decoration: underline"
-                >View the size chart</a>
+                  style="font-size: 18px; color: #999; text-decoration: underline;margin-left: 10px;"
+                >View size chart</a>
                 <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancelImg">
                   <img alt="example" style="width: 100%" :src="item.size_chart_url" />
                 </a-modal>
               </table-item>
-              <div v-if="!item.is_print_numbe && !item.is_print_text">
+              <div v-if="!item.is_print_numbe && !item.is_print_text" style="margin-top: 20px;">
                 <my-table :dataSize="[item]" @getList="list" ref="mychild"></my-table>
               </div>
 
-              <div v-if="item.is_print_numbe || item.is_print_text">
+              <div v-if="item.is_print_numbe || item.is_print_text" style="margin-top: 20px;">
                 <my-tables :dataName="[item]" @getList="lists"></my-tables>
               </div>
             </a-col>
@@ -89,7 +89,7 @@
             <div class="title">
               <h2>
                 {{item.name}}
-                <span @click="imgShow">View the size chart</span>
+                <span @click="imgShow">View size chart</span>
               </h2>
               <span @click="delshow = -1" v-if="delshow == index"><a-icon type="close-circle"></a-icon>cancel</span>
               <span @click="delshow = index" v-else><a-icon type="edit"></a-icon>edit</span>
@@ -125,7 +125,7 @@
             <div class="title">
               <h2>
                 {{item.name}}
-                <span @click="imgShow">View the size chart</span>
+                <span @click="imgShow">View size chart</span>
               </h2>
               <span @click="delshow = -1" v-if="delshow == index"><a-icon type="close-circle"></a-icon>cancel</span>
               <span @click="delshow = index" v-else><a-icon type="edit"></a-icon>edit</span>
@@ -570,20 +570,20 @@ export default {
             this.$message.error("Please choose the size.");
             return;
           }
-          if (
-            this.arrtyAllList[i].is_print_number == 1 &&
-            !this.arrtyAllList[i].printNumber
-          ) {
-            this.$message.error("Please choose the number.");
-            return;
-          }
-          if (
-            this.arrtyAllList[i].is_print_text == 1 &&
-            !this.arrtyAllList[i].printName
-          ) {
-            this.$message.error("Please choose your name.");
-            return;
-          }
+          // if (
+          //   this.arrtyAllList[i].is_print_number == 1 &&
+          //   !this.arrtyAllList[i].printNumber
+          // ) {
+          //   this.$message.error("Please choose the number.");
+          //   return;
+          // }
+          // if (
+          //   this.arrtyAllList[i].is_print_text == 1 &&
+          //   !this.arrtyAllList[i].printName
+          // ) {
+          //   this.$message.error("Please choose your name.");
+          //   return;
+          // }
         }
       }else{
         this.$message.error("Please add at least one item!");
@@ -687,18 +687,18 @@ export default {
         this.pay_mode = res.result.pay_mode;
         this.resultData = res.result.personOrderNoPrintList;
         this.detailList = res.result;
-        let endDate = res.result.payEndDate;
-        if(new Date(endDate).getTime() < new Date().getTime()){
-          let that = this;
-          that.$error({
-            title: 'Sorry',
-            content:'This shared link,please click here to our home page.',
-            okText: 'OK',
-            onOk(){
-              that.$router.push({path: '/index'})
-            },
-          });
-        }
+        // let endDate = res.result.payEndDate;
+        // if(new Date(endDate).getTime() < new Date().getTime()){
+        //   let that = this;
+        //   that.$error({
+        //     title: 'Sorry',
+        //     content:'This shared link,please click here to our home page.',
+        //     okText: 'OK',
+        //     onOk(){
+        //       that.$router.push({path: '/index'})
+        //     },
+        //   });
+        // }
         this.resultData.forEach(el => {
           this.sizes.push(el.sizes);
           this.mobileImgArr.push(el.positive_pic_url);
@@ -752,8 +752,7 @@ export default {
 }
 .right:hover {
   .bg-image {
-    background: url("./../../../assets/monry-icon-bar.png") no-repeat
-      transparent;
+    background: url("./../../../assets/monry-icon-bar.png") no-repeat transparent;
     width: 100%;
     height: 100%;
     display: block;

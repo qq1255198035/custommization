@@ -284,7 +284,7 @@ export default {
       setTimeout(() => {this.hidemenu = false},200)
     },
     onCopy() {
-      this.$message.success("Replication success!");
+      this.$message.success("Shareable link Copied.!");
     },
     onError() {
       this.$message.error("copy failed!");

@@ -135,7 +135,7 @@ export default {
       }
     },
     onCopy() {
-      this.$message.success("Replication success");
+      this.$message.success("Shareable link Copied.");
     },
     onError() {
       this.$message.error("copy failed");
@@ -174,6 +174,12 @@ export default {
 .wrappers {
   margin-top: 40px;
   .wrappers-box {
+    .social-share .wechat-qrcode{
+      top: 40px !important;
+    }
+    .social-share .icon-wechat .wechat-qrcode:after{
+      bottom: -6px !important;
+    }
     .left-box {
       .avatar {
         width: 100%;

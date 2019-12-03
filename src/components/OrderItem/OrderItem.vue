@@ -115,7 +115,7 @@ import HideMenu from "@/components/HideMenu/HideMenu";
 import moment from "moment";
 const statusMap = {
   "1": {
-    text: "To Be Confirme"
+    text: "To Be Confirmed"
   },
   "2": {
     text: "Confirmed"
@@ -247,7 +247,7 @@ export default {
         })
     },
     onCopy() {
-      this.$message.success("Replication success");
+      this.$message.success("Shareable link Copied.");
     },
     onError() {
       this.$message.error("copy failed");

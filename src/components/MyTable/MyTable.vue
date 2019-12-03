@@ -33,7 +33,9 @@
           :key="col"
           :value="record.price"
           style="background-color: rgba(255,255,255,0); border:none;"
-        />
+        >
+          <a-icon slot="prefix" type="dollar" />
+        </a-input>
       </template>
       <template slot="operation" slot-scope="text, record">
         <span>
@@ -105,7 +107,7 @@ export default {
           scopedSlots: { customRender: "number" }
         },
         {
-          title: "Total Price",
+          title: "Total Price($)",
           dataIndex: "price",
           key: "price",
           width: "25%",
@@ -113,7 +115,7 @@ export default {
           scopedSlots: { customRender: "price" }
         },
         {
-          title: "Active",
+          title: "Delete",
           width: "25%",
           key: "action",
           align: "center",
@@ -233,7 +235,11 @@ export default {
       }
     }
   },
-  computed: {}
+  filters: {
+    addDollar(val){
+      return '$' + val
+    }
+  }
 };
 </script>
 <style lang="less">

@@ -9,7 +9,7 @@
           <User></User>
         </p>
       </header>
-      <my-title :title="'Sharing Setting'" style="padding: 0 30px;margin-top: 10px;overflow:hidden;">
+      <my-title :title="'Group Order Details:'" style="padding: 0 30px;margin-top: 10px;overflow:hidden;">
         <a-button size="small" icon="rollback" @click="$router.go(-1)">Back</a-button>
       </my-title>
       <a-row type="flex" justify="space-between" align="top" style="height: calc(100% - 157px);">
@@ -45,13 +45,13 @@
             <a-form :form="myform">
               <li>
                 <h3>Title & Introduction</h3>
-                <a-form-item label="Title" :label-col="{ span: 3 }" :wrapper-col="{ span: 12 }">
+                <a-form-item label="Title" :label-col="{ span: 4 }" :wrapper-col="{ span: 12 }">
                   <a-input v-decorator="[ 'note', {rules: [{ required: true, message: 'Please input your Headings' }]} ]"/>
                 </a-form-item>
-                <a-form-item label="Introduction" :label-col="{ span: 3}" :wrapper-col="{ span: 12 }">
+                <a-form-item label="Introduction" :label-col="{ span: 4}" :wrapper-col="{ span: 12 }">
                   <a-textarea :rows="4" v-decorator="[ 'desc', {rules: [{ required: true, message: 'Please input your Introduction' }]}]"/>
                 </a-form-item>
-                <a-form-item label="Upload photo" :label-col="{ span: 3 }" :wrapper-col="{ span: 12 }">
+                <a-form-item label="Upload photo" :label-col="{ span: 4}" :wrapper-col="{ span: 12 }">
                   <a-upload
                     accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif"
                     name="avatar"
@@ -66,7 +66,7 @@
                       <div class="ant-upload-text">Upload</div>
                     </div>
                   </a-upload>
-                  <span @click="handImg">
+                  <span @click="handImg" style="cursor: pointer;">
                     <a-icon type="eye" />Preview Image
                   </span>
                   <a-modal class="show-details" v-model="imgChecked" width="50%" :footer="null">
@@ -78,16 +78,16 @@
               </li>
               <li>
                 <h3>Contact method</h3>
-                <a-form-item label="Contacts" :label-col="{ span: 3 }" :wrapper-col="{ span: 12 }">
+                <a-form-item label="Full Name:" :label-col="{ span: 4}" :wrapper-col="{ span: 12 }">
                   <a-input v-decorator="['contanct',{rules: [{ required: true, message: 'Please input your Contacts' }]}]"/>
                 </a-form-item>
-                <a-form-item label="Email" :label-col="{ span: 3 }" :wrapper-col="{ span: 12 }">
+                <a-form-item label="Email" :label-col="{ span: 4}" :wrapper-col="{ span: 12 }">
                   <a-input
                     v-decorator="[
                             'email',
                               {
                                 rules: [{
-                                  type: 'email', message: 'The input is not valid E-mail!',
+                                  type: 'email', message: 'Please enter a valid email address.',
                                 }, {
                                   required: true, message: 'Please input your E-mail!',
                                 }]
@@ -95,7 +95,7 @@
                             ]"
                   />
                 </a-form-item>
-                <a-form-item label="Phone Number" :label-col="{ span: 3 }" :wrapper-col="{ span: 12 }">
+                <a-form-item label="Phone Number" :label-col="{ span: 4}" :wrapper-col="{ span: 12 }">
                   <a-input
                     v-decorator="[
                                     'phone',
@@ -106,19 +106,19 @@
               </li>
               <li>
                 <h3>
-                  Select psayment due Date
+                  Select payment due Date
                   <!-- <span>描述1313213213213232</span> -->
                 </h3>
                 <a-form-item
                   class="my-form-item"
-                  :label-col="{ span: 1 }"
+                  :label-col="{ span: 2}"
                   :wrapper-col="{ span: 12 }"
+                  style="margin-left: 30px;"
                 >
                   <a-date-picker
                     @change="onClosingDate"
                     :disabledDate="disabledDate"
                     format="YYYY-MM-DD"
-                    style="margin-left: 30px;"
                     v-decorator="['closingDate',{rules: [{ required: true, message: 'Please fill in the time' }]}]"
                   >
                   </a-date-picker>
@@ -139,18 +139,17 @@
                     <p>After the user pays, we will send it to the unified address uniformly. Issued by the person receiving the package，All items will be grouped and shipped to one address only。</p>
                     <h4>
                       Delivery address：
-                      <span @click="addressManagement">
-                        <a-icon type="edit" />Manage address
+                      <span @click="addressManagement" :style="{color: adressErr ? 'red' : '#33b8b3'}">
+                        <a-icon type="edit" :style="{color: adressErr ? 'red' : '#33b8b3','margin-right': '5px'}"/>Manage address
                       </span>
                     </h4>
-                    <p>{{adress}}</p>
+                    <p v-if="adress">
+                      <span style="color: #33b8b3;font-weight: bold;">Address: </span>{{adressShow.addressName}}{{adressShow.detailInfo}}
+                      <span style="margin-left: 10px;color: #33b8b3;font-weight: bold;">Full Name: </span>{{adressShow.userName}}
+                      <span style="margin-left: 10px;color: #33b8b3;font-weight: bold;">Phone number: </span>{{adressShow.telNumber}}
+                    </p>
+                    <p v-else style="color: red;">{{adressErr}}</p>
                   </div>
-                  <!--<a-radio :value="2" style="display: flex; align-items: top;">
-                    <h4>发别发货</h4>
-                  </a-radio>
-                  <div style="margin-left: 24px;">
-                    <p>用户付款后，我们会统一发送到同一地址，由收到包裹的人员一起发放。</p>
-                  </div>-->
                 </a-radio-group>
               </div>
             </li>
@@ -162,7 +161,7 @@
                     <h4>Individual Payments</h4>
                   </a-radio>
                   <div style="margin-left: 24px;">
-                    <p>User pays individually through this link</p>
+                    <p>Multiple users can order and pay through a shareable link.</p>
                   </div>
                   <a-radio :value="1" style="display: flex; align-items: top;">
                     <h4>Pay for the Whole Order</h4>
@@ -180,16 +179,16 @@
           <a-button @click="startGroupBtn" style="margin-left: 30px;">Start group order</a-button>
         </a-col>
       </a-row>
-      <a-modal v-model="modelShow1" :footer="null" :width="700" :centered="true" title="Manage address">
+      <a-modal v-model="modelShow1" :footer="null" :width="870" :centered="true" title="Manage address">
         <ul class="adress">
           <li v-for="(item,index) in adressList" :key="index" @click="setDefaultAdress(item)">
             <p>
-              {{item.addressName}}{{item.detailInfo}}
-              <span>{{item.userName}}</span>
-              <span>{{item.telNumber}}</span>
+              <span style="color: #33b8b3;font-weight: bold">Address: </span> {{item.addressName}}{{item.detailInfo}}
+              <span style="margin-left: 10px;color: #33b8b3;font-weight: bold">Full Name: </span>{{item.userName}}
+              <span style="margin-left: 10px;color: #33b8b3;font-weight: bold">Phone number: </span>{{item.telNumber}}
             </p>
             <span>
-              <a-icon type="edit" style="margin-right: 10px;" @click="editAddress(item.id)" />
+              <a-icon type="edit" style="margin-right: 10px;" @click.stop="editAddress(item.id)" />
               <a-icon type="delete" @click="postDeleteAddress(item.id)" />
             </span>
           </li>
@@ -233,9 +232,9 @@
               />
             </a-form-item>
           </a-form>
-          <div class="btn-box">
-            <a-button type="primary" style="padding: 0 30px;" @click="postAddAddress">Submit</a-button>
+          <div class="btn-box">  
             <a-button @click="handColse" style="padding: 0 30px;">Cancel</a-button>
+            <a-button type="primary" style="padding: 0 30px;" @click="postAddAddress">Submit</a-button>
           </div>
         </div>
       </a-modal>
@@ -258,7 +257,7 @@
             </a-row>
           </a-col>
           <a-col :span="16">
-            <div class="title font-18">COLOUR：{{designDetail.productColor}}</div>
+            <div class="title font-18">Colour:{{designDetail.productColor}}</div>
             <div class="number">
               <div class="font-18">Quantity：</div>
               <div class="number-box">
@@ -290,8 +289,12 @@
                 </div>
                 <div class="font-18">/piece</div>
               </div>
-              <div class="price-right">
+              <div class="price-right" v-if="twoPrice >= 0">
                 Your Profit:
+                <span>${{twoPrice | moneyFormat}}</span>
+              </div>
+              <div class="price-right" v-else style="color: red;">
+                Your Loss:
                 <span>${{twoPrice | moneyFormat}}</span>
               </div>
             </div>
@@ -307,13 +310,9 @@
         okText="Share"
         cancelText="Back"
         width="50%"
-        title="Successful"
-      >
-        <div class="share-box1">
-          <div>
-            <a-icon class="font-color" style="font-size:40px;margin-right: 10px;" type="check-circle" />
-          </div>
-          <div class="success">Successful</div>
+        title="Group order details saved">
+        <div class="share-box">
+          <div class="success">You can now share your awesome design with your friends and family!</div>
         </div>
       </a-modal>
     </div>
@@ -349,6 +348,8 @@ export default {
   },
   data() {
     return {
+      adressShow: {addressName:'',detailInfo:'',userName:'',telNumber:''},
+      adressErr: '',
       orderPid: "",
       resPrice: "",
       priceChange: "",
@@ -428,7 +429,7 @@ export default {
     handleOk() {
       if (this.twoPrice < 0) {
         this.$notification.error({
-          message: "Projected agency price is negative",
+          message: "You will be incurring a lost for this order.",
           description: "Please fill in again.",
           duration: 4
         });
@@ -497,9 +498,10 @@ export default {
             }
           } else {
             this.$notification["error"]({
-              message: "Please Fill in the receiving address",
+              message: "Please fill in delivery address.",
               duration: 4
             });
+            this.adressErr = 'Please fill in delivery address.'
           }
           }else{
             this.$notification.error({
@@ -610,16 +612,6 @@ export default {
       teamOrderDetails(id).then(res => {
         console.log(res);
         const formList = res.result;
-        // this.myform.setFieldsValue({
-        //   note: formList.topic,
-        //   desc: formList.introduction,
-        //   contanct: formList.contact,
-        //   phone: formList.mobile,
-        //   email: formList.email,
-        //   closingDate: formList.payEndDate
-        //     ? moment(formList.payEndDate, "YYYY-MM-DD")
-        //     : moment('00:00:00', 'HH:mm:ss')
-        // });
         this.orderPid = formList.id;
         this.addressId = formList.addressId;
         this.timeover = formList.payEndDate
@@ -664,7 +656,6 @@ export default {
     postAddAddress() {
       this.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
-          console.log(values);
           let params = {
             id: this.id,
             userName: values.phonesome,
@@ -674,13 +665,12 @@ export default {
             detailInfo: values.adress,
             name: values.bm
           };
-          console.log(values.country.join(","));
           addAddress(params).then(res => {
             console.log(res);
             if (res.code == 200) {
               this.$message.success(res.message);
               this.modelShow2 = false;
-              this.getAdressList();
+              this.getAdressList()
             }
           });
         }
@@ -753,11 +743,15 @@ export default {
     },
     setDefaultAdress(item) {
       console.log(item);
-      this.adress =
-        item.addressName + item.detailInfo + item.userName + item.telNumber;
+      this.adress = item.addressName + item.detailInfo + item.userName + item.telNumber;
+      this.adressShow.addressName = item.addressName;
+      this.adressShow.detailInfo = item.detailInfo;
+      this.adressShow.userName = item.userName;
+      this.adressShow.telNumber = item.telNumber;
       this.addressId = item.id;
       this.modelShow1 = false;
       this.$message.success("Address Successfully Updated!");
+      this.adressErr = '';
     },
     beforeUpload(file) {
       let files = file.file;
@@ -858,7 +852,7 @@ input::-webkit-inner-spin-button {
 .form-box {
   padding: 30px 30px 0;
 }
-.share-box1 {
+.share-box{
   text-align: center;
   padding: 20px;
   .success {

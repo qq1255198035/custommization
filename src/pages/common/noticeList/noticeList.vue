@@ -6,10 +6,13 @@
           <a-list itemLayout="horizontal" :dataSource="data">
             <a-list-item slot="renderItem" slot-scope="item,index" @click="openMessageModel(item.title,item.content,item.id)" style="cursor: pointer;">
               <a-list-item-meta :description="item.content" :key="index">
-                <a-tag color="red" slot="avatar" v-if="item.status == 0">Unread</a-tag>
-                <a-tag color="#33b8b3" slot="avatar" v-if="item.status == 1">Already read</a-tag>
-                <p slot="title" href="#">{{item.title}} <span style="font-size: 12px;color:#999;margin-left: 20px;font-weight: normal;">{{ item.createtime | formatTime }}</span></p>
+                
+                <p slot="title">{{item.title}} <span style="font-size: 12px;color:#999;margin-left: 20px;font-weight: normal;">{{ item.createtime | formatTime }}</span></p>
               </a-list-item-meta>
+              <div>
+                <a-tag color="red" v-if="item.status == 0">Unread</a-tag>
+                <a-tag color="#33b8b3" v-if="item.status == 1">Already read</a-tag>
+              </div>
             </a-list-item>
             <div slot="footer" v-if="data.length > 0" style="text-align: center; margin-top: 16px;">
               <a-button

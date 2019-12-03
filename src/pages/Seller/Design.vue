@@ -29,7 +29,7 @@
                             </li>
                         </ul>
                         <div class="container">
-                            <h2>CUSTOM KING T-Shirt<span>View the size chart</span></h2>
+                            <h2>CUSTOM KING T-Shirt<span>View size chart</span></h2>
                             <div class="canvas-container"  v-show="designModel == 0">
                                 <canvas id="canvas1" :width="screenWidth" :height="screenWidth"></canvas>
                                 <div class="moving-box" :style="{width: '200px',height: '300px',top: '150px', left: '200px'}" v-show="movingBox">
