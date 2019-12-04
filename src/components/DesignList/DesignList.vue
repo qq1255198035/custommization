@@ -12,7 +12,7 @@
                                           <span>{{item.createTime}}</span>
                                     </p>
                                     <p>
-                                          <span>colour:{{item.productColor}}</span>
+                                          <span>Colour:{{item.productColor}}</span>
                                           <span>
                                                 <a-icon type="edit" @click="goEdit(item.id)"/>
                                           </span>

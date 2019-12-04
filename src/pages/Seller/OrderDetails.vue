@@ -16,9 +16,9 @@
         <a-col :span="7" class="scroll-box left-side">
           <div class="order-info">
             <dl class="top">
-              <dt>Order ID：</dt>
+              <dt>Order ID: </dt>
               <dd>{{information.orderId}}</dd>
-              <dt>Order time：</dt>
+              <dt>Order time: </dt>
               <dd>{{information.orderTime | formatTime}}</dd>
             </dl>
             <ul class="bottom">
@@ -27,9 +27,9 @@
                 <div>
                   <div>
                     <h3>{{item.name}}</h3>
-                    <p>Colour:{{item.product_color}}</p>
-                    <p>Price:${{item.price}}</p>
-                    <p>Quantity:{{item.quantity}}</p>
+                    <p>Colour: {{item.product_color}}</p>
+                    <p>Price: ${{item.price}}</p>
+                    <p>Quantity: {{item.quantity}}</p>
                   </div>
                   <p>
                     <a-icon type="edit" @click="showEdModal(item.id)" />
@@ -257,7 +257,7 @@
             </a-row>
           </a-col>
           <a-col :span="16">
-            <div class="title font-18">Colour:{{designDetail.productColor}}</div>
+            <div class="title font-18">Colour: {{designDetail.productColor}}</div>
             <div class="number">
               <div class="font-18">Quantity：</div>
               <div class="number-box">
@@ -298,7 +298,7 @@
                 <span>${{twoPrice | moneyFormat}}</span>
               </div>
             </div>
-            <div class="font-color">MSRP:${{designDetail.price}}/piece</div>
+            <div class="font-color">MSRP: ${{designDetail.price}}/piece</div>
           </a-col>
         </a-row>
       </a-modal>

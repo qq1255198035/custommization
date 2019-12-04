@@ -1,13 +1,7 @@
 <template>
   <a-card :bordered="false">
-
-    <!-- 查询区域 -->
-    <!--
-   -->
-    <!-- 操作按钮区域 -->
     <div class="table-operator">
       <a-button @click="handleAdd" type="primary" icon="plus">新增</a-button>
-
       <a-dropdown v-if="selectedRowKeys.length > 0">
         <a-menu slot="overlay">
           <a-menu-item key="1" @click="batchDel">
@@ -20,7 +14,6 @@
         </a-button>
       </a-dropdown>
     </div>
-
     <!-- table区域-begin -->
     <div>
       <div class="ant-alert ant-alert-info" style="margin-bottom: 16px;">

@@ -46,7 +46,7 @@ export default {
                             dataIndex: 'orderSn'
                     },
                     {
-                            title: 'Order time',
+                            title: 'Order Time',
                             dataIndex: 'orderTime',
                             scopedSlots: { customRender: 'times' }
                     },

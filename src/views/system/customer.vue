@@ -12,7 +12,7 @@
 
           <a-col :md="6" :sm="8">
             <a-form-item label="状态">
-              <a-select style="width: 100%" v-model="queryParam.status" placeholder="请选择状态">
+              <a-select style="width: 100%" v-model="queryParam.status" placeholder="请选择状态" :dropdownMatchSelectWidth="false">
                 <a-select-option value>请选择状态</a-select-option>
                 <a-select-option value="0">未审批</a-select-option>
                 <a-select-option value="1">通过</a-select-option>

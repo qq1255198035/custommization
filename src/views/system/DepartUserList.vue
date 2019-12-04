@@ -4,11 +4,7 @@
       <a-card :bordered="false">
         <div style="background: #fff;padding-left:16px;height: 100%; margin-top: 5px">
           <a-input-search @search="onSearch" style="width:100%;margin-top: 10px" placeholder="请输入部门名称"/>
-          <!-- 树-->
-
           <template>
-
-            <!--组织机构-->
             <a-directory-tree
               selectable
               :selectedKeys="selectedKeys"
@@ -17,9 +13,7 @@
               :dropdownStyle="{maxHeight:'200px',overflow:'auto'}"
               :treeData="departTree"
             />
-
           </template>
-
         </div>
       </a-card>
     </a-col>

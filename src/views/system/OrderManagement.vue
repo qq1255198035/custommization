@@ -11,7 +11,7 @@
           </a-col>
           <a-col :md="6" :sm="8">
             <a-form-item label="状态">
-              <a-select placeholder="请选择状态" v-model="queryParam.status">
+              <a-select placeholder="请选择状态" v-model="queryParam.status" :dropdownMatchSelectWidth="false">
                 <a-select-option value>请选择状态</a-select-option>
                 <a-select-option value="1">订单提交</a-select-option>
                 <a-select-option value="2">样稿确认</a-select-option>
@@ -440,5 +440,7 @@ export default {
 .table-page-search-wrapper a:hover{
   color: #666;
 }
-
+.ant-select-dropdown-menu{
+  min-width: 114px;
+}
 </style>

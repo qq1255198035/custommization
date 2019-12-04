@@ -15,7 +15,7 @@
             <div slot="goodsInfo" slot-scope="text" style="display: flex;">
               <div style="width: 100%;">
                 <h2>{{text.title}}</h2>
-                <p>COLOUR:{{text.color}}</p>
+                <p>Colour: {{text.color}}</p>
               </div>
             </div>
             <template slot="action" slot-scope="text,record">
