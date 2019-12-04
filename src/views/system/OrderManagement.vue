@@ -49,7 +49,6 @@
         :columns="columns"
         :dataSource="dataSource"
         :pagination="ipagination"
-        :loading="loading"
         @change="handleTableChange"
       >
         <template slot="orderStatus" slot-scope="text">
@@ -318,14 +317,12 @@ export default {
         showQuickJumper: true,
         total: 0
       },
-      loading:false,
       current: 0,
       componyList: [],
       postId:''
     }
   },
   mounted(){
-    this.loading = true;
     this.getCheckOutOrders(1,'','');
     this.getLogistics();
   },
@@ -370,7 +367,6 @@ export default {
       })
     },
     startToDesign(id){
-      this.loading = true;
       startDesign(id).then(res => {
         console.log(res)
         if(res.code == 0){
@@ -385,19 +381,16 @@ export default {
     },
     searchReset(){
       this.queryParam = {};
-      this.loading = true;
       this.getCheckOutOrders(1,'','');
     },
     searchQuery(){
-      this.loading = true;
       console.log(this.queryParam.name)
       this.getCheckOutOrders(1,this.queryParam.name,this.queryParam.status);
     },
-    handleTableChange(pagination) {
+    handleTableChange(pagination){
       console.log(pagination)
       this.ipagination = pagination;
       this.current = pagination.current;
-      this.loading = true;
       this.getCheckOutOrders(pagination.current,this.queryParam.name,this.queryParam.status);
     },
     handleList(data) {
@@ -412,7 +405,6 @@ export default {
         console.log(res)
         this.ipagination.total = res.total;
         this.dataSource = res.records;
-        this.loading = false;
       })
     },
     sendExample(id){

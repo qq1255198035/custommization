@@ -88,9 +88,9 @@
                   <img :src="item.picUrl" alt="">
                   <span>{{item.remarks}}</span>
                 </div>
-
                 <a :href="item.fileUrl" download="img" target="_blank">下载</a>
               </li>
+              <li v-if="eximgList.length <= 0" style="align-items: flex-end;">暂无参考设计</li>
             </ul>
             <div class="remarks" v-show="showKey == 2" style="margin-top: 10px;">
               <p style="color: #000;">设计备注：{{remarks}}</p>
@@ -529,14 +529,11 @@ export default {
     },
     //that.exampleNumber.lockMovementX = true;
     loadFromJSON (canvas,json) {
-        canvas.loadFromJSON(json, canvas.renderAll.bind(canvas), function (
-            o,
-            object
-        ) {
-          console.log(o,object)
+        canvas.loadFromJSON(json, canvas.renderAll.bind(canvas), (o,object) => {
           object.lockMovementX = true;
           object.lockMovementY = true;
           object.hasControls = false;
+          this.getPhotoInfo(object.src,object)
         });
     },
     onselected(canvas){

@@ -25,8 +25,8 @@
           </a-table>
         </div>
         <div style="text-align: center; padding: 20px 0;">
-          <a-button type="primary" icon="plus" @click="goNewOrder">ADDING DESIGN</a-button>
-          <a-button style="margin-left: 10px;" @click="posteDesignList(selectedRowKeys)">Submit </a-button>
+          <a-button type="primary" icon="plus" @click="goNewOrder">Add New Design</a-button>
+          <a-button style="margin-left: 10px;" @click="posteDesignList(selectedRowKeys)">Submit</a-button>
         </div>
       </div>
     </div>

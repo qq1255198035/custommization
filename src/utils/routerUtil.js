@@ -66,10 +66,6 @@ export const getRouterByUser = () => {
       token: Vue.ls.get(ACCESS_TOKEN),
       internationalization: localStorage.lang
     })
-    /* headers: {
-      'Access-Token': 'xxx'
-    }
-    */
   })
 }
 

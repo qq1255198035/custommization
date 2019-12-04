@@ -1863,10 +1863,10 @@ export default {
                     this.visibletype = -1;
                     this.liClick = -1;
                     this.$success({
-                        title: 'Successful preservation',
+                        title: 'Design Saved!',
                         content: (  // JSX support
                         <div>
-                            <p>please re-select the goods!</p>
+                            <p>You can now create another awesome design.</p>
                         </div>
                         ),
                         onOk:function(){

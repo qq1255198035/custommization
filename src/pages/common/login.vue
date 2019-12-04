@@ -178,6 +178,7 @@ export default {
   },
   created() {
     Vue.ls.remove(ACCESS_TOKEN);
+    this.SetRoles();
     this.form = this.$form.createForm(this)
   },
   mounted() {
@@ -185,6 +186,7 @@ export default {
     
   },
   methods: {
+    ...mapActions(["Login", "SetRoles"]),
     getWindowScreen(){
       let screenWidths = window.screen.width;
       console.log(screenWidths)
@@ -224,7 +226,6 @@ export default {
         },0) 
       }
     },
-    ...mapActions(["Login", "Logout"]),
     onChange(e) {
       this.formLogin.rememberMe = e.target.checked
     },

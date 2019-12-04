@@ -83,7 +83,6 @@ export default {
                                           font-size: 24px;
                                           cursor: pointer;
                                     }
-                                    
                               }
                         }
                   }
@@ -91,7 +90,18 @@ export default {
       }
       
 }
-@media screen and (max-width: 1900px) and (min-width: 1024px){
+@media screen and (max-width: 1900px) and (min-width: 1367px){
+      #design-list{
+            .list-row{
+                  .order-item{
+                        .img-box{
+                              height: 330px;
+                        }
+                  }
+            }
+      }
+}
+@media screen and (max-width: 1366px) and (min-width: 1024px){
       #design-list{
             .list-row{
                   .order-item{

@@ -1,9 +1,5 @@
 <template>
   <div id="User">
-    <!-- <span @click="noticeBtn" style="padding:10px;cursor: pointer;">
-      <a-icon style="font-size: 30px; padding: 4px" type="bell" :style="{color: bellcolor}"/>
-    </span> -->
-    <!--<notice></notice>-->
     <a-popover
       v-model="visible"
       trigger="hover"
@@ -16,7 +12,7 @@
     <template slot="content">
       <a-spin :spinning="loadding">
             <a-list>
-              <a-list-item v-for="item in dataList.slice(0,5)" :key="item.id" @click="openMessageModel(item.title,item.content,item.id)" style="cursor: pointer;">
+              <a-list-item v-for="item in dataList.slice(0,5)" :key="item.id" @click="openMessageModel(item.title,item.content,item.id,item.order_id,item.type)" style="cursor: pointer;">
                 <a-list-item-meta :description="item.content">
                   <p slot="title">{{item.title}} <span style="font-size: 12px;color:#999;margin-left: 20px;font-weight: normal;">{{ item.createtime | formatTime }}</span></p>
                 </a-list-item-meta>
@@ -107,13 +103,24 @@ export default {
   },
   methods: {
     ...mapActions(["Logout"]),
-    openMessageModel(title,content,id){
-      this.$info({
+    openMessageModel(title,content,id,order_id,type){
+      let that = this;
+      that.$confirm({
         title: title,
         content: content,
         zIndex: 2000,
-        okText: 'Close',
-        onOk(){},
+        okButtonProps:{
+          props: {disabled: order_id == 0}
+        },
+        okText: '查看',
+        cancelText: '关闭',
+        onOk(){
+          if(type == 0){
+            that.$router.push({path: '/myorder',query:{id: order_id}})
+          }else{
+            that.$router.push({path: '/specification',query:{orderId: order_id}})
+          }
+        },
       });
       read(id).then(res => {
         console.log(res);
@@ -142,6 +149,7 @@ export default {
 		websocketonmessage(e){                  
         this.dataList = JSON.parse(e.data); 
         this.count = this.dataList.length; 
+        console.log(this.dataList)
 		},              
 		websocketclose(e){                
 			console.log("connection closed (" + e + ")");              

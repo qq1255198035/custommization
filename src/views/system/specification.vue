@@ -86,9 +86,9 @@
                   <img :src="item.picUrl" alt="">
                   <span>{{item.remarks}}</span>
                 </div>
-
                 <a :href="item.fileUrl" download="img">下载</a>
               </li>
+              <li v-if="eximgList.length <= 0" style="align-items: flex-end;">暂无参考设计</li>
             </ul>
             <div class="remarks" v-show="showKey == 2" style="margin-top: 10px;">
               <p>设计备注：{{remarks}}</p>
@@ -421,78 +421,6 @@ export default {
           }
       })
     },
-    handleChange ({ fileList }) {
-        if(this.uploadA){
-            this.fileList = fileList
-        }
-    },
-    handleChange1 ({ fileList }) {
-        if(this.uploadA1){
-            this.fileList1 = fileList
-        }
-    },
-    handleChange2 ({ fileList }) {
-        if(this.uploadA2){
-            this.fileList2 = fileList
-        }
-    },
-    handleChange3 ({ fileList }) {
-        if(this.uploadA3){
-            this.fileList3 = fileList
-        }
-    },
-   
-    beforeUploadEx(file){
-        if(file.size / 1024 / 1024 < 10){
-            
-            this.uploadA = true
-            console.log(file)
-            this.postSourceUpload(file,0)
-
-        }else{
-            
-            this.$message.error('Image Size Exceeds Limit');
-            this.uploadA = false
-            return;
-        }
-    },
-    beforeUploadEx1(file){
-        if(file.size / 1024 / 1024 < 10){
-            this.uploadA1 = true
-            console.log(file)
-            this.postSourceUpload(file,1)
-        }else{
-            
-            this.$message.error('Image Size Exceeds Limit');
-            this.uploadA = false
-            return;
-        }
-    },
-    beforeUploadEx2(file){
-        if(file.size / 1024 / 1024 < 10){
-            
-            this.uploadA2 = true
-            console.log(file)
-            this.postSourceUpload(file,2)
-
-        }else{
-            
-            this.$message.error('Image Size Exceeds Limit');
-            this.uploadA = false
-            return;
-        }
-    },
-    beforeUploadEx3(file){
-        if(file.size / 1024 / 1024 < 10){
-            this.uploadA3 = true
-            console.log(file)
-            this.postSourceUpload(file,3)
-        }else{
-            this.$message.error('Image Size Exceeds Limit');
-            this.uploadA = false
-            return;
-        }
-    },
     createNewDesign(key,id){
       if(key == 0){
         this.$message.error('您还有设计没有完成！')
@@ -561,19 +489,16 @@ export default {
       })
     },
     viewImgs(id){
-      console.log(id)
       this.showKey = 1;
       this.loadFromJSON(this.myCanvas,JSON.parse(this.jsonArr[id]))
     },
     //that.exampleNumber.lockMovementX = true;
     loadFromJSON (canvas,json) {
-        canvas.loadFromJSON(json, canvas.renderAll.bind(canvas), function (
-            o,
-            object
-        ) {
+        canvas.loadFromJSON(json, canvas.renderAll.bind(canvas), (o,object) => {
           object.lockMovementX = true;
           object.lockMovementY = true;
           object.hasControls = false;
+          this.getPhotoInfo(object.src,object)
         });
     },
     onselected(canvas){

@@ -58,7 +58,7 @@ router.beforeEach((to, from, next) => {
             }
           }
         })
-      } else {
+      }else{
         if (store.getters.roles.length === 0) {
           store
             .dispatch('GetInfo')
