@@ -25,7 +25,9 @@
     </template>
     <span @click="fetchNotice" class="header-notice">
       <a-icon type="bell" :style="{color: bellcolor}" />
-      <a-badge v-if="count" class="diount" :count="count" showZero :overflowCount="5"></a-badge>
+      <a-badge v-if="count" class="diount" :count="count" showZero :overflowCount="5">
+        
+      </a-badge>
     </span>
   </a-popover>
     <span>
@@ -69,7 +71,6 @@ export default {
   },
   created() {
     this.initWebSocket();
-    console.log(process.env.NODE_ENV)
   },
   destroyed(){
     this.websocketclose(); 
@@ -123,9 +124,8 @@ export default {
         },
       });
       read(id).then(res => {
-        console.log(res);
         if(res.code == 200){
-          console.log(res)
+          console.log('w')
         }
       })
     },
@@ -149,7 +149,6 @@ export default {
 		websocketonmessage(e){                  
         this.dataList = JSON.parse(e.data); 
         this.count = this.dataList.length; 
-        console.log(this.dataList)
 		},              
 		websocketclose(e){                
 			console.log("connection closed (" + e + ")");              

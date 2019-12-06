@@ -125,7 +125,7 @@
 
             console.log(formData)
             httpAction(httpurl, formData, method).then((res) => {
-              console.log(res)
+              
               if (res.success) {
                 that.$message.success(res.message);
                 that.$emit('ok');

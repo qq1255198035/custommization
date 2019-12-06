@@ -52,14 +52,14 @@
         this.resultJson = {};
         if("POST"===this.requestMethod.toUpperCase()){
           postAction(value,this.paramJson).then((res)=>{
-            console.log(res)
+            
             this.resultJson = res
           }).catch((err) => {
             that.$message.error("请求异常："+err)
           })
         }else {
           getAction(value,this.paramJson).then((res)=>{
-            console.log(res)
+            
             this.resultJson = res;
           }).catch((err) => {
             that.$message.error("请求异常："+err)

@@ -261,7 +261,7 @@
         console.log(params)
         
         getMerberList(params).then(res => {
-          console.log(res)
+          
           this.loadData = res.result.records
           console.log(this.loadData)
         })

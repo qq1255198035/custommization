@@ -305,7 +305,6 @@
         this.selectedRowKeys1 = selectedRowKeys
         this.selectionRows1 = selectionRows
         this.model1 = Object.assign({}, selectionRows[0])
-        console.log(this.model1)
         this.currentRoleId = selectedRowKeys[0]
         this.loadData2()
       },
@@ -411,7 +410,6 @@
             ids += this.selectedRowKeys2[a] + ','
           }
           var that = this
-          console.log(this.currentDeptId)
           this.$confirm({
             title: '确认删除',
             content: '是否删除选中数据?',
@@ -436,7 +434,6 @@
         for (var a = 0; a < data.length; a++) {
           params.userIdList.push(data[a])
         }
-        console.log(params)
         postAction(this.url.addUserRole, params).then((res) => {
           if (res.success) {
             this.loadData2()

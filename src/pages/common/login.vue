@@ -189,7 +189,6 @@ export default {
     ...mapActions(["Login", "SetRoles"]),
     getWindowScreen(){
       let screenWidths = window.screen.width;
-      console.log(screenWidths)
       if(screenWidths > 768){
         this.mobileShow = true;
         setTimeout(() => {

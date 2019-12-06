@@ -419,7 +419,6 @@
               dataId: this.userId
             };
             duplicateCheck(params).then((res) => {
-              console.log(res)
               if (res.success) {
                 callback()
               } else {
@@ -452,7 +451,6 @@
       },
 
       normFile  (e) {
-        console.log('Upload event:', e);
         if (Array.isArray(e)) {
           return e
         }
@@ -475,7 +473,6 @@
         if (info.file.status === 'done') {
           var response = info.file.response;
           this.uploadLoading = false;
-          console.log(response);
           if(response.success){
             this.model.avatar = response.message;
             this.picUrl = "Has no pic url yet";

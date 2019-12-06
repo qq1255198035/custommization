@@ -93,7 +93,6 @@
         let that = this
         that.loading = true
         this.form.validateFields((err, values) => {
-          console.log(values);
           if (!err) {
             if(that.dropList=="0"){
               if(values.captcha==undefined){
@@ -104,7 +103,6 @@
                 params.smscode=values.captcha;
                 postAction("/sys/user/phoneVerification",params).then((res)=>{
                   if(res.success){
-                  console.log(res);
                   var userList={
                     username:this.userList.username,
                     phone:this.userList.phone,
@@ -163,7 +161,6 @@
       },
       handleChangeSelect(value){
         var that=this;
-        console.log(value);
       if(value==0){
         that.dropList="0";
         that.show=true;

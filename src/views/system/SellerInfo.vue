@@ -88,14 +88,11 @@ export default {
             status:-1
         };
     },
-    
     mounted(){
         this.dealerId = this.$route.query.id;
-        console.log(this.dealerId)
         this.getDealerDetails(this.dealerId)
         this.getDealerGrade();
     },
-  
     methods:{
         hideModal(){
             if(this.key == 1){
@@ -114,7 +111,6 @@ export default {
         },
         postApprovalDealer(ids,status,remark,level){
             approvalDealer(ids,status,remark,level).then(res => {
-                console.log(res)
                 if(res.code == 0){
                     this.show = false;
                     this.$message.success('操作成功！')
@@ -123,7 +119,6 @@ export default {
         },
         getDealerGrade(){
             dealerGrade().then(res => {
-                console.log(res)
                 if(res.code == 0){
                     this.options = res.result;
                 }
@@ -135,7 +130,6 @@ export default {
         },
         getDealerDetails(dealerId){
             dealerDetails(dealerId).then(res => {
-                console.log(res)
                 if(res.code == 0){
                     this.item = res.result
                     this.status = res.result.status;

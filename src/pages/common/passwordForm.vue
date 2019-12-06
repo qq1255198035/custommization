@@ -35,7 +35,6 @@
     },
     methods: {
       nextStep1(data) {
-          console.log(data)
           this.email = data
         if (this.currentTab < 2) {
           this.currentTab += 1

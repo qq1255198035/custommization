@@ -103,7 +103,7 @@
                 <div class="desc" v-show="showCode == 2">
                   <p>文字： {{text}}</p>
                   <p>字体： {{fontfamily}}</p>
-                  <p>字号：{{fontsize}}</p>
+                  <p>字号：{{fontsize}} cm</p>
                   <p v-if="fontcolorName">字体颜色： {{fontcolorName}}<span :style="{backgroundColor: fontcolor}"></span> <br /> CMYK : {{fontcolorCMYK}}</p>
                   <p v-if="bgcolorName">背景色： {{bgcolorName}}<span :style="{backgroundColor:bgcolor}"></span> <br /> CMYK : {{bgcolorCMYK}}</p>
                   <p v-if="strokecolorName">描边： {{strokecolorName}}<span :style="{backgroundColor:strokecolor}"></span> <br /> CMYK : {{strokecolorCMYK}} 大小： {{strokeWidth}}</p>
@@ -114,7 +114,7 @@
                     图片： <img :src="imgUrl" alt="">
                   </li>
                   <li>
-                    尺寸： {{width}} * {{height}}
+                    尺寸： {{width}} cm * {{height}} cm
                   </li>
                   <li>
                     源文件： <a :href="imgUrl" download="img" target="_blank">下载</a>
@@ -320,12 +320,10 @@ export default {
   },
   methods:{
     viewDesignCase(id,key){
-      console.log(id)
       if(key == 0){
         // 查看被否定的修改
         this.reject = true
         rejectDesign(id).then(res => {
-          console.log(res)
           this.rejpositivePicUrl = res.result.despic.positivePicUrl,
           this.rejleftPicUrl = res.result.despic.leftPicUrl,
           this.rejrightPicUrl = res.result.despic.rightPicUrl,
@@ -337,7 +335,6 @@ export default {
         this.newDesign = true;
         this.editDisabled = true;
         designingScheme(id).then(res => {
-          console.log(res);
           if(res.code == 0){
             this.id1 = res.result.id;
             this.positivePicUrl = res.result.positivePicUrl;
@@ -360,7 +357,6 @@ export default {
         this.newDesign = true;
         this.editDisabled = false;
         designingScheme(id).then(res => {
-          console.log(res);
           if(res.code == 0){
             this.id1 = res.result.id;
             this.positivePicUrl = res.result.positivePicUrl;
@@ -391,7 +387,6 @@ export default {
             backDescription:this.remarks2,leftDescription:this.remarks3,rightDescription:this.remarks4
           }
           updateDespic(params).then(res => {
-            console.log(res)
             if(res.code == 0){
               this.newDesign = false;
               this.$message.success('操作成功！')
@@ -405,7 +400,6 @@ export default {
       let formData = new FormData();
       formData.append("file", file);
       sourceUpload(formData).then(res => {
-          console.log(res)
           if(type == 0){
             this.positivePicUrl = res.preview_url;
             this.positivePicFile = res.source_url;
@@ -479,7 +473,6 @@ export default {
     },
     getColorInfo(color){
       colorInfo(color).then(res => {
-        console.log(res)
         if(res.code == 0){
           this.fontcolorCMYK = res.result.fontColorCMYK;
           this.fontcolorName = res.result.fontColorName
@@ -488,14 +481,13 @@ export default {
     },
     getPhotoInfo(url,obj){
       photoInfo(url).then(res => {
-        console.log(res)
         if(res.code == 0){
           // 判断是图片还是文字
           this.showCode = res.result.code;
           if(res.result.code == 1){
             this.imgUrl = obj.src;
-            this.width = parseInt(obj.getBoundingRect().width);
-            this.height = parseInt(obj.getBoundingRect().height);
+            this.width = parseInt(obj.getBoundingRect().width / 6);
+            this.height = parseInt(obj.getBoundingRect().height / 6);
           }else{
             this.text = res.result.text;
             this.fontfamily = res.result.fontName;
@@ -523,7 +515,6 @@ export default {
       })
     },
     viewImgs(id){
-      console.log(id)
       this.showKey = 1;
       this.loadFromJSON(this.myCanvas,JSON.parse(this.jsonArr[id]))
     },
@@ -539,12 +530,11 @@ export default {
     onselected(canvas){
       let that = this;
       canvas.on('mouse:down',function(obj){
-          console.log(obj.target)
           if(obj.target){
             if(obj.target.src){
               // 图片文字
               that.getPhotoInfo(obj.target.src,obj.target);
-              that.fontsize = parseInt(obj.target.getBoundingRect().height);
+              that.fontsize = parseInt(obj.target.getBoundingRect().height / 6);
             }else{
               // 纯文字
               that.getColorInfo(obj.target.fill.substr(1))
@@ -560,7 +550,6 @@ export default {
       this.show = true;
       this.showKey = 1;
       viewDesign(id).then(res => {
-        console.log(res)
         if(res.code == 0){
           this.imgList = res.result.list1;
           this.eximgList = res.result.list3;
@@ -574,7 +563,6 @@ export default {
     },
     getDealerDesignList(id){
       dealerDesignList(id).then(res => {
-        console.log(res)
         if(res.code == 0){
           this.data = res.result;
         }

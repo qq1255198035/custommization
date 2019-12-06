@@ -419,7 +419,6 @@ export default {
   methods: {
     getWindowScreen(){
       let screenWidths = window.screen.width;
-      console.log(screenWidths)
       if(screenWidths > 768){
         this.mobileShow = true;
       }else{
@@ -435,7 +434,6 @@ export default {
         user_order_id: this.$route.query.user_order_id ? this.$route.query.user_order_id : ''
       }
       paymentSessionInfos(param).then(response => {
-        console.log(response)
         this.pricess = response;
         this.allPrice = response.order_price ? response.order_price : 0;
         this.userId = response.order_id;
@@ -474,7 +472,6 @@ export default {
         shipping_fee: this.pricess.shipping_fee,
         goods_price: this.pricess.order_price
       };
-      console.log(pata)
       payPalOrder(pata).then(res => {
         if (res.result.code == 1) {
           this.$notification.success({
@@ -499,9 +496,8 @@ export default {
         goods_price: this.pricess.order_price,
         user_order_id: this.$route.query.user_order_id ? this.$route.query.user_order_id : ''
       };
-      console.log(pata)
       payPalOrder(pata).then(res => {
-        console.log(res)
+        
         if (res.code == 1) {
           const param = {
             order_id: this.pricess.order_id,

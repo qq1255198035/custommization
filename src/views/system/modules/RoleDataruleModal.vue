@@ -63,7 +63,7 @@
     methods:{
       loadData(){
         getAction(`${this.url.datarule}/${this.functionId}/${this.roleId}`).then(res=>{
-          console.log(res)
+          
           if(res.success){
             this.dataruleList = res.result.datarule
             let drChecked = res.result.drChecked

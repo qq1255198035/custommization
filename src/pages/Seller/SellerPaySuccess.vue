@@ -116,7 +116,6 @@ export default {
       };
       console.log(param);
       status(param).then(res => {
-        console.log(res);
         this.step = parseInt(res.result.schedule);
       });
     },
@@ -131,7 +130,6 @@ export default {
       };
       console.log(param);
       paypalSellerBack(param).then(res => {
-        console.log(res);
         if (res.code == 1) {
           this.code = 1;
           let result = res.payInfoList[0];

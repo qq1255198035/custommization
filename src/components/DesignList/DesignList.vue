@@ -37,7 +37,6 @@ export default {
       methods:{
             goEdit(id){
                   updateShow(id).then(res => {
-                        console.log(res)
                         if(res.code == 0){
                               this.$router.push({path:'/neworder', query:{res: res.result,show: true}})
                         }

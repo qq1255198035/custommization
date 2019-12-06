@@ -58,7 +58,6 @@ export default {
     methods:{
         getQueryBalance(){
             queryBalance().then(res => {
-                console.log(res)
                 this.money = res.result.balance
             })
         },

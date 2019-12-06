@@ -97,13 +97,11 @@ export default {
       this.openShare = false;
     },
     openMyshareBox(item) {
-      console.log(item);
       this.openShare = true;
       this.config.url = window.location.origin + "/#/share" + "?order_id=" + item.id;
       this.config.title = item.topic;
       this.config.image = item.topic_url;
       this.config.description = item.introduction;
-      console.log(this.config.url);
     },
     getSalesDate() {
       salesDate().then(res => {

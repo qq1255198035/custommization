@@ -113,7 +113,6 @@ export default {
         order_id:data
       }
       sellerOrderCale(param).then(res => {
-        console.log(res)
         if(res.code == 200) {
           this.getGroupOrderList(this.num, this.status, this.content);
         }
@@ -125,7 +124,6 @@ export default {
         order_id:data
       }
       sellerOrderDetel(param).then(res => {
-        console.log(res)
         if(res.code == 200) {
           this.getGroupOrderList(this.num, this.status, this.content);
         }
@@ -133,7 +131,6 @@ export default {
     },
     goNewOrder(){
         queryByIdA().then(res => {
-          console.log(res)
           if(res.code == 0){
             if(res.result == 1){
               this.$router.push({path:'/neworder'});
@@ -144,7 +141,6 @@ export default {
                 title: 'Error',
                 content: 'Sorry,Not examined and approved,Please go to the account settings page to apply.',
                 onOk() {
-                  console.log(11);
                   that.$router.push({path: '/dealerInfo'})
                 },
               });
@@ -155,7 +151,6 @@ export default {
                 title: 'Error',
                 content: 'Sorry,Failure to pass the examination and approval',
                 onOk() {
-                  console.log(11);
                   that.$router.push({path: '/dealerInfo'})
                 },
               });
@@ -165,7 +160,6 @@ export default {
                 title: 'Error',
                 content: 'Sorry, please apply first.',
                 onOk() {
-                  console.log(11);
                   that.$router.push({path: '/dealerInfo'})
                 },
               });
@@ -178,7 +172,7 @@ export default {
           orderId: this.orderId
         }
         newScheme(param).then(res => {
-            console.log(res)
+            
             if(res.code == 200) {
                 this.modelShow = false;
                 this.$message.success('Successful application');
@@ -190,20 +184,18 @@ export default {
             designId: id
         }
         programme(param).then(res => {
-            console.log(res)
+            
             if(res.code == 200) {
                 window.location.reload()
             }
         })
     },
-    textShowOne(id, index) {
+    textShowOne(id) {
       this.textshow = false;
-      console.log(id, index);
       const newList = [...this.exList];
       const target = newList.find(item => item.id == id);
       target.checked = true;
       this.exList = newList;
-      console.log(newList);
     },
     textShowTwo(id,pid) {
       const param = {
@@ -211,7 +203,6 @@ export default {
         id: id
       };
       texts(param).then(res => {
-        console.log(res);
         if (res.code == 200) {
           const newList = [...this.exList];
           const target = newList.find(item => item.id == id);
@@ -233,7 +224,6 @@ export default {
     },
     getExampleConfirm(id) {
       exampleConfirm(id).then(res => {
-        console.log(res);
         this.exList = res.result;
         this.orderId = res.result.length > 0 ? res.result[0].pic_id : '';
         this.exList.forEach(item => {
@@ -247,18 +237,15 @@ export default {
       this.getGroupOrderList(1, this.status, this.key);
     },
     changeStatus(e) {
-      console.log(e.target.value);
       this.status = e.target.value;
       this.getGroupOrderList(1, this.status, "");
     },
     onChange(pageNumber) {
-      console.log("Page: ", pageNumber);
       this.num = pageNumber;
       this.getGroupOrderList(this.num, this.status, this.content);
     },
     getGroupOrderList(num, status, orderid) {
       groupOrderList(num, status, orderid).then(res => {
-        console.log(res);
         this.orderList = res.records;
         this.totalnum = parseInt(res.total);
       });

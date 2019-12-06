@@ -78,16 +78,13 @@ export default {
       callback();
     },
     nextStep() {
-      console.log(1)
       this.form.validateFields((err, values) => {
         if(!err){
           const params = {
             username: this.email,
             password: values.confirm
           };
-          console.log(params)
           passwordSet(params).then(res => {
-            console.log(res);
             if (res.code == 200) {
               this.loading = true;
               this.$emit("nextStep");

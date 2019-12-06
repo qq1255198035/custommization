@@ -337,7 +337,6 @@ export default {
   methods: {
     getLogistics(){
       logistics().then(res => {
-        console.log(res)
         if(res.code == 0){
           this.componyList = res.result;
         }
@@ -351,14 +350,12 @@ export default {
     beConfirmed(){
       this.form.validateFields((err, values) => {
         if (!err) {
-          console.log('Received values of form: ', values);
           this.postConfirmLogistics(this.postId,values.note,values.gender,values.name,values.phone,values.details,values.province,values.city,values.quire)
         }
       });
     },
     postConfirmLogistics(orderId,shippingNo,transportMode,senderName,senderPhone,senderAddress,senderProvince,senderCity,senderDistrict){
       confirmLogistics(orderId,shippingNo,transportMode,senderName,senderPhone,senderAddress,senderProvince,senderCity,senderDistrict).then(res => {
-        console.log(res)
         if(res.code == 0){
           this.visible = false;
           this.$message.success('发货成功！');
@@ -368,7 +365,6 @@ export default {
     },
     startToDesign(id){
       startDesign(id).then(res => {
-        console.log(res)
         if(res.code == 0){
           this.$notification.success({
             duration: 3,
@@ -384,17 +380,14 @@ export default {
       this.getCheckOutOrders(1,'','');
     },
     searchQuery(){
-      console.log(this.queryParam.name)
       this.getCheckOutOrders(1,this.queryParam.name,this.queryParam.status);
     },
     handleTableChange(pagination){
-      console.log(pagination)
       this.ipagination = pagination;
       this.current = pagination.current;
       this.getCheckOutOrders(pagination.current,this.queryParam.name,this.queryParam.status);
     },
     handleList(data) {
-      console.log(data)
       this.$router.push({
         path: '/orderListDetails',
         query: {id: data}
@@ -402,7 +395,6 @@ export default {
     },
     getCheckOutOrders(pageNo,content,status){
       checkOutOrders(pageNo,content,status).then(res => {
-        console.log(res)
         this.ipagination.total = res.total;
         this.dataSource = res.records;
       })
@@ -416,9 +408,7 @@ export default {
         cancelText: "取消",
         onOk() {
           sendSample(id).then(res => {
-            console.log(res)
             if(res.code == 0){
-              console.log(111)
               that.$notification.success({
                 duration: 3,
                 message: '订单状态更改成功！',

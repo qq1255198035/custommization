@@ -129,7 +129,6 @@ export default {
       };
       console.log(param);
       wxBackPay(param).then(res => {
-        console.log(res);
         if (res.successCode == 1) {
           this.code = 1;
           this.orderId = res.orderSn;

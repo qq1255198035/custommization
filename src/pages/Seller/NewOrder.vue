@@ -573,7 +573,8 @@
                                                 <li style="width: 20%; color:#33b8b3;padding-left: 10px;">Number</li>
                                                 <li style="width: 30%; color:#33b8b3;padding-left: 10px;">Size</li>
                                             </ul>
-                                            <a-form :form="form1" @submit="handleSubmit">
+                                            <!-- @submit="handleSubmit" -->
+                                            <a-form :form="form1">
                                                 <a-form-item v-for="k in form1.getFieldValue('keys')" :key="k" :required="false" style="width: 100%; margin: 0">
                                                     <a-input-group compact style="display: flex;width: 100%;">
                                                         <a-form-item style="width: 40%; margin: 0;min-height: 79px;">
@@ -1299,12 +1300,11 @@ export default {
                 let width = obj.getBoundingRect().width;
                 let img = new Image();
                 let imgInstance;
-                console.log(obj)
                 //设置图片跨域访问
                 img.crossOrigin = 'anonymous';
                 if(that.delWhite){
                     rmWhite(id).then(res => {
-                        console.log(res)
+                        
                         if(res.code == 0){
                             img.src = res.result.out + "?timeStamp="+new Date().getTime();
                             img.onload = function () {
@@ -1377,7 +1377,7 @@ export default {
         
         posteDesignList(){
             handleDesignList().then(res => {
-                console.log(res)
+                
                 if(res.code == 200){
                     this.$router.push({path: '/orderres'})
                 }
@@ -1388,16 +1388,14 @@ export default {
         },
         handleGetPic(content){
             getPic(content).then(res => {
-                console.log(res)
+                
                 if(res.code == 0){
                     this.imgs = res.result;
                 }
             })
         },
         changeNameFamily(e){
-            console.log(e)
             let obj = this.myCanvas.getActiveObject();
-            console.log(obj.left)
             if(obj){
                 this.nameFontFamily = e;
                 if(obj.myId == "Name"){
@@ -1463,10 +1461,8 @@ export default {
             this.twoPrice = (this.prices - this.onePrice) * this.nums;
         },
         showEdModal(id) {
-            console.log(id);
             this.showVisible = true;
             discount().then(res => {
-                console.log(res);
                 this.discounts = res.result;
             });
             const param = {
@@ -1474,7 +1470,6 @@ export default {
             };
             setTimeout(() => {
                 discountEdit1(param).then(res => {
-                console.log(res);
                 this.designDetail = res.result;
                 this.nums = res.result.quantity
                     ? res.result.quantity
@@ -1486,7 +1481,6 @@ export default {
                 const numbers = this.nums;
                 this.minNums = res.result.minOrder
                 this.disCounts(numbers, res.result.maxPrice);
-                console.log(res.result.price - this.onePrice);
                 this.resPrice = (res.result.maxPrice * this.discounts) / 100;
                 this.twoPrice = (this.prices - this.onePrice) * this.nums;
                 });
@@ -1508,7 +1502,6 @@ export default {
         addNewPro(){
             this.saveImg();
             this.downLoadImg();
-            console.log(111)
             let params = {
                 positivePicUrl: this.dataUrl1,backPicUrl: this.dataUrl2,leftPicUrl: this.dataUrl3,rightPicUrl: this.dataUrl4,
                 positiveDesignArea: this.dataPost1, backDesignArea: this.dataPost2, leftDesignArea: this.dataPost3, rightDesignArea: this.dataPost4,
@@ -1524,7 +1517,7 @@ export default {
                 object.setControlVisible('tr',false);
                 object.setControlVisible('bl',false); 
                 queryByUrl(object.src).then(res => {
-                    console.log(res)
+                    
                     if(res.code == 0){
                         let arr = Object.keys(res.result)
                         arr.forEach(item => {
@@ -1618,7 +1611,7 @@ export default {
         handleChangeFont(params,isAdd){
             let that = this;
             changeFont(params).then(res => {
-                console.log(res)
+                
                 if(res.code == 0){
                     let img = new Image();
                     let imgInstance;
@@ -1629,7 +1622,6 @@ export default {
                         if(isAdd){
                             if(that.myCanvas.getActiveObject()){
                                 let obj = that.myCanvas.getActiveObject();
-                                console.log(obj.angle)
                                 let left = obj.left;
                                 let top = obj.top;
                                 let angle = obj.angle;
@@ -1746,19 +1738,17 @@ export default {
         },
         getArtFontList(){
             artFontList().then(res => {
-                console.log(res)
+                
                 this.fontShapeArr = res.result;
             })
         },
         changeFontShape(item,index){
             this.fontShape = item;
-            console.log(this.fontShape)
             this.shapeActive = index
         },
         
         PostChangeGoodsColor(id,color){
             changeGoodsColor(id,color).then(res => {
-                console.log(res);
                 this.bgimgs = res.result;
                 this.bindCanvas(this.myCanvas1,0);
                 this.bindCanvas(this.myCanvas2,1);
@@ -1769,7 +1759,7 @@ export default {
 
         getColorList(status){
             colorList(status).then(res => {
-                console.log(res)
+                
                 this.colorList = res.result
             })
         },
@@ -1778,7 +1768,7 @@ export default {
         },
         postAddRemarks(id,remarks){
             addRemarks(id,remarks).then(res => {
-                console.log(res)
+                
                 if(res.code == 200){
                     this.$message.success('Successful！')
                     if(res.result){
@@ -1796,7 +1786,7 @@ export default {
                 class: "my-modal",
                 onOk() {
                     deleteEXimg(id).then(res =>{
-                        console.log(res)
+                        
                         if(res.code == 200){
                             that.$message.success('Successful！');
                             that.getReferencePic(that.designId);
@@ -1858,7 +1848,7 @@ export default {
         },
         postSaveDesign1(params){
             saveDesign(params).then(res => {
-                console.log(res)
+                
                 if(res.code == 200){
                     this.visibletype = -1;
                     this.liClick = -1;
@@ -1886,7 +1876,6 @@ export default {
         },
         getSelectById(id){
             selectById(id).then(res => {
-                console.log(res);
                 this.sizePicUrl = res.result.sizePicUrl
                 this.bgimgs = res.result.imgs;
                 this.productColor = res.result.productColorValue;
@@ -1912,7 +1901,6 @@ export default {
             let obj2 = that.myCanvas2.getObjects();
             let obj3 = that.myCanvas3.getObjects();
             let obj4 = that.myCanvas4.getObjects();
-            console.log(obj1 || obj2 || obj3 || obj4)
             if(obj1.length > 0|| obj2.length > 0 || obj3.length > 0 || obj4.length > 0){
                 that.$confirm({
                     title: "Are you sure you want to leave?",
@@ -1933,7 +1921,6 @@ export default {
             }
         },
         openDesignModal(id){
-            console.log(id)
             this.postId = id;
             this.show = true;
             if(!this.getCookie('introFlag')){
@@ -1976,7 +1963,7 @@ export default {
             that.loading = true;
             categoryList(this.id,this.pageNum).then(res => {
                 that.loading = false;
-                console.log(res)
+                
                 if(res.current <= res.total){
                     that.goodsList = that.goodsList.concat(res.records);
                 }else{
@@ -2229,7 +2216,6 @@ export default {
             const { form1 } = this;
             // can use data-binding to get
             const keys = form1.getFieldValue('keys');
-            console.log(keys)
             const nextKeys = keys.concat(++id);
             // can use data-binding to set
             // important! notify form to detect changes
@@ -2237,16 +2223,14 @@ export default {
                 keys: nextKeys,
             });
         },
-        handleSubmit(e){
-            e.preventDefault();
-            this.form1.validateFields((err, values) => {
-                console.log(values)
-                if (!err) {
-                    console.log('Received values of form: ', values);
-                    this.$message.success('successful!')
-                }
-            });
-        },
+        // handleSubmit(e){
+        //     e.preventDefault();
+        //     this.form1.validateFields((err, values) => {
+        //         if (!err) {
+        //             this.$message.success('successful!')
+        //         }
+        //     });
+        // },
         
         /**
          * 1：改变字体颜色的
@@ -2518,7 +2502,7 @@ export default {
         },
         postAddEximg(pid,picUrl,remarks,fileUrl){
             addEximg(pid,picUrl,remarks,fileUrl).then(res => {
-                console.log(res)
+                
                 if(res.code == 200){
                     this.example = false;
                     this.$message.success('Successful submission!');
@@ -2537,7 +2521,6 @@ export default {
         clickOk(){
             this.form.validateFields((err,values) => {
                 if (!err) {
-                    console.log(values.bz)
                     this.postAddEximg(this.designId,this.preview_url,values.bz,this.source_url);
                 }
             },);
@@ -2558,7 +2541,6 @@ export default {
         },
         // 选择颜色容器返回上一级
         goBackPage(){
-            console.log(this.liClick)
             // 字体选择颜色返回上一级
             if(this.liClick == 0){
                 this.visibletype = 3
@@ -2575,7 +2557,6 @@ export default {
                 that.myCanvas = that.myCanvas1;
                 that.bindCanvas(that.myCanvas,0);
                 that.designModel = 0;
-                console.log(that.numberStrokeWidth)
                 that.addExampleNumber(that.numberFontFamily,0,that.numberSize,that.numberColor.slice(1),that.numberColorName,that.boxSize1.left,that.boxSize1.top,that.numberStrokeWidth,that.numberOutlineColor.slice(1))
             }else{
                 if(that.exampleNumber1){
@@ -2657,7 +2638,7 @@ export default {
             let img = new Image();
             //设置图片跨域访问
             saveNameNumber(0,font,nameSize,nameColor,namePosition,lineweight,outLineColor).then(res => {
-                console.log(res)
+                
                 if(res.code == 0){
                     img.crossOrigin = 'anonymous';
                     img.src = res.result+"?timeStamp="+new Date().getTime();
@@ -2743,7 +2724,6 @@ export default {
             this.visibletype = 11;
             this.imgTitle = title;
             this.imgs1 = this.imgs[index].pic
-            console.log(this.imgs1)
         },
         beforeUploadEx(file){
             let files = file.file;
@@ -2757,24 +2737,21 @@ export default {
         postSourceUpload(file){
             let formData = new FormData();
             formData.append("file", file);
-            console.log(file)
-            console.log(formData.get("file"))
             sourceUpload(formData).then(res => {
-                console.log(res)
+                
                 this.preview_url = res.preview_url;
                 this.previewImage = res.preview_url;
                 this.source_url = res.source_url;
             })
         },
         beforeUpload(file){
-            console.log(file)
             this.uploadId ++;
             let files = file.file;
             if(files.size / 1024 / 1024 < 10){
                 let formData = new FormData();
                 formData.append("file", files);
                 sourceUpload(formData).then(res => {
-                    console.log(res)
+                    
                     if(res.preview_url){
                         this.selectImg(res.preview_url);
                     }else{
@@ -2792,7 +2769,6 @@ export default {
             reader.readAsDataURL(img)
         },
         onSearch (value) {
-            console.log(value)
             this.handleGetPic(value)
         },
         startTo(i){
@@ -3080,7 +3056,6 @@ export default {
                 }
             }
             if(isAdd){
-                console.log(text);
                 if(this.myCanvas.getActiveObject()){
                     let params = {
                         text: text,style:this.bgcolor ? '' : 'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
@@ -3121,19 +3096,6 @@ export default {
                 this.handleChangeFont(params,isAdd);
             }
         },
-        // 加载资源字体
-        // loadAndUse(font) {
-        //     let that = this;
-        //     var myfont = new FontFaceObserver(font)
-        //     myfont.load().then(function() {
-        //         // when font is loaded, use it.
-        //         that.myCanvas.getActiveObject().set("fontFamily", font);
-        //         that.myCanvas.requestRenderAll();
-        //     }).catch(function(e) {
-        //         console.log(e)
-        //         alert('font loading failed ' + font);
-        //     });
-        // },
         // 左右垂直居中
         setObjCenter(){
             let t = this.myCanvas.getActiveObject();
@@ -3176,10 +3138,9 @@ export default {
             this.visibletype = 7;
         },
         openChangeColorBox(key,title){
-            console.log(key)
             this.changeWidthShow = key;
             colorList(key).then(res => {
-                console.log(res)
+                
                 this.colorList = res.result
                 let colors = this.colorList.list;
                 if(key == 5){
@@ -3233,7 +3194,6 @@ export default {
                         if(this.bgcolor){
                             for(let i = 0; i < colors.length; i++) {
                                 if (colors[i].itemValue === this.bgcolor) {
-                                    console.log(i);
                                     this.fontColorIcon2 = i
                                 }
                             }
@@ -3252,7 +3212,6 @@ export default {
                         if(this.strokeColor){
                             for(let i = 0; i < colors.length; i++) {
                                 if (colors[i].itemValue === this.strokeColor) {
-                                    console.log(i);
                                     this.fontColorIcon3 = i
                                 }
                             }
@@ -3270,7 +3229,6 @@ export default {
                         if(this.shadowColor){
                             for(let i = 0; i < colors.length; i++) {
                                 if (colors[i].itemValue === this.shadowColor) {
-                                    console.log(i);
                                     this.fontColorIcon4 = i
                                 }
                             }
@@ -3285,7 +3243,6 @@ export default {
                     if(this.color){
                         for(let i = 0; i < colors.length; i++) {
                             if (colors[i].itemValue === this.color){
-                                console.log(i);
                                 this.fontColorIcon1 = i
                             }
                         }
@@ -3299,7 +3256,6 @@ export default {
                     if(this.nameOutlineColor){
                         for(let i = 0; i < colors.length; i++) {
                             if (colors[i].itemValue === this.nameOutlineColor){
-                                console.log(i);
                                 this.fontColorIcon7 = i
                             }
                         }
@@ -3313,7 +3269,6 @@ export default {
                     if(this.numberOutlineColor){
                         for(let i = 0; i < colors.length; i++) {
                             if (colors[i].itemValue === this.numberOutlineColor){
-                                console.log(i);
                                 this.fontColorIcon8 = i
                             }
                         }
@@ -3321,7 +3276,6 @@ export default {
                         this.fontColorIcon8 = -1
                     }
                 }
-                console.log(key,title);
             })
         },
         // 打开改变描边样式盒子
@@ -3437,7 +3391,6 @@ export default {
             this.handleChangeFont(params,true);
         },
         changestrokeWidth(e){
-            console.log(e)
             this.strokeWidth = e;
         },
         // 改变描边样式结束
@@ -3502,7 +3455,6 @@ export default {
             return color;
         },
         handleColorShow(){
-            console.log(33)
             if(this.colorKey == 1){
                 this.colorShow = this.color;
                 this.colorShowName = this.colorName;

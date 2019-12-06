@@ -51,7 +51,6 @@ export default {
   },
   methods: {
     onSelect (obj) {
-      console.log(obj)
       this.$emit('menuSelect', obj)
     }
   }

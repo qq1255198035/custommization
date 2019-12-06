@@ -206,7 +206,6 @@
 
       handlePasswordCheck(rule, value, callback) {
         let password = this.form.getFieldValue('password')
-        //console.log('value', value)
         if (value === undefined) {
           callback(new Error('请输入密码'))
         }
@@ -311,10 +310,6 @@
       },
     },
     watch: {
-      'state.passwordLevel'(val) {
-        console.log(val)
-
-      }
     }
   }
 </script>

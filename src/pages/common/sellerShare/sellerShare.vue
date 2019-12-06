@@ -227,7 +227,6 @@ check() {
           this.dataSizeTexts = res.result.personOrderPrintList;
           this.sizes = result1.sizes.split(",");
         }
-        console.log(this.dataSizeText);
       });
     }
   },

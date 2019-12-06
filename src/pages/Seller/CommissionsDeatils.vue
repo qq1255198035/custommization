@@ -73,14 +73,12 @@ export default {
     },
     methods:{
         handleTableChange (pagination) {
-            console.log(pagination.current)
             this.getCommissionList(pagination.current);
         },
         getCommissionList(num){
             this.loading = true;
             commissionList(num).then(res => {
                 this.loading = false;
-                console.log(res)
                 this.data = res.records;
                 this.pagination.total = res.total
             })

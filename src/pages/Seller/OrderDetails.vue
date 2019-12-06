@@ -387,10 +387,8 @@ export default {
     };
   },
   mounted() {
-    //this.getAdressList();
     this.getAddressOne();
     this.id = this.$route.query.id;
-    //console.log(this.id)
     this.getTeamOrderDetails(this.id);
   },
   methods: {
@@ -442,7 +440,6 @@ export default {
           price: this.prices
         };
         discountSure(param).then(res => {
-          console.log(res);
           if (res.code == 200) {
             //window.location.reload();
             this.getTeamOrderDetails(this.id);
@@ -453,13 +450,11 @@ export default {
       }
     },
     onClosingDate(date, dateString) {
-      console.log(dateString);
       this.timeover = dateString;
     },
     startGroupBtn() {
       this.myform.validateFields((err, values) => {
         if (!err) {
-          console.log(this.information.list)
           if(this.information.list.length !== 0) {
             if (this.adress) {
             const param = {
@@ -475,17 +470,14 @@ export default {
               addressId: this.addressId,
               payMode: this.adressValue
             };
-            console.log(param);
             if (this.adressValue == 2) {
               startGroup(param).then(res => {
-                console.log(res);
                 if (res.code == 200) {
                   this.shareChecked = true;
                 }
               });
             } else {
               startGroup(param).then(res => {
-                console.log(res);
                 if (res.code == 200) {
                   this.$router.push({
                     path: "/unifiedpay",
@@ -509,13 +501,10 @@ export default {
               duration: 4
             })
           }
-          
-          console.log(values);
         }
       });
     },
     minus(data) {
-      console.log(data);
       if (this.nums && this.nums > data) {
         this.nums--;
         this.disCounts(this.nums, this.resPrice);
@@ -536,11 +525,8 @@ export default {
     },
 
     showEdModal(id) {
-      console.log(id);
-
       this.showVisible = true;
       discount().then(res => {
-        console.log(res);
         this.discounts = res.result;
       });
       const param = {
@@ -548,7 +534,6 @@ export default {
       };
       setTimeout(() => {
         discountEdit(param).then(res => {
-          console.log(res);
           this.designDetail = res.result;
           this.nums = res.result.quantity
             ? res.result.quantity
@@ -560,7 +545,6 @@ export default {
           const numbers = this.nums;
           this.minNums = res.result.minOrder;
           this.disCounts(numbers, res.result.maxPrice);
-          console.log(res.result.price - this.onePrice);
           this.resPrice = (res.result.maxPrice * this.discounts) / 100;
           this.twoPrice = ((this.prices - this.onePrice) * this.nums).toFixed(
             2
@@ -589,7 +573,6 @@ export default {
         cancelText: "Cancel",
         class: "my-modal",
         onOk() {
-          console.log("OK");
           that.postDelProducts(id);
         },
         onCancel() {
@@ -598,19 +581,16 @@ export default {
       });
     },
     postDelProducts(id) {
-      console.log(id)
       delProducts(id).then(res => {
-        console.log(res);
         if (res.code == 200) {
           this.information.list = this.information.list.filter(item => item.id !== id)
           //this.getTeamOrderDetails(this.id);
           this.$message.success(res.message);
         }
-      });
+      })
     },
     getTeamOrderDetails(id) {
       teamOrderDetails(id).then(res => {
-        console.log(res);
         const formList = res.result;
         this.orderPid = formList.id;
         this.addressId = formList.addressId;
@@ -626,7 +606,6 @@ export default {
     },
     postDeleteAddress(id) {
       deleteAddress(id).then(res => {
-        console.log(res);
         if (res.code == 200) {
           this.getAdressList();
           this.$message.success(res.message);
@@ -641,8 +620,6 @@ export default {
     },
     queryAddressById(id) {
       queryById(id).then(res => {
-        console.log(res);
-        console.log(res.result.addressCode.split(","));
         this.form.setFieldsValue({
           bm: res.result.name,
           country: res.result.addressCode.split(","),
@@ -666,7 +643,6 @@ export default {
             name: values.bm
           };
           addAddress(params).then(res => {
-            console.log(res);
             if (res.code == 200) {
               this.$message.success(res.message);
               this.modelShow2 = false;
@@ -679,7 +655,6 @@ export default {
     },
     getAddressOne() {
       addressOne().then(res => {
-        console.log(res);
         this.options = res.result;
       });
     },
@@ -716,7 +691,6 @@ export default {
       this.endOpen = open;
     },
     onChange(e) {
-      console.log(e.target.value)
       this.adressValue = e.target.value
     },
     onChangeOne(e) {
@@ -730,19 +704,16 @@ export default {
       this.twoPrice = ((this.prices - this.onePrice) * this.nums).toFixed(2);
     },
     onChangeValues(e) {
-      console.log("radio checked", e.target.value);
       this.prices = e.target.value;
       this.twoPrice = ((e.target.value - this.onePrice) * this.nums).toFixed(2);
     },
     getAdressList() {
       adressList().then(res => {
-        console.log(res);
         this.adressList = res.result;
         //this.adress = res.result[0].addressName + res.result[0].detailInfo +res.result[0].userName+res.result[0].telNumber;
       });
     },
     setDefaultAdress(item) {
-      console.log(item);
       this.adress = item.addressName + item.detailInfo + item.userName + item.telNumber;
       this.adressShow.addressName = item.addressName;
       this.adressShow.detailInfo = item.detailInfo;
@@ -771,20 +742,13 @@ export default {
       });
       const formData = new FormData();
       formData.append("file", files);
-      console.log(formData);
       upLoad(formData).then(res => {
-        console.log(res);
         this.fileUrl = res.preview_url;
       });
     }
   },
   watch: {
-    startValue(val) {
-      console.log("startValue", val);
-    },
-    endValue(val) {
-      console.log("endValue", val);
-    }
+    
   },
   beforeCreate() {
     this.form = this.$form.createForm(this);

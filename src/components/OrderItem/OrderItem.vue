@@ -32,7 +32,7 @@
                 <h3>{{item.productColor}}</h3>
               </div>
               <div class="desc">
-                <span>Item Sold/Expected Quantify</span>
+                <span>Item Sold / Expected Quantity</span>
                 <h3>{{item.buyNum}}/{{item.quantity}}</h3>
               </div>
               <div class="desc">
@@ -201,7 +201,7 @@ export default {
     commitDate(){
       if(this.timeover){
         postProductionTime(this.id,this.timeover).then(res => {
-          console.log(res)
+          
           if(res.code == 200){
             this.openDate = false;
             this.timeover = '';
@@ -245,7 +245,6 @@ export default {
       this.id = id;
       this.openDate = true;
       getProductionTime(this.id).then(res => {
-          console.log(res);
           if(res.code == 200){
             this.maxDays = 55;
             this.minDays = 20;
@@ -281,7 +280,6 @@ export default {
       this.$emit("handleMyClick", id, status,type);
     },
     openMyshareBox(item) {
-      console.log(item);
       this.openShare = true;
       this.config.url = window.location.origin + "/#/share" + "?order_id=" + item.id;
       this.config.image = item.interiorList[0].positivePicUrl;

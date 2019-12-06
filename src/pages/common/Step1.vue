@@ -53,7 +53,6 @@ export default {
             email: values.email
           };
           passwordEmail(params).then(res => {
-            console.log(res);
             this.code = res.code;
             if (res.code == 0) {
               this.$notification["success"]({
@@ -85,9 +84,7 @@ export default {
         if (!err) {
           if (this.code == 0) {
             if(this.captcha){
-              console.log(this.captcha)
               checkCaptcha(values.email, this.captcha).then(res => {
-                  console.log(res)
                     if(res.success){
                       this.$emit("nextStep", values.email, this.captcha);
                     }else{

@@ -177,9 +177,6 @@
        // alert(roleId);
         this.$refs.modalUserRole.show(roleId);
       },
-      onChangeDate(date, dateString) {
-        console.log(date, dateString);
-      },
     },
     components: {
       RoleModal,

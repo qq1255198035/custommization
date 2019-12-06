@@ -1022,7 +1022,7 @@ export default {
         },
         postSaveDesign(params){
             saveDesign(params).then(res => {
-                console.log(res)
+                
                 if(res.code == 200){
                     this.endDsign = true;
                 }
@@ -1038,7 +1038,7 @@ export default {
         },
         getSelectById(id){
             selectById(id).then(res => {
-                console.log(res);
+                ;
                 this.bgimgs = res.result.imgs;
                 this.bindCanvas(this.myCanvas1,0);
                 this.bindCanvas(this.myCanvas2,1);
@@ -1073,7 +1073,7 @@ export default {
             that.loading = true;
             categoryList(this.id,this.pageNum).then(res => {
                 that.loading = false;
-                console.log(res)
+                
                 if(res.current <= res.total){
                     that.goodsList = that.goodsList.concat(res.records);
                 }else{
@@ -1088,7 +1088,7 @@ export default {
         },
         getAllList(){
             listAll().then(res => {
-                console.log(res)
+                
                 if(res.code == 0){
                     if(res.total == 1){
                         this.btnable = true;
@@ -1103,7 +1103,7 @@ export default {
         },
         getcategoryList(id,num){
             categoryList(id,num).then(res => {
-                console.log(res)
+                
                 this.goodsList = res.records;
             })
         },

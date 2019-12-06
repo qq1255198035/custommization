@@ -29,7 +29,6 @@ export default {
     methods: {
         _open() {
             let urls = this.$route.query.url
-            console.log(urls)
             this.url = urls
             window.location.replace(urls);
         }

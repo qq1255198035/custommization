@@ -290,7 +290,6 @@ export default {
     this._apiPersonOrder();
     this.check();
     this.getWindowScreen();
-    console.log(this.$route.query)
   },
   computed:{
     myPrice(){
@@ -308,7 +307,6 @@ export default {
         for (let vq of Array.from(va)) {
           newArr.push(vq);
           this.myPostListB = newArr;
-          console.log(this.myPostListB)
         }
       }
     },
@@ -318,7 +316,6 @@ export default {
         for (let vq of Array.from(va)) {
           newArr.push(vq);
           this.totalPriceArrB = newArr;
-          console.log(this.totalPriceArrB)
         }
       }
     },
@@ -333,7 +330,6 @@ export default {
       }
     },
     delectItem(index,aindex){
-      console.log(index,aindex)
       let that = this;
       that.$confirm({
         title: 'Are you sure delete this task?',
@@ -355,7 +351,6 @@ export default {
 
           that.myPostList[index].splice(aindex,1);
           that.calcPostlist();
-          console.log(that.myPostListB)
           that.$message.success('Successful operation!')
         }
       })
@@ -387,10 +382,8 @@ export default {
             if(that.mobileData[key]){
               dataArr = dataArr.concat(that.mobileData[key]);
               that.mobileData[key] = dataArr;
-              console.log(that.mobileData)
             }else{
               that.mobileData[key] = dataArr;
-              console.log(that.mobileData)
             }
             postList.push({
               price: that.resultData[that.sizeIndex].price,
@@ -414,7 +407,6 @@ export default {
             }else{
               that.myPostList[that.sizeIndex] = postList
             }
-            console.log(that.myPostList)
             that.mobildvisible = false;
             that.size = '';
             that.activeIndex = -1;
@@ -429,12 +421,10 @@ export default {
       });
     },
     choseSize(index,size){
-      console.log(size);
       this.size = size;
       this.activeIndex = index;
     },
     addDataList(index,type){
-      console.log(index)
       this.mobildvisible = true;
       this.sizeIndex = index;
       this.drawerShow = type;
@@ -450,7 +440,6 @@ export default {
     },
     getWindowScreen(){
       let screenWidths = window.screen.width;
-      console.log(screenWidths)
       if(screenWidths > 768){
         this.mobileShow = true;
       }else{
@@ -565,25 +554,10 @@ export default {
       //校验尺码，名字，号码
       if(this.arrtyAllList){
         for (var i = 0; i < this.arrtyAllList.length; i++) {
-          console.log(!this.arrtyAllList[i].size);
           if (!this.arrtyAllList[i].size) {
             this.$message.error("Please choose the size.");
             return;
           }
-          // if (
-          //   this.arrtyAllList[i].is_print_number == 1 &&
-          //   !this.arrtyAllList[i].printNumber
-          // ) {
-          //   this.$message.error("Please choose the number.");
-          //   return;
-          // }
-          // if (
-          //   this.arrtyAllList[i].is_print_text == 1 &&
-          //   !this.arrtyAllList[i].printName
-          // ) {
-          //   this.$message.error("Please choose your name.");
-          //   return;
-          // }
         }
       }else{
         this.$message.error("Please add at least one item!");
@@ -597,9 +571,7 @@ export default {
           personOrderList: JSON.stringify(this.listNoPay),
           pay_mode: this.pay_mode
         };
-        console.log(param);
         apiPay(param).then(res => {
-          console.log(res);
           if(res.payEndCode == 1){
             if (res.code == 1) {
               this.$router.push({
@@ -647,9 +619,7 @@ export default {
             personOrderList: JSON.stringify({data:this.myPostListB}),
             pay_mode: this.pay_mode
           };
-          console.log(param);
           apiPay(param).then(res => {
-            console.log(res);
             if(res.payEndCode == 1){
               if (res.code == 1) {
                 this.$router.push({
@@ -676,34 +646,18 @@ export default {
     //初始订单查询
     _apiPersonOrder() {
       apiPersonOrder({
-        //token: this.$ls.get("token"),
-        //order_id: 266,
         order_id: this.$route.query.order_id,
         pageNo: 1,
         pageSize: 10
       }).then(res => {
-        console.log(res)
         this.$ls.set("pay_mode", res.result.pay_mode);
         this.pay_mode = res.result.pay_mode;
         this.resultData = res.result.personOrderNoPrintList;
         this.detailList = res.result;
-        // let endDate = res.result.payEndDate;
-        // if(new Date(endDate).getTime() < new Date().getTime()){
-        //   let that = this;
-        //   that.$error({
-        //     title: 'Sorry',
-        //     content:'This shared link,please click here to our home page.',
-        //     okText: 'OK',
-        //     onOk(){
-        //       that.$router.push({path: '/index'})
-        //     },
-        //   });
-        // }
         this.resultData.forEach(el => {
           this.sizes.push(el.sizes);
           this.mobileImgArr.push(el.positive_pic_url);
           this.priceArr.push(el.price)
-          
         })
       });
     }
@@ -724,6 +678,9 @@ export default {
 <style lang="less">
 @import url("./../../../components/index.less");
 @import url("./../../../assets/style.css");
+.ant-scroll-number-only > p{
+  width: 9px;
+}
 .bg-box {
   width: 20px;
   height: 34px;

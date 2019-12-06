@@ -217,7 +217,6 @@ export default {
   methods: {
     _personSet() {
       personSet().then(res => {
-        console.log(res)
         const result = res.result;
         const phone1 = result.phone ? result.phone.split(",")[0] : "86";
         const phone2 = result.phone ? result.phone.split(",")[1] : "";
@@ -245,14 +244,6 @@ export default {
         this.country = res.result;
       });
     },
-    /*checkedTel(rule, value, callback) {
-      console.log(value)
-      const reg = /((\d{11})|^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$)/
-      if (!reg.test(value)) {
-        callback(new Error('请输入正确电话号'))
-      }
-    },*/
-    // 更新
     submitPerson() {
       this.form.validateFields((err, values) => {
         if (!err) {

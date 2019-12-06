@@ -34,7 +34,7 @@ export default {
   },
   components: {},
   created() {
-    console.log(this.datas);
+    
   }
 };
 </script>

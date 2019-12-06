@@ -364,8 +364,8 @@ export default {
                     axios({
                         url: 're.php?mail=' + this.email+ '&' + window.location.search,
                         method: 'get'
+                        // eslint-disable-next-line
                     }).then(res => {
-                        console.log(res)
                         this.modelShow = true
                     })
                 }else{

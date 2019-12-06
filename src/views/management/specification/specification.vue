@@ -216,7 +216,7 @@ export default {
     pay() {
       console.log(55)
       ajaxPost('http://192.168.0.129:8080/jeecg-boot/api/paypal/pay').then(res => {
-        console.log(res)
+        
       })
       /*httpRequest(
         this.paramObj,

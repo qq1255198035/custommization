@@ -145,7 +145,7 @@ export default {
     },
     getSyscategoryList(){
       syscategoryList().then(res => {
-        console.log(res)
+        
         if(res.code == 0){
           this.treeData = res.result
         }
@@ -160,7 +160,7 @@ export default {
     delType(id){
       console.log(id)
       delProType(id).then(res => {
-        console.log(res)
+        
         if(res.code == 200){
           this.$message.success(res.message);
           this.getProTypeList(this.name)
@@ -172,7 +172,7 @@ export default {
     },
     getProTypeList(name){
       proTypeList(name).then(res => {
-        console.log(res)
+        
         if(res.code == 0){
           this.data = res.result;
           this.data.forEach((item) => {

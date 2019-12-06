@@ -58,7 +58,7 @@ export default {
         }
     },
     mounted(){
-        console.log(this.mycurrent - 1 === 0)
+    
     }
 }
 </script>

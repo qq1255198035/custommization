@@ -234,14 +234,12 @@ export default {
   methods: {
     getOrderDetailDown(id) {
       orderDetailDown(id).then(res => {
-        console.log(res);
         this.infoList = res.result;
       });
     },
 
     getOrderDetailUp(id) {
       orderDetailUp(id).then(res => {
-        console.log(res);
         if (res.code == 0) {
           this.orderId = res.result.orderSn;
           this.contact = res.result.contact;
@@ -258,12 +256,9 @@ export default {
     getTrackingData(id) {
       getTrackingData(id).then(res =>{
         if(res.code == 0) {
-          console.log(res.result)
           this.mydata.logisticsList = res.result.logisticsList ? res.result.logisticsList : [];
           this.mydata.mapAddress = res.result.mapAddress ? res.result.mapAddress : {};
           this.mydata.mapExpressage = res.result.mapExpressage ? res.result.mapExpressage : {};
-          console.log(this.mydata.mapAddress.userName)
-          console.log(this.mydata)
         }
       });
     },

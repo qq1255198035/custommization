@@ -101,7 +101,6 @@ export default {
         },
       });
       read(id).then(res => {
-        console.log(res);
         if(res.code == 200){
           this._apiNotice();
         }
@@ -115,9 +114,7 @@ export default {
       apiNotice(param).then(res => {
         this.data = res.records;
         this.loading = false;
-        console.log(res);
       });
-      console.log(this.data);
     },
     loadMore() {
       this.offset++;
