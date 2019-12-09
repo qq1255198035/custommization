@@ -18,12 +18,12 @@
 </template>
 <script>
 import Swiper from "swiper"
-import imgurl from '@/assets/bg-white.png'
-import imgurl1 from '@/assets/bg-white.png'
-import imgurl2 from '@/assets/bg-white.png'
-import imgurl3 from '@/assets/bg-white.png'
-import imgurl4 from '@/assets/bg-white.png'
-import imgurl5 from '@/assets/bg-white.png'
+import imgurl from './../../assets/img.png'
+import imgurl1 from './../../assets/img.png'
+import imgurl2 from './../../assets/img.png'
+import imgurl3 from './../../assets/img.png'
+import imgurl4 from './../../assets/img.png'
+import imgurl5 from './../../assets/img.png'
 import 'swiper/dist/css/swiper.css'
 //import { fabric } from 'fabric'
 export default {
@@ -43,8 +43,8 @@ export default {
       methods:{
             initSwiper(){
                   new Swiper ('.swiper-container', {
-                         effect : 'coverflow',
-                         loop: true,
+                        effect : 'coverflow',
+                        loop: true,
                         slidesPerView: 3,
                         centeredSlides: true,
                         coverflowEffect: {
@@ -120,12 +120,6 @@ export default {
                   padding: 5px;
                   padding-left: 20px;
                   margin-left: -85px;
-            }
-            .toronto{
-                  bottom: -8px;
-            }
-            .hongkong{
-                  bottom: 20px;
             }
       }
 }
