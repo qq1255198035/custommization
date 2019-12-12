@@ -57,9 +57,6 @@ module.exports = {
                         introJs: ['intro.js', 'introJs']
                   })
             ],
-            performance: {
-                  hints:false
-            },
             //警告 webpack 的性能提示
             performance: {
                   hints:'warning',

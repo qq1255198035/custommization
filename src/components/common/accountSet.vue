@@ -198,7 +198,6 @@ export default {
       phoneFirst: "",
       phoneLast: "",
       areaId: "",
-     
       fileUrl: "",
       fileUrl1: "",
       imgurl: "",
@@ -272,7 +271,6 @@ export default {
         }
       });
     },
-    commonCity() {},
     countryBtn(value) {
       this.countryValue = value;
       const params = {
