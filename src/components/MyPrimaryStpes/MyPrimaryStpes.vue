@@ -91,6 +91,7 @@ export default {
                   margin-top: 20px;
                   margin-bottom: 0;
                   color: #999;
+                  min-width: 109px;
             }
       }
       .section-active{

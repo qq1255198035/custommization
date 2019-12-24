@@ -395,6 +395,7 @@ export default {
     },
     getCheckOutOrders(pageNo,content,status){
       checkOutOrders(pageNo,content,status).then(res => {
+        console.log(res)
         this.ipagination.total = res.total;
         this.dataSource = res.records;
       })

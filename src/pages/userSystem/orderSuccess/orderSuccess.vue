@@ -51,7 +51,7 @@
       <div class="mobile-title">
         <h1>
           <a-icon type="left" @click="$router.go(-1)"/>
-          Order Fetails
+          Order Details
         </h1>
       </div>
       <stpes-mobile :mycurrent="step" style="padding: 20px 10px;">

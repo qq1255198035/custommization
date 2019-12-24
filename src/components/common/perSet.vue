@@ -8,7 +8,7 @@
               <a-input
                 placeholder="Email"
                 :disabled="true"
-                v-decorator="['email',{rules: [{ required: true, message: 'Email' }]}]"
+                v-decorator="['email',{rules: [{ required: true, message: 'Please input your email' }]}]"
               />
             </a-form-item>
 
@@ -17,7 +17,7 @@
                 <a-form-item label="First name">
                   <a-input
                     placeholder="First name"
-                    v-decorator="['surname',{rules: [{ required: true, message: 'First name' }]}]"
+                    v-decorator="['surname',{rules: [{ required: true, message: 'Please input your first name' }]}]"
                   />
                 </a-form-item>
               </a-col>
@@ -25,7 +25,7 @@
                 <a-form-item label="Last name">
                   <a-input
                     placeholder="Last name"
-                    v-decorator="['monicker',{rules: [{ required: true, message: 'Last name' }]}]"
+                    v-decorator="['monicker',{rules: [{ required: true, message: 'Please input your last name' }]}]"
                   />
                 </a-form-item>
               </a-col>
@@ -33,14 +33,14 @@
             <a-form-item label="Bio">
               <a-input
                 placeholder="Bio"
-                v-decorator="['company',{rules: [{ required: true, message: 'Bio' }]}]"
+                v-decorator="['company',{rules: [{ required: true, message: 'Please input the bio'}]}]"
               />
             </a-form-item>
 
             <a-form-item label="Place">
               <a-select
                 @change="countryBtn"
-                v-decorator="['countryName',{rules: [{ required: true, message: 'Place' }]}]"
+                v-decorator="['countryName',{rules: [{ required: true, message: 'Please choose' }]}]"
               >
                 <a-select-option
                   v-for="(item, index) in country"
@@ -56,7 +56,7 @@
                     <a-select
                       @change="onProvince"
                       placeholder="Please choose"
-                      v-decorator="['province',{rules: [{ required: true, message: 'Please choose' }]}]"
+                      v-decorator="['province',{rules: [{ required: true, message: 'Please choose'}]}]"
                     >
                       <a-select-option
                         v-for="(item, index) in province"
@@ -90,24 +90,22 @@
               <a-input
                 placeholder="Street"
                 :autosize="{ minRows: 6 }"
-                v-decorator="['streetName',{rules: [{ required: true, message: 'Street' }]}]"
+                v-decorator="['streetName',{rules: [{ required: true, message: 'Please input the street' }]}]"
               />
             </a-form-item>
             <a-input-group compact>
               <a-form-item label="Phone number">
                 <a-row :gutter="32">
-                  <a-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
+                  <a-col :span="4">
                     <a-input
-                      @change="phoneFirstBtn"
                       placeholder="86"
-                      v-decorator="['phoneName1',{rules: [{ required: true, message: '' }]}]"
+                      v-decorator="['phoneName1',{rules: [{ required: true, message: 'Please input your phone number' }]}]"
                     />
                   </a-col>
-                  <a-col :xs="20" :sm="20" :md="20" :lg="20" :xl="20">
+                  <a-col :span="20">
                     <a-input
-                      @change="phoneLastBtn"
                       placeholder="Phone number"
-                      v-decorator="['phoneName2',{rules: [{ required: true, message: 'Phone number' }]}]"
+                      v-decorator="['phoneName2',{rules: [{ required: true, message: 'Please input your phone number' }]}]"
                     />
                   </a-col>
                 </a-row>
@@ -220,7 +218,7 @@ export default {
     _agencyInfo() {
       agencyInfo().then(res => {
         const result = res.result;
-        const phone1 = result.phone ? result.phone.split(",")[0] : "86";
+        const phone1 = result.phone ? result.phone.split(",")[0] : "";
         const phone2 = result.phone ? result.phone.split(",")[1] : "";
         this.form.setFieldsValue({
           surname: result.surname,
@@ -256,29 +254,33 @@ export default {
     // 更新
     submitPerson() {
       this.form.validateFields((err, values) => {
-        if (!err) {
-          const params = {
-            email: values.email,
-            surname: values.surname,
-            monicker: values.monicker,
-            intro: values.company,
-            country: this.countryValue,
-            province: this.provinceId,
-            city: this.cityId,
-            address: values.streetName,
-            img: this.fileUrl,
-            phone: values.phoneName1 + "," + values.phoneName2
-          };
-          agencyEdit(params).then(res => {
-            if (res.code == 200) {
-              this.$notification.success({
-                message: 'Update Success',
-                description: 'The information has been updated.',
-                duration: 4
-              });
-              window.location.reload()
-            }
-          });
+        if(values.phoneName2){
+          if (!err) {
+            const params = {
+              email: values.email,
+              surname: values.surname,
+              monicker: values.monicker,
+              intro: values.company,
+              country: this.countryValue,
+              province: this.provinceId,
+              city: this.cityId,
+              address: values.streetName,
+              img: this.fileUrl,
+              phone: values.phoneName1 + "," + values.phoneName2
+            };
+            agencyEdit(params).then(res => {
+              if (res.code == 200) {
+                this.$notification.success({
+                  message: 'Update Success',
+                  description: 'The information has been updated.',
+                  duration: 4
+                });
+                window.location.reload()
+              }
+            });
+          }
+        }else{
+          this.$message.error('Please input your phone number!')
         }
       });
     },
@@ -310,12 +312,6 @@ export default {
     },
     onCity(value) {
       this.cityId = value;
-    },
-    phoneFirstBtn(e) {
-      console.log(e.target.value);
-    },
-    phoneLastBtn(e) {
-      console.log(e.target.value);
     },
     beforeUpload(file) {
       let files = file.file
