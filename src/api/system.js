@@ -79,14 +79,14 @@ export function getAction(url, parameter) {
   })
 }
 //
-export function upLoad(parameter) {
+export function upLoad(formData) {
   return axios({
-    url: '/sys/oss/sourceUpload',
-    headers: {
-      "Content-Type": "multipart/form-data"
-    },
+    url: '/sys/oss/upload',
     method: 'post',
-    data: parameter
+    headers: {
+        "Content-Type": "multipart/form-data"
+    },
+    data: formData
   })
 }
 //
@@ -299,5 +299,55 @@ export function editColorShow(id) {
     url: '/sys/dictItem/queryById',
     method: 'post',
     data: qs.stringify({id:id})
+  })
+}
+
+export function getProductingList(code,pageNo){
+  return axios({
+    url: '/iso/jeecgFactoryOrder/queryToBeProducedPageList',
+    method: 'post',
+    data: qs.stringify({code:code,pageNo:pageNo,pageSize: 12})
+  })
+}
+
+export function getProductList(code,pageNo){
+  return axios({
+    url: '/iso/jeecgFactoryOrder/queryInProductionPageList',
+    method: 'post',
+    data: qs.stringify({code:code,pageNo:pageNo,pageSize: 12})
+  })
+}
+
+export function getFactoryList(orderId){
+  return axios({
+    url: '/system/jeecgUser/factoryList',
+    method: 'post',
+    data: qs.stringify({orderId})
+  })
+}
+
+export function chooseFactory(orderId,orderSn,factoryOrderId,opinion,reference,factoryId){
+  return axios({
+    url: '/iso/jeecgFactoryOrder/chooseFactory',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json;charset-UTF-8'
+    },
+    data: JSON.stringify({orderId,orderSn,factoryOrderId,opinion,reference,factoryId})
+  })
+}
+
+export function logisticsList(){
+  return axios({
+    url: '/system/jeecgAdministrator/logistics',
+    method: 'post'
+  })
+}
+// TODO保存物流信息
+export function saveLogistics(params){
+  return axios({
+    url: '/system/jeecgUser/factoryList',
+    method: 'post',
+    data: qs.stringify(params)
   })
 }

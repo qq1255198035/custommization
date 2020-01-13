@@ -1,8 +1,8 @@
 <template>
-    <div id="factoryOrders">
-        <my-title :title="'订单列表'" :fontsize="20"></my-title>
+    <div id="Producting">
+        <my-title :title="'生产中订单'" :fontsize="20"></my-title>
         <div class="form-box">
-            <a-input placeholder="请输入订单编号" style="width: 25%; margin-right: 20px;"/>
+            <a-input placeholder="请输入订单编号" v-model="orderNum" style="width: 25%; margin-right: 20px;"/>
             <a-button type="primary">查 询</a-button>
         </div>
         <div class="table-box">
@@ -15,7 +15,7 @@
                     <a :href="text" class="handle" target="_blank">下载</a>
                 </template>
                 <template slot="status" slot-scope="text">
-                    <p>{{text}}</p>
+                    <p>{{text | filterStatus}}</p>
                 </template>
                 <template slot="action" slot-scope="text, record">
                     <span class="handle" @click="handleActions(text,record.key,record.orderSn)">{{text === 1 ? '添加物流' : text === 0 ? '审批' : '查看物流'}}</span>
@@ -94,11 +94,8 @@
                                                 ]"
                                                 placeholder="Select"
                                             >
-                                                <a-select-option value="male">
-                                                male
-                                                </a-select-option>
-                                                <a-select-option value="female">
-                                                female
+                                                <a-select-option :value="item.itemValue" v-for="item in lists" :key="item.itemText">
+                                                    {{item.itemText}}
                                                 </a-select-option>
                                             </a-select>
                                         </a-form-item>
@@ -212,33 +209,25 @@
 </template>
 <script>
 import MyTitle from "@/components/MyTitle/MyTitle";
+import { getProductList,logisticsList } from "@/api/system";
+import { addressOne } from "@/api/seller";
+
+let filterMap = {
+    '0': '等待确认',
+    '1': '订单确认',
+    '2': '样衣上传',
+    '3': '半成品上传',
+    '4': '成品上传',
+    '5': '包装上传',
+    '6': '确认发货',
+}
 export default{
     data(){
         return{
             form: this.$form.createForm(this),
-            options: [{
-                value: 'zhejiang',
-                label: 'Zhejiang',
-                children: [{
-                value: 'hangzhou',
-                label: 'Hangzhou',
-                children: [{
-                    value: 'xihu',
-                    label: 'West Lake',
-                }],
-                }],
-            }, {
-                value: 'jiangsu',
-                label: 'Jiangsu',
-                children: [{
-                value: 'nanjing',
-                label: 'Nanjing',
-                children: [{
-                    value: 'zhonghuamen',
-                    label: 'Zhong Hua Men',
-                }],
-                }],
-            }],
+            orderNum: '',
+            lists: [],
+            options: [],
             columns: [
                 {
                     title: '订单编号',
@@ -248,39 +237,38 @@ export default{
                 {
                     title: '款式数量',
                     align: 'center',
-                    dataIndex: 'email'
+                    dataIndex: 'styleNum'
                 },
                 {
                     title: '生产数量',
                     align: 'center',
-                    dataIndex: 'buyCount',
+                    dataIndex: 'allNum',
                 },
                 {
                     title: '派单日期',
                     align: 'center',
-                    dataIndex: 'allCount',
+                    dataIndex: 'createTime',
                 },
                 {
                     title: '交货日期',
                     align: 'center',
-                    dataIndex: 'payEndDate',
+                    dataIndex: 'updateTime',
                 },
                 {
                     title: '工艺声明',
                     align: 'center',
-                    dataIndex: 'orderStatus',
+                    dataIndex: 'craftExplain',
                     scopedSlots: { customRender: "orderStatus" }
                 },
                 {
                     title: '生产状态',
                     align: 'center',
                     scopedSlots: { customRender: "status" },
-                    dataIndex: 'status',
+                    dataIndex: 'processStatus',
                 },
                 {
                     title: '操作',
                     scopedSlots: { customRender: 'action' },
-                    dataIndex: 'proStatus',
                     align: 'center'
                 }
             ],
@@ -310,41 +298,7 @@ export default{
                     status: 1
                 }
             ],
-            dataSource:[
-                {
-                    key: '1',
-                    orderSn: '122456',
-                    email: '3',
-                    buyCount: '2',
-                    allCount: '2019-21-54',
-                    status: '1',
-                    proStatus: 1,
-                    orderStatus: 'http://hbimg.b0.upaiyun.com/b8a2f3cb90ebfdcc8f432e55137d8008d8e0b53c656d-LYlEC1_fw658',
-                    payEndDate: '2019-96-88'
-                },
-                {
-                    key: '2',
-                    orderSn: 'dvdv',
-                    email: '3',
-                    buyCount: '2',
-                    allCount: '2019-21-54',
-                    status: '1',
-                    proStatus: 0,
-                    orderStatus: 'http://hbimg.b0.upaiyun.com/b8a2f3cb90ebfdcc8f432e55137d8008d8e0b53c656d-LYlEC1_fw658',
-                    payEndDate: '2019-96-88'
-                },
-                {
-                    key: '3',
-                    orderSn: 'dvdv',
-                    email: '3',
-                    buyCount: '2',
-                    allCount: '2019-21-54',
-                    status: '1',
-                    proStatus: 2,
-                    orderStatus: 'http://hbimg.b0.upaiyun.com/b8a2f3cb90ebfdcc8f432e55137d8008d8e0b53c656d-LYlEC1_fw658',
-                    payEndDate: '2019-96-88'
-                }
-            ],
+            dataSource:[],
             ipagination:{
                 current: 1,
                 pageSize: 12,
@@ -377,7 +331,24 @@ export default{
     components:{
         MyTitle
     },
+    mounted(){
+        this.getProductsList(this.orderNum,1)
+    },
     methods:{
+        getAddressOne() {
+            addressOne().then(res => {
+                this.options = res.result;
+            });
+        },
+        getProductsList(code,pageNo){
+            getProductList(code,pageNo).then(res => {
+                console.log(res)
+                let key = 'key';
+                res.records.forEach((item,index) => item[key] = index);
+                this.dataSource = res.records;
+                this.ipagination.total = res.total;
+            })
+        },
         cancelAddTransport(){
             this.visible = false;
 
@@ -392,23 +363,36 @@ export default{
         handleActions(a,b,c){
             this.visible = true;
             this.orderSn = c;
-            if(a === 0){
-                this.modelTitle = '工作流审批';
-                this.modelKey = 1;
-            }else if(a === 1){
-                this.modelTitle = '添加物流';
-                this.modelKey = 2;
-            }else{
-                this.modelTitle = '物流信息';
-                this.modelKey = 3;
-            }
-            console.log(a,b,c)
+            // if(a === 0){
+            //     this.modelTitle = '工作流审批';
+            //     this.modelKey = 1;
+            // }else if(a === 1){
+            //     this.modelTitle = '添加物流';
+            //     this.modelKey = 2;
+            // }else{
+            //     this.modelTitle = '物流信息';
+            //     this.modelKey = 3;
+            // }
+            this.modelTitle = '添加物流';
+            this.modelKey = 2;
+            logisticsList().then(res => {
+                console.log(res)
+                if(res.code === 0){
+                    this.lists = res.result
+                }
+            })
+            this.getAddressOne();
+        }
+    },
+    filters:{
+        filterStatus(val){
+            return filterMap[val]
         }
     }
 }
 </script>
 <style lang="less" scoped>
-#factoryOrders{
+#Producting{
     padding: 0 20px;
     .form-box{
         padding: 20px 0;

@@ -1,10 +1,14 @@
 <template>
       <div id="MyHeader">
-            <a-avatar :size="100" :src="imgUrl"/>
-            <div class="desc">
-                  <h3><span>{{timeFix()}},</span> <span>{{name}}</span></h3>
-                  <p><span>{{level}}</span><a-divider type="vertical" />{{intro}}</p>
+            <div class="left">
+                  <a-avatar :size="100" :src="imgUrl"/>
+                  <div class="desc">
+                        <h3><span>{{timeFix()}},</span> <span>{{name}}</span></h3>
+                        <p><span>{{level}}</span><a-divider type="vertical" />{{intro}}</p>
+                  </div>
             </div>
+            
+            <slot></slot>
       </div>
 </template>
 <script>
@@ -41,10 +45,15 @@ export default {
 <style lang="less" scoped>
 #MyHeader{
       display: flex;
-      justify-content: flex-start;
+      justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid #9d9d9d;
       padding: 10px 0;
+      .left{
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+      }
       .desc{
             margin-left: 20px;
             h3{
