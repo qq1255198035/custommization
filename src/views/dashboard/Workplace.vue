@@ -6,17 +6,21 @@
           <ul>
             <li>
               <p>待处理</p>
-              <span>11</span>
+              <span>{{pendingOrder}}</span>
             </li>
             <li>
               <p>总订单数量</p>
-              <span>22</span>
+              <span>{{allOrder}}</span>
             </li>
           </ul>
         </div>
       </my-header>
+      <div class="date-box">
+        <a-month-picker placeholder="请选择年月" @change="changeDate" />
+      </div>
       <div class="gantt-box">
-        <div id="gantt"></div>
+        <div id="gantt" v-if="tasks.length > 0"></div>
+        <p v-else style="text-align: center">暂无数据</p>
       </div>
   </div>
 </template>
@@ -24,123 +28,60 @@
 import Gantt from '@/utils/gantt'
 import MyTitle from "@/components/MyTitle/MyTitle";
 import MyHeader from "@/components/MyHeader/MyHeader";
-import { userInfo } from "@/api/seller";
+import moment from 'moment';
+import 'moment/locale/zh-cn';
+moment.locale('zh-cn');
+import { factoryDashboard,userInfo } from "@/api/system"
 export default {
   data(){
     return{
       name: '',
-      imgUrl: ''
+      imgUrl: '',
+      pendingOrder: '',
+      allOrder: '',
+      tasks: []
     }
   },
+  created(){
+    let year = moment().year();
+    let month = moment().month() + 1 <= 9 ? '0' + (moment().month() + 1) : moment().month() + 1;
+    this.getIndexInfo(year,month)
+  },
   mounted(){
-    var tasks = [
-      {
-        id: 'Task 1',
-        name: '项目一菲菲',
-        start: '2019-11-15',
-        end: '2019-11-30',
-        progress: [
-          {
-            start: '2019-11-16',
-            end:'2019-11-17',
-            color: '#486461',
-          },
-          {
-            start: '2019-11-17',
-            end:'2019-11-19',
-            color: '#567977',
-          },
-          {
-            start: '2019-11-20',
-            end:'2019-11-30',
-            color: '#486461',
-          },
-        ],
-        custom_class: 'bar-ss',
-      },
-      {
-        id: 'Task 2',
-        name: '项目2',
-        start: '2019-11-15',
-        end: '2019-11-30',
-        progress: [
-          {
-            start: '2019-11-16',
-            end:'2019-11-17',
-            color: '#486461',
-          },
-          {
-            start: '2019-11-17',
-            end:'2019-11-19',
-            color: '#486461',
-          },
-          {
-            start: '2019-11-20',
-            end:'2019-11-25',
-            color: '#486461',
-          },
-          {
-            start: '2019-11-26',
-            end:'2019-11-30',
-            color: 'red',
-          },
-        ],
-        custom_class: 'bar-ss',
-      },{
-        id: 'Task 3',
-        name: '项目3',
-        start: '2019-12-1',
-        end: '2019-12-31',
-        progress: [
-          {
-            start: '2019-12-1',
-            end:'2019-12-5',
-            color: '#486461',
-          },
-          {
-            start: '2019-12-7',
-            end:'2019-12-10',
-            color: '#486461',
-          },
-          {
-            start: '2019-12-12',
-            end:'2019-12-24',
-            color: '#486461',
-          }
-        ],
-        custom_class: 'bar-ss',
-      }
-    ];
-    new Gantt("#gantt", tasks,{
-      on_click: function (task) {
-        console.log(task);
-      },
-      on_date_change: function(task, start, end) {
-          console.log(task, start, end);
-      },
-      on_progress_change: function(task, progress) {
-          console.log(task, progress);
-      },
-      on_view_change: function(mode) {
-          console.log(mode);
-      }
-    });
-    document.querySelector('svg').appendChild(
-      document.createElementNS('http://www.w3.org/2000/svg', 'defs')
-    )
     this.getUserInfo();
+    
+    
   },
   methods:{
+    changeDate(date,value){
+      let newdate = value.split('-');
+      let [year,month] = newdate;
+      this.getIndexInfo(year,month)
+    },
     getUserInfo() {
       userInfo().then(res => {
-        if (res.code == 0) {
+        if (res.code === 0) {
           console.log(res)
-          if(res.result){
-            this.name = res.result.username;
-            this.imgUrl = res.result.img;
-          }
+            this.name = res.result.name;
+            this.imgUrl = res.result.avatar;
         }
       });
+    },
+    getIndexInfo(year,month){
+      factoryDashboard(year,month).then(res => {
+        console.log(res)
+        if(res.code === 0){
+          this.allOrder = res.result.allOrder;
+          this.pendingOrder = res.result.pendingOrder;
+          this.tasks = res.result.list;
+          if(this.tasks.length > 0){
+            new Gantt("#gantt", this.tasks);
+            document.querySelector('svg').appendChild(
+              document.createElementNS('http://www.w3.org/2000/svg', 'defs')
+            )
+          }
+        }
+      })
     }
   },
   components:{
@@ -168,9 +109,14 @@ export default {
       }
     }
   }
-  .gantt-box{
-    margin-top: 30px; 
+  .date-box{
+    margin: 20px 0;
+    display: flex;
+    justify-content: flex-end;
+  }
+  .gantt-box{ 
     width: 100%;
   }
+  
 }
 </style>

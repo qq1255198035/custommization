@@ -346,8 +346,53 @@ export function logisticsList(){
 // TODO保存物流信息
 export function saveLogistics(params){
   return axios({
-    url: '/system/jeecgUser/factoryList',
+    url: '/iso/jeecgFactoryOrder/saveLogistics',
     method: 'post',
-    data: qs.stringify(params)
+    headers: {
+      'Content-Type': 'application/json;charset-UTF-8'
+    },
+    data: JSON.stringify({params})
+  })
+}
+
+export function userInfo(){
+  return axios({
+    url: '/system/jeecgUser/factoryInfo',
+    method: 'post'
+  })
+}
+
+export function factoryDashboard(year,month){
+  return axios({
+    url: '/iso/jeecgFactoryOrder/factoryDashboard',
+    method: 'post',
+    data: qs.stringify({year,month})
+  })
+}
+
+export function checkOutInfo(factoryOrderId){
+  return axios({
+    url: '/iso/jeecgFactoryOrderProcess/examineApproveInfo',
+    method: 'post',
+    data: qs.stringify({factoryOrderId})
+  })
+}
+
+export function historyList(factoryOrderId){
+  return axios({
+    url: '/iso/jeecgFactoryOrderProcess/historyList',
+    method: 'post',
+    data: qs.stringify({factoryOrderId})
+  })
+}
+
+export function adminOrderAffirm(factoryOrderId,approverStatus,opinion,orderSn){
+  return axios({
+    url: '/iso/jeecgFactoryOrderProcess/adminOrderAffirm',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json;charset-UTF-8'
+    },
+    data: JSON.stringify({factoryOrderId,approverStatus,opinion,orderSn})
   })
 }

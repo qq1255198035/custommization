@@ -3,12 +3,13 @@
         <my-title :title="'生产中订单'" :fontsize="20"></my-title>
         <div class="form-box">
             <a-input placeholder="请输入订单编号" v-model="orderNum" style="width: 25%; margin-right: 20px;"/>
-            <a-button type="primary">查 询</a-button>
+            <a-button type="primary" @click="getProductsList(orderNum,1)">查 询</a-button>
         </div>
         <div class="table-box">
             <a-table
                 :columns="columns"
                 :dataSource="dataSource"
+                @change="handleTableChange"
                 :pagination="ipagination"
             >
                 <template slot="orderStatus" slot-scope="text">
@@ -18,7 +19,9 @@
                     <p>{{text | filterStatus}}</p>
                 </template>
                 <template slot="action" slot-scope="text, record">
-                    <span class="handle" @click="handleActions(text,record.key,record.orderSn)">{{text === 1 ? '添加物流' : text === 0 ? '审批' : '查看物流'}}</span>
+                    <span class="handle" @click="handleActions(text.processStatus,record.id,record.orderSn)">
+                        {{text === 1 ? '添加物流' : text === 0 ? '审批' : '查看物流'}}
+                    </span>
                 </template>
             </a-table>
         </div>
@@ -43,7 +46,7 @@
                                             <a-col :span="12">
                                                 <a-form>
                                                     <a-form-item label="生产状态" :label-col="{ span: 5 }" :wrapper-col="{ span: 19 }">
-                                                        111
+                                                        {{productStatus | filterStatus}}
                                                     </a-form-item>
                                                     <a-form-item label="照片" :label-col="{ span: 5 }" :wrapper-col="{ span: 19 }">
                                                         <div class="img-box">
@@ -51,22 +54,22 @@
                                                         </div>
                                                     </a-form-item>
                                                     <a-form-item label="留言备注" :label-col="{ span: 5 }" :wrapper-col="{ span: 19 }">
-                                                        111
+                                                        {{remarks}}
                                                     </a-form-item>
                                                 </a-form>
                                             </a-col>
                                             <a-col :span="12">
                                                 <a-form>
                                                     <a-form-item label="处理意见" :label-col="{ span: 5 }" :wrapper-col="{ span: 19 }">
-                                                        <a-textarea :autosize="{ minRows: 6}"></a-textarea>
+                                                        <a-textarea :autosize="{ minRows: 6}" v-model="idea"></a-textarea>
                                                     </a-form-item>
                                                 </a-form>
                                             </a-col>
                                         </a-row>
                                     </div>
                                     <div class="btn-box">
-                                        <a-button type="danger">驳回</a-button>
-                                        <a-button>通过</a-button>
+                                        <a-button type="danger" @click="postInfo(factoryOrderId,2,idea,orderSn)">驳回</a-button>
+                                        <a-button @click="postInfo(factoryOrderId,1,idea,orderSn)">通过</a-button>
                                     </div>
                                 </a-tab-pane>
                                 <a-tab-pane tab="历史记录" key="2">
@@ -74,9 +77,10 @@
                                         :columns="tabelTitle"
                                         :dataSource="tabelData"
                                         :pagination="pagination"
+                                        @change="pageChange"
                                     >
                                         <template slot="status" slot-scope="text">
-                                            {{text}}
+                                            {{text | filterStatus}}
                                         </template>
                                     </a-table>
                                 </a-tab-pane>
@@ -134,10 +138,16 @@
                                             
                                         </a-form-item>
                                         <a-form-item label="发件人电话" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
-                                            <a-input
+                                            <a-input-number
+                                                style="width: 100%;"
                                                 v-decorator="[
                                                     'number',
-                                                    {rules: [{ required: true, message: 'Please select your gender!' }]}
+                                                    {
+                                                        rules: [
+                                                            { required: true, message: '请填写电话号码!' },
+                                                            { type: 'number', message: '请填写数字!' }
+                                                        ]
+                                                    }
                                                 ]"
                                                 placeholder="enter"
                                             /> 
@@ -209,7 +219,7 @@
 </template>
 <script>
 import MyTitle from "@/components/MyTitle/MyTitle";
-import { getProductList,logisticsList } from "@/api/system";
+import { getProductList,logisticsList,saveLogistics,checkOutInfo,historyList,adminOrderAffirm } from "@/api/system";
 import { addressOne } from "@/api/seller";
 
 let filterMap = {
@@ -226,6 +236,9 @@ export default{
         return{
             form: this.$form.createForm(this),
             orderNum: '',
+            idea: '',
+            productStatus: '',
+            remarks: '',
             lists: [],
             options: [],
             columns: [
@@ -275,29 +288,22 @@ export default{
             tabelTitle: [
                 {
                     title: '时间',
-                    dataIndex: 'time',
+                    dataIndex: 'create_time',
                     align: 'center'
                 },
                 {
                     title: '处理意见',
-                    dataIndex: 'idea',
+                    dataIndex: 'opinion',
                     align: 'center'
                 },
                 {
                     title: '生产状态',
-                    dataIndex: 'status',
+                    dataIndex: 'factory_status',
                     align: 'center',
-                    scopedSlots: { customRender: "c" }
+                    scopedSlots: { customRender: "status" }
                 }
             ],
-            tabelData:[
-                {
-                    key: '1',
-                    time: '2019-10-10 15:50:10',
-                    idea: 'vevevevevevevveveeveevevevev',
-                    status: 1
-                }
-            ],
+            tabelData:[],
             dataSource:[],
             ipagination:{
                 current: 1,
@@ -311,21 +317,14 @@ export default{
             pagination:{
                 current: 1,
                 pageSize: 5,
-                showTotal: (total, range) => {
-                    return range[0] + "-" + range[1] + " 共" + total + "条"
-                },
-                showQuickJumper: true,
                 total: 0
             },
-            imgUrl:[
-                'http://hbimg.b0.upaiyun.com/b8a2f3cb90ebfdcc8f432e55137d8008d8e0b53c656d-LYlEC1_fw658',
-                'http://hbimg.b0.upaiyun.com/b8a2f3cb90ebfdcc8f432e55137d8008d8e0b53c656d-LYlEC1_fw658',
-                'http://hbimg.b0.upaiyun.com/b8a2f3cb90ebfdcc8f432e55137d8008d8e0b53c656d-LYlEC1_fw658'
-            ],
+            imgUrl:[],
             orderSn: '',
             modelTitle: '',
             modelKey: 0,
             visible: false,
+            factoryOrderId: ''
         }
     },
     components:{
@@ -335,6 +334,23 @@ export default{
         this.getProductsList(this.orderNum,1)
     },
     methods:{
+        postInfo(factoryOrderId,approverStatus,opinion,orderSn){
+            adminOrderAffirm(factoryOrderId,approverStatus,opinion,orderSn).then(res => {
+                console.log(res)
+                if(res.code === 200){
+                    this.$message.success('操作成功！');
+                    this.getProductsList(this.orderNum,this.ipagination.current);
+                    this.visible = false
+                }
+            })
+        },
+        pageChange(pagination){
+            this.pagination = pagination;
+        },
+        handleTableChange(pagination){
+            this.ipagination = pagination;
+            this.getProductsList(this.orderNum,pagination.current);
+        },
         getAddressOne() {
             addressOne().then(res => {
                 this.options = res.result;
@@ -357,33 +373,77 @@ export default{
             this.form.validateFields((err, values) => {
                 if (!err) {
                 console.log('Received values of form: ', values);
+                    let params = {
+                        id: this.orderSn,
+                        logisticsCompany: values.gender,
+                        trackingNumber: values.no,
+                        recipients: values.name,
+                        recipientsPhone: values.number,
+                        province: values.location[1],
+                        city: values.location[2],
+                        district: values.location[0],
+                        address: values.location2
+                    }
+                    saveLogistics(params).then(res => {
+                        console.log(res)
+                        if(res.code === 200){
+                            this.getProductsList(this.orderNum,1)
+                            this.$message.success('操作成功！');
+                            this.visible = false;
+                        }
+                    })
                 }
             });
         },
-        handleActions(a,b,c){
+        handleActions(status,id,orderSn){
             this.visible = true;
-            this.orderSn = c;
-            // if(a === 0){
+            this.orderSn = orderSn;
+            console.log(status)
+            // if(status === 0){
             //     this.modelTitle = '工作流审批';
             //     this.modelKey = 1;
-            // }else if(a === 1){
-            //     this.modelTitle = '添加物流';
-            //     this.modelKey = 2;
+            // }else if(status === 1){
+            //      this.modelTitle = '添加物流';
+            //      this.modelKey = 2;
+                    // if(this.lists.length === 0){
+                    //     logisticsList().then(res => {
+                    //         console.log(res)
+                    //         if(res.code === 0){
+                    //             this.lists = res.result
+                    //         }
+                    //     })
+                    //     this.getAddressOne();
+                    // }
             // }else{
             //     this.modelTitle = '物流信息';
             //     this.modelKey = 3;
             // }
-            this.modelTitle = '添加物流';
-            this.modelKey = 2;
-            logisticsList().then(res => {
+            this.modelTitle = '工作流审批';
+            this.modelKey = 1;
+            this.getModelInfo(id)
+            
+        },
+        getModelInfo(id){
+            this.factoryOrderId = id;
+            historyList(id).then(res => {
                 console.log(res)
                 if(res.code === 0){
-                    this.lists = res.result
+                    let key = 'key';
+                    res.result.forEach((item,index) => {item[key] = index});
+                    this.tabelData =res.result;
+                    this.pagination.total = this.tabelData.length
                 }
             })
-            this.getAddressOne();
+            checkOutInfo(id).then(res => {
+                if(res.code === 0){
+                    this.productStatus = res.result.factoryStatus;
+                    this.remarks = res.result.opinion;
+                    this.imgUrl = res.result.reference.split(',')
+                }
+            })
         }
     },
+
     filters:{
         filterStatus(val){
             return filterMap[val]

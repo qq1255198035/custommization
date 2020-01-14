@@ -1,7 +1,8 @@
 <template>
       <div id="MyHeader">
             <div class="left">
-                  <a-avatar :size="100" :src="imgUrl"/>
+                  <a-avatar :size="100" :src="imgUrl" v-if="imgUrl"/>
+                  <a-avatar :size="100" icon="user" v-else />
                   <div class="desc">
                         <h3><span>{{timeFix()}},</span> <span>{{name}}</span></h3>
                         <p><span>{{level}}</span><a-divider type="vertical" />{{intro}}</p>

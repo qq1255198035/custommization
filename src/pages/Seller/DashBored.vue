@@ -81,10 +81,7 @@ export default {
   mounted() {
     this.getSalesDate();
     this.getUserInfo();
-    this.getOrderingList();
-    //this.$loading('正在加载中...');
-    //this.$loading.close();
-    
+    this.getOrderingList()
   },
   methods: {
     onCopy() {
