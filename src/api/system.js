@@ -396,3 +396,49 @@ export function adminOrderAffirm(factoryOrderId,approverStatus,opinion,orderSn){
     data: JSON.stringify({factoryOrderId,approverStatus,opinion,orderSn})
   })
 }
+
+export function factoryOrderList(code,pageNo){
+  return axios({
+    url: '/iso/jeecgFactoryOrder/list',
+    method: 'post',
+    data: qs.stringify({code,pageNo,pageSize: 12})
+  })
+}
+
+export function callbackShow(factoryOrderId){
+  return axios({
+    url: '/iso/jeecgFactoryOrderProcess/queryFactoryForm',
+    method: 'post',
+    data: qs.stringify({factoryOrderId})
+  })
+}
+
+export function sumbitOpinion(factoryOrderId,reference,opinion,orderSn){
+  return axios({
+    url: '/iso/jeecgFactoryOrderProcess/sumbitOpinion',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json;charset-UTF-8'
+    },
+    data: JSON.stringify({factoryOrderId,reference,opinion,orderSn})
+  })
+}
+
+export function orderAffirm(factoryOrderId,approverStatus,opinion,orderSn){
+  return axios({
+    url: '/iso/jeecgFactoryOrderProcess/orderAffirm',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json;charset-UTF-8'
+    },
+    data: JSON.stringify({factoryOrderId,approverStatus,opinion,orderSn})
+  })
+}
+
+export function logisticsInfo(factoryOrderId){
+  return axios({
+    url: '/iso/jeecgFactoryOrder/queryLogisticsInfo',
+    method: 'post',
+    data: qs.stringify({factoryOrderId})
+  })
+}

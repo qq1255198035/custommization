@@ -104,27 +104,25 @@ export default class Bar {
         let x;
         const { column_width } = this.gantt.options;
         const gantt_start = this.gantt.gantt_start; 
-        this.task.progress.map((aitem) => {
-            this.progress_width = this.days_between(aitem.end, aitem.start) * this.gantt.options.column_width;
-            const diff = date_utils.diff(new Date(aitem.start), gantt_start, 'day');
-            x = diff * column_width;
-            this.$bar_progress = createSVG('rect', {
-                x: parseInt(x),
-                y: this.y,
-                fill: aitem.color,
-                width: this.progress_width,
-                height: this.height,
-                rx: 0,
-                ry: 0,
-                class: 'bar-progress',
-                append_to: this.bar_group
-            });
-        })
-        
-        
-        
+        if(this.task.progress && this.task.progress.length > 0){
+            this.task.progress.map((aitem) => {
+                this.progress_width = this.days_between(aitem.end, aitem.start) * this.gantt.options.column_width;
+                const diff = date_utils.diff(new Date(aitem.start), gantt_start, 'day');
+                x = diff * column_width;
+                this.$bar_progress = createSVG('rect', {
+                    x: parseInt(x),
+                    y: this.y,
+                    fill: aitem.color,
+                    width: this.progress_width,
+                    height: this.height,
+                    rx: 0,
+                    ry: 0,
+                    class: 'bar-progress',
+                    append_to: this.bar_group
+                });
+            })
+        }
     }
-
     draw_label() {
         createSVG('text', {
             x: this.x + this.width / 2,
@@ -167,24 +165,24 @@ export default class Bar {
 
         if (this.task.progress && this.task.progress < 100) {
             this.$handle_progress = createSVG('polygon', {
-                points: this.get_progress_polygon_points().join(','),
+                //points: this.get_progress_polygon_points().join(','),
                 class: 'handle progress',
                 append_to: this.handle_group
             });
         }
     }
 
-    get_progress_polygon_points() {
-        const bar_progress = this.$bar_progress;
-        return [
-            bar_progress.getEndX() - 5,
-            bar_progress.getY() + bar_progress.getHeight(),
-            bar_progress.getEndX() + 5,
-            bar_progress.getY() + bar_progress.getHeight(),
-            bar_progress.getEndX(),
-            bar_progress.getY() + bar_progress.getHeight() - 8.66
-        ];
-    }
+    // get_progress_polygon_points() {
+    //     const bar_progress = this.$bar_progress;
+    //     return [
+    //         bar_progress.getEndX() - 5,
+    //         bar_progress.getY() + bar_progress.getHeight(),
+    //         bar_progress.getEndX() + 5,
+    //         bar_progress.getY() + bar_progress.getHeight(),
+    //         bar_progress.getEndX(),
+    //         bar_progress.getY() + bar_progress.getHeight() - 8.66
+    //     ];
+    // }
 
     bind() {
         if (this.invalid) return;

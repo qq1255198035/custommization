@@ -19,8 +19,12 @@
                     <p>{{text | filterStatus}}</p>
                 </template>
                 <template slot="action" slot-scope="text, record">
-                    <span class="handle" @click="handleActions(text.processStatus,record.id,record.orderSn)">
-                        {{text === 1 ? '添加物流' : text === 0 ? '审批' : '查看物流'}}
+                    <span 
+                        class="handle" 
+                        @click="handleActions(text.processStatus,record.id,record.orderSn)"
+                        :style="{color: text.processStatus === 7 ? '#FF8000' : text === 8 ? '#0292FF' : '#33b8b3'}"
+                    >
+                        {{text.processStatus === 7 ? '添加物流' : text === 8 ? '查看物流' : '审批'}}
                     </span>
                 </template>
             </a-table>
@@ -219,9 +223,8 @@
 </template>
 <script>
 import MyTitle from "@/components/MyTitle/MyTitle";
-import { getProductList,logisticsList,saveLogistics,checkOutInfo,historyList,adminOrderAffirm } from "@/api/system";
+import { logisticsInfo,getProductList,logisticsList,saveLogistics,checkOutInfo,historyList,adminOrderAffirm } from "@/api/system";
 import { addressOne } from "@/api/seller";
-
 let filterMap = {
     '0': '等待确认',
     '1': '订单确认',
@@ -230,6 +233,7 @@ let filterMap = {
     '4': '成品上传',
     '5': '包装上传',
     '6': '确认发货',
+    '7': '已确认发货',
 }
 export default{
     data(){
@@ -398,30 +402,31 @@ export default{
         handleActions(status,id,orderSn){
             this.visible = true;
             this.orderSn = orderSn;
-            console.log(status)
-            // if(status === 0){
-            //     this.modelTitle = '工作流审批';
-            //     this.modelKey = 1;
-            // }else if(status === 1){
-            //      this.modelTitle = '添加物流';
-            //      this.modelKey = 2;
-                    // if(this.lists.length === 0){
-                    //     logisticsList().then(res => {
-                    //         console.log(res)
-                    //         if(res.code === 0){
-                    //             this.lists = res.result
-                    //         }
-                    //     })
-                    //     this.getAddressOne();
-                    // }
-            // }else{
+            // if(status === 8){
             //     this.modelTitle = '物流信息';
             //     this.modelKey = 3;
+            // }else if(status === 7){
+            //     this.modelTitle = '添加物流';
+            //     this.modelKey = 2;
+            //         if(this.lists.length === 0){
+            //             logisticsList().then(res => {
+            //                 console.log(res)
+            //                 if(res.code === 0){
+            //                     this.lists = res.result
+            //                 }
+            //             })
+            //             this.getAddressOne();
+            //         }
+            // }else{
+            //     this.modelTitle = '工作流审批';
+            //     this.modelKey = 1;
+            //     this.getModelInfo(id)
             // }
-            this.modelTitle = '工作流审批';
-            this.modelKey = 1;
-            this.getModelInfo(id)
-            
+            this.modelTitle = '物流信息';
+            this.modelKey = 3;
+            logisticsInfo(id).then(res => {
+                console.log(res)
+            })
         },
         getModelInfo(id){
             this.factoryOrderId = id;
@@ -436,9 +441,9 @@ export default{
             })
             checkOutInfo(id).then(res => {
                 if(res.code === 0){
-                    this.productStatus = res.result.factoryStatus;
                     this.remarks = res.result.opinion;
                     this.imgUrl = res.result.reference.split(',')
+                    this.productStatus = res.result.factoryStatus;
                 }
             })
         }

@@ -19,8 +19,10 @@
         <a-month-picker placeholder="请选择年月" @change="changeDate" />
       </div>
       <div class="gantt-box">
-        <div id="gantt" v-if="tasks.length > 0"></div>
-        <p v-else style="text-align: center">暂无数据</p>
+        <div id="gantt" v-show="tasks.length > 0"></div>
+        <div v-show="tasks.length === 0" style="text-align: center;">
+          暂无数据！
+        </div>
       </div>
   </div>
 </template>
@@ -36,6 +38,7 @@ export default {
   data(){
     return{
       name: '',
+      gantt:null,
       imgUrl: '',
       pendingOrder: '',
       allOrder: '',
@@ -46,10 +49,15 @@ export default {
     let year = moment().year();
     let month = moment().month() + 1 <= 9 ? '0' + (moment().month() + 1) : moment().month() + 1;
     this.getIndexInfo(year,month)
+    //console.log(moment('2019-09-24T14:45:03+08:00').year())
   },
   mounted(){
     this.getUserInfo();
+    if(this.tasks.length > 0){
+      this.gantt = new Gantt("#gantt", this.tasks);
+    }
     
+    console.log(this.gantt)
     
   },
   methods:{
@@ -75,10 +83,7 @@ export default {
           this.pendingOrder = res.result.pendingOrder;
           this.tasks = res.result.list;
           if(this.tasks.length > 0){
-            new Gantt("#gantt", this.tasks);
-            document.querySelector('svg').appendChild(
-              document.createElementNS('http://www.w3.org/2000/svg', 'defs')
-            )
+            this.gantt = new Gantt("#gantt", this.tasks);
           }
         }
       })
