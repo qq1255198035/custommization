@@ -91,7 +91,7 @@
                         <div v-show="modelKey === 2">
                             <p style="text-align: center;padding: 30px 0;font-size:18px;">是否接订单：{{ orderSn }} 定制</p>
                             <div class="btn-box">
-                                <a-button type="danger" @click="closeModel">取消</a-button>
+                                <a-button type="danger" @click="refuseOrder">拒绝</a-button>
                                 <a-button @click="postOrderAffirm">确定</a-button>
                             </div>
                         </div>
@@ -214,6 +214,16 @@ export default{
         this.getOrderList(this.orderNum,1);
     },
     methods:{
+        refuseOrder(){
+            orderAffirm(this.factoryOrderId,2,'',this.orderSn).then(res => {
+                console.log(res)
+                if(res.code === 200){
+                    this.$message.success('操作成功！');
+                    this.visible = false;
+                    this.getOrderList(this.orderNum,this.pagination.current);
+                }
+            })
+        },
         postOrderAffirm(){
             orderAffirm(this.factoryOrderId,1,'',this.orderSn).then(res => {
                 console.log(res)
@@ -310,7 +320,7 @@ export default{
         },
         getOrderList(code,pageNo){
             factoryOrderList(code,pageNo).then(res => {
-                //console.log(res)
+                console.log(res)
                 let key = 'key';
                 res.records.forEach((item,index) => {item[key] = index})
                 this.dataSource = res.records;
@@ -327,11 +337,14 @@ export default{
                 this.visible = true;
                 this.modelTitle = '订单确定';
                 this.modelKey = 2;
+            }else if(a === 7){
+                this.$message.warning('订单已完成！')
             }else{
                 if(b === 0){
                     this.$message.error('等待审批，请耐心等待！')
                     return
                 }
+                
                 this.visible = true;
                 this.modelTitle = '工作流表单';
                 this.modelKey = 1;

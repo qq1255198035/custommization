@@ -446,7 +446,7 @@ export function changeFontFamily(params) {
 
 export function changeGoodsColor(id,color) {
     return axios({
-        url: '/system/jeecgGoods/changeGoodsColor',
+        url: '/system/jeecgGoods/changeGoodsColorNew',
         method: 'post',
         data:qs.stringify({goodsId: id,itemValue: color})
     })

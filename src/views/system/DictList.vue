@@ -503,7 +503,6 @@ export default {
     },
     postAddProList(params){
       addProList(params).then(res => {
-        
         if(res.code == 200){
           this.$message.success('操作成功！');
           this.$router.push({path:'DictList'});

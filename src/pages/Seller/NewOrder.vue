@@ -12,11 +12,10 @@
                             @click="handleClick"
                             @openChange="onOpenChange"
                         >
-                        <a-sub-menu  v-for="(item, index) in menuList" :key="index">
-                            <span slot="title" style="display: flex;align-items: center;"><a-avatar :size="20" :src="item.icon" style="margin-right: 5px;" v-if="item.icon"/><span>{{item.title}}</span></span>
-                            <a-menu-item v-for="(sub,sindex) in item.subMenu" :key="'sub'+ index + sindex.toString()" @click="handleGetList(sub.categoryId)">{{sub.title}}</a-menu-item>
-                        </a-sub-menu>
-
+                            <a-sub-menu  v-for="(item, index) in menuList" :key="index">
+                                <span slot="title" style="display: flex;align-items: center;"><a-avatar :size="20" :src="item.icon" style="margin-right: 5px;" v-if="item.icon"/><span>{{item.title}}</span></span>
+                                <a-menu-item v-for="(sub,sindex) in item.subMenu" :key="'sub'+ index + sindex.toString()" @click="handleGetList(sub.categoryId)">{{sub.title}}</a-menu-item>
+                            </a-sub-menu>
                         </a-menu>
                     </div>
                 </a-col>
@@ -26,7 +25,7 @@
                         <my-title :title="'New Order'" :fontsize="20">
                             <a-button size="small" icon="rollback" style="font-size: 14px;" @click="$router.push({path: '/OrderManagement/grouporder'})">Back</a-button>
                         </my-title>
-                        <goods-list :goodsArr="goodsList" @on-click="openDesignModal($event)"></goods-list>
+                        <goods-list :goodsArr="goodsList" @on-click="openDesignModal"></goods-list>
                         <div class="btn-box">
                             <a-button :loading="loading" @click="loadMore" :disabled="btnable">
                                 MORE
@@ -107,18 +106,17 @@
                                 <li>
                                     <span class="icon-zoomout"></span>
                                 </li>
-                                
                             </ul> -->
                         </div>
                         <div class="tools-box">
-                            <div style="" class="scroll-box">
+                            <div class="scroll-box">
                                 <div class="drawer">
                                     <div class="tool-box" v-show="visibletype == -1">
                                         <h2>HOW DO YOU WANT TO GET STARTED?</h2>
                                         <ul class="btn-box">
                                             <li @click="startTo(0)" v-intro="'start your design from here'" v-intro-step="1" class="active-btn">
                                                 <span class="icon-txt"></span>
-                                                 Add Text
+                                                Add Text
                                             </li>
                                             <li @click="startTo(1)">
                                                 <span class="icon-icon-image"></span>
@@ -405,10 +403,17 @@
                                     </div>
                                     <div class="tool-box10" v-show="visibletype == 4">
                                         <h2>COLOUR：</h2>
-                                        <p>Choose Colour： <span :style="{backgroundColor: productColor ? productColor : '#fff'}"></span> {{productColorName ? productColorName : 'White'}}</p>
+                                        <p>Choose Colour： 
+                                            <span :style="{backgroundColor: productColor.indexOf('#') === 0 ? productColor : ''}" v-show="productColor">
+                                                <img :src="productColor" v-show="productColor.indexOf('#') !== 0" style="width:100%; height:100%;">
+                                            </span> 
+                                            
+                                            {{productColorName}}
+                                        </p>
                                         <ul class="color-list">
-                                            <li v-for="(item,index) in colorList.list" :key="index" :style="{backgroundColor: item.itemValue}" @click="changeProductColor(item.itemValue,item.itemText,index)">
-                                                <a-icon type="check" v-show="productColorIcon == index"/>
+                                            <li v-for="(item,index) in colorList" :key="index" :style="{backgroundColor: item.colorAndName.thumbnail.indexOf('#') === -1 ? '' : item.colorAndName.thumbnail}" @click="changeProductColor(item.colorAndName.thumbnail,item.colorAndName.name,index)">
+                                                <a-icon type="check" v-show="productColorIcon == index" style="position: absolute; left:25%;" />
+                                                <img :src="item.colorAndName.thumbnail" v-if="item.colorAndName.thumbnail.indexOf('#') === -1" style="width:100%; height:100%" />
                                             </li>
                                         </ul>
                                         
@@ -734,7 +739,7 @@
                     </div>
                     <ul class="submit-box">
                         <a-button type="primary" @click="showEdModal(postId)">Quote Now</a-button>
-                        <li style="display: flex; align-item">
+                        <li style="display: flex;">
                             <commonBtn
                                 @handleLink1="addNewPro"
                                 :width="'143px'"
@@ -939,7 +944,8 @@ import {
         handleDesignList,
         rmWhite,
         queryByUrl,
-        saveNameNumber
+        saveNameNumber,
+        getColorList
     } from "@/api/seller";
 export default {
     components:{
@@ -1749,6 +1755,7 @@ export default {
         
         PostChangeGoodsColor(id,color){
             changeGoodsColor(id,color).then(res => {
+                console.log(res)
                 this.bgimgs = res.result;
                 this.bindCanvas(this.myCanvas1,0);
                 this.bindCanvas(this.myCanvas2,1);
@@ -1757,10 +1764,18 @@ export default {
             })
         },
 
-        getColorList(status){
-            colorList(status).then(res => {
-                
-                this.colorList = res.result
+        getproColorList(id){
+            getColorList(id).then(res => {
+                console.log(res)
+                if(res.code === 0){
+                    this.colorList = res.result;
+                    for(let i = 0; i < this.colorList.length; i++) {
+                        if (this.colorList[i].colorAndName.thumbnail === this.productColor) {
+                            this.productColorIcon = i
+                            //console.log(this.productColorIcon)
+                        }
+                    }
+                }
             })
         },
         postAddRemarksBtn(){
@@ -1923,6 +1938,8 @@ export default {
         openDesignModal(id){
             this.postId = id;
             this.show = true;
+            this.visibletype = -1;
+            this.liClick = -1;
             if(!this.getCookie('introFlag')){
                 setTimeout(() => {
                     this.$intro().setOptions({
@@ -2537,7 +2554,13 @@ export default {
             this.productColorIcon = i;
             this.productColor = value;
             this.productColorName = name;
-            this.PostChangeGoodsColor(this.postId,value.substr(1))
+            if(this.productColor.indexOf('#') === 0){
+                //console.log(1)
+                this.PostChangeGoodsColor(this.postId,value.substr(1))
+            }else{
+                //console.log(2)
+                this.PostChangeGoodsColor(this.postId,value)
+            }
         },
         // 选择颜色容器返回上一级
         goBackPage(){
@@ -2968,7 +2991,7 @@ export default {
                 this.visibletype = key;
             }
             if(key == 4){
-                this.getColorList(7);
+                this.getproColorList(this.postId);
             }
             this.myCanvas.discardActiveObject();
         },
@@ -3140,7 +3163,7 @@ export default {
         openChangeColorBox(key,title){
             this.changeWidthShow = key;
             colorList(key).then(res => {
-                
+                console.log(res)
                 this.colorList = res.result
                 let colors = this.colorList.list;
                 if(key == 5){
@@ -4292,7 +4315,7 @@ export default {
                         display: flex;
                         align-items: center;
                         span{
-                            display: inline-block;
+                            display: flex;
                             width: 20px;
                             height: 20px;
                             border: 1px solid #ccc;
@@ -4313,7 +4336,10 @@ export default {
                             margin: 4px;
                             cursor: pointer;
                             position: relative;
+                            border: 1px solid #ccc;
+                            img{
 
+                            }
                         }
                     }
                 }

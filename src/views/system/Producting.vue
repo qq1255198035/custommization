@@ -21,10 +21,10 @@
                 <template slot="action" slot-scope="text, record">
                     <span 
                         class="handle" 
-                        @click="handleActions(text.processStatus,record.id,record.orderSn)"
-                        :style="{color: text.processStatus === 7 ? '#FF8000' : text === 8 ? '#0292FF' : '#33b8b3'}"
+                        @click="handleActions(record.processStatus,record.id,record.orderSn,record.approveStatus)"
+                        :style="{color: record.processStatus === 7 ? '#FF8000' : record.processStatus === 8 ? '#0292FF' : record.approveStatus === 0 ? '#33b8b3' : record.approveStatus === 1 ? '#87DB4B' : 'red'}"
                     >
-                        {{text.processStatus === 7 ? '添加物流' : text === 8 ? '查看物流' : '审批'}}
+                        {{record.processStatus === 7 ? '添加物流' : record.processStatus === 8 ? '查看物流' : record.approveStatus === 0 ? '审批' : record.approveStatus === 1 ? '已通过' : '已拒绝'}}
                     </span>
                 </template>
             </a-table>
@@ -176,38 +176,11 @@
                         <div v-show="modelKey === 3">
                             <div class="location-info">
                                 <a-timeline>
-                                    <a-timeline-item color="green">Create a services site 2015-09-01</a-timeline-item>
-                                    <a-timeline-item>
+                                    <a-timeline-item v-for="(item,index) in logisticsList" :key="index">
                                         <!-- 自定义图标组件，根据状态  渲染 -->
-                                        
-                                        <a-icon type="up" slot="dot" style="font-size: 10px;"/>
-                                        Create a services site 2015-09-01
-                                    </a-timeline-item>
-                                    <a-timeline-item color="green">
-
-                                        <p>Solve initial network problems 1</p>
-                                        <p>Solve initial network problems 2</p>
-                                        <p>Solve initial network problems 3 2015-09-01</p>
-                                    </a-timeline-item>
-                                    <a-timeline-item>
-                                        <p>Technical testing 1</p>
-                                        <p>Technical testing 2</p>
-                                        <p>Technical testing 3 2015-09-01</p>
-                                    </a-timeline-item>
-                                    <a-timeline-item>
-                                        <p>Technical testing 1</p>
-                                        <p>Technical testing 2</p>
-                                        <p>Technical testing 3 2015-09-01</p>
-                                    </a-timeline-item>
-                                    <a-timeline-item>
-                                        <p>Technical testing 1</p>
-                                        <p>Technical testing 2</p>
-                                        <p>Technical testing 3 2015-09-01</p>
-                                    </a-timeline-item>
-                                    <a-timeline-item>
-                                        <p>Technical testing 1</p>
-                                        <p>Technical testing 2</p>
-                                        <p>Technical testing 3 2015-09-01</p>
+                                        <a-icon type="up" slot="dot" style="font-size: 10px;" />
+                                        <p>{{ item.checkpointTime | filterTime }}</p>
+                                        <p>{{ item.message }}</p>
                                     </a-timeline-item>
                                 </a-timeline>
                             </div>
@@ -225,6 +198,7 @@
 import MyTitle from "@/components/MyTitle/MyTitle";
 import { logisticsInfo,getProductList,logisticsList,saveLogistics,checkOutInfo,historyList,adminOrderAffirm } from "@/api/system";
 import { addressOne } from "@/api/seller";
+import moment from 'moment';
 let filterMap = {
     '0': '等待确认',
     '1': '订单确认',
@@ -239,6 +213,7 @@ export default{
     data(){
         return{
             form: this.$form.createForm(this),
+            logisticsList: [],
             orderNum: '',
             idea: '',
             productStatus: '',
@@ -376,7 +351,6 @@ export default{
         confirmAddTransport(){
             this.form.validateFields((err, values) => {
                 if (!err) {
-                console.log('Received values of form: ', values);
                     let params = {
                         id: this.orderSn,
                         logisticsCompany: values.gender,
@@ -388,6 +362,7 @@ export default{
                         district: values.location[0],
                         address: values.location2
                     }
+                    console.log(JSON.stringify(params))
                     saveLogistics(params).then(res => {
                         console.log(res)
                         if(res.code === 200){
@@ -399,34 +374,43 @@ export default{
                 }
             });
         },
-        handleActions(status,id,orderSn){
-            this.visible = true;
-            this.orderSn = orderSn;
-            // if(status === 8){
-            //     this.modelTitle = '物流信息';
-            //     this.modelKey = 3;
-            // }else if(status === 7){
-            //     this.modelTitle = '添加物流';
-            //     this.modelKey = 2;
-            //         if(this.lists.length === 0){
-            //             logisticsList().then(res => {
-            //                 console.log(res)
-            //                 if(res.code === 0){
-            //                     this.lists = res.result
-            //                 }
-            //             })
-            //             this.getAddressOne();
-            //         }
-            // }else{
-            //     this.modelTitle = '工作流审批';
-            //     this.modelKey = 1;
-            //     this.getModelInfo(id)
-            // }
-            this.modelTitle = '物流信息';
-            this.modelKey = 3;
-            logisticsInfo(id).then(res => {
-                console.log(res)
-            })
+        handleActions(status,id,orderSn,approveStatus){
+            
+            if(status === 8){
+                this.visible = true;
+                this.orderSn = orderSn;
+                this.modelTitle = '物流信息';
+                this.modelKey = 3;
+                logisticsInfo(id).then(res => {
+                    console.log(res)
+                    if(res.code === 0){
+                        this.logisticsList = res.result.logisticsList;
+                    }
+                })
+            }else if(status === 7){
+                this.visible = true;
+                this.orderSn = orderSn;
+                this.modelTitle = '添加物流';
+                this.modelKey = 2;
+                    if(this.lists.length === 0){
+                        logisticsList().then(res => {
+                            console.log(res)
+                            if(res.code === 0){
+                                this.lists = res.result
+                            }
+                        })
+                        this.getAddressOne();
+                    }
+            }else{
+                if(approveStatus === 0){
+                    this.visible = true;
+                    this.orderSn = orderSn;
+                    this.modelTitle = '工作流审批';
+                    this.modelKey = 1;
+                    this.getModelInfo(id)
+                }
+            }
+            
         },
         getModelInfo(id){
             this.factoryOrderId = id;
@@ -452,6 +436,9 @@ export default{
     filters:{
         filterStatus(val){
             return filterMap[val]
+        },
+        filterTime(val){
+            return moment(val).format('YYYY-MM-DD HH:mm:ss');
         }
     }
 }
@@ -499,7 +486,7 @@ export default{
             }
         }
         .location-info{
-            padding-left: 50px;
+            padding: 30px 50px;
             max-height: 400px; 
             overflow-y: scroll;
         }

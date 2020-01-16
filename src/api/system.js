@@ -351,7 +351,7 @@ export function saveLogistics(params){
     headers: {
       'Content-Type': 'application/json;charset-UTF-8'
     },
-    data: JSON.stringify({params})
+    data: JSON.stringify(params)
   })
 }
 
