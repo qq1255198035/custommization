@@ -352,7 +352,7 @@ export default{
             this.form.validateFields((err, values) => {
                 if (!err) {
                     let params = {
-                        id: this.orderSn,
+                        id: this.factoryOrderId,
                         logisticsCompany: values.gender,
                         trackingNumber: values.no,
                         recipients: values.name,
