@@ -9,7 +9,6 @@
                             mode="inline"
                             :defaultSelectedKeys="['sub00']"
                             :openKeys="openKeys"
-                            @click="handleClick"
                             @openChange="onOpenChange"
                         >
                             <a-sub-menu  v-for="(item, index) in menuList" :key="index">
@@ -1755,7 +1754,7 @@ export default {
         
         PostChangeGoodsColor(id,color){
             changeGoodsColor(id,color).then(res => {
-                console.log(res)
+                //console.log(res)
                 this.bgimgs = res.result;
                 this.bindCanvas(this.myCanvas1,0);
                 this.bindCanvas(this.myCanvas2,1);
@@ -1766,7 +1765,7 @@ export default {
 
         getproColorList(id){
             getColorList(id).then(res => {
-                console.log(res)
+                //console.log(res)
                 if(res.code === 0){
                     this.colorList = res.result;
                     for(let i = 0; i < this.colorList.length; i++) {
@@ -1989,9 +1988,6 @@ export default {
                 }
             })
 
-        },
-        handleClick (e) {
-            console.log('click', e.key)
         },
         getAllList(){
             listAll().then(res => {
@@ -3163,7 +3159,7 @@ export default {
         openChangeColorBox(key,title){
             this.changeWidthShow = key;
             colorList(key).then(res => {
-                console.log(res)
+                //console.log(res)
                 this.colorList = res.result
                 let colors = this.colorList.list;
                 if(key == 5){

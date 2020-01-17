@@ -239,7 +239,7 @@
             <a-input placeholder="商品编号" style="width: 40%;" v-decorator="['number', { rules: [{ required: true, message: '请填写商品名称!' }] }]"/>
           </a-form-item>
           <a-form-item label="商品类别" class="cascader">
-            <a-cascader :options="options" @change="onChange" placeholder="请选择" 
+            <a-cascader :options="options" placeholder="请选择" 
               v-decorator="['protype', { rules: [{ required: true, message: '请填写最高价格!' }] }]"
             />
           </a-form-item>
@@ -581,9 +581,6 @@ export default {
       });
       this.dataList.canvas1 = arr1;
     },
-    onChangeradio(e){
-      console.log('radio checked', e.target.value);
-    },
     getSyscategoryList(){
       syscategoryList().then(res => {
         
@@ -592,19 +589,15 @@ export default {
         }
       })
     },
-    onChange(value) {
-      console.log(value);
-    },
-    
     onUnselected(object){
       object.on('mouse:down',(obj) => {
-        console.log(obj.target)
+        //console.log(obj.target)
         if(!obj.target){
           if(this.designModel == 0){
             if(this.isFirst == 0){
               this.abledEdit_1 = true;
               this.abledCancel_1 = true;
-              console.log(this)
+              //console.log(this)
             }else{
               this.abledEdit1_1 = true;
               this.abledCancel1_1 = true;
@@ -879,7 +872,7 @@ export default {
       this.myCanvas.renderAll();
     },
     editCanvasObj(index){
-      console.log(index);
+      //console.log(index);
       let items = this.myCanvas.getObjects();
       this.isFirst = index;
       this.myCanvas.setActiveObject(items[index]);
@@ -896,7 +889,7 @@ export default {
           this.abledCancel_1 = false;
           this.activeKey = '1';
         }else{
-          console.log(this.dataList.canvas1)
+          //console.log(this.dataList.canvas1)
           this.form.setFieldsValue({
             quarename: this.dataList.canvas1[index].name,
             width1: this.dataList.canvas1[index].width,
@@ -980,7 +973,7 @@ export default {
       }
     },
     deleteCanvasObj(index){
-      console.log(index);
+      //console.log(index);
       let items = this.myCanvas.getObjects();
       this.myCanvas.remove(items[index]);
       if(this.designModel == 0){
@@ -1087,7 +1080,7 @@ export default {
           let calcWidth1 = values.width1 + values.left1;
           let calcHeight1 = values.height1 + values.top1;
           let json = {name: '',width: '',height: '',left: '',top: ''};
-          console.log(values)
+          //console.log(values)
           json.name = values.quarename;
           json.width = values.width1;
           json.height = values.height1;
@@ -1308,7 +1301,7 @@ export default {
       let files = file.file;
       if(files.size / 1024 / 1024 < 10){
         let formData = new FormData();
-        console.log(file)
+        //console.log(file)
         formData.append("file", files);
         sourceUpload(formData).then(res => {
             
@@ -1328,7 +1321,7 @@ export default {
     handleSubmit() {
       
       this.form.validateFields(['name','number','protype','maxprice','minprice','productionTime','minProductionTime','weight','minOrder','img','frontimg','backimg','leftimg','rightimg'],(err, values) => {
-        console.log('Received values of form: ', values);
+        //console.log('Received values of form: ', values);
         if (!err) {
           // 解决数组指向相同，改变原数组问题
           let dataList = JSON.parse(JSON.stringify(this.dataList));
@@ -1382,7 +1375,7 @@ export default {
             item.left = item.left - params.canvas4.left;
             item.top = item.top - params.canvas4.top;
           })
-          console.log(params);
+          //console.log(params);
           let obj = {
             id: this.goodsId,
             name: values.name,
@@ -1438,14 +1431,14 @@ export default {
       this.desc = this.resData.goodsBrief;
     },
     sendKey(k){
-      console.log(k);
+      //console.log(k);
       this.key = k;
     },
     beforeUpload(file) {
       let files = file.file;
       if(files.size / 1024 / 1024 < 10){
         let formData = new FormData();
-        console.log(file)
+        //console.log(file)
         formData.append("file", files);
         sourceUpload(formData).then(res => {
             

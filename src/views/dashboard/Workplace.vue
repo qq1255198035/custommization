@@ -56,9 +56,7 @@ export default {
     if(this.tasks.length > 0){
       this.gantt = new Gantt("#gantt", this.tasks);
     }
-    
-    console.log(this.gantt)
-    
+    //console.log(this.gantt)
   },
   methods:{
     changeDate(date,value){
@@ -69,7 +67,7 @@ export default {
     getUserInfo() {
       userInfo().then(res => {
         if (res.code === 0) {
-          console.log(res)
+            //console.log(res)
             this.name = res.result.name;
             this.imgUrl = res.result.avatar;
         }
@@ -77,7 +75,7 @@ export default {
     },
     getIndexInfo(year,month){
       factoryDashboard(year,month).then(res => {
-        console.log(res)
+        //console.log(res)
         if(res.code === 0){
           this.allOrder = res.result.allOrder;
           this.pendingOrder = res.result.pendingOrder;

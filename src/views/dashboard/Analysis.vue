@@ -216,7 +216,7 @@ export default{
     methods:{
         refuseOrder(){
             orderAffirm(this.factoryOrderId,2,'',this.orderSn).then(res => {
-                console.log(res)
+                //console.log(res)
                 if(res.code === 200){
                     this.$message.success('操作成功！');
                     this.visible = false;
@@ -226,7 +226,7 @@ export default{
         },
         postOrderAffirm(){
             orderAffirm(this.factoryOrderId,1,'',this.orderSn).then(res => {
-                console.log(res)
+                //console.log(res)
                 if(res.code === 200){
                     this.$message.success('操作成功！');
                     this.visible = false;
@@ -320,7 +320,7 @@ export default{
         },
         getOrderList(code,pageNo){
             factoryOrderList(code,pageNo).then(res => {
-                console.log(res)
+                //console.log(res)
                 let key = 'key';
                 res.records.forEach((item,index) => {item[key] = index})
                 this.dataSource = res.records;
@@ -354,7 +354,7 @@ export default{
         getModelInfo(id){
             this.factoryOrderId = id;
             historyList(id).then(res => {
-                console.log(res)
+                //console.log(res)
                 if(res.code === 0){
                     let key = 'key';
                     res.result.forEach((item,index) => {item[key] = index});

@@ -325,9 +325,6 @@ export default {
       upLoad(formData).then(res => {
         this.fileUrl = res.preview_url;
       });
-    },
-    onChange(value) {
-      console.log(value);
     }
   },
   computed: {},

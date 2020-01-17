@@ -125,7 +125,7 @@ export default {
       });
       read(id).then(res => {
         if(res.code == 200){
-          console.log('w')
+          //console.log('w')
         }
       })
     },
@@ -175,8 +175,8 @@ export default {
         path: '/notice'
       })
     },
-    onClick({ key }) {
-      console.log(key);
+    onClick() {
+      //console.log(key);
       const that = this;
       this.$confirm({
         title: "Logout",

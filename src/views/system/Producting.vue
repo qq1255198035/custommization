@@ -315,7 +315,7 @@ export default{
     methods:{
         postInfo(factoryOrderId,approverStatus,opinion,orderSn){
             adminOrderAffirm(factoryOrderId,approverStatus,opinion,orderSn).then(res => {
-                console.log(res)
+                //console.log(res)
                 if(res.code === 200){
                     this.$message.success('操作成功！');
                     this.getProductsList(this.orderNum,this.ipagination.current);
@@ -337,7 +337,7 @@ export default{
         },
         getProductsList(code,pageNo){
             getProductList(code,pageNo).then(res => {
-                console.log(res)
+                //console.log(res)
                 let key = 'key';
                 res.records.forEach((item,index) => item[key] = index);
                 this.dataSource = res.records;
@@ -362,9 +362,9 @@ export default{
                         district: values.location[0],
                         address: values.location2
                     }
-                    console.log(JSON.stringify(params))
+                    //console.log(JSON.stringify(params))
                     saveLogistics(params).then(res => {
-                        console.log(res)
+                        //console.log(res)
                         if(res.code === 200){
                             this.getProductsList(this.orderNum,1)
                             this.$message.success('操作成功！');
@@ -382,7 +382,7 @@ export default{
                 this.modelTitle = '物流信息';
                 this.modelKey = 3;
                 logisticsInfo(id).then(res => {
-                    console.log(res)
+                    //console.log(res)
                     if(res.code === 0){
                         this.logisticsList = res.result.logisticsList;
                     }
@@ -394,7 +394,7 @@ export default{
                 this.modelKey = 2;
                     if(this.lists.length === 0){
                         logisticsList().then(res => {
-                            console.log(res)
+                            //console.log(res)
                             if(res.code === 0){
                                 this.lists = res.result
                             }
@@ -415,7 +415,7 @@ export default{
         getModelInfo(id){
             this.factoryOrderId = id;
             historyList(id).then(res => {
-                console.log(res)
+                //console.log(res)
                 if(res.code === 0){
                     let key = 'key';
                     res.result.forEach((item,index) => {item[key] = index});
