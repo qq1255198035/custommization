@@ -259,7 +259,7 @@
           <a-col :span="16">
             <div class="title font-18">Colour: {{designDetail.productColor}}</div>
             <div class="number">
-              <div class="font-18">Quantity：</div>
+              <div class="font-18">Quantity: </div>
               <div class="number-box">
                 <div class="minus common-radio" @click="minus(designDetail.minOrder)">
                   <a-icon type="minus" />

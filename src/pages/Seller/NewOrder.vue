@@ -63,7 +63,7 @@
                             </li>
                         </ul>
                         <div class="container">
-                            <h2>CUSTOM KING T-Shirt<span @click="sizeList = true">View Size Chart</span></h2>
+                            <h2>Basketball Jersey<span @click="sizeList = true">View Size Chart</span></h2>
                             <div class="canvas-container"  v-show="designModel == 0">
                                 <canvas id="canvas1" :width="screenWidth" :height="screenWidth"></canvas>
                                 <div class="moving-box" :style="{width: boxSize1.width + 'px',height: boxSize1.height + 'px',top: boxSize1.top + 'px', left: boxSize1.left + 'px'}" v-show="movingBox">
@@ -863,7 +863,7 @@
                 </a-col>
                 <a-col :span="16">
                     <div class="number">
-                    <div class="font-18">Quantity：</div>
+                    <div class="font-18">Quantity: </div>
                     <div class="number-box">
                         <div class="minus common-radio" @click="minus(designDetail.minOrder)">
                         <a-icon type="minus" />

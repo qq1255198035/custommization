@@ -125,7 +125,7 @@
               height="130"
               style="border-radius:50%;background:#808080;margin:0 auto;"
             />
-            <a-avatar v-else style="backgroundColor:#23C6C8" :size="130">Sponsor Cube</a-avatar>
+            <a-avatar v-else icon="user" :size="130" />
             <template>
               <a-upload accept="image/jpeg,image/png" name="avatar" :showUploadList="false" :customRequest="beforeUpload">
                 <commonBtn
