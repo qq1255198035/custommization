@@ -90,8 +90,8 @@ export default {
         okButtonProps:{
           props: {disabled: order_id == 0}
         },
-        okText: '查看',
-        cancelText: '关闭',
+        okText: 'Check',
+        cancelText: 'Close',
         onOk(){
           if(type == 0){
             that.$router.push({path: '/myorder',query:{id: order_id}})

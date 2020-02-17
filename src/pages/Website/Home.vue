@@ -84,7 +84,7 @@
                         <!--反面-->
                         <div class="ingo_fm">
                             <h3>sports</h3>
-                            <h4>Basketball Shirt</h4>
+                            <h4>Basketball jersry</h4>
                         </div>
                     </div>
                 </a-col>
@@ -98,7 +98,7 @@
                         <!--反面-->
                         <div class="ingo_fm">
                             <h3>sports</h3>
-                            <h4>Basketball Shirt</h4>
+                            <h4>Basketball jersry</h4>
                         </div>
                     </div>
                 </a-col>
@@ -112,7 +112,7 @@
                         <!--反面-->
                         <div class="ingo_fm">
                             <h3>sports</h3>
-                            <h4>Basketball Shirt</h4>
+                            <h4>Basketball jersry</h4>
                         </div>
                     </div>
                 </a-col>
@@ -128,7 +128,7 @@
                         <!--反面-->
                         <div class="ingo_fm">
                             <h3>sports</h3>
-                            <h4>Basketball Shirt</h4>
+                            <h4>Basketball jersry</h4>
                         </div>
                     </div>
                 </a-col>
@@ -142,7 +142,7 @@
                         <!--反面-->
                         <div class="ingo_fm">
                             <h3>sports</h3>
-                            <h4>Basketball Shirt</h4>
+                            <h4>Basketball jersry</h4>
                         </div>
                     </div>
                 </a-col>
@@ -156,7 +156,7 @@
                         <!--反面-->
                         <div class="ingo_fm">
                             <h3>sports</h3>
-                            <h4>Basketball Shirt</h4>
+                            <h4>Basketball jersry</h4>
                         </div>
                     </div>
                 </a-col>

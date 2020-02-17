@@ -25,9 +25,7 @@
     </template>
     <span @click="fetchNotice" class="header-notice">
       <a-icon type="bell" :style="{color: bellcolor}" />
-      <a-badge v-if="count" class="diount" :count="count" showZero :overflowCount="5">
-        
-      </a-badge>
+      <a-badge v-if="count" class="diount" :count="count" showZero :overflowCount="5"></a-badge>
     </span>
   </a-popover>
     <span>

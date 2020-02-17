@@ -6,7 +6,7 @@
         <a-row :gutter="24">
           <a-col :md="6" :sm="12">
             <a-form-item label="订单号">
-              <a-input placeholder="请输入名称" v-model="queryParam.name"></a-input>
+              <a-input placeholder="请输入订单号码" v-model="queryParam.name"></a-input>
             </a-form-item>
           </a-col>
           <a-col :md="6" :sm="8">
