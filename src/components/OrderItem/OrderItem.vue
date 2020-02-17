@@ -361,6 +361,8 @@ export default {
             flex-direction: column;
             justify-content: space-between;
             padding-left: 20px;
+            min-height: 65px;
+            width: 25%;
             span{
               text-align: center;
             }

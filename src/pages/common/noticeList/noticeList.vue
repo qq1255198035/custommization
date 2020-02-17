@@ -51,7 +51,7 @@ export default {
     };
   },
   created() {
-    this._apiNotice();
+    this._apiNotice()
   },
   filters: {
     formatTime(time){

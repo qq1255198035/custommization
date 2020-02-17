@@ -11,7 +11,8 @@
     >
     <template slot="content">
       <a-spin :spinning="loadding">
-            <a-list>
+        <!-- :locale="{emptyText: '暂无数据'}" -->
+            <a-list :locale="{emptyText: this.getCookie('roleid') == 0 ? 'No Data' : '暂无数据'}">
               <a-list-item v-for="item in dataList.slice(0,5)" :key="item.id" @click="openMessageModel(item.title,item.content,item.id,item.order_id,item.type)" style="cursor: pointer;">
                 <a-list-item-meta :description="item.content">
                   <p slot="title">{{item.title}} <span style="font-size: 12px;color:#999;margin-left: 20px;font-weight: normal;">{{ item.createtime | formatTime }}</span></p>
@@ -20,7 +21,7 @@
             </a-list>
       </a-spin>
       <div style="text-align:right;">
-        <router-link to="/notice" style="color: #33b8b3;text-decoration: underline;">See All</router-link>
+        <router-link to="/notice" style="color: #33b8b3;text-decoration: underline;">{{this.getCookie('roleid') == 0 ? 'See All' : '查看全部'}}</router-link>
       </div>
     </template>
     <span @click="fetchNotice" class="header-notice">
@@ -64,11 +65,9 @@ export default {
       default: '#33b8b3'
     }
   },
-  components: {
-      //notice
-  },
   created() {
     this.initWebSocket();
+    console.log(this.getCookie('roleid'))
   },
   destroyed(){
     this.websocketclose(); 
@@ -102,6 +101,11 @@ export default {
   },
   methods: {
     ...mapActions(["Logout"]),
+    getCookie(name){
+        let arr = document.cookie.match(new RegExp("(^| )"+name+"=([^;]*)(;|$)"));
+        if(arr != null) return unescape(arr[2]); 
+        return false;
+    },
     openMessageModel(title,content,id,order_id,type){
       let that = this;
       that.$confirm({

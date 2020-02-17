@@ -1768,8 +1768,8 @@ export default {
                 //console.log(res)
                 if(res.code === 0){
                     this.proColorList = res.result;
-                    for(let i = 0; i < this.colorList.length; i++) {
-                        if (this.colorList[i].colorAndName.thumbnail === this.productColor) {
+                    for(let i = 0; i < this.proColorList.length; i++) {
+                        if (this.proColorList[i].colorAndName.thumbnail === this.productColor) {
                             this.productColorIcon = i
                             //console.log(this.productColorIcon)
                         }

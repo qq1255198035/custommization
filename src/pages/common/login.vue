@@ -330,6 +330,7 @@ export default {
         return false;
     },
     loginSuccess(res) {
+      console.log(res)
       if (this.$route.query.order_id) {
         this.$router.push({
           path: "/share",
@@ -353,6 +354,7 @@ export default {
         });
         this.setCookie('username',res.result.userInfo.username,30);
         this.setCookie('remember',this.formLogin.rememberMe,30);
+        this.setCookie('roleid',res.result.userInfo.roleId);
       }
     },
     
