@@ -208,6 +208,7 @@ let filterMap = {
     '5': '包装上传',
     '6': '确认发货',
     '7': '已确认发货',
+    '8': '已完成'
 }
 export default{
     data(){
@@ -390,6 +391,7 @@ export default{
             }else if(status === 7){
                 this.visible = true;
                 this.orderSn = orderSn;
+                this.factoryOrderId = id;
                 this.modelTitle = '添加物流';
                 this.modelKey = 2;
                     if(this.lists.length === 0){

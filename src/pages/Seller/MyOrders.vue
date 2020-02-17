@@ -55,7 +55,7 @@
           <a-divider type="vertical" style="height: 40px; margin: 0 50px;" />
           <div class="item">
             <p>Status</p>
-            <span>Pending approval</span>
+            <span>{{topic}}</span>
           </div>
           <a-divider type="vertical" style="height: 40px; margin: 0 50px;" />
           <div class="item">

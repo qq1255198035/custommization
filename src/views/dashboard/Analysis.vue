@@ -53,7 +53,7 @@
                                                 :fileList="fileList"
                                                 :remove="handleRemove"
                                                 :customRequest="beforeUpload"
-                                                accept=".rar,.zip,.doc,.docx,.pdf"
+                                                accept="image/jpeg,image/png"
                                             >
                                                 <a-button>
                                                     <a-icon type="upload" /> 上传文件
@@ -105,13 +105,15 @@
 import MyTitle from "@/components/MyTitle/MyTitle";
 import { factoryOrderList,upLoad,callbackShow,sumbitOpinion,historyList,orderAffirm } from "@/api/system";
 let filterMap = {
+    '0': '等待确认',
     '1': '订单确认',
     '2': '样衣上传',
     '3': '半成品上传',
     '4': '成品上传',
     '5': '包装上传',
     '6': '确认发货',
-    '7': '已发货',
+    '7': '已确认发货',
+    '8': '已完成'
 }
 export default{
     data(){

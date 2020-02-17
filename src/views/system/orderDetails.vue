@@ -1,12 +1,12 @@
 <template>
   <div id="my-order">
-    <my-title :title="'Order details'" :fontsize="20">
+    <my-title :title="'订单详情'" :fontsize="20">
       <a-button size="small" icon="rollback" style="font-size: 14px;" @click="$router.go(-1)">Back</a-button>
     </my-title>
     <div class="side">
       <p>
         <span>
-          <a-icon type="file-text" />Order number:
+          <a-icon type="file-text" />订单号:
         </span>
         {{orderId}}
       </p>
@@ -15,17 +15,17 @@
       <ul>
         <li>
           <p>
-            <span>Contacts:</span>
+            <span>联系人: </span>
             {{ contact }}
           </p>
           <p>
-            <span>Creation time:</span>
+            <span>创建时间: </span>
             {{ createTime }}
           </p>
         </li>
         <li>
           <p>
-            <span>Note：</span>
+            <span>备注：</span>
             {{ introduction }}
           </p>
         </li>
@@ -33,32 +33,26 @@
       <div class="status">
         <div>
           <div>
-            <p>Standby Closing Time</p>
+            <p>订单关闭时间</p>
             <span>{{payEndDate}}</span>
           </div>
           <a-divider type="vertical" style="height: 40px; margin: 0 50px;" />
           <div>
-            <p>Status</p>
-            <span>Pending approval</span>
+            <p>状态</p>
+            <span>{{topic}}</span>
           </div>
           <a-divider type="vertical" style="height: 40px; margin: 0 50px;" />
           <div>
-            <p>Order amount</p>
+            <p>订单数量</p>
             <span>$ {{orderPrice}}</span>
           </div>
         </div>
       </div>
     </div>
     <a-tabs defaultActiveKey="1">
-      <a-tab-pane tab="Details" key="1">
+      <a-tab-pane tab="详情" key="1">
         <div class="details">
-          <h3>Order progress</h3>
-          <!-- <my-stpes :mycurrent="mycurrent" stpesnum="4">
-            <p slot="p1" style="color: #33b8b3;">Submit order</p>
-            <p slot="p2" style="color: #33b8b3;">Confirm draft</p>
-            <p slot="p3">Share purchase</p>
-            <p slot="p4">Completed</p>
-          </my-stpes> -->
+          <h3>订单进度</h3>
           <my-stpes :mycurrent="mycurrent - 1" stpesnum="6">
             <p slot="p1">提交订单</p>
             <p slot="p2">样稿确认</p>
@@ -67,7 +61,7 @@
             <p slot="p5">运输中</p>
             <p slot="p6">完成</p>
           </my-stpes>
-          <my-title :title="'Product Information'" :fontsize="16" style="margin-top: 20px;"></my-title>
+          <my-title :title="'产品信息'" :fontsize="16" style="margin-top: 20px;"></my-title>
           <a-row type="flex" class="content" v-for="item in infoList" :key="item.id">
             <a-col :span="10">
               <div class="left">
@@ -75,21 +69,21 @@
                 <ul class="img-box">
                   <li>
                     <img :src="item.positivePicUrl" v-preview="item.positivePicUrl"/>
-                    <span>Front</span>
+                    <span>正面</span>
                   </li>
                   <li>
                     <img :src="item.backPicUrl" v-preview="item.backPicUrl"/>
-                    <span>Back</span>
+                    <span>背面</span>
                   </li>
                 </ul>
                 <p>
-                  Price：
+                  价格：
                   <span>$ {{item.price}}</span>
                 </p>
                 <p>
-                  <span>COLOR：{{item.productColor}}</span>
+                  <span>颜色：{{item.productColor}}</span>
                   <span style="margin-left: 10px;">
-                    Quantity：
+                    数量：
                     <i>{{item.buyNum}}</i>
                     /{{item.quantity}}
                   </span>
@@ -98,7 +92,7 @@
             </a-col>
             <a-col :span="14">
               <div class="right">
-                <h3>Payment information</h3>
+                <h3>支付信息</h3>
                 <a-table
                   :columns="columns"
                   :dataSource="item.interiorList"
@@ -114,44 +108,42 @@
           </a-row>
         </div>
       </a-tab-pane>
-      <a-tab-pane tab="Logistics information" key="2">
+      <a-tab-pane tab="物流信息" key="2">
         <div class="info">
-          <h3>Order progress</h3>
+          <h3>订单进度</h3>
           <ul class="perInfo">
             <li>
-              Consignee:
+              收货人:
               <span>{{ mydata.mapAddress.userName }}</span>
             </li>
             <li>
-              Zip code:
+              邮政编码:
               <span>{{ mydata.mapAddress.postalCode }}</span>
             </li>
             <li>
-              Phone:
+              电话:
               <span>{{ mydata.mapAddress.telNumber }}</span>
             </li>
             <li>
-              Delivery address:
+              交货地址:
               <span>{{ mydata.mapAddress.address }}</span>
             </li>
           </ul>
-          <h3>Logistics track</h3>
+          <h3>物流跟踪</h3>
           <ul class="perInfo">
             <li>
-              Logistics company：
+              物流公司：
               <span>{{ mydata.mapExpressage.itemText ? mydata.mapExpressage.itemText : ''}}</span>
             </li>
             <li>
-              Shipping number：
+              运输编号：
               <span>{{ mydata.mapExpressage.shippingNo ? mydata.mapExpressage.shippingNo : ''}}</span>
             </li>
           </ul>
           <ul class="logistics-info">
-            
             <li v-for="(item,index) in mydata.logisticsList" :key="index">
               {{item.createdAt}}  {{item.tag}} {{item.location}}  {{item.message}}  
             </li>
-            
           </ul>
         </div>
       </a-tab-pane>
@@ -165,19 +157,19 @@ import { orderDetailUp, orderDetailDown,getTrackingData } from "@/api/seller";
 const statusMap = {
   0: {
     status: "success",
-    text: "Money Received"
+    text: "已付款"
   },
   1: {
     status: "warning",
-    text: "Applying"
+    text: "申请中"
   },
   3: {
     status: "error",
-    text: "Payment Unsuccessful"
+    text: "支付失败"
   },
   2: {
     status: "processing",
-    text: "Processing Payment"
+    text: "付款中"
   }
 };
 export default {
@@ -199,19 +191,19 @@ export default {
       payEndDate: "",
       columns: [
         {
-          title: "SIZE",
+          title: "尺寸",
           dataIndex: "size"
         },
         {
-          title: "Quantity",
+          title: "数量",
           dataIndex: "number"
         },
         {
-          title: "Operating time",
+          title: "时间",
           dataIndex: "pay_time"
         },
         {
-          title: "Status",
+          title: "状态",
           dataIndex: "pay_status",
           scopedSlots: { customRender: "status" }
         }

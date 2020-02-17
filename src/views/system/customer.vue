@@ -56,11 +56,6 @@
     </div>
     <!-- table区域-begin -->
     <div>
-      <div class="ant-alert ant-alert-info" style="margin-bottom: 16px;">
-        <i class="anticon anticon-info-circle ant-alert-icon"></i>已选择&nbsp;
-        <a style="font-weight: 600">{{ selectedRowKeys.length }}</a>项&nbsp;&nbsp;
-        <a style="margin-left: 24px" @click="onClearSelected">清空</a>
-      </div>
       <a-table
         ref="table"
         bordered
@@ -284,11 +279,6 @@ export default {
       this.current = this.ipagination.current;
       this.getDealerList(this.queryParam.name,this.queryParam.status,this.current)
     },
-    onClearSelected() {
-      this.selectedRowKeys = [];
-      this.selectionRows = [];
-    },
-  
     batchDel(key){
       this.key = key;
       this.show = true;

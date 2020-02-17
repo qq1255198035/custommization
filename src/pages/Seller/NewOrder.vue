@@ -410,7 +410,7 @@
                                             {{productColorName}}
                                         </p>
                                         <ul class="color-list">
-                                            <li v-for="(item,index) in colorList" :key="index" :style="{backgroundColor: item.colorAndName.thumbnail.indexOf('#') === -1 ? '' : item.colorAndName.thumbnail}" @click="changeProductColor(item.colorAndName.thumbnail,item.colorAndName.name,index)">
+                                            <li v-for="(item,index) in proColorList" :key="index" :style="{backgroundColor: item.colorAndName.thumbnail.indexOf('#') === -1 ? '' : item.colorAndName.thumbnail}" @click="changeProductColor(item.colorAndName.thumbnail,item.colorAndName.name,index)">
                                                 <a-icon type="check" v-show="productColorIcon == index" style="position: absolute; left:25%;" />
                                                 <img :src="item.colorAndName.thumbnail" v-if="item.colorAndName.thumbnail.indexOf('#') === -1" style="width:100%; height:100%" />
                                             </li>
@@ -956,6 +956,7 @@ export default {
     },
     data () {
         return {
+            proColorList: [],
             widthCm:0,
             heightCm:0,
             imgTitle: '',
@@ -1291,7 +1292,6 @@ export default {
 
     methods:{
         // 更换衣服，保留设计
-        
         changeProductType(){
             this.show = false;
         },
@@ -1767,7 +1767,7 @@ export default {
             getColorList(id).then(res => {
                 //console.log(res)
                 if(res.code === 0){
-                    this.colorList = res.result;
+                    this.proColorList = res.result;
                     for(let i = 0; i < this.colorList.length; i++) {
                         if (this.colorList[i].colorAndName.thumbnail === this.productColor) {
                             this.productColorIcon = i
@@ -1939,6 +1939,7 @@ export default {
             this.show = true;
             this.visibletype = -1;
             this.liClick = -1;
+            this.designModel = 0;
             if(!this.getCookie('introFlag')){
                 setTimeout(() => {
                     this.$intro().setOptions({

@@ -54,7 +54,7 @@
                                 :fileList="fileList"
                                 :remove="handleRemove"
                                 :customRequest="beforeUpload"
-                                accept=".rar,.zip,.doc,.docx,.pdf"
+                                accept=".rar,.zip,.doc,.docx,.pdf,image/jpeg,image/png"
                             >
                                 <a-button>
                                     <a-icon type="upload" /> 上传文件
