@@ -228,7 +228,7 @@ export default {
     overflow:hidden;
     text-overflow:ellipsis;
     white-space: nowrap;
-    width: 90%;
+    width: 80%;
   }
 }
 </style>
