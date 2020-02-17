@@ -466,7 +466,6 @@ export default {
     if(this.$route.query.id){
       this.goodsId = this.$route.query.id;
       editProShow(this.$route.query.id).then(res => {
-        console.log(res);
         if(res.code == 0){
           this.resData = res.result;
           this.editor.info = res.result.goodsDetail;
@@ -504,7 +503,6 @@ export default {
     },
     postAddProList(params){
       addProList(params).then(res => {
-        console.log(res)
         if(res.code == 200){
           this.$message.success('操作成功！');
           this.$router.push({path:'DictList'});
@@ -588,7 +586,7 @@ export default {
     },
     getSyscategoryList(){
       syscategoryList().then(res => {
-        console.log(res)
+        
         if(res.code == 0){
           this.options = res.result
         }
@@ -1253,7 +1251,7 @@ export default {
         let formData = new FormData();
         formData.append("file", files);
         sourceUpload(formData).then(res => {
-          console.log(res)
+          
           this.bgimgs[0].url = res.preview_url;
           this.form.setFieldsValue({
             frontimg: res.preview_url
@@ -1292,7 +1290,7 @@ export default {
         let formData = new FormData();
         formData.append("file", files);
         sourceUpload(formData).then(res => {
-            console.log(res)
+            
             this.bgimgs[2].url = res.preview_url;
             this.form.setFieldsValue({
               leftimg: res.preview_url
@@ -1313,7 +1311,7 @@ export default {
         console.log(file)
         formData.append("file", files);
         sourceUpload(formData).then(res => {
-            console.log(res)
+            
             this.bgimgs[3].url = res.preview_url;
             this.form.setFieldsValue({
               rightimg: res.preview_url
@@ -1450,7 +1448,7 @@ export default {
         console.log(file)
         formData.append("file", files);
         sourceUpload(formData).then(res => {
-            console.log(res)
+            
             this.imageUrl = res.preview_url;
             this.form.setFieldsValue({
               img: res.preview_url

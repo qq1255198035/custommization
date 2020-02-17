@@ -276,52 +276,43 @@ export default {
     this.getOrderDetailUp(this.id);
     this.getOrderDetailDown(this.id);
     this.getTrackingData(this.id);
-    console.log(window.location)
-    console.log(this.config.url)
   },
   methods: {
     closeTimeout(){
       setTimeout(() => {this.hidemenu = false},200)
     },
     onCopy() {
-      this.$message.success("Replication success!");
+      this.$message.success("Shareable link Copied.!");
     },
     onError() {
       this.$message.error("copy failed!");
     },
     openMyshareBox(id) {
-      console.log(id);
       this.openShare = true;
       this.config.url = window.location.origin + "/#/share" + "?order_id=" + id;
       this.config.title = this.shareText.topic;
       this.config.image = this.shareText.topic_url;
       this.config.description = this.shareText.introduction;
-      console.log(this.config.url);
     },
     closeShareBox() {
       this.openShare = false;
     },
     getOrderDetailDown(id) {
       orderDetailDown(id).then(res => {
-        console.log(res);
         this.infoList = res.result;
       });
     },
     getTrackingData(id) {
       getTrackingData(id).then(res =>{
         if(res.code == 0) {
-          console.log(res.result)
           this.mydata.logisticsList = res.result.logisticsList ? res.result.logisticsList : [];
           this.mydata.mapAddress = res.result.mapAddress ? res.result.mapAddress : {};
           this.mydata.mapExpressage = res.result.mapExpressage ? res.result.mapExpressage : {};
-          console.log(this.mydata.mapAddress.userName)
-          console.log(this.mydata)
         }
       });
     },
     getOrderDetailUp(id) {
       orderDetailUp(id).then(res => {
-        console.log(res);
         if (res.code == 0) {
           this.shareText = res.result;
           this.orderId = res.result.orderSn;

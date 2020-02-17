@@ -63,7 +63,7 @@
     created (){
       getAction('/api/area').then((res) => {
           console.log("------------")
-          console.log(res)
+          
           this.areaOptions = res;
       })
     }

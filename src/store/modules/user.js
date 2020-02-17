@@ -86,6 +86,10 @@ const user = {
         resolve();
       })
     },
+
+    SetRoles({commit}){
+      commit('SET_ROLES', [])
+    },
     SetLang({ commit }, lang) {
       console.log(lang)
       return new Promise(resolve => {

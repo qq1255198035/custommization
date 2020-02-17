@@ -12,7 +12,7 @@
                                           <span>{{item.createTime}}</span>
                                     </p>
                                     <p>
-                                          <span>colour:{{item.productColor}}</span>
+                                          <span>Colour:{{item.productColor}}</span>
                                           <span>
                                                 <a-icon type="edit" @click="goEdit(item.id)"/>
                                           </span>
@@ -37,7 +37,6 @@ export default {
       methods:{
             goEdit(id){
                   updateShow(id).then(res => {
-                        console.log(res)
                         if(res.code == 0){
                               this.$router.push({path:'/neworder', query:{res: res.result,show: true}})
                         }
@@ -83,7 +82,6 @@ export default {
                                           font-size: 24px;
                                           cursor: pointer;
                                     }
-                                    
                               }
                         }
                   }
@@ -91,7 +89,18 @@ export default {
       }
       
 }
-@media screen and (max-width: 1900px) and (min-width: 1024px){
+@media screen and (max-width: 1900px) and (min-width: 1367px){
+      #design-list{
+            .list-row{
+                  .order-item{
+                        .img-box{
+                              height: 330px;
+                        }
+                  }
+            }
+      }
+}
+@media screen and (max-width: 1366px) and (min-width: 1024px){
       #design-list{
             .list-row{
                   .order-item{

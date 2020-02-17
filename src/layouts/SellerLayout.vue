@@ -73,10 +73,7 @@ export default {
   watch: {
   },
   created() {
-    console.log(this.mainMenu);
-    //this.menus = this.mainMenu;
     this.menus = this.mainMenu.find(item => item.path === "/").children;
-    console.log(this.menus);
     this.collapsed = !this.sidebarOpened;
     this.getWindowScreen();
   },
@@ -96,7 +93,6 @@ export default {
     ...mapActions(["setSidebar"]),
     getWindowScreen(){
       let screenWidths = window.screen.width;
-      console.log(screenWidths)
       if(screenWidths > 768){
         this.mobileShow = true;
       }else{

@@ -14,7 +14,7 @@
         <a-col :span="2" v-if="showTable"></a-col>
         <a-col :xxl="8" :xl="20" v-if="showTable">
           <table-item :data="img1">
-            <a href style="font-size: 18px; color: #999; text-decoration: underline">View the size chart</a>
+            <a href style="font-size: 18px; color: #999; text-decoration: underline">View size chart</a>
           </table-item>
           <my-table :dataSize="dataSize" :size="size" :dataSizeText="dataSizeText" @getList=" list"></my-table>
         </a-col>
@@ -22,7 +22,7 @@
         <a-col :span="2"></a-col>
         <a-col :xxl="10" :xl="20" v-if="showList">
           <table-item :data="img2">
-            <a href style="font-size: 18px; color: #999; text-decoration: underline">View the size chart</a>
+            <a href style="font-size: 18px; color: #999; text-decoration: underline">View size chart</a>
           </table-item>
           <my-tables
             v-if="showList"
@@ -227,7 +227,6 @@ check() {
           this.dataSizeTexts = res.result.personOrderPrintList;
           this.sizes = result1.sizes.split(",");
         }
-        console.log(this.dataSizeText);
       });
     }
   },

@@ -27,7 +27,7 @@
           <a-col :md="10" :sm="24">
             <template>
               <a-dropdown :trigger="[this.dropTrigger]" @visibleChange="dropStatus">
-               <span style="user-select: none">
+              <span style="user-select: none">
             <a-tree
               checkable
               multiple

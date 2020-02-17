@@ -54,6 +54,7 @@ export default {
             this.$emit('handleLink1')
             this.$emit('payBtnOrder')
             this.$emit('backHome')
+            this.$emit('gotoLogin')
         }
     }
 };

@@ -42,8 +42,10 @@ import {
   Spin,
   TreeSelect,
   Anchor,
-  Collapse
+  Collapse,
+  Timeline
 } from "ant-design-vue";
+Vue.use(Timeline);
 Vue.use(Collapse);
 Vue.use(Anchor);
 Vue.use(TreeSelect);

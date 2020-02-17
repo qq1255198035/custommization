@@ -1,10 +1,15 @@
 <template>
       <div id="MyHeader">
-            <a-avatar :size="100" :src="imgUrl"/>
-            <div class="desc">
-                  <h3><span>{{timeFix()}}，</span> <span>{{name}}，</span>Have A Nice Day</h3>
-                  <p><span>{{level}}</span><a-divider type="vertical" />{{intro}}</p>
+            <div class="left">
+                  <a-avatar :size="100" :src="imgUrl" v-if="imgUrl"/>
+                  <a-avatar :size="100" icon="user" v-else />
+                  <div class="desc">
+                        <h3><span>{{timeFix()}},</span> <span>{{name}}</span></h3>
+                        <p><span>{{level}}</span><a-divider type="vertical" />{{intro}}</p>
+                  </div>
             </div>
+            
+            <slot></slot>
       </div>
 </template>
 <script>
@@ -33,7 +38,7 @@ export default {
                   const time = new Date()
                   const hour = time.getHours()
                   //return hour < 9 ? i18n.t('header.HeadMenu.morning') : hour <= 11 ? i18n.t('header.HeadMenu.swh') : hour <= 13 ? i18n.t('header.HeadMenu.zwh') : hour < 20 ? i18n.t('header.HeadMenu.xwh') : i18n.t('header.HeadMenu.wsh');
-                  return hour < 9 ? 'Good morning' : hour <= 11 ? 'Good morning' : hour <= 13 ? 'Good noon' : hour < 20 ? 'Good afternoon' : 'Good evening'
+                  return hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening'
             }
       }
 }
@@ -41,10 +46,15 @@ export default {
 <style lang="less" scoped>
 #MyHeader{
       display: flex;
-      justify-content: flex-start;
+      justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid #9d9d9d;
       padding: 10px 0;
+      .left{
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+      }
       .desc{
             margin-left: 20px;
             h3{

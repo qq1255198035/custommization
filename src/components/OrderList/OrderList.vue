@@ -48,8 +48,10 @@ export default {
                   
             },
             goEdit(id,status){
-                  if(status == 1 || status == 2){
+                  if(status == 2){
                         this.$router.push({path:'/orderdetails',query:{id: id}})
+                  }else if(status == 1){
+                        this.$message.error("You haven't confirmed the design yet.")
                   }else{
                         this.$message.error('Your order has been confirmed.')
                   }
@@ -142,7 +144,18 @@ export default {
       }
       
 }
-@media screen and (max-width: 1900px) and (min-width: 1024px){
+@media screen and (max-width: 1900px) and (min-width: 1367px){
+      #OrderList{
+            .list-row{
+                  .order-item{
+                        .img-box{
+                              height: 330px;
+                        }
+                  }
+            }
+      }
+}
+@media screen and (max-width: 1366px) and (min-width: 1024px){
       #OrderList{
             .list-row{
                   .order-item{

@@ -2,7 +2,14 @@
     <div id="home">
         <div class="homeBanner">
                 <img src="@/assets/banner.png">
-                <router-link to="/login">Customize now</router-link>
+                <commonBtn
+                    @gotoLogin="$router.push({path: '/login'})"
+                    :width="'162px'"
+                    :padding="'15px'"
+                    :radio="'22px'"
+                    :fontsize="'16px'"
+                    :title="'Customize now'"
+                />
         </div>
         <div class="whatTCK">
                 <h3 class="homeTitle01">What’s Custom King?</h3>
@@ -336,12 +343,13 @@
     </div> 
 </template>
 <script>
+import commonBtn from "@/components/commonBtn/commonBtn"
 import {
     axios
 } from '@/utils/request'
 export default {
     components:{
-
+        commonBtn
     },
     data () {
         return {
@@ -356,8 +364,8 @@ export default {
                     axios({
                         url: 're.php?mail=' + this.email+ '&' + window.location.search,
                         method: 'get'
+                        // eslint-disable-next-line
                     }).then(res => {
-                        console.log(res)
                         this.modelShow = true
                     })
                 }else{

@@ -240,7 +240,6 @@ export default {
         orderId: this.$route.query.orderId
       };
       orderFroms(param).then(res => {
-        console.log(res);
         this.pay_mode = res.result.pay_mode;
         this.data = res.result.list;
         this.allPrice = res.result.allin;
@@ -253,7 +252,6 @@ export default {
       const that = this;
       console.log(data);
       wxCheckPay(data).then(res => {
-        console.log(res);
         if (res.wxPayStatus == 0) {
           this.$router.push({
             path: "/SellerPayWx",
@@ -279,7 +277,6 @@ export default {
       if (this.value == 1) {
         console.log(param);
         paypalSeller(param).then(res => {
-          console.log(res);
           let first = res.toPayHtml.indexOf("href") + 6;
           let last = res.toPayHtml.lastIndexOf('"');
           let url = res.toPayHtml.slice(first, last);
@@ -292,7 +289,6 @@ export default {
       }
       if (this.value == 2) {
         teamPayBack(param).then(res => {
-          console.log(res);
           const url = res.respData.code_url;
           this.show = true;
           var canvas = document.getElementById("canvas");

@@ -203,9 +203,7 @@ export default {
         
         checkOutPrice(id){
             this.show1 = true;
-            console.log(id)
             comDetails(id).then(res => {
-                console.log(res)
                 this.count1 = res.result.first.account,
                 this.sname1 = res.result.first.name,
                 this.cash1 =  res.result.first.amount,
@@ -218,7 +216,6 @@ export default {
         },
         postTwoNext(params){
             twoNext(params).then(res => {
-                console.log(res)
                 if(res.code == 200){
                     this.account3 = this.count;
                     this.name3 = this.name;
@@ -231,7 +228,6 @@ export default {
         },
         postNextStptes(account,name,amount,type){
             nextStptes(account,name,amount,type).then(res => {
-                console.log(res)
                 this.sprice = res.result.tax;
                 this.dprice = res.result.procedures;
                 this.dmoney = res.result.arrival;
@@ -243,20 +239,16 @@ export default {
             this.passWord = passWord;
         },
         enterCount(count){
-            console.log(count)
             this.count = count;
         },
         enterPrice(msg){
-            console.log(name)
             this.price = msg[0];
             this.totalMoney = msg[1];
         },
         enterName(name){
-            console.log(name)
             this.name = name;
         },
         payType(type){
-            console.log(type)
             this.paytype = type;
         },
         next() {
@@ -290,13 +282,10 @@ export default {
         },
         handleTableChange (pagination) {
                 //this.loading = true;
-                console.log(pagination.current);
-                console.log(pagination);
                 this.getWithdrawalList(pagination.current)
         },
         getCommissionsData(){
             commissionsData().then(res => {
-                console.log(res)
                 if(res.code == 0){
                     this.price1 = res.result.amount;
                     this.price2 = res.result.balance;
@@ -306,10 +295,8 @@ export default {
         },
         getWithdrawalList(num){
             withdrawalList(num).then(res => {
-                console.log(res)
                 this.data = res.records;
                 this.pagination.total = res.total;
-                console.log(res)
             })
         }
     },

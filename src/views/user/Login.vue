@@ -224,16 +224,6 @@
     created () {
       Vue.ls.remove(ACCESS_TOKEN)
       this.getRouterData();
-      // update-begin- --- author:scott ------ date:20190225 ---- for:暂时注释，未实现登录验证码功能
-//      this.$http.get('/auth/2step-code')
-//        .then(res => {
-//          this.requiredTwoStepCaptcha = res.result.stepCode
-//        }).catch(err => {
-//          console.log('2step-code:', err)
-//        })
-      // update-end- --- author:scott ------ date:20190225 ---- for:暂时注释，未实现登录验证码功能
-      // this.requiredTwoStepCaptcha = true
-
     },
     methods: {
       ...mapActions([ "Login", "Logout","PhoneLogin" ]),
@@ -283,7 +273,6 @@
               loginParams.mobile = values.mobile
               loginParams.captcha = values.captcha
               that.PhoneLogin(loginParams).then((res) => {
-                console.log(res.result);
                 this.departConfirm(res)
               }).catch((err) => {
                 that.requestFailed(err);
@@ -319,7 +308,6 @@
                     setTimeout(hide, 0);
                     this.cmsFailed(res.message);
                   }
-                  console.log(res);
                   setTimeout(hide, 500);
                 })
                 .catch(err => {

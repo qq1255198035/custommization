@@ -4,12 +4,15 @@
     <div class="content">
       <a-locale-provider :locale="locale">
           <a-list itemLayout="horizontal" :dataSource="data">
-            <a-list-item slot="renderItem" slot-scope="item,index" @click="openMessageModel(item.title,item.content,item.id)" style="cursor: pointer;">
+            <a-list-item slot="renderItem" slot-scope="item,index" @click="openMessageModel(item.title,item.content,item.id,item.order_id,item.type)" style="cursor: pointer;">
               <a-list-item-meta :description="item.content" :key="index">
-                <a-tag color="red" slot="avatar" v-if="item.status == 0">Unread</a-tag>
-                <a-tag color="#33b8b3" slot="avatar" v-if="item.status == 1">Already read</a-tag>
-                <p slot="title" href="#">{{item.title}} <span style="font-size: 12px;color:#999;margin-left: 20px;font-weight: normal;">{{ item.createtime | formatTime }}</span></p>
+                
+                <p slot="title">{{item.title}} <span style="font-size: 12px;color:#999;margin-left: 20px;font-weight: normal;">{{ item.createtime | formatTime }}</span></p>
               </a-list-item-meta>
+              <div>
+                <a-tag color="red" v-if="item.status == 0">Unread</a-tag>
+                <a-tag color="#33b8b3" v-if="item.status == 1">Already read</a-tag>
+              </div>
             </a-list-item>
             <div slot="footer" v-if="data.length > 0" style="text-align: center; margin-top: 16px;">
               <a-button
@@ -78,16 +81,26 @@ export default {
     }
   },
   methods: {
-    openMessageModel(title,content,id){
-      this.$info({
+    openMessageModel(title,content,id,order_id,type){
+      let that = this;
+      that.$confirm({
         title: title,
         content: content,
         zIndex: 2000,
-        okText: 'Close',
-        onOk(){},
+        okButtonProps:{
+          props: {disabled: order_id == 0}
+        },
+        okText: '查看',
+        cancelText: '关闭',
+        onOk(){
+          if(type == 0){
+            that.$router.push({path: '/myorder',query:{id: order_id}})
+          }else{
+            that.$router.push({path: '/specification',query:{orderId: order_id}})
+          }
+        },
       });
       read(id).then(res => {
-        console.log(res);
         if(res.code == 200){
           this._apiNotice();
         }
@@ -101,9 +114,7 @@ export default {
       apiNotice(param).then(res => {
         this.data = res.records;
         this.loading = false;
-        console.log(res);
       });
-      console.log(this.data);
     },
     loadMore() {
       this.offset++;

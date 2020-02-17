@@ -79,14 +79,14 @@ export function getAction(url, parameter) {
   })
 }
 //
-export function upLoad(parameter) {
+export function upLoad(formData) {
   return axios({
-    url: '/sys/oss/sourceUpload',
-    headers: {
-      "Content-Type": "multipart/form-data"
-    },
+    url: '/sys/oss/upload',
     method: 'post',
-    data: parameter
+    headers: {
+        "Content-Type": "multipart/form-data"
+    },
+    data: formData
   })
 }
 //
@@ -299,5 +299,146 @@ export function editColorShow(id) {
     url: '/sys/dictItem/queryById',
     method: 'post',
     data: qs.stringify({id:id})
+  })
+}
+
+export function getProductingList(code,pageNo){
+  return axios({
+    url: '/iso/jeecgFactoryOrder/queryToBeProducedPageList',
+    method: 'post',
+    data: qs.stringify({code:code,pageNo:pageNo,pageSize: 12})
+  })
+}
+
+export function getProductList(code,pageNo){
+  return axios({
+    url: '/iso/jeecgFactoryOrder/queryInProductionPageList',
+    method: 'post',
+    data: qs.stringify({code:code,pageNo:pageNo,pageSize: 12})
+  })
+}
+
+export function getFactoryList(orderId){
+  return axios({
+    url: '/system/jeecgUser/factoryList',
+    method: 'post',
+    data: qs.stringify({orderId})
+  })
+}
+
+export function chooseFactory(orderId,orderSn,factoryOrderId,opinion,reference,factoryId){
+  return axios({
+    url: '/iso/jeecgFactoryOrder/chooseFactory',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json;charset-UTF-8'
+    },
+    data: JSON.stringify({orderId,orderSn,factoryOrderId,opinion,reference,factoryId})
+  })
+}
+
+export function logisticsList(){
+  return axios({
+    url: '/system/jeecgAdministrator/logistics',
+    method: 'post'
+  })
+}
+// TODO保存物流信息
+export function saveLogistics(params){
+  return axios({
+    url: '/iso/jeecgFactoryOrder/saveLogistics',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json;charset-UTF-8'
+    },
+    data: JSON.stringify(params)
+  })
+}
+
+export function userInfo(){
+  return axios({
+    url: '/system/jeecgUser/factoryInfo',
+    method: 'post'
+  })
+}
+
+export function factoryDashboard(year,month){
+  return axios({
+    url: '/iso/jeecgFactoryOrder/factoryDashboard',
+    method: 'post',
+    data: qs.stringify({year,month})
+  })
+}
+
+export function checkOutInfo(factoryOrderId){
+  return axios({
+    url: '/iso/jeecgFactoryOrderProcess/examineApproveInfo',
+    method: 'post',
+    data: qs.stringify({factoryOrderId})
+  })
+}
+
+export function historyList(factoryOrderId){
+  return axios({
+    url: '/iso/jeecgFactoryOrderProcess/historyList',
+    method: 'post',
+    data: qs.stringify({factoryOrderId})
+  })
+}
+
+export function adminOrderAffirm(factoryOrderId,approverStatus,opinion,orderSn){
+  return axios({
+    url: '/iso/jeecgFactoryOrderProcess/adminOrderAffirm',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json;charset-UTF-8'
+    },
+    data: JSON.stringify({factoryOrderId,approverStatus,opinion,orderSn})
+  })
+}
+
+export function factoryOrderList(code,pageNo){
+  return axios({
+    url: '/iso/jeecgFactoryOrder/list',
+    method: 'post',
+    data: qs.stringify({code,pageNo,pageSize: 12})
+  })
+}
+
+export function callbackShow(factoryOrderId){
+  return axios({
+    url: '/iso/jeecgFactoryOrderProcess/queryFactoryForm',
+    method: 'post',
+    data: qs.stringify({factoryOrderId})
+  })
+}
+
+export function sumbitOpinion(factoryOrderId,reference,opinion,orderSn){
+  return axios({
+    url: '/iso/jeecgFactoryOrderProcess/sumbitOpinion',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json;charset-UTF-8'
+    },
+    data: JSON.stringify({factoryOrderId,reference,opinion,orderSn})
+  })
+}
+
+export function orderAffirm(factoryOrderId,approverStatus,opinion,orderSn){
+  return axios({
+    url: '/iso/jeecgFactoryOrderProcess/orderAffirm',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json;charset-UTF-8'
+    },
+    data: JSON.stringify({factoryOrderId,approverStatus,opinion,orderSn})
+  })
+}
+
+export function logisticsInfo(factoryOrderId){
+  return axios({
+    url: '/iso/jeecgFactoryOrder/queryLogisticsInfo',
+    method: 'post',
+    data: qs.stringify({factoryOrderId})
   })
 }

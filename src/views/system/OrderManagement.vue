@@ -11,7 +11,7 @@
           </a-col>
           <a-col :md="6" :sm="8">
             <a-form-item label="状态">
-              <a-select placeholder="请选择状态" v-model="queryParam.status">
+              <a-select placeholder="请选择状态" v-model="queryParam.status" :dropdownMatchSelectWidth="false">
                 <a-select-option value>请选择状态</a-select-option>
                 <a-select-option value="1">订单提交</a-select-option>
                 <a-select-option value="2">样稿确认</a-select-option>
@@ -49,7 +49,6 @@
         :columns="columns"
         :dataSource="dataSource"
         :pagination="ipagination"
-        :loading="loading"
         @change="handleTableChange"
       >
         <template slot="orderStatus" slot-scope="text">
@@ -318,14 +317,12 @@ export default {
         showQuickJumper: true,
         total: 0
       },
-      loading:false,
       current: 0,
       componyList: [],
       postId:''
     }
   },
   mounted(){
-    this.loading = true;
     this.getCheckOutOrders(1,'','');
     this.getLogistics();
   },
@@ -340,7 +337,6 @@ export default {
   methods: {
     getLogistics(){
       logistics().then(res => {
-        console.log(res)
         if(res.code == 0){
           this.componyList = res.result;
         }
@@ -354,14 +350,12 @@ export default {
     beConfirmed(){
       this.form.validateFields((err, values) => {
         if (!err) {
-          console.log('Received values of form: ', values);
           this.postConfirmLogistics(this.postId,values.note,values.gender,values.name,values.phone,values.details,values.province,values.city,values.quire)
         }
       });
     },
     postConfirmLogistics(orderId,shippingNo,transportMode,senderName,senderPhone,senderAddress,senderProvince,senderCity,senderDistrict){
       confirmLogistics(orderId,shippingNo,transportMode,senderName,senderPhone,senderAddress,senderProvince,senderCity,senderDistrict).then(res => {
-        console.log(res)
         if(res.code == 0){
           this.visible = false;
           this.$message.success('发货成功！');
@@ -370,9 +364,7 @@ export default {
       })
     },
     startToDesign(id){
-      this.loading = true;
       startDesign(id).then(res => {
-        console.log(res)
         if(res.code == 0){
           this.$notification.success({
             duration: 3,
@@ -385,23 +377,17 @@ export default {
     },
     searchReset(){
       this.queryParam = {};
-      this.loading = true;
       this.getCheckOutOrders(1,'','');
     },
     searchQuery(){
-      this.loading = true;
-      console.log(this.queryParam.name)
       this.getCheckOutOrders(1,this.queryParam.name,this.queryParam.status);
     },
-    handleTableChange(pagination) {
-      console.log(pagination)
+    handleTableChange(pagination){
       this.ipagination = pagination;
       this.current = pagination.current;
-      this.loading = true;
       this.getCheckOutOrders(pagination.current,this.queryParam.name,this.queryParam.status);
     },
     handleList(data) {
-      console.log(data)
       this.$router.push({
         path: '/orderListDetails',
         query: {id: data}
@@ -412,7 +398,6 @@ export default {
         console.log(res)
         this.ipagination.total = res.total;
         this.dataSource = res.records;
-        this.loading = false;
       })
     },
     sendExample(id){
@@ -424,9 +409,7 @@ export default {
         cancelText: "取消",
         onOk() {
           sendSample(id).then(res => {
-            console.log(res)
             if(res.code == 0){
-              console.log(111)
               that.$notification.success({
                 duration: 3,
                 message: '订单状态更改成功！',
@@ -448,5 +431,7 @@ export default {
 .table-page-search-wrapper a:hover{
   color: #666;
 }
-
+.ant-select-dropdown-menu{
+  min-width: 114px;
+}
 </style>

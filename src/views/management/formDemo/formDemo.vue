@@ -133,7 +133,7 @@ export default {
       formData.append('file', file)
       console.log(formData)
       upLoad(formData).then(res => {
-        console.log(res)
+        
         this.fileUrl = res.location
       })
     },
@@ -144,7 +144,7 @@ export default {
       formData.append('file', file)
       console.log(formData)
       upLoad(formData).then(res => {
-        console.log(res)
+        
         this.fileUrl = res.location
       })
     },

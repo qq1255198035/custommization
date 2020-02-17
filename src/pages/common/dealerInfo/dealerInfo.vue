@@ -3,7 +3,7 @@
     <div class="layout-box">
       <div class="content">
         <my-title :title="itemTitle" :fontsize="20"></my-title>
-        <a-tabs defaultActiveKey="1" @change="callback">
+        <a-tabs defaultActiveKey="1">
           <a-tab-pane tab="Essential information" key="1">
             <perSet></perSet>
           </a-tab-pane>
@@ -64,9 +64,6 @@ export default {
   mounted() {},
   watch: {},
   methods: {
-    callback() {
-
-    },
     showDrawer() {
       this.visible = true;
     },

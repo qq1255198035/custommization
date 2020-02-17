@@ -215,7 +215,7 @@
         queryTreeList().then((res)=>{
           if(res.success){
             console.log('----queryTreeList---')
-            console.log(res)
+            
             that.treeData = [];
             let treeList = res.result.treeList
             for(let a=0;a<treeList.length;a++){

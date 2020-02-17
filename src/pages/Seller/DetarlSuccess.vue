@@ -107,9 +107,7 @@ export default {
       const param = {
         user_order_id: this.$ls.get("userOrderId")
       };
-      console.log(param);
       status(param).then(res => {
-        console.log(res);
         this.step = parseInt(res.result.schedule);
       });
     },
@@ -122,9 +120,7 @@ export default {
         order_id: this.$ls.get("orderId"),
         price: this.$ls.get("price")
       };
-      console.log(param);
       payBack(param).then(res => {
-        console.log(res);
         if (res.code == 1) {
           this.code = 1;
           let result = res.payInfoList[0];

@@ -61,8 +61,8 @@
               <div>
                 <h3 style="color:#33b8b3">{{items.name}}</h3>
                 <div class="desc">
-                  <p>COLOUR：{{items.color}}</p>
-                  <p>SIZE：{{items.size}}</p>
+                  <p>Colour：{{items.color}}</p>
+                  <p>Size：{{items.size}}</p>
                 </div>
               </div>
             </div>

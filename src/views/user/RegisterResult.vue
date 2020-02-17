@@ -40,7 +40,6 @@
         let params={};
         params.username=this.form.username;
         params.password=this.form.password;
-        console.log(params);
         this.$router.push({name:'login',params})
       },
     }

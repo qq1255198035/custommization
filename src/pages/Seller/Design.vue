@@ -29,7 +29,7 @@
                             </li>
                         </ul>
                         <div class="container">
-                            <h2>CUSTOM KING T-Shirt<span>View the size chart</span></h2>
+                            <h2>CUSTOM KING T-Shirt<span>View size chart</span></h2>
                             <div class="canvas-container"  v-show="designModel == 0">
                                 <canvas id="canvas1" :width="screenWidth" :height="screenWidth"></canvas>
                                 <div class="moving-box" :style="{width: '200px',height: '300px',top: '150px', left: '200px'}" v-show="movingBox">
@@ -1022,7 +1022,7 @@ export default {
         },
         postSaveDesign(params){
             saveDesign(params).then(res => {
-                console.log(res)
+                
                 if(res.code == 200){
                     this.endDsign = true;
                 }
@@ -1038,7 +1038,7 @@ export default {
         },
         getSelectById(id){
             selectById(id).then(res => {
-                console.log(res);
+                ;
                 this.bgimgs = res.result.imgs;
                 this.bindCanvas(this.myCanvas1,0);
                 this.bindCanvas(this.myCanvas2,1);
@@ -1073,7 +1073,7 @@ export default {
             that.loading = true;
             categoryList(this.id,this.pageNum).then(res => {
                 that.loading = false;
-                console.log(res)
+                
                 if(res.current <= res.total){
                     that.goodsList = that.goodsList.concat(res.records);
                 }else{
@@ -1088,7 +1088,7 @@ export default {
         },
         getAllList(){
             listAll().then(res => {
-                console.log(res)
+                
                 if(res.code == 0){
                     if(res.total == 1){
                         this.btnable = true;
@@ -1103,7 +1103,7 @@ export default {
         },
         getcategoryList(id,num){
             categoryList(id,num).then(res => {
-                console.log(res)
+                
                 this.goodsList = res.records;
             })
         },

@@ -97,7 +97,6 @@
       },
       inputCodeChange(e){
         this.inputCodeContent = e.target.value;
-        console.log(this.inputCodeContent)
         if(!e.target.value||0==e.target.value){
           this.inputCodeNull=true
         }else{
@@ -107,10 +106,8 @@
       },
       generateCode(value){
         this.verifiedCode = value.toLowerCase();
-        console.log(this.verifiedCode);
       },
       validateInputUsername(rule, value, callback){
-        console.log(value);
         var reg=/^[0-9]+.?[0-9]*/;
         if(!value){
           callback("请输入用户名和手机号！");

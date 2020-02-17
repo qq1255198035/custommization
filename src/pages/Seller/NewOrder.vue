@@ -12,11 +12,10 @@
                             @click="handleClick"
                             @openChange="onOpenChange"
                         >
-                        <a-sub-menu  v-for="(item, index) in menuList" :key="index">
-                            <span slot="title" style="display: flex;align-items: center;"><a-avatar :size="20" :src="item.icon" style="margin-right: 5px;" v-if="item.icon"/><span>{{item.title}}</span></span>
-                            <a-menu-item v-for="(sub,sindex) in item.subMenu" :key="'sub'+ index + sindex.toString()" @click="handleGetList(sub.categoryId)">{{sub.title}}</a-menu-item>
-                        </a-sub-menu>
-
+                            <a-sub-menu  v-for="(item, index) in menuList" :key="index">
+                                <span slot="title" style="display: flex;align-items: center;"><a-avatar :size="20" :src="item.icon" style="margin-right: 5px;" v-if="item.icon"/><span>{{item.title}}</span></span>
+                                <a-menu-item v-for="(sub,sindex) in item.subMenu" :key="'sub'+ index + sindex.toString()" @click="handleGetList(sub.categoryId)">{{sub.title}}</a-menu-item>
+                            </a-sub-menu>
                         </a-menu>
                     </div>
                 </a-col>
@@ -26,7 +25,7 @@
                         <my-title :title="'New Order'" :fontsize="20">
                             <a-button size="small" icon="rollback" style="font-size: 14px;" @click="$router.push({path: '/OrderManagement/grouporder'})">Back</a-button>
                         </my-title>
-                        <goods-list :goodsArr="goodsList" @on-click="openDesignModal($event)"></goods-list>
+                        <goods-list :goodsArr="goodsList" @on-click="openDesignModal"></goods-list>
                         <div class="btn-box">
                             <a-button :loading="loading" @click="loadMore" :disabled="btnable">
                                 MORE
@@ -69,7 +68,9 @@
                             <div class="canvas-container"  v-show="designModel == 0">
                                 <canvas id="canvas1" :width="screenWidth" :height="screenWidth"></canvas>
                                 <div class="moving-box" :style="{width: boxSize1.width + 'px',height: boxSize1.height + 'px',top: boxSize1.top + 'px', left: boxSize1.left + 'px'}" v-show="movingBox">
+                                    {{boxSize1.name}}
                                     <div v-for="(item,index) in boxSize1.list" :key="index" :style="{width: item.width + 'px',height: item.height + 'px',top: item.top - 1 + 'px', left: item.left - 1 + 'px'}">
+                                        {{item.name}}
                                     </div>
                                 </div>
                             </div>
@@ -105,18 +106,17 @@
                                 <li>
                                     <span class="icon-zoomout"></span>
                                 </li>
-                                
                             </ul> -->
                         </div>
                         <div class="tools-box">
-                            <div style="" class="scroll-box">
+                            <div class="scroll-box">
                                 <div class="drawer">
                                     <div class="tool-box" v-show="visibletype == -1">
                                         <h2>HOW DO YOU WANT TO GET STARTED?</h2>
                                         <ul class="btn-box">
                                             <li @click="startTo(0)" v-intro="'start your design from here'" v-intro-step="1" class="active-btn">
                                                 <span class="icon-txt"></span>
-                                                Add text
+                                                Add Text
                                             </li>
                                             <li @click="startTo(1)">
                                                 <span class="icon-icon-image"></span>
@@ -126,7 +126,7 @@
                                         <ul class="btn-box">
                                             <li @click="startTo(6)">
                                                 <span class="icon-upload"></span>
-                                                Upload design
+                                                Upload Design
                                             </li>
                                             <li @click="changeProductType">
                                                 <span class="icon-change_product"></span>
@@ -147,12 +147,12 @@
                                         </div> -->
                                         <h2 style="color: #33b8b3;text-align: left; border-bottom: 1px solid #999; padding-bottom: 5px; font-size: 18px;">
                                             <!-- <a-icon type="left" style="cursor: pointer;" @click="visibletype = -1"/> -->
-                                            Add text
+                                            Add Text
                                         </h2>
                                         <div class="add-text">
-                                            <p>ADD TO DESIGN</p>
+                                            <p>PLEASE TYPE BELOW</p>
                                             <a-input v-model="addText"></a-input>
-                                            <a-button type="primary" @click="addItext(addText,false)" :disabled="!addText" style="border-radius: 12px;">ADDING DESIGN</a-button>
+                                            <a-button type="primary" @click="addItext(addText,false)" :disabled="!addText" style="border-radius: 12px;">ADD</a-button>
                                         </div>
                                     </div>
                                     <div class="tool-box6" v-show="visibletype == 1">
@@ -250,15 +250,15 @@
                                                             </a-select-opt-group>
                                                             <a-select-opt-group v-show="designModel == 2">
                                                                 <span slot="label">Back</span>
-                                                                <a-select-option value="10">3cm</a-select-option>
-                                                                <a-select-option value="13">4cm</a-select-option>
-                                                                <a-select-option value="15">5cm</a-select-option>
+                                                                <a-select-option value="9">1cm</a-select-option>
+                                                                <a-select-option value="12">1.5cm</a-select-option>
+                                                                <a-select-option value="15">2cm</a-select-option>
                                                             </a-select-opt-group>
                                                             <a-select-opt-group v-show="designModel == 3">
                                                                 <span slot="label">Back</span>
-                                                                <a-select-option value="10">3cm</a-select-option>
-                                                                <a-select-option value="13">4cm</a-select-option>
-                                                                <a-select-option value="15">5cm</a-select-option>
+                                                                <a-select-option value="9">1cm</a-select-option>
+                                                                <a-select-option value="12">1.5cm</a-select-option>
+                                                                <a-select-option value="15">2cm</a-select-option>
                                                             </a-select-opt-group>
                                                         </a-select>
                                                     </p>
@@ -313,13 +313,24 @@
                                                 </div>
                                             </dd>
                                             <dd>
-                                                <span>Colour：</span>
+                                                <span>Colour:</span>
                                                 <div class="color-picker">
                                                     <p>
                                                         {{nameColorName}}<span :style="{backgroundColor: nameColor}" @click="openChangeColorBox(5,'Name Color')"></span>
                                                     </p>
                                                     <p>
                                                         {{numberColorName}}<span :style="{backgroundColor: numberColor}" @click="openChangeColorBox(6,'Number Color')"></span>
+                                                    </p>
+                                                </div>
+                                            </dd>
+                                            <dd>
+                                                <span>Outline:</span>
+                                                <div class="color-picker" style="width: 80%;">
+                                                    <p>
+                                                        {{nameOutlineColorName}}<span :style="{backgroundColor: nameOutlineColor}" @click="openChangeColorBox(7,'Outline Colour')"></span>
+                                                    </p>
+                                                    <p>
+                                                        {{numberOutlineColorName}}<span :style="{backgroundColor: numberOutlineColor}" @click="openChangeColorBox(8,'Outline Colour')"></span>
                                                     </p>
                                                 </div>
                                             </dd>
@@ -356,7 +367,7 @@
                                                 </p>
                                             </li>
                                             <li @click="openChangeColorBox(1,'Font colour')">
-                                                <span>Font colour</span>
+                                                <span>Font Colour</span>
                                                 <p>
                                                     <span>{{colorName}} <i class="square" :style="{backgroundColor:color}"></i></span>
                                                     <a-icon type="right" />
@@ -369,14 +380,14 @@
                                                     <a-icon type="right" />
                                                 </p>
                                             </li>
-                                            <li @click="openChangeColorBox(3,'Outline Color')">
+                                            <li @click="openChangeColorBox(3,'Outline Colour')">
                                                 <span>Outline Colour</span>
                                                 <p>
                                                     <span>{{strokeColorName}} <i class="square" :style="{backgroundColor: strokeColor}"></i></span>
                                                     <a-icon type="right" />
                                                 </p>
                                             </li>
-                                            <li @click="openChangeColorBox(4,'Shadow Color')">
+                                            <li @click="openChangeColorBox(4,'Shadow Colour')">
                                                 <span>Shadow</span>
                                                 <p>
                                                     <span>{{shadowColorName}} <i class="square" :style="{backgroundColor: shadowColor}"></i></span>
@@ -392,10 +403,17 @@
                                     </div>
                                     <div class="tool-box10" v-show="visibletype == 4">
                                         <h2>COLOUR：</h2>
-                                        <p>Choose Colour： <span :style="{backgroundColor: productColor ? productColor : '#fff'}"></span> {{productColorName ? productColorName : 'White'}}</p>
+                                        <p>Choose Colour： 
+                                            <span :style="{backgroundColor: productColor.indexOf('#') === 0 ? productColor : ''}" v-show="productColor">
+                                                <img :src="productColor" v-show="productColor.indexOf('#') !== 0" style="width:100%; height:100%;">
+                                            </span> 
+                                            
+                                            {{productColorName}}
+                                        </p>
                                         <ul class="color-list">
-                                            <li v-for="(item,index) in colorList.list" :key="index" :style="{backgroundColor: item.itemValue}" @click="changeProductColor(item.itemValue,item.itemText,index)">
-                                                <a-icon type="check" v-show="productColorIcon == index"/>
+                                            <li v-for="(item,index) in colorList" :key="index" :style="{backgroundColor: item.colorAndName.thumbnail.indexOf('#') === -1 ? '' : item.colorAndName.thumbnail}" @click="changeProductColor(item.colorAndName.thumbnail,item.colorAndName.name,index)">
+                                                <a-icon type="check" v-show="productColorIcon == index" style="position: absolute; left:25%;" />
+                                                <img :src="item.colorAndName.thumbnail" v-if="item.colorAndName.thumbnail.indexOf('#') === -1" style="width:100%; height:100%" />
                                             </li>
                                         </ul>
                                         
@@ -414,7 +432,7 @@
                                                 Upload photos
                                             </a-button>
                                             <p>
-                                                You can upload your design as a reference and attach an explanation
+                                                Please upload reference photos and provide a detailed description. Our designer will prepare a mockup for you within 48 hours.
                                             </p>
                                         </div>
                                         <ul class="info-list">
@@ -460,6 +478,14 @@
                                                 <span>SIZE：</span>
                                                 <a-slider :min="0" :max="10" v-model="Shadow1" :step="1" @change="changeShadowWidth" style="width: 95%;margin:10px auto;"/>
                                             </dd>
+                                            <dd style="padding: 0 10px;" v-if="changeWidthShow == 7">
+                                                <span>SIZE：</span>
+                                                <a-slider :min="0" :max="5" v-model="nameStrokeWidth" :step="1" @change="changeNameStrokeWidth" style="width: 95%;margin:10px auto;"/>
+                                            </dd>
+                                            <dd style="padding: 0 10px;" v-if="changeWidthShow == 8">
+                                                <span>SIZE：</span>
+                                                <a-slider :min="0" :max="5" v-model="numberStrokeWidth" :step="1" @change="changeNumberStrokeWidth" style="width: 95%;margin:10px auto;"/>
+                                            </dd>
                                         </dl>
                                         <!-- <my-title :title="colorTitle"></my-title> -->
                                         <p style="display:flex;align-items: center;margin-top: 20px; font-size: 18px;color: #999;" v-if="colorKey == 1">Choose Colour： 
@@ -500,6 +526,12 @@
                                                 <template v-if="colorList.key == 6">
                                                     <a-icon type="check" v-show="fontColorIcon6 == index"></a-icon>
                                                 </template>
+                                                <template v-if="colorList.key == 7">
+                                                    <a-icon type="check" v-show="fontColorIcon7 == index"></a-icon>
+                                                </template>
+                                                <template v-if="colorList.key == 8">
+                                                    <a-icon type="check" v-show="fontColorIcon8 == index"></a-icon>
+                                                </template>
                                             </li>
                                         </ul>
                                         <p class="bottom-btn-box" v-if="changeWidthShow == 1">
@@ -526,6 +558,14 @@
                                             <a-button style="margin-right: 10px;" @click="removeNumberColor">Remove Number Colour</a-button>
                                             <a-button type="primary" @click="changeNumberColor(numberColor,numberColorName)">Change</a-button>
                                         </p>
+                                        <p class="bottom-btn-box" v-if="changeWidthShow == 7">
+                                            <a-button style="margin-right: 10px;" @click="removeNameOutlineColor">Remove Outline</a-button>
+                                            <a-button type="primary" @click="changeNameOutlineColor(nameOutlineColor)">Change</a-button>
+                                        </p>
+                                        <p class="bottom-btn-box" v-if="changeWidthShow == 8">
+                                            <a-button style="margin-right: 10px;" @click="removeNumberOutlineColor">Remove Outline</a-button>
+                                            <a-button type="primary" @click="changeNumberOutlineColor(numberOutlineColor)">Change</a-button>
+                                        </p>
                                     </div>
                                     <div class="tool-box5" v-show="visibletype == 9">
                                         <h2 style="color: #333;text-align: left; border-bottom: 1px solid #333; padding-bottom: 5px;">
@@ -538,7 +578,8 @@
                                                 <li style="width: 20%; color:#33b8b3;padding-left: 10px;">Number</li>
                                                 <li style="width: 30%; color:#33b8b3;padding-left: 10px;">Size</li>
                                             </ul>
-                                            <a-form :form="form1" @submit="handleSubmit">
+                                            <!-- @submit="handleSubmit" -->
+                                            <a-form :form="form1">
                                                 <a-form-item v-for="k in form1.getFieldValue('keys')" :key="k" :required="false" style="width: 100%; margin: 0">
                                                     <a-input-group compact style="display: flex;width: 100%;">
                                                         <a-form-item style="width: 40%; margin: 0;min-height: 79px;">
@@ -698,7 +739,7 @@
                     </div>
                     <ul class="submit-box">
                         <a-button type="primary" @click="showEdModal(postId)">Quote Now</a-button>
-                        <li style="display: flex; align-item">
+                        <li style="display: flex;">
                             <commonBtn
                                 @handleLink1="addNewPro"
                                 :width="'143px'"
@@ -777,7 +818,7 @@
             </a-modal>
             <a-modal
                 v-model="endDsign"
-                title="Save the design"
+                title="Your Design Has Been Saved!"
                 :centered="true"
                 width="40%"
                 :footer="null"
@@ -791,7 +832,7 @@
                                 <p>Thank your for submitting your awesome design!</p>
                             </div>
                         </div>
-                        <p>Tips: You can now view or edit your saved design anytime. Once you've submitted your design, we will provide a mockup for your confirmation within 36 hours.</p>
+                        <p>Tips: You can now view or edit your saved design anytime. Once you've submitted your design, we will provide a mockup for your confirmation within 48 hours.</p>
                     </div>
                     <div class="btn-box">
                         <a-button icon="file-text" @click="$router.push({path:'/OrderManagement/designList'})">Order list</a-button>
@@ -840,7 +881,7 @@
                         <span>${{onePrice | moneyFormat}}</span>
                     </div>
                     </div>
-                    <div class="font-color">Minimum Order Quantity:{{designDetail.minOrder}}</div>
+                    <div class="font-color">Minimum Order Quantity: {{designDetail.minOrder}}</div>
                     <div class="prices">
                     <div class="price-box">
                         <div class="font-18">Selling Price:</div>
@@ -849,12 +890,16 @@
                         </div>
                         <div class="font-18">/PC</div>
                     </div>
-                    <div class="price-right">
+                    <div class="price-right" v-if="twoPrice >= 0">
                         Your Profit:
                         <span>${{twoPrice | moneyFormat}}</span>
                     </div>
+                    <div class="price-right" v-else style="color: red;">
+                        Your Loss:
+                        <span>${{twoPrice | moneyFormat}}</span>
                     </div>
-                    <div class="font-color">MSRP:${{designDetail.price}}/PC</div>
+                    </div>
+                    <div class="font-color">MSRP: ${{designDetail.price}}/PC</div>
                 </a-col>
                 </a-row>
             </a-modal>
@@ -899,7 +944,8 @@ import {
         handleDesignList,
         rmWhite,
         queryByUrl,
-        saveNameNumber
+        saveNameNumber,
+        getColorList
     } from "@/api/seller";
 export default {
     components:{
@@ -961,12 +1007,20 @@ export default {
             fontColorIcon4: -1,
             fontColorIcon5: -1,
             fontColorIcon6: -1,
+            fontColorIcon7: -1,
+            fontColorIcon8: -1,
             previewImage:'',
             example:false,
             uploadId:0,
             productColorIcon: -1,
             productColor: '',
             productColorName: '',
+            nameOutlineColorName: 'BLACK',
+            numberOutlineColorName: 'BLACK',
+            nameOutlineColor: '#221814',
+            numberOutlineColor: '#221814',
+            nameStrokeWidth: 0,
+            numberStrokeWidth: 0,
             //字体颜色值 | 颜色名
             color:'#221814',
             colorName:'BLACK',
@@ -1070,7 +1124,6 @@ export default {
                 }
             ],
             colorList:{},
-            fileList: [],
             filpx:false,
             filpy:false,
             fontfamily:'845-CAI978',
@@ -1115,7 +1168,6 @@ export default {
                 }
             ],
             dataList:[],
-            uploadA:false,
             Ele: () => document.querySelector("#Design"),
             rootSubmenuKeys: ['0', '1', '2'],
             openKeys: ['0'],
@@ -1254,12 +1306,11 @@ export default {
                 let width = obj.getBoundingRect().width;
                 let img = new Image();
                 let imgInstance;
-                console.log(obj)
                 //设置图片跨域访问
                 img.crossOrigin = 'anonymous';
                 if(that.delWhite){
                     rmWhite(id).then(res => {
-                        console.log(res)
+                        
                         if(res.code == 0){
                             img.src = res.result.out + "?timeStamp="+new Date().getTime();
                             img.onload = function () {
@@ -1332,7 +1383,7 @@ export default {
         
         posteDesignList(){
             handleDesignList().then(res => {
-                console.log(res)
+                
                 if(res.code == 200){
                     this.$router.push({path: '/orderres'})
                 }
@@ -1343,16 +1394,14 @@ export default {
         },
         handleGetPic(content){
             getPic(content).then(res => {
-                console.log(res)
+                
                 if(res.code == 0){
                     this.imgs = res.result;
                 }
             })
         },
         changeNameFamily(e){
-            console.log(e)
             let obj = this.myCanvas.getActiveObject();
-            console.log(obj.left)
             if(obj){
                 this.nameFontFamily = e;
                 if(obj.myId == "Name"){
@@ -1365,7 +1414,7 @@ export default {
                     }else if(this.designModel == 3){
                         this.myCanvas.remove(this.exampleName4)
                     }
-                    this.addExampleName(this.nameFontFamily,this.designModel,this.nameSize,this.nameColor.slice(1),this.nameColorName,obj.left,obj.top);
+                    this.addExampleName(this.nameFontFamily,this.designModel,this.nameSize,this.nameColor.slice(1),this.nameColorName,obj.left,obj.top,this.nameStrokeWidth,this.nameOutlineColor.slice(1));
                 }
             }
         },
@@ -1383,7 +1432,7 @@ export default {
                     }else if(this.designModel == 3){
                         this.myCanvas.remove(this.exampleNumber4)
                     }
-                    this.addExampleNumber(this.numberFontFamily,this.designModel,this.numberSize,this.numberColor.slice(1),this.numberColorName,obj.left,obj.top);
+                    this.addExampleNumber(this.numberFontFamily,this.designModel,this.numberSize,this.numberColor.slice(1),this.numberColorName,obj.left,obj.top,this.numberStrokeWidth,this.numberOutlineColor.slice(1));
                 }
             }
         },
@@ -1418,10 +1467,8 @@ export default {
             this.twoPrice = (this.prices - this.onePrice) * this.nums;
         },
         showEdModal(id) {
-            console.log(id);
             this.showVisible = true;
             discount().then(res => {
-                console.log(res);
                 this.discounts = res.result;
             });
             const param = {
@@ -1429,7 +1476,6 @@ export default {
             };
             setTimeout(() => {
                 discountEdit1(param).then(res => {
-                console.log(res);
                 this.designDetail = res.result;
                 this.nums = res.result.quantity
                     ? res.result.quantity
@@ -1441,7 +1487,6 @@ export default {
                 const numbers = this.nums;
                 this.minNums = res.result.minOrder
                 this.disCounts(numbers, res.result.maxPrice);
-                console.log(res.result.price - this.onePrice);
                 this.resPrice = (res.result.maxPrice * this.discounts) / 100;
                 this.twoPrice = (this.prices - this.onePrice) * this.nums;
                 });
@@ -1466,8 +1511,8 @@ export default {
             let params = {
                 positivePicUrl: this.dataUrl1,backPicUrl: this.dataUrl2,leftPicUrl: this.dataUrl3,rightPicUrl: this.dataUrl4,
                 positiveDesignArea: this.dataPost1, backDesignArea: this.dataPost2, leftDesignArea: this.dataPost3, rightDesignArea: this.dataPost4,
-                goodsId: this.postId, id: this.designId,textFront: this.nameFontFamily, textColor: this.nameColor, textLocation: this.namePosition,textHeight: this.nameSize,
-                numberLocation: this.numberPosition,numberHeight: this.numberSize,numberFront:this.numberFontFamily, numberColor: this.numberColor, isPrintText: this.addNameData ? 1 : 0,isPrintNumber: this.addNumberData ? 1 : 0,
+                goodsId: this.postId, id: this.designId,textFront: this.nameFontFamily, textColor: this.nameColor, textLocation: this.namePosition.join(','),textHeight: this.nameSize,
+                numberLocation: this.numberPosition.join(','),numberHeight: this.numberSize,numberFront:this.numberFontFamily, numberColor: this.numberColor, isPrintText: this.addNameData ? 1 : 0,isPrintNumber: this.addNumberData ? 1 : 0,
                 productColor: this.productColorName
             }
             this.postSaveDesign1(params)
@@ -1478,7 +1523,7 @@ export default {
                 object.setControlVisible('tr',false);
                 object.setControlVisible('bl',false); 
                 queryByUrl(object.src).then(res => {
-                    console.log(res)
+                    
                     if(res.code == 0){
                         let arr = Object.keys(res.result)
                         arr.forEach(item => {
@@ -1526,6 +1571,9 @@ export default {
                             this.liClick = 2;
                             this.visibletype = 2;
                             this.keyId = 'Name';
+                            this.nameOutlineColor = object.outLineColor;
+                            this.nameOutlineColorName = object.outLineColorName;
+                            this.nameStrokeWidth = object.lineweight;
                             
                         }else if(object.text == '00'){
                             this.numberColorName = object.fontColorName;
@@ -1535,6 +1583,9 @@ export default {
                             this.liClick = 2;
                             this.visibletype = 2;
                             this.keyId = 'Number';
+                            this.numberOutlineColor = object.outLineColor;
+                            this.numberOutlineColorName = object.outLineColorName;
+                            this.numberStrokeWidth = object.lineweight;
                         }
                     }
                     if(object.place === null){
@@ -1566,7 +1617,7 @@ export default {
         handleChangeFont(params,isAdd){
             let that = this;
             changeFont(params).then(res => {
-                console.log(res)
+                
                 if(res.code == 0){
                     let img = new Image();
                     let imgInstance;
@@ -1579,6 +1630,7 @@ export default {
                                 let obj = that.myCanvas.getActiveObject();
                                 let left = obj.left;
                                 let top = obj.top;
+                                let angle = obj.angle;
                                 let width = obj.getBoundingRect().width;
                                 that.myCanvas.remove(obj);
                                 imgInstance = new fabric.Image(img, {
@@ -1588,6 +1640,7 @@ export default {
                                     top: top,
                                     myId: 'Text',
                                     crossOrigin: '*',
+                                    angle:angle,
                                     fontfamily: that.fontfamily,
                                     fontshape: that.fontShape,
                                     fontcolor: that.color,
@@ -1691,19 +1744,18 @@ export default {
         },
         getArtFontList(){
             artFontList().then(res => {
-                console.log(res)
+                
                 this.fontShapeArr = res.result;
             })
         },
         changeFontShape(item,index){
             this.fontShape = item;
-            console.log(this.fontShape)
             this.shapeActive = index
         },
         
         PostChangeGoodsColor(id,color){
             changeGoodsColor(id,color).then(res => {
-                console.log(res);
+                console.log(res)
                 this.bgimgs = res.result;
                 this.bindCanvas(this.myCanvas1,0);
                 this.bindCanvas(this.myCanvas2,1);
@@ -1712,10 +1764,18 @@ export default {
             })
         },
 
-        getColorList(status){
-            colorList(status).then(res => {
+        getproColorList(id){
+            getColorList(id).then(res => {
                 console.log(res)
-                this.colorList = res.result
+                if(res.code === 0){
+                    this.colorList = res.result;
+                    for(let i = 0; i < this.colorList.length; i++) {
+                        if (this.colorList[i].colorAndName.thumbnail === this.productColor) {
+                            this.productColorIcon = i
+                            //console.log(this.productColorIcon)
+                        }
+                    }
+                }
             })
         },
         postAddRemarksBtn(){
@@ -1723,7 +1783,7 @@ export default {
         },
         postAddRemarks(id,remarks){
             addRemarks(id,remarks).then(res => {
-                console.log(res)
+                
                 if(res.code == 200){
                     this.$message.success('Successful！')
                     if(res.result){
@@ -1741,7 +1801,7 @@ export default {
                 class: "my-modal",
                 onOk() {
                     deleteEXimg(id).then(res =>{
-                        console.log(res)
+                        
                         if(res.code == 200){
                             that.$message.success('Successful！');
                             that.getReferencePic(that.designId);
@@ -1803,14 +1863,15 @@ export default {
         },
         postSaveDesign1(params){
             saveDesign(params).then(res => {
+                
                 if(res.code == 200){
                     this.visibletype = -1;
                     this.liClick = -1;
                     this.$success({
-                        title: 'Successful preservation',
+                        title: 'Design Saved!',
                         content: (  // JSX support
                         <div>
-                            <p>please re-select the goods!</p>
+                            <p>You can now create another awesome design.</p>
                         </div>
                         ),
                         onOk:function(){
@@ -1830,7 +1891,6 @@ export default {
         },
         getSelectById(id){
             selectById(id).then(res => {
-                console.log(res);
                 this.sizePicUrl = res.result.sizePicUrl
                 this.bgimgs = res.result.imgs;
                 this.productColor = res.result.productColorValue;
@@ -1856,7 +1916,6 @@ export default {
             let obj2 = that.myCanvas2.getObjects();
             let obj3 = that.myCanvas3.getObjects();
             let obj4 = that.myCanvas4.getObjects();
-            console.log(obj1 || obj2 || obj3 || obj4)
             if(obj1.length > 0|| obj2.length > 0 || obj3.length > 0 || obj4.length > 0){
                 that.$confirm({
                     title: "Are you sure you want to leave?",
@@ -1877,9 +1936,10 @@ export default {
             }
         },
         openDesignModal(id){
-            console.log(id)
             this.postId = id;
             this.show = true;
+            this.visibletype = -1;
+            this.liClick = -1;
             if(!this.getCookie('introFlag')){
                 setTimeout(() => {
                     this.$intro().setOptions({
@@ -1920,7 +1980,7 @@ export default {
             that.loading = true;
             categoryList(this.id,this.pageNum).then(res => {
                 that.loading = false;
-                console.log(res)
+                
                 if(res.current <= res.total){
                     that.goodsList = that.goodsList.concat(res.records);
                 }else{
@@ -1959,9 +2019,8 @@ export default {
         //设计
         changeNameSize(value) {
             this.nameSize = value;
-            if(this.addNameData){
+            if(this.myCanvas.getActiveObject()){
                 let obj = this.myCanvas.getActiveObject();
-                console.log(obj)
                 if(obj.myId === 'Name'){
                     if(this.designModel == 0){
                         this.myCanvas.remove(this.exampleName1)
@@ -1972,13 +2031,13 @@ export default {
                     }else if(this.designModel == 3){
                         this.myCanvas.remove(this.exampleName4)
                     }
-                    this.addExampleName(this.nameFontFamily,this.designModel,this.nameSize,this.nameColor.slice(1),this.nameColorName,obj.left,obj.top);
+                    this.addExampleName(this.nameFontFamily,this.designModel,this.nameSize,this.nameColor.slice(1),this.nameColorName,obj.left,obj.top,this.nameStrokeWidth,this.nameOutlineColor.slice(1));
                 }
             }
         },
         changeNumberSize(value) {
             this.numberSize = value;
-            if(this.addNumberData){
+            if(this.myCanvas.getActiveObject()){
                 let obj = this.myCanvas.getActiveObject();
                 if(obj.myId === 'Number'){
                     if(this.designModel == 0){
@@ -1990,7 +2049,7 @@ export default {
                     }else if(this.designModel == 3){
                         this.myCanvas.remove(this.exampleNumber4)
                     }
-                    this.addExampleNumber(this.numberFontFamily,this.designModel,this.numberSize,this.numberColor.slice(1),this.numberColorName,obj.left,obj.top);
+                    this.addExampleNumber(this.numberFontFamily,this.designModel,this.numberSize,this.numberColor.slice(1),this.numberColorName,obj.left,obj.top,this.numberStrokeWidth,this.numberOutlineColor.slice(1));
                 }
             }
         },
@@ -2019,25 +2078,28 @@ export default {
             this.namePosition.splice(index, 1);
             if(value == 0){
                 this.myCanvas = this.myCanvas1;
-                this.designModel = 0;
-                this.bindCanvas(this.myCanvas,0)
                 this.myCanvas1.remove(this.exampleName1);
             }else if(value == 1){
                 this.myCanvas = this.myCanvas2;
-                this.designModel = 1;
-                this.bindCanvas(this.myCanvas,1);
                 this.myCanvas2.remove(this.exampleName2);
             }else if(value == 2){
                 this.myCanvas = this.myCanvas3;
-                this.designModel = 2;
-                this.bindCanvas(this.myCanvas,2);
                 this.myCanvas3.remove(this.exampleName3);
             }else if(value == 3){
                 this.myCanvas = this.myCanvas4;
-                this.designModel = 3;
-                this.bindCanvas(this.myCanvas,3);
                 this.myCanvas4.remove(this.exampleName4);
             }
+            if(this.namePosition.length <= 0){
+                this.addNameData = false;
+                this.nameSize = '29';
+                this.nameFontFamily = '845-CAI978';
+                this.nameColor = '#221814';
+                this.nameColorName = 'BLACK';
+                this.nameOutlineColorName = 'BLACK';
+                this.nameOutlineColor = '#221814';
+                this.nameStrokeWidth = 0;
+            }
+            this.designModel = value;
         },
         delNumberPosition(value){
             let index = this.numberPosition.indexOf(value)
@@ -2055,18 +2117,29 @@ export default {
                 this.myCanvas = this.myCanvas4;
                 this.myCanvas4.remove(this.exampleNumber4);
             }
+            if(this.numberPosition.length <= 0){
+                this.addNumberData = false;
+                this.numberSize = '29';
+                this.numberFontFamily = '845-CAI978';
+                this.numberColor = '#221814';
+                this.numberColorName = 'BLACK';
+                this.numberOutlineColorName = 'BLACK';
+                this.numberOutlineColor = '#221814';
+                this.numberStrokeWidth = 0;
+            }
             this.designModel = value;
-            this.bindCanvas(this.myCanvas,value);
         },
         changeNamePosition(value) {
             let left;
             let top;
             this.namePosition.push(value);
             // 不同面名字大小不同需要判断修改
-            
             this.nameFontFamily = '845-CAI978';
             this.nameColor = '#221814';
-            this.nameColorName = 'BLACK'
+            this.nameColorName = 'BLACK';
+            this.nameOutlineColor = '#221814';
+            this.nameOutlineColorName = 'BLACK';
+            this.nameStrokeWidth = 0;
             if(this.addNameData){
                 if(value == 0){
                     this.nameSize = '42';
@@ -2079,19 +2152,19 @@ export default {
                     left = this.boxSize2.left;
                     top = this.boxSize2.top;
                 }else if(value == 2){
-                    this.nameSize = '10';
+                    this.nameSize = '9';
                     this.myCanvas = this.myCanvas3;
                     left = this.boxSize3.left;
                     top = this.boxSize3.top;
                 }else if(value == 3){
-                    this.nameSize = '10';
+                    this.nameSize = '9';
                     this.myCanvas = this.myCanvas4;
                     left = this.boxSize4.left;
                     top = this.boxSize4.top;
                 }
                 this.designModel = value;
                 this.bindCanvas(this.myCanvas,value);
-                this.addExampleName(this.nameFontFamily,value,this.nameSize,this.nameColor.slice(1),this.nameColorName,left,top)
+                this.addExampleName(this.nameFontFamily,value,this.nameSize,this.nameColor.slice(1),this.nameColorName,left,top,this.nameStrokeWidth,this.nameOutlineColor.slice(1))
             }
         },
         changeNumberPosition(value){
@@ -2100,7 +2173,10 @@ export default {
             this.numberPosition.push(value);
             this.numberFontFamily = '845-CAI978';
             this.numberColor = '#221814';
-            this.numberColorName = 'BLACK'
+            this.numberColorName = 'BLACK';
+            this.numberOutlineColorName = 'BLACK';
+            this.numberOutlineColor = '#221814';
+            this.numberStrokeWidth = 0;
             if(this.addNumberData){
                 if(value == 0){
                     this.numberSize = '61';
@@ -2125,7 +2201,7 @@ export default {
                 }
                 this.designModel = value;
                 this.bindCanvas(this.myCanvas,value)
-                this.addExampleNumber(this.numberFontFamily,value,this.numberSize,this.numberColor.slice(1),this.numberColorName,left,top);
+                this.addExampleNumber(this.numberFontFamily,value,this.numberSize,this.numberColor.slice(1),this.numberColorName,left,top,this.numberStrokeWidth,this.numberOutlineColor.slice(1));
             }
         },
         // delSelected(obj) {
@@ -2157,7 +2233,6 @@ export default {
             const { form1 } = this;
             // can use data-binding to get
             const keys = form1.getFieldValue('keys');
-            console.log(keys)
             const nextKeys = keys.concat(++id);
             // can use data-binding to set
             // important! notify form to detect changes
@@ -2165,16 +2240,14 @@ export default {
                 keys: nextKeys,
             });
         },
-        handleSubmit(e){
-            e.preventDefault();
-            this.form1.validateFields((err, values) => {
-                console.log(values)
-                if (!err) {
-                    console.log('Received values of form: ', values);
-                    this.$message.success('successful!')
-                }
-            });
-        },
+        // handleSubmit(e){
+        //     e.preventDefault();
+        //     this.form1.validateFields((err, values) => {
+        //         if (!err) {
+        //             this.$message.success('successful!')
+        //         }
+        //     });
+        // },
         
         /**
          * 1：改变字体颜色的
@@ -2215,6 +2288,14 @@ export default {
                 this.numberColorName = name;
                 this.numberColor = val;
                 this.fontColorIcon6 = i
+            }else if(this.colorKey == 7){
+                this.nameOutlineColorName = name;
+                this.nameOutlineColor = val;
+                this.fontColorIcon7 = i
+            }else if(this.colorKey == 8){
+                this.numberOutlineColorName = name;
+                this.numberOutlineColor = val;
+                this.fontColorIcon8 = i
             }
             this.handleColorShow();
         },
@@ -2232,18 +2313,18 @@ export default {
                     }else if(this.designModel == 3){
                         this.myCanvas.remove(this.exampleNumber4)
                     }
-                    this.addExampleNumber(this.numberFontFamily,this.designModel,this.numberSize,val.slice(1),name,obj.left,obj.top);
+                    this.addExampleNumber(this.numberFontFamily,this.designModel,this.numberSize,val.slice(1),name,obj.left,obj.top,this.numberStrokeWidth,this.numberOutlineColor.slice(1));
                     this.visibletype = 2;
                 }
             }
         },
         removeNumberColor(){
-            this.numberColor = '#221814';
-            this.numberColorName = 'BLACK';
-            this.fontColorIcon6 = -1;
             let obj = this.myCanvas.getActiveObject();
             if (obj) {
                 if(obj.myId == 'Number'){
+                    this.numberColor = '#221814';
+                    this.numberColorName = 'BLACK';
+                    this.fontColorIcon6 = -1;
                     if(this.designModel == 0){
                         this.myCanvas.remove(this.exampleNumber1)
                     }else if(this.designModel == 1){
@@ -2253,7 +2334,8 @@ export default {
                     }else if(this.designModel == 3){
                         this.myCanvas.remove(this.exampleNumber4)
                     }
-                    this.addExampleNumber(this.numberFontFamily,this.designModel,this.numberSize,this.numberColor.slice(1),this.numberColorName,obj.left,obj.top);
+                    this.addExampleNumber(this.numberFontFamily,this.designModel,this.numberSize,this.numberColor.slice(1),this.numberColorName,obj.left,obj.top,this.numberStrokeWidth,this.numberOutlineColor.slice(1));
+                    this.visibletype = 2;
                 }
             }
         },
@@ -2270,18 +2352,18 @@ export default {
                     }else if(this.designModel == 3){
                         this.myCanvas.remove(this.exampleName4)
                     }
-                    this.addExampleName(this.nameFontFamily,this.designModel,this.nameSize,val.slice(1),name,obj.left,obj.top);
+                    this.addExampleName(this.nameFontFamily,this.designModel,this.nameSize,val.slice(1),name,obj.left,obj.top,this.nameStrokeWidth,this.nameOutlineColor.slice(1));
                     this.visibletype = 2;
                 }
             }
         },
         removeNameColor(){
-            this.nameColorName = 'BLACK';
-            this.nameColor = '#221814';
-            this.fontColorIcon5 = -1;
             let obj = this.myCanvas.getActiveObject();
             if (obj) {
                 if(obj.myId == 'Name'){
+                    this.nameColorName = 'BLACK';
+                    this.nameColor = '#221814';
+                    this.fontColorIcon5 = -1;   
                     if(this.designModel == 0){
                         this.myCanvas.remove(this.exampleName1)
                     }else if(this.designModel == 1){
@@ -2291,7 +2373,8 @@ export default {
                     }else if(this.designModel == 3){
                         this.myCanvas.remove(this.exampleName4)
                     }
-                    this.addExampleName(this.nameFontFamily,this.designModel,this.nameSize,this.nameColor.slice(1),this.nameColorName,obj.left,obj.top);
+                    this.addExampleName(this.nameFontFamily,this.designModel,this.nameSize,this.nameColor.slice(1),this.nameColorName,obj.left,obj.top,this.nameStrokeWidth,this.nameOutlineColor.slice(1));
+                    this.visibletype = 2;
                 }
             }
         },
@@ -2313,6 +2396,87 @@ export default {
                 lineweight: this.strokeWidth, outLineColor: this.strokeColor.substr(1), 
                 effect: this.fontShape,backGround: this.bgcolor,shadowColor: this.shadowColor.substr(1),smudge: this.Shadow1}
             this.handleChangeFont(params,true)
+        },
+        changeNameOutlineColor(val){
+            let obj = this.myCanvas.getActiveObject();
+            if (obj) {
+                if(obj.myId == 'Name'){
+                    if(this.designModel == 0){
+                        this.myCanvas.remove(this.exampleName1)
+                    }else if(this.designModel == 1){
+                        this.myCanvas.remove(this.exampleName2)
+                    }else if(this.designModel == 2){
+                        this.myCanvas.remove(this.exampleName3)
+                    }else if(this.designModel == 3){
+                        this.myCanvas.remove(this.exampleName4)
+                    }
+                    this.addExampleName(this.nameFontFamily,this.designModel,this.nameSize,this.nameColor.slice(1),name,obj.left,obj.top,this.nameStrokeWidth,val.slice(1));
+                    this.visibletype = 2;
+                }
+            }
+        },
+        removeNameOutlineColor(){
+            this.nameStrokeWidth = 0;
+            this.nameOutlineColorName = 'BLACK';
+            this.nameOutlineColor = '#221814';
+            this.fontColorIcon7 = -1;
+            let obj = this.myCanvas.getActiveObject();
+            if (obj) {
+                if(obj.myId == 'Name'){
+                    if(this.designModel == 0){
+                        this.myCanvas.remove(this.exampleName1)
+                    }else if(this.designModel == 1){
+                        this.myCanvas.remove(this.exampleName2)
+                    }else if(this.designModel == 2){
+                        this.myCanvas.remove(this.exampleName3)
+                    }else if(this.designModel == 3){
+                        this.myCanvas.remove(this.exampleName4)
+                    }
+                    this.addExampleName(this.nameFontFamily,this.designModel,this.nameSize,this.nameColor.slice(1),this.nameColorName,obj.left,obj.top,this.nameStrokeWidth,this.nameOutlineColor.slice(1));
+                }
+            }
+            this.visibletype = 2;
+        },
+        changeNumberOutlineColor(val){
+            let obj = this.myCanvas.getActiveObject();
+            if (obj) {
+                if(obj.myId == 'Number'){
+                    if(this.designModel == 0){
+                        this.myCanvas.remove(this.exampleNumber1)
+                    }else if(this.designModel == 1){
+                        this.myCanvas.remove(this.exampleNumber2)
+                    }else if(this.designModel == 2){
+                        this.myCanvas.remove(this.exampleNumber3)
+                    }else if(this.designModel == 3){
+                        this.myCanvas.remove(this.exampleNumber4)
+                    }
+                    this.addExampleNumber(this.numberFontFamily,this.designModel,this.numberSize,this.numberColor.slice(1),this.numberColorName,obj.left,obj.top,this.numberStrokeWidth,val.slice(1))
+                    this.visibletype = 2;
+                }
+            }
+        },
+        removeNumberOutlineColor(){
+            let obj = this.myCanvas.getActiveObject();
+            if (obj) {
+                if(obj.myId == 'Number'){
+                    this.numberStrokeWidth = 0;
+                    this.numberOutlineColorName = 'BLACK';
+                    this.numberOutlineColor = '#221814';
+                    this.fontColorIcon8 = -1;
+                    if(this.designModel == 0){
+                        this.myCanvas.remove(this.exampleNumber1)
+                    }else if(this.designModel == 1){
+                        this.myCanvas.remove(this.exampleNumber2)
+                    }else if(this.designModel == 2){
+                        this.myCanvas.remove(this.exampleNumber3)
+                    }else if(this.designModel == 3){
+                        this.myCanvas.remove(this.exampleNumber4)
+                    }
+                    this.addExampleNumber(this.numberFontFamily,this.designModel,this.numberSize,this.numberColor.slice(1),this.numberColorName,obj.left,obj.top,this.numberStrokeWidth,this.numberOutlineColor.slice(1));
+                    this.visibletype = 2;
+                }
+            }
+            
         },
         // 设置字体阴影开始
         changeShadowColor(val,name,isAdd){
@@ -2339,13 +2503,13 @@ export default {
         changeShadowWidth(e){
             this.Shadow1 = e;
         },
-        // 设置字体阴影结束
-
-        handleChange ({ fileList }) {
-            if(this.uploadA){
-                this.fileList = fileList
-            }
+        changeNameStrokeWidth(e){
+            this.nameStrokeWidth = e;
         },
+        changeNumberStrokeWidth(e){
+            this.numberStrokeWidth = e;
+        },
+        // 设置字体阴影结束
         handlePreview (file) {
             this.previewImage = file.url || file.thumbUrl
             this.previewVisible = true
@@ -2355,7 +2519,7 @@ export default {
         },
         postAddEximg(pid,picUrl,remarks,fileUrl){
             addEximg(pid,picUrl,remarks,fileUrl).then(res => {
-                console.log(res)
+                
                 if(res.code == 200){
                     this.example = false;
                     this.$message.success('Successful submission!');
@@ -2374,7 +2538,6 @@ export default {
         clickOk(){
             this.form.validateFields((err,values) => {
                 if (!err) {
-                    console.log(values.bz)
                     this.postAddEximg(this.designId,this.preview_url,values.bz,this.source_url);
                 }
             },);
@@ -2391,11 +2554,16 @@ export default {
             this.productColorIcon = i;
             this.productColor = value;
             this.productColorName = name;
-            this.PostChangeGoodsColor(this.postId,value.substr(1))
+            if(this.productColor.indexOf('#') === 0){
+                //console.log(1)
+                this.PostChangeGoodsColor(this.postId,value.substr(1))
+            }else{
+                //console.log(2)
+                this.PostChangeGoodsColor(this.postId,value)
+            }
         },
         // 选择颜色容器返回上一级
         goBackPage(){
-            console.log(this.liClick)
             // 字体选择颜色返回上一级
             if(this.liClick == 0){
                 this.visibletype = 3
@@ -2412,9 +2580,8 @@ export default {
                 that.myCanvas = that.myCanvas1;
                 that.bindCanvas(that.myCanvas,0);
                 that.designModel = 0;
-                that.addExampleNumber(that.numberFontFamily,0,that.numberSize,that.numberColor.slice(1),that.numberColorName,that.boxSize1.left,that.boxSize1.top)
+                that.addExampleNumber(that.numberFontFamily,0,that.numberSize,that.numberColor.slice(1),that.numberColorName,that.boxSize1.left,that.boxSize1.top,that.numberStrokeWidth,that.numberOutlineColor.slice(1))
             }else{
-                
                 if(that.exampleNumber1){
                     that.myCanvas1.remove(that.exampleNumber1);                    
                 }
@@ -2431,13 +2598,16 @@ export default {
                 that.numberSize = '61';
                 that.numberFontFamily = '845-CAI978';
                 that.numberColor = '#221814';
-                that.numberColorName = 'BLACK'
+                that.numberColorName = 'BLACK';
+                that.numberOutlineColorName = 'BLACK';
+                that.numberOutlineColor = '#221814';
+                that.numberStrokeWidth = 0;
             }
         },
-        addExampleNumber(font,numberPosition,numberSize,numberColor,numberColorName,left,top){
+        addExampleNumber(font,numberPosition,numberSize,numberColor,numberColorName,left,top,lineweight,outLineColor){
             let that = this;
             let img = new Image();
-            saveNameNumber(1,font,numberSize,numberColor,numberPosition,left,top).then(res => {
+            saveNameNumber(1,font,numberSize,numberColor,numberPosition,lineweight,outLineColor).then(res => {
                 if(res.code == 0){
                     img.crossOrigin = 'anonymous';
                     img.src = res.result+"?timeStamp="+new Date().getTime();
@@ -2455,6 +2625,9 @@ export default {
                             lockScalingX:true,
                             lockScalingY:true,
                             hasControls:false,
+                            lineweight:lineweight,
+                            outLineColor: that.numberOutlineColor,
+                            outLineColorName: that.numberOutlineColorName,
                         })
                         that.keyId = 'Number';
                         that.myCanvas.add(exampleNumber).setActiveObject(exampleNumber);
@@ -2466,6 +2639,9 @@ export default {
                             that.numberColor = exampleNumber.fill; 
                             that.numberFontFamily = exampleNumber.fontFamily;
                             that.numberColorName = exampleNumber.numberColorName;
+                            that.numberOutlineColor = exampleNumber.outLineColor;
+                            that.numberOutlineColorName = exampleNumber.outLineColorName;
+                            that.numberStrokeWidth = exampleNumber.lineweight
                         })
                         if(numberPosition == 0){
                             that.exampleNumber1 = exampleNumber;
@@ -2480,11 +2656,12 @@ export default {
                 }
             })
         },
-        addExampleName(font,namePosition,nameSize,nameColor,colorName,left,top){
+        addExampleName(font,namePosition,nameSize,nameColor,colorName,left,top,lineweight,outLineColor){
             let that = this;
             let img = new Image();
             //设置图片跨域访问
-            saveNameNumber(0,font,nameSize,nameColor,namePosition).then(res => {
+            saveNameNumber(0,font,nameSize,nameColor,namePosition,lineweight,outLineColor).then(res => {
+                
                 if(res.code == 0){
                     img.crossOrigin = 'anonymous';
                     img.src = res.result+"?timeStamp="+new Date().getTime();
@@ -2501,6 +2678,9 @@ export default {
                             nameColorName: colorName,
                             colorName:colorName,
                             padding: 0,
+                            lineweight:lineweight,
+                            outLineColor: that.nameOutlineColor,
+                            outLineColorName: that.nameOutlineColorName,
                             hasControls : false,
                         });
                         that.keyId = 'Name'
@@ -2513,6 +2693,9 @@ export default {
                             that.nameColor = exampleName.fill;
                             that.nameColorName = exampleName.nameColorName;
                             that.nameFontFamily = exampleName.fontFamily;
+                            that.nameOutlineColor = exampleName.outLineColor;
+                            that.nameOutlineColorName = exampleName.outLineColorName;
+                            that.nameStrokeWidth = exampleName.lineweight
                         })
                         if(namePosition == 0){
                             that.exampleName1 = exampleName;
@@ -2535,8 +2718,7 @@ export default {
                 that.myCanvas = that.myCanvas1;
                 that.bindCanvas(that.myCanvas,0);
                 that.designModel = 0;
-                console.log(that.boxSize1.left)
-                that.addExampleName(that.nameFontFamily,0,that.nameSize,that.nameColor.slice(1),that.nameColorName,parseInt(that.boxSize1.left),parseInt(that.boxSize1.top))
+                that.addExampleName(that.nameFontFamily,0,that.nameSize,that.nameColor.slice(1),that.nameColorName,parseInt(that.boxSize1.left),parseInt(that.boxSize1.top),that.nameStrokeWidth,that.nameOutlineColor.slice(1))
             }else{
                 if(that.exampleName1){
                     that.myCanvas1.remove(that.exampleName1);                    
@@ -2554,7 +2736,10 @@ export default {
                 that.nameSize = '29';
                 that.nameFontFamily = '845-CAI978';
                 that.nameColor = '#221814';
-                that.nameColorName = 'BLACK'
+                that.nameColorName = 'BLACK';
+                that.nameOutlineColorName = 'BLACK';
+                that.nameOutlineColor = '#221814';
+                that.nameStrokeWidth = 0;
             }
 
         },
@@ -2562,41 +2747,34 @@ export default {
             this.visibletype = 11;
             this.imgTitle = title;
             this.imgs1 = this.imgs[index].pic
-            console.log(this.imgs1)
         },
         beforeUploadEx(file){
             let files = file.file;
             if(files.size / 1024 / 1024 < 10){
-                this.uploadA = true
-                console.log(file)
                 this.postSourceUpload(files)
             }else{
                 this.$message.error('Image Size Exceeds Limit');
-                this.uploadA = false
                 return;
             }
         },
         postSourceUpload(file){
             let formData = new FormData();
             formData.append("file", file);
-            console.log(file)
-            console.log(formData.get("file"))
             sourceUpload(formData).then(res => {
-                console.log(res)
+                
                 this.preview_url = res.preview_url;
                 this.previewImage = res.preview_url;
                 this.source_url = res.source_url;
             })
         },
         beforeUpload(file){
-            console.log(file)
             this.uploadId ++;
             let files = file.file;
             if(files.size / 1024 / 1024 < 10){
                 let formData = new FormData();
                 formData.append("file", files);
                 sourceUpload(formData).then(res => {
-                    console.log(res)
+                    
                     if(res.preview_url){
                         this.selectImg(res.preview_url);
                     }else{
@@ -2614,7 +2792,6 @@ export default {
             reader.readAsDataURL(img)
         },
         onSearch (value) {
-            console.log(value)
             this.handleGetPic(value)
         },
         startTo(i){
@@ -2765,7 +2942,7 @@ export default {
                     || rect.top < y
                     || rect.left + rect.width > x + width
                     || rect.top + rect.height > y + height) {
-                        this.$message.error('The selected location has exceeded the limit area, please operate again!');
+                        this.$message.error('Design is outside / exceeded printable area. Please try again!');
                     if(obj.angle !== obj._stateProperties['angle']) { 
                         obj.set('angle',obj._stateProperties['angle']); 
                         obj.set('top',obj._stateProperties.top); 
@@ -2814,7 +2991,7 @@ export default {
                 this.visibletype = key;
             }
             if(key == 4){
-                this.getColorList(7);
+                this.getproColorList(this.postId);
             }
             this.myCanvas.discardActiveObject();
         },
@@ -2902,7 +3079,6 @@ export default {
                 }
             }
             if(isAdd){
-                console.log(text);
                 if(this.myCanvas.getActiveObject()){
                     let params = {
                         text: text,style:this.bgcolor ? '' : 'softshadow',fontName:this.fontfamily,fontHeight: 50, fontColor: this.color.substr(1), 
@@ -2943,19 +3119,6 @@ export default {
                 this.handleChangeFont(params,isAdd);
             }
         },
-        // 加载资源字体
-        // loadAndUse(font) {
-        //     let that = this;
-        //     var myfont = new FontFaceObserver(font)
-        //     myfont.load().then(function() {
-        //         // when font is loaded, use it.
-        //         that.myCanvas.getActiveObject().set("fontFamily", font);
-        //         that.myCanvas.requestRenderAll();
-        //     }).catch(function(e) {
-        //         console.log(e)
-        //         alert('font loading failed ' + font);
-        //     });
-        // },
         // 左右垂直居中
         setObjCenter(){
             let t = this.myCanvas.getActiveObject();
@@ -2998,7 +3161,6 @@ export default {
             this.visibletype = 7;
         },
         openChangeColorBox(key,title){
-            console.log(key)
             this.changeWidthShow = key;
             colorList(key).then(res => {
                 console.log(res)
@@ -3055,7 +3217,6 @@ export default {
                         if(this.bgcolor){
                             for(let i = 0; i < colors.length; i++) {
                                 if (colors[i].itemValue === this.bgcolor) {
-                                    console.log(i);
                                     this.fontColorIcon2 = i
                                 }
                             }
@@ -3074,7 +3235,6 @@ export default {
                         if(this.strokeColor){
                             for(let i = 0; i < colors.length; i++) {
                                 if (colors[i].itemValue === this.strokeColor) {
-                                    console.log(i);
                                     this.fontColorIcon3 = i
                                 }
                             }
@@ -3092,7 +3252,6 @@ export default {
                         if(this.shadowColor){
                             for(let i = 0; i < colors.length; i++) {
                                 if (colors[i].itemValue === this.shadowColor) {
-                                    console.log(i);
                                     this.fontColorIcon4 = i
                                 }
                             }
@@ -3107,15 +3266,39 @@ export default {
                     if(this.color){
                         for(let i = 0; i < colors.length; i++) {
                             if (colors[i].itemValue === this.color){
-                                console.log(i);
                                 this.fontColorIcon1 = i
                             }
                         }
                     }else{
                         this.fontColorIcon1 = -1
                     }
+                }else if(key == 7){
+                    this.visibletype = 8;
+                    this.colorTitle = title;
+                    this.colorKey = key;
+                    if(this.nameOutlineColor){
+                        for(let i = 0; i < colors.length; i++) {
+                            if (colors[i].itemValue === this.nameOutlineColor){
+                                this.fontColorIcon7 = i
+                            }
+                        }
+                    }else{
+                        this.fontColorIcon7 = -1
+                    }
+                }else if(key == 8){
+                    this.visibletype = 8;
+                    this.colorTitle = title;
+                    this.colorKey = key;
+                    if(this.numberOutlineColor){
+                        for(let i = 0; i < colors.length; i++) {
+                            if (colors[i].itemValue === this.numberOutlineColor){
+                                this.fontColorIcon8 = i
+                            }
+                        }
+                    }else{
+                        this.fontColorIcon8 = -1
+                    }
                 }
-                console.log(key,title);
             })
         },
         // 打开改变描边样式盒子
@@ -3231,7 +3414,6 @@ export default {
             this.handleChangeFont(params,true);
         },
         changestrokeWidth(e){
-            console.log(e)
             this.strokeWidth = e;
         },
         // 改变描边样式结束
@@ -3296,7 +3478,6 @@ export default {
             return color;
         },
         handleColorShow(){
-            console.log(33)
             if(this.colorKey == 1){
                 this.colorShow = this.color;
                 this.colorShowName = this.colorName;
@@ -3316,6 +3497,12 @@ export default {
             }else if(this.colorKey == 6){
                 this.colorShow = this.numberColor;
                 this.colorShowName = this.numberColorName;
+            }else if(this.colorKey == 7){
+                this.colorShow = this.nameOutlineColor;
+                this.colorShowName = this.nameOutlineColorName;
+            }else if(this.colorKey == 8){
+                this.colorShow = this.numberOutlineColor;
+                this.colorShowName = this.numberOutlineColorName;
             }
             else{
                 this.colorShow = '#221814';
@@ -3508,13 +3695,15 @@ export default {
                 position: relative;
                 .moving-box{
                     position: absolute;
-                    border: 1px solid #666;
+                    border: 1px solid #A9A0A1;
                     box-sizing: border-box;
                     z-index: 200;
+                    color: #A9A0A1;
                     > div{
                         position: absolute;
-                        border: 1px solid #666;
+                        border: 1px solid #A9A0A1;
                         box-sizing: border-box;
+                        color: #A9A0A1;
                     }
                 }
             }
@@ -4126,7 +4315,7 @@ export default {
                         display: flex;
                         align-items: center;
                         span{
-                            display: inline-block;
+                            display: flex;
                             width: 20px;
                             height: 20px;
                             border: 1px solid #ccc;
@@ -4147,7 +4336,10 @@ export default {
                             margin: 4px;
                             cursor: pointer;
                             position: relative;
+                            border: 1px solid #ccc;
+                            img{
 
+                            }
                         }
                     }
                 }

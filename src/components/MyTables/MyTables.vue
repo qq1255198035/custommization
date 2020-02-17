@@ -43,7 +43,7 @@
         <a-input
           v-if="col == 'price'"
           :key="col"
-          :value="record.price"
+          :value="'$' + record.price"
           style="text-align: center; border:none;"
         />
       </template>
@@ -128,7 +128,7 @@ export default {
         },
 
         {
-          title: "Active",
+          title: "Delete",
           width: "20%",
           key: "action",
           algin: "center",

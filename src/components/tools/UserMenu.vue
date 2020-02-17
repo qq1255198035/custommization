@@ -82,7 +82,6 @@
       ...mapActions(["Logout"]),
       ...mapGetters(["nickname", "avatar","userInfo"]),
       getAvatar(){
-        console.log('url = '+ window._CONFIG['imgDomainURL']+"/"+this.avatar())
         return window._CONFIG['imgDomainURL']+"/"+this.avatar()
       },
       handleLogout() {

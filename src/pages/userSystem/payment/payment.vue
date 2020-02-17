@@ -112,7 +112,7 @@
                         <h3 class="font-color">Total Amount：</h3>
                       </a-col>
                       <a-col :span="12">
-                        <p class="textRight font-color">${{pricess.all_price}}</p>
+                        <p class="textRight font-color">${{pricess.all_price | moneyFormat}}</p>
                       </a-col>
                     </a-row>
                   </li>
@@ -134,7 +134,7 @@
               <div class="paynum">
                 <div class="left textRight" v-if="pay_mode == 2">
                   <div class="font-18" style="padding-bottom:20px">Total Amount</div>
-                  <div class="font-reset">${{pricess.all_price}}</div>
+                  <div class="font-reset">${{pricess.all_price | moneyFormat}}</div>
                 </div>
                 <div class="right" v-if="pay_mode == 2">
                   <commonBtn
@@ -185,7 +185,7 @@
       <div class="mobile-title">
         <h1>
           <a-icon type="left" @click="$router.go(-1)"/>
-          Order Fetails
+          Order Details
         </h1>
       </div>
       <stpes-mobile :mycurrent="step" style="padding: 20px 10px;">
@@ -294,15 +294,15 @@
           </div>
         </div>
       </div>
-      <div class="total-price" v-if="false">
+      <div class="total-price" v-if="pay_mode == 2">
         <p>
-          Total Amount: $ {{pricess.all_price}}
+          Total Amount: $ {{pricess.all_price | moneyFormat}}
         </p>
         <a-button type="primary" @click="payBtn">Pay Now</a-button>
       </div>
-      <div class="total-price" v-if="true">
+      <div class="total-price" v-if="pay_mode == 1">
         <p>
-          Total Amount: $ {{pricess.all_price}}
+          Total Amount: $ {{pricess.all_price | moneyFormat}}
         </p>
         <a-button type="primary" @click="payBtnOrder">Submit Order</a-button>
       </div>
@@ -415,11 +415,33 @@ export default {
     this._paymentSessionInfos();
     this.getWindowScreen();
   },
-  
+  filters:{
+    moneyFormat(number, decimals) {
+      number = (number + '').replace(/[^0-9+-Ee.]/g, '');
+      var n = !isFinite( + number) ? 0 : +number,
+          prec = !isFinite( + decimals) ? 2 : Math.abs(decimals),
+          sep = ',',
+          dec = '.',
+          s = '',
+          toFixedFix = function(n, prec) {
+              var k = Math.pow(10, prec);
+              return '' + Math.ceil(n * k) / k;
+          };
+      s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+      var re = /(-?\d+)(\d{3})/;
+      while (re.test(s[0])) {
+          s[0] = s[0].replace(re, "$1" + sep + "$2");
+      }
+      if ((s[1] || '').length < prec) {
+          s[1] = s[1] || '';
+          s[1] += new Array(prec - s[1].length + 1).join('0');
+      }
+      return s.join(dec);
+    },
+  },
   methods: {
     getWindowScreen(){
       let screenWidths = window.screen.width;
-      console.log(screenWidths)
       if(screenWidths > 768){
         this.mobileShow = true;
       }else{
@@ -435,7 +457,6 @@ export default {
         user_order_id: this.$route.query.user_order_id ? this.$route.query.user_order_id : ''
       }
       paymentSessionInfos(param).then(response => {
-        console.log(response)
         this.pricess = response;
         this.allPrice = response.order_price ? response.order_price : 0;
         this.userId = response.order_id;
@@ -474,7 +495,6 @@ export default {
         shipping_fee: this.pricess.shipping_fee,
         goods_price: this.pricess.order_price
       };
-      console.log(pata)
       payPalOrder(pata).then(res => {
         if (res.result.code == 1) {
           this.$notification.success({
@@ -499,9 +519,8 @@ export default {
         goods_price: this.pricess.order_price,
         user_order_id: this.$route.query.user_order_id ? this.$route.query.user_order_id : ''
       };
-      console.log(pata)
       payPalOrder(pata).then(res => {
-        console.log(res)
+        
         if (res.code == 1) {
           const param = {
             order_id: this.pricess.order_id,

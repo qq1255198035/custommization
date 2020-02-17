@@ -113,7 +113,7 @@ export default {
   watch: {},
   methods: {
     onCopy() {
-      this.$message.success("Replication success");
+      this.$message.success("Shareable link Copied.");
     },
     onError() {
       this.$message.error("copy failed");
@@ -129,7 +129,6 @@ export default {
       };
       console.log(param);
       wxBackPay(param).then(res => {
-        console.log(res);
         if (res.successCode == 1) {
           this.code = 1;
           this.orderId = res.orderSn;

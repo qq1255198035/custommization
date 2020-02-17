@@ -353,7 +353,7 @@ import { sysgoodsList,deleteColor,getColorList,addColorList,sourceUpload,addColo
           this.selectedColorval.push(val);
         }else{
           editColorList(id).then(res => {
-            console.log(res)
+            
             if(res.code == 0){
               this.viewimg = res.result.thumbnail;
               this.frontimg = res.result.positivePicUrl;
@@ -401,7 +401,7 @@ import { sysgoodsList,deleteColor,getColorList,addColorList,sourceUpload,addColo
         console.log(11)
         addColor(goodsId,colorType,name,thumbnail,positivePicUrl,backPicUrl,leftPicUrl,rightPicUrl,id).then(res => {
           if(res.code == 200){
-            console.log(res)
+            
             this.$message.success(res.message);
             this.visibleA = false;
             this.openColorBox(this.goodsId);
@@ -417,7 +417,7 @@ import { sysgoodsList,deleteColor,getColorList,addColorList,sourceUpload,addColo
           let formData = new FormData();
           formData.append("file", files);
           sourceUpload(formData).then(res => {
-            console.log(res)
+            
             this.viewimg = res.preview_url;
             this.form.setFieldsValue({
               viewimg: res.preview_url
@@ -434,7 +434,7 @@ import { sysgoodsList,deleteColor,getColorList,addColorList,sourceUpload,addColo
           let formData = new FormData();
           formData.append("file", files);
           sourceUpload(formData).then(res => {
-            console.log(res)
+            
             this.frontimg = res.preview_url;
             this.form.setFieldsValue({
               frontimg: res.preview_url
@@ -451,7 +451,7 @@ import { sysgoodsList,deleteColor,getColorList,addColorList,sourceUpload,addColo
           let formData = new FormData();
           formData.append("file", files);
           sourceUpload(formData).then(res => {
-            console.log(res)
+            
             this.backimg = res.preview_url;
             this.form.setFieldsValue({
               backimg: res.preview_url
@@ -468,7 +468,7 @@ import { sysgoodsList,deleteColor,getColorList,addColorList,sourceUpload,addColo
           let formData = new FormData();
           formData.append("file", files);
           sourceUpload(formData).then(res => {
-            console.log(res)
+            
             this.leftimg = res.preview_url;
             this.form.setFieldsValue({
               leftimg: res.preview_url
@@ -485,7 +485,7 @@ import { sysgoodsList,deleteColor,getColorList,addColorList,sourceUpload,addColo
           let formData = new FormData();
           formData.append("file", files);
           sourceUpload(formData).then(res => {
-            console.log(res)
+            
             this.rightimg = res.preview_url;
             this.form.setFieldsValue({
               rightimg: res.preview_url
@@ -524,13 +524,13 @@ import { sysgoodsList,deleteColor,getColorList,addColorList,sourceUpload,addColo
       },
       openColorBox(id){
         getColorList(id).then(res => {
-          console.log(res)
+          
           if(res.code == 0){
             this.colorData = res.result;
             this.goodsId = id;
             this.visible = true;
             addColorList(this.goodsId).then(res => {
-              console.log(res)
+              
               if(res.code == 0){
                 this.addColorData = res.result;
               }
@@ -553,7 +553,7 @@ import { sysgoodsList,deleteColor,getColorList,addColorList,sourceUpload,addColo
       },
       getSysgoodsList(pageNo,name){
         sysgoodsList(pageNo,name).then(res => {
-          console.log(res)
+          
             this.data = res.records;
             this.ipagination.total = res.total;
             this.loading = false

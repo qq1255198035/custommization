@@ -83,7 +83,6 @@
             var userList = {
               username: this.userList.username
             }
-            console.log(userList);
             setTimeout(function () {
               that.$emit('nextStep', userList)
             }, 1500)

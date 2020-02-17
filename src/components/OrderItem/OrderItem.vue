@@ -3,10 +3,10 @@
     <div v-for="items in orderArr" :key="items.id">
       <div class="order-title">
         <p>
-          <span>Order number:{{items.orderSn}}</span>
-          <span>Order time:{{items.createTime | formatTime}}</span>
-          <span>Order Deadline:{{items.payEndDate | formatTime}}</span>
-          <span>Status:{{items.orderStatus | statusFilter1}}</span>
+          <span>Order number: {{items.orderSn}}</span>
+          <span>Order time: {{items.createTime | formatTime}}</span>
+          <span>Order Deadline: {{items.payEndDate | formatTime}}</span>
+          <span>Status: {{items.orderStatus | statusFilter1}}</span>
         </p>
         <hide-menu
           @handeDetelOrder="handeDetelOrder(items.id)"
@@ -21,17 +21,24 @@
       <div class="order-content">
         <div class="order-item" v-for="(item,index) in items.interiorList" :key="index + items.id">
           <div class="left">
-            <div style="display: flex; align-items:center;">
+            <div class="artical">
               <img :src="item.positivePicUrl" v-preview="item.positivePicUrl" width="150" height="150" />
               <div class="desc">
+                <span>Product Name</span>
                 <h3>{{item.name}}</h3>
-                <p>COLOUR:{{item.productColor}}</p>
               </div>
-            </div>
-
-            <div>
-              <span style="margin-right: 20px;">{{item.buyNum}}/{{item.quantity}}</span>
-              <span>Status:{{item.status | statusFilter}}</span>
+              <div class="desc">
+                <span>Colour</span>
+                <h3>{{item.productColor}}</h3>
+              </div>
+              <div class="desc">
+                <span>Item Sold / Expected Quantity</span>
+                <h3>{{item.buyNum}}/{{item.quantity}}</h3>
+              </div>
+              <div class="desc">
+                <span>Status</span>
+                <h3>{{item.status | statusFilter}}</h3>
+              </div>
             </div>
           </div>
           <div class="right">
@@ -115,7 +122,7 @@ import HideMenu from "@/components/HideMenu/HideMenu";
 import moment from "moment";
 const statusMap = {
   "1": {
-    text: "To Be Confirme"
+    text: "To Be Confirmed"
   },
   "2": {
     text: "Confirmed"
@@ -194,7 +201,7 @@ export default {
     commitDate(){
       if(this.timeover){
         postProductionTime(this.id,this.timeover).then(res => {
-          console.log(res)
+          
           if(res.code == 200){
             this.openDate = false;
             this.timeover = '';
@@ -238,7 +245,6 @@ export default {
       this.id = id;
       this.openDate = true;
       getProductionTime(this.id).then(res => {
-          console.log(res);
           if(res.code == 200){
             this.maxDays = 55;
             this.minDays = 20;
@@ -247,17 +253,15 @@ export default {
         })
     },
     onCopy() {
-      this.$message.success("Replication success");
+      this.$message.success("Shareable link Copied.");
     },
     onError() {
       this.$message.error("copy failed");
     },
     handeDetelOrder(id) {
-      console.log("删除");
       this.$emit("childDelte", id);
     },
     handeCaleOrder(id) {
-      console.log("取消");
       this.$emit("childCale", id);
     },
     goEditing(id) {
@@ -276,7 +280,6 @@ export default {
       this.$emit("handleMyClick", id, status,type);
     },
     openMyshareBox(item) {
-      console.log(item);
       this.openShare = true;
       this.config.url = window.location.origin + "/#/share" + "?order_id=" + item.id;
       this.config.image = item.interiorList[0].positivePicUrl;
@@ -325,7 +328,6 @@ export default {
     justify-content: space-between;
     border-bottom: 1px solid #757575;
     padding: 10px 0;
-    margin-top: 20px;
     p {
       width: 90%;
       display: flex;
@@ -339,72 +341,59 @@ export default {
   }
   .order-content {
     .order-item {
-      padding: 20px 50px;
+      padding: 20px 30px;
       border-bottom: 1px solid #757575;
       display: flex;
       justify-content: space-between;
       align-items: center;
       .left {
         display: flex;
-        width: 60%;
+        width: 80%;
         align-items: center;
         justify-content: space-between;
-        .desc {
+        .artical{
+          width: 100%;
           display: flex;
-          flex-direction: column;
+          align-items: center;
           justify-content: space-between;
-          padding-left: 20px;
-          h3 {
-            color: #33b8b3;
-            padding: 10px;
-          }
-          p {
-            padding: 10px;
-            color: #757575;
+          .desc {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding-left: 20px;
+            span{
+              text-align: center;
+            }
+            h3 {
+              color: #33b8b3;
+              padding: 10px;
+              font-size: 16px;
+              text-align: center;
+              margin: 0;
+            }
+            p {
+              padding: 10px;
+              color: #757575;
+              font-size: 14px;
+              text-align: center;
+            }
           }
         }
       }
-      .order-content {
-        .order-item {
-          padding: 20px 0;
-          border-bottom: 1px solid #757575;
+      .right {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        > p {
+          color: #757575;
           display: flex;
-          justify-content: space-between;
-          .left {
-            display: flex;
-            width: 40%;
-            .desc {
-              display: flex;
-              flex-direction: column;
-              justify-content: center;
-              padding-left: 20px;
-              h3 {
-                color: #33b8b3;
-                padding: 10px;
-              }
-              p {
-                padding: 10px;
-                color: #757575;
-              }
-            }
+          .ant-badge-status-dot {
+            width: 8px;
+            height: 8px;
           }
-          .right {
-            width: 60%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            > p {
-              color: #757575;
-              display: flex;
-              .ant-badge-status-dot {
-                width: 8px;
-                height: 8px;
-              }
-            }
-            > span {
-              color: #757575;
-            }
-          }
+        }
+        > span {
+          color: #757575;
         }
       }
     }

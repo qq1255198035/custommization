@@ -345,7 +345,6 @@ export default {
   methods: {
     getWindowScreen(){
       let screenWidths = window.screen.width;
-      console.log(screenWidths)
       if(screenWidths > 768){
         this.mobileShow = true;
       }else{
@@ -450,9 +449,7 @@ export default {
           if(values.email){
           register({
             email: values.email
-            //internationalization: localStorage.lang
           }).then(res => {
-              console.log(res)
               if (res.success) {
                 const interval = window.setInterval(() => {
                     this.state.smsSendBtn = true;

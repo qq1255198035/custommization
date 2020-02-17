@@ -184,12 +184,10 @@ export default {
     },
     callback (key) {
       this.status = key == 1 ? '' : key;
-      console.log(this.status)
       this._orders();
     },
     getWindowScreen(){
       let screenWidths = window.screen.width;
-      console.log(screenWidths)
       if(screenWidths > 768){
         this.mobileShow = true;
       }else{
@@ -206,7 +204,6 @@ export default {
       this._orders();
     },
     getSearch(dataSear) {
-      console.log(dataSear)
       this.search = dataSear;
       this._orders();
     },
@@ -218,7 +215,7 @@ export default {
         pageSize: this.pageSize
       };
       orders(param).then(res => {
-        console.log(res)
+        
         this.listData = res.records;
         this.total = res.total
       });

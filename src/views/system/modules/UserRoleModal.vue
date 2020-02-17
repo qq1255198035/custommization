@@ -135,7 +135,6 @@
           lastpermissionIds:that.defaultCheckedKeys.join(","),
         };
         that.loading = true;
-        console.log("请求参数：",params);
         saveRolePermission(params).then((res)=>{
           if(res.success){
             that.$message.success(res.message);
@@ -158,8 +157,7 @@
           queryRolePermission({roleId:this.roleId}).then((res)=>{
               this.checkedKeys = [...res.result];
               this.defaultCheckedKeys = [...res.result];
-              this.expandedKeysss = this.allTreeKeys;
-              //console.log(this.defaultCheckedKeys)
+              this.expandedKeysss = this.allTreeKeys
           })
         })
       }

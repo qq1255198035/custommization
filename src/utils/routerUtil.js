@@ -43,6 +43,9 @@ const constantRouterComponents = {
   DictList:() => import("@/views/system/DictList"), //商品管理，添加修改
   DictItemList:() => import("@/views/system/DictItemList"),
   colorList:() => import("@/views/system/colorList"),
+  // 客服 生产管理
+  TobeProducts:() => import("@/views/system/TobeProducts"),
+  Producting: () => import("@/views/system/Producting")
   //SysAnnouncementList:() => import("@/views/system/SysAnnouncementList"), //系统通告
   
   //format: () => import("@/views/management/format/format"), //商品类别
@@ -66,10 +69,6 @@ export const getRouterByUser = () => {
       token: Vue.ls.get(ACCESS_TOKEN),
       internationalization: localStorage.lang
     })
-    /* headers: {
-      'Access-Token': 'xxx'
-    }
-    */
   })
 }
 

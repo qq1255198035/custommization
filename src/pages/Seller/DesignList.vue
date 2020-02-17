@@ -15,7 +15,7 @@
             <div slot="goodsInfo" slot-scope="text" style="display: flex;">
               <div style="width: 100%;">
                 <h2>{{text.title}}</h2>
-                <p>COLOUR:{{text.color}}</p>
+                <p>Colour: {{text.color}}</p>
               </div>
             </div>
             <template slot="action" slot-scope="text,record">
@@ -25,8 +25,8 @@
           </a-table>
         </div>
         <div style="text-align: center; padding: 20px 0;">
-          <a-button type="primary" icon="plus" @click="goNewOrder">ADDING DESIGN</a-button>
-          <a-button style="margin-left: 10px;" @click="posteDesignList(selectedRowKeys)">Submit </a-button>
+          <a-button type="primary" icon="plus" @click="goNewOrder">Add New Design</a-button>
+          <a-button style="margin-left: 10px;" @click="posteDesignList(selectedRowKeys)">Submit</a-button>
         </div>
       </div>
     </div>
@@ -76,7 +76,6 @@ export default {
   methods:{
     goNewOrder(){
         queryByIdA().then(res => {
-          console.log(res)
           if(res.code == 0){
             if(res.result == 1){
               this.$router.push({path:'/neworder'});
@@ -86,7 +85,6 @@ export default {
                 title: 'Error',
                 content: 'Sorry,Not examined and approved,Please go to the account settings page to apply.',
                 onOk() {
-                  console.log(11);
                   that.$router.push({path: '/dealerInfo'})
                 },
               });
@@ -96,7 +94,6 @@ export default {
                 title: 'Error',
                 content: 'Sorry,Failure to pass the examination and approval',
                 onOk() {
-                  console.log(11);
                   that.$router.push({path: '/dealerInfo'})
                 },
               });
@@ -106,7 +103,6 @@ export default {
                 title: 'Error',
                 content: 'Sorry, please apply first.',
                 onOk() {
-                  console.log(11);
                   that.$router.push({path: '/dealerInfo'})
                 },
               });
@@ -115,20 +111,16 @@ export default {
         })
     },
     onSelectChange (selectedRowKeys) {
-      console.log('selectedRowKeys changed: ', selectedRowKeys);
       this.selectedRowKeys = selectedRowKeys
     },
     editDesign(a,b){
-      console.log(a,b)
       updateShow(b.id).then(res => {
-        console.log(res)
         if(res.code == 0){
           this.$router.push({path:'/neworder', query:{res: res.result,show: true}})
         }
       })
     },
     delDesign(a,b){
-      console.log(a,b)
       let that = this;
       that.$confirm({
         title: "Delete",
@@ -137,7 +129,6 @@ export default {
         cancelText: "Cancel",
         onOk() {
             delDesignList(b.key).then(res => {
-              console.log(res)
               if(res.code == 200){
                 that.getDesignList();
                 if(that.selectedRowKeys.indexOf(b.key) >= 0){
@@ -156,11 +147,8 @@ export default {
       })
     },
     posteDesignList(id){
-      console.log(id.join(','))
       if(id.length > 0){
         handleDesignList(id.join(',')).then(res => {
-          console.log(res)
-          console.log(id)
           if(res.code == 200){
             this.getDesignList();
             this.$router.push({path: '/orderres'})
@@ -181,8 +169,6 @@ export default {
 .wrapper-design {
   width: 100%;
   height: 100%;
-  
-  
   header {
       display: flex;
       width: 100%;

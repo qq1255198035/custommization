@@ -94,7 +94,7 @@ export default {
             formData.append("file", files[0]);
             upLoad(formData).then(res => {
                 imgUrl = res.preview_url;
-                console.log(res)
+                
                 insert(imgUrl)
             });
             // 上传代码返回结果之后，将图片插入到编辑器中

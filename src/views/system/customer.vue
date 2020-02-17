@@ -12,7 +12,7 @@
 
           <a-col :md="6" :sm="8">
             <a-form-item label="状态">
-              <a-select style="width: 100%" v-model="queryParam.status" placeholder="请选择状态">
+              <a-select style="width: 100%" v-model="queryParam.status" placeholder="请选择状态" :dropdownMatchSelectWidth="false">
                 <a-select-option value>请选择状态</a-select-option>
                 <a-select-option value="0">未审批</a-select-option>
                 <a-select-option value="1">通过</a-select-option>
@@ -261,7 +261,7 @@ export default {
     },
     postApprovalDealer(ids,status,remark,level){
       approvalDealer(ids,status,remark,level).then(res => {
-          console.log(res)
+          
           if(res.code == 0){
               this.show = false;
               this.$message.success('操作成功！');
@@ -271,7 +271,7 @@ export default {
     },
     getDealerGrade(){
       dealerGrade().then(res => {
-        console.log(res)
+        
         if(res.code == 0){
           this.options = res.result;
         }
@@ -307,7 +307,7 @@ export default {
     },
     getDealerList(name,status,pageNo){
       dealerList(name,status,pageNo).then(res => {
-        console.log(res)
+        
         this.dataSource = res.records
         this.ipagination.total = res.total
         this.loading = false;

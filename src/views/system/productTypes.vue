@@ -149,7 +149,6 @@ export default {
       this.form.validateFields((err, values) => {
           if (!err) {
             approveWithdraw(this.postId,values.note,3).then(res => {
-              console.log(res);
               if(res.code == 0){
                 this.popvisible = -1;
                 this.show = false;
@@ -163,7 +162,6 @@ export default {
     },
     confirm(id) {
       approveWithdraw(id,'',2).then(res => {
-        console.log(res);
         if(res.code == 0){
           this.popvisible = -1;
           this.$message.success(res.result);
@@ -178,14 +176,12 @@ export default {
     },
     getWithdrawList(pageNo){
       withdrawList(pageNo).then(res => {
-        console.log(res);
         this.dataSource = res.records;
         this.ipagination.total = res.total;
         this.loading = false;
       })
     },
     handleTableChange(pagination) {
-      console.log(pagination)
       this.ipagination = pagination;
       this.pageNo = pagination.current;
       this.loading = true;

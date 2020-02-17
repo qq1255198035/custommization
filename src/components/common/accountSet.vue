@@ -8,7 +8,7 @@
               <a-input
                 placeholder="Email"
                 :disabled="true"
-                v-decorator="['email',{rules: [{ required: true, message: 'Please fill in the mailbox' }]}]"
+                v-decorator="['email',{rules: [{ required: true, message: 'Please input your email' }]}]"
               />
             </a-form-item>
 
@@ -17,7 +17,7 @@
                 <a-form-item label="First name">
                   <a-input
                     placeholder="First name"
-                    v-decorator="['surname',{rules: [{ required: true, message: 'First name' }]}]"
+                    v-decorator="['surname',{rules: [{ required: true, message: 'Please input your first name' }]}]"
                   />
                 </a-form-item>
               </a-col>
@@ -25,7 +25,7 @@
                 <a-form-item label="Last name">
                   <a-input
                     placeholder="Last name"
-                    v-decorator="['monicker',{rules: [{ required: true, message: 'Last name' }]}]"
+                    v-decorator="['monicker',{rules: [{ required: true, message: 'Please input your last name' }]}]"
                   />
                 </a-form-item>
               </a-col>
@@ -33,14 +33,14 @@
             <a-form-item label="Bio">
               <a-input
                 placeholder="Bio"
-                v-decorator="['company',{rules: [{ required: true, message: 'Bio' }]}]"
+                v-decorator="['company',{rules: [{ required: true, message: 'Please input the bio' }]}]"
               />
             </a-form-item>
 
             <a-form-item label="Place">
               <a-select
                 @change="countryBtn"
-                v-decorator="['countryName',{rules: [{ required: true, message: 'Please fill in the location.' }]}]"
+                v-decorator="['countryName',{rules: [{ required: true, message: 'Please input the location.' }]}]"
               >
                 <a-select-option
                   v-for="(item, index) in country"
@@ -90,22 +90,22 @@
               <a-input
                 placeholder="Street"
                 :autosize="{ minRows: 6 }"
-                v-decorator="['streetName',{rules: [{ required: true, message: 'Street' }]}]"
+                v-decorator="['streetName',{rules: [{ required: true, message: 'Please input street' }]}]"
               />
             </a-form-item>
             <a-input-group compact>
               <a-form-item label="Phone number">
                 <a-row :gutter="32">
-                  <a-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
+                  <a-col :span="4">
                     <a-input
                       placeholder="86"
-                      v-decorator="['phoneName1',{rules: [{ required: true, message: '' }]}]"
+                      v-decorator="['phoneName1',{rules: [{ required: true, message: 'Please input your phone number' }]}]"
                     />
                   </a-col>
-                  <a-col :xs="20" :sm="20" :md="20" :lg="20" :xl="20">
+                  <a-col :span="20">
                     <a-input
                       placeholder="Phone number"
-                      v-decorator="['phoneName2',{rules: [{ required: true, message: 'Phone number' }]}]"
+                      v-decorator="['phoneName2',{rules: [{ required: true, message: 'Please input your phone number' }]}]"
                     />
                   </a-col>
                 </a-row>
@@ -127,7 +127,7 @@
             />
             <a-avatar v-else style="backgroundColor:#23C6C8" :size="130">Sponsor Cube</a-avatar>
             <template>
-              <a-upload  accept="image/jpeg,image/png,image/jpg.pdf,.bmp,.psd,.ai,.eps,.gif" name="avatar" :showUploadList="false" :customRequest="beforeUpload">
+              <a-upload accept="image/jpeg,image/png" name="avatar" :showUploadList="false" :customRequest="beforeUpload">
                 <commonBtn
                   :icon="'upload'"
                   :width="'100%'"
@@ -198,7 +198,6 @@ export default {
       phoneFirst: "",
       phoneLast: "",
       areaId: "",
-     
       fileUrl: "",
       fileUrl1: "",
       imgurl: "",
@@ -217,7 +216,6 @@ export default {
   methods: {
     _personSet() {
       personSet().then(res => {
-        console.log(res)
         const result = res.result;
         const phone1 = result.phone ? result.phone.split(",")[0] : "86";
         const phone2 = result.phone ? result.phone.split(",")[1] : "";
@@ -245,43 +243,38 @@ export default {
         this.country = res.result;
       });
     },
-    /*checkedTel(rule, value, callback) {
-      console.log(value)
-      const reg = /((\d{11})|^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$)/
-      if (!reg.test(value)) {
-        callback(new Error('请输入正确电话号'))
-      }
-    },*/
-    // 更新
     submitPerson() {
       this.form.validateFields((err, values) => {
-        if (!err) {
-          const params = {
-            email: values.email,
-            surname: values.surname,
-            monicker: values.monicker,
-            intro: values.company,
-            country: this.countryValue,
-            province: this.provinceId,
-            city: this.cityId,
-            address: values.streetName,
-            img: this.fileUrl,
-            phone: values.phoneName1 + "," + values.phoneName2
-          };
-          personEdit(params).then(res => {
-            if (res.code == 200) {
-              this.$notification.success({
-                message: "Update Success",
-                description: "The information has been updated.",
-                duration: 4
-              });
-              window.location.reload();
-            }
-          });
+        if(values.phoneName2){
+          if (!err){
+            const params = {
+              email: values.email,
+              surname: values.surname,
+              monicker: values.monicker,
+              intro: values.company,
+              country: this.countryValue,
+              province: this.provinceId,
+              city: this.cityId,
+              address: values.streetName,
+              img: this.fileUrl,
+              phone: values.phoneName1 + "," + values.phoneName2
+            };
+            personEdit(params).then(res => {
+              if (res.code == 200) {
+                this.$notification.success({
+                  message: "Update Success",
+                  description: "The information has been updated.",
+                  duration: 4
+                });
+                window.location.reload();
+              }
+            });
+          }
+        }else{
+          this.$message.error('Please input your phone number!')
         }
       });
     },
-    commonCity() {},
     countryBtn(value) {
       this.countryValue = value;
       const params = {
@@ -310,12 +303,7 @@ export default {
     onCity(value) {
       this.cityId = value;
     },
-    // phoneFirstBtn(e) {
-    //   console.log(e.target.value);
-    // },
-    // phoneLastBtn(e) {
-    //   console.log(e.target.value);
-    // },
+    
     beforeUpload(file) {
       let files = file.file
       const isJPG = files.type === "image/jpeg";

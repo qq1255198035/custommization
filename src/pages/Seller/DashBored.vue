@@ -81,14 +81,11 @@ export default {
   mounted() {
     this.getSalesDate();
     this.getUserInfo();
-    this.getOrderingList();
-    //this.$loading('正在加载中...');
-    //this.$loading.close();
-    
+    this.getOrderingList()
   },
   methods: {
     onCopy() {
-      this.$message.success("Replication success");
+      this.$message.success("Shareable link Copied.");
     },
     onError() {
       this.$message.error("copy failed");
@@ -97,13 +94,11 @@ export default {
       this.openShare = false;
     },
     openMyshareBox(item) {
-      console.log(item);
       this.openShare = true;
       this.config.url = window.location.origin + "/#/share" + "?order_id=" + item.id;
       this.config.title = item.topic;
       this.config.image = item.topic_url;
       this.config.description = item.introduction;
-      console.log(this.config.url);
     },
     getSalesDate() {
       salesDate().then(res => {

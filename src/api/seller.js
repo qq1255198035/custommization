@@ -446,7 +446,7 @@ export function changeFontFamily(params) {
 
 export function changeGoodsColor(id,color) {
     return axios({
-        url: '/system/jeecgGoods/changeGoodsColor',
+        url: '/system/jeecgGoods/changeGoodsColorNew',
         method: 'post',
         data:qs.stringify({goodsId: id,itemValue: color})
     })
@@ -753,11 +753,11 @@ export function editProShow(id) {
     })
 }
 
-export function saveNameNumber(text,fontName,fontHeight,fontColor,place) {
+export function saveNameNumber(text,fontName,fontHeight,fontColor,place,lineweight,outLineColor) {
     return axios({
         url: '/system/jeecgGoods/saveNameNumber',
         method: 'post',
-        data:qs.stringify({text:text,fontName:fontName,fontHeight:fontHeight,fontColor:fontColor,place:place})
+        data:qs.stringify({text:text,fontName:fontName,fontHeight:fontHeight,fontColor:fontColor,place:place,lineweight:lineweight,outLineColor:outLineColor})
     })
 }
 

@@ -126,7 +126,7 @@ export default {
             this.colorId = id;
             this.visible = true;
             editColorShow(id).then(res => {
-                console.log(res)
+                
                 if(res.code == 0){
                     this.form.setFieldsValue({
                         colorname: res.result.itemText,
@@ -148,7 +148,7 @@ export default {
             this.form.validateFields((err, values) => {
                 if(!err){
                     addColorList(values.value,values.colorcmyk,values.colorname,this.colorId).then(res => {
-                        console.log(res)
+                        
                         if(res.code == 200){
                             this.$message.success(res.message);
                             this.getColorList(1,'');
@@ -177,7 +177,7 @@ export default {
         },
         getColorList(pageNo,name){
             colorList(pageNo,name).then(res => {
-                console.log(res)
+                
                 this.ipagination.total = res.total;
                 this.data = res.records;
             })

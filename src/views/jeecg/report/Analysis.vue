@@ -499,7 +499,7 @@
           if(res.success){
             this.cardCount = res.result
           }
-          console.log(res);
+          ;
         });
       },
 
