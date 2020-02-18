@@ -33,84 +33,63 @@
             <a-form-item label="Bio">
               <a-input
                 placeholder="Bio"
-                v-decorator="['company',{rules: [{ required: true, message: 'Please input the bio'}]}]"
+                v-decorator="['company',{rules: [{ required: true, message: 'Please input the bio' }]}]"
               />
             </a-form-item>
 
             <a-form-item label="Place">
-              <a-select
-                @change="countryBtn"
-                v-decorator="['countryName',{rules: [{ required: true, message: 'Please choose' }]}]"
-              >
-                <a-select-option
-                  v-for="(item, index) in country"
-                  :key="index"
-                  :value="item.id"
-                >{{item.name}}</a-select-option>
-              </a-select>
+              <a-input 
+                placeholder="Please input the location"
+                v-decorator="['countryName',{rules: [{ required: true, message: 'Please input the location' }]}]" 
+              />
             </a-form-item>
             <a-row :gutter="32">
               <a-col :span="12">
                 <a-form-item label="Province where">
-                  <div class>
-                    <a-select
-                      @change="onProvince"
-                      placeholder="Please choose"
-                      v-decorator="['province',{rules: [{ required: true, message: 'Please choose'}]}]"
-                    >
-                      <a-select-option
-                        v-for="(item, index) in province"
-                        :key="index"
-                        :value="item.id"
-                      >{{item.name}}</a-select-option>
-                    </a-select>
-                  </div>
+                  <a-input 
+                    placeholder="Please input province"
+                    v-decorator="['province',{rules: [{ required: true, message: 'Please input province' }]}]" 
+                  />
                 </a-form-item>
               </a-col>
               <a-col :span="12">
                 <a-form-item label="City where">
-                  <div class>
-                    <a-select
-                      @change="onCity"
-                      placeholder="Please choose"
-                      v-decorator="['city',{rules: [{ required: true, message: 'Please choose' }]}]"
-                    >
-                      <a-select-option
-                        v-for="(item, index) in city"
-                        :key="index"
-                        :value="item.id"
-                      >{{item.name}}</a-select-option>
-                    </a-select>
-                  </div>
+                  <a-input 
+                    placeholder="Please input city"
+                    v-decorator="['city',{rules: [{ required: true, message: 'Please input city' }]}]" 
+                  />
                 </a-form-item>
               </a-col>
             </a-row>
 
             <a-form-item label="Street">
               <a-input
-                placeholder="Street"
-                :autosize="{ minRows: 6 }"
-                v-decorator="['streetName',{rules: [{ required: true, message: 'Please input the street' }]}]"
+                placeholder="Please input street"
+                v-decorator="['streetName',{rules: [{ required: true, message: 'Please input street' }]}]"
               />
             </a-form-item>
-            <a-input-group compact>
-              <a-form-item label="Phone number">
-                <a-row :gutter="32">
-                  <a-col :span="4">
-                    <a-input
-                      placeholder="86"
-                      v-decorator="['phoneName1',{rules: [{ required: true, message: 'Please input your phone number' }]}]"
-                    />
-                  </a-col>
-                  <a-col :span="20">
-                    <a-input
-                      placeholder="Phone number"
-                      v-decorator="['phoneName2',{rules: [{ required: true, message: 'Please input your phone number' }]}]"
-                    />
-                  </a-col>
-                </a-row>
-              </a-form-item>
-            </a-input-group>
+              
+            <a-row :gutter="32">
+              <a-col :span="4">
+                <a-form-item label="Phone number">
+                  <a-input
+                    placeholder="86"
+                    v-decorator="['phoneName1',{rules: [{ required: true, message: 'Please input your phone number' }]}]"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col :span="20">
+                <a-form-item style="padding-top: 29px;">
+                  <a-input
+                  placeholder="Phone number"
+                  v-decorator="['phoneName2',{rules: [{ required: true, message: 'Please input your phone number' }]}]"
+                />
+                </a-form-item>
+                
+              </a-col>
+            </a-row>
+              
+            
           </a-form>
         </div>
       </a-col>
@@ -163,17 +142,9 @@
   </div>
 </template>
 <script>
-function getBase64(img, callback) {
-  const reader = new FileReader();
-  reader.addEventListener("load", () => callback(reader.result));
-  reader.readAsDataURL(img);
-}
 import {
   agencyInfo,
   agencyEdit,
-  country,
-  province,
-  city,
   upLoad
 } from "@/api/system";
 import MyTitle from "@/components/MyTitle/MyTitle";
@@ -181,29 +152,8 @@ import commonBtn from "@/components/commonBtn/commonBtn";
 export default {
   data() {
     return {
-      countryValue: "",
-      province: "",
-      provinceId: "",
-      cityId: "",
-      city: "",
       itemTitle: "",
-      country: "",
-      personInfo: {},
-      places: "",
-      companyName: "",
-      companyWeb: "",
-      companyDesc: "",
-      address: "",
-      contact: "",
-      phoneFirst: "",
-      phoneLast: "",
-      areaId: "",
-    
-      fileUrl: "",
-      fileUrl1: "",
-      imgurl: "",
-      imgurl1: "",
-      flag: "1"
+      imgurl: ""
     };
   },
   components: {
@@ -211,71 +161,56 @@ export default {
     commonBtn
   },
   mounted() {
-    this._agencyInfo();
-    this._country();
+    this._personSet();
   },
   methods: {
-    _agencyInfo() {
+    _personSet() {
       agencyInfo().then(res => {
         const result = res.result;
-        const phone1 = result.phone ? result.phone.split(",")[0] : "";
+        console.log(res)
+        const phone1 = result.phone ? result.phone.split(",")[0] : "86";
         const phone2 = result.phone ? result.phone.split(",")[1] : "";
         this.form.setFieldsValue({
           surname: result.surname,
           monicker: result.monicker,
           company: result.intro,
           email: result.email,
-          countryName: result.countryName,
-          province: result.provinceName,
-          city: result.cityName,
+          countryName: result.country,
+          province: result.province,
+          city: result.city,
           streetName: result.address,
           phoneName1: phone1,
           phoneName2: phone2
         });
         this.imgurl = result.img;
-        this.fileUrl = result.img;
-        this.provinceId = result.province;
-        this.cityId = result.city;
-        this.countryValue = result.country;
       });
     },
-    _country() {
-      country().then(res => {
-        this.country = res.result;
-      });
-    },
-    /*checkedTel(rule, value, callback) {
-      console.log(value)
-      const reg = /((\d{11})|^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$)/
-      if (!reg.test(value)) {
-        callback(new Error('请输入正确电话号'))
-      }
-    },*/
-    // 更新
+    
     submitPerson() {
       this.form.validateFields((err, values) => {
         if(values.phoneName2){
-          if (!err) {
+          if (!err){
             const params = {
               email: values.email,
               surname: values.surname,
               monicker: values.monicker,
               intro: values.company,
-              country: this.countryValue,
-              province: this.provinceId,
-              city: this.cityId,
+              country: values.countryName,
+              province: values.province,
+              city: values.city,
               address: values.streetName,
-              img: this.fileUrl,
+              img: this.imgurl,
               phone: values.phoneName1 + "," + values.phoneName2
             };
             agencyEdit(params).then(res => {
+              console.log(res)
               if (res.code == 200) {
                 this.$notification.success({
-                  message: 'Update Success',
-                  description: 'The information has been updated.',
+                  message: "Update Success",
+                  description: "The information has been updated.",
                   duration: 4
                 });
-                window.location.reload()
+                this._personSet();
               }
             });
           }
@@ -283,35 +218,6 @@ export default {
           this.$message.error('Please input your phone number!')
         }
       });
-    },
-    commonCity() {},
-    countryBtn(value) {
-      this.countryValue = value;
-      const params = {
-        areaId: value
-      };
-      province(params).then(res => {
-        if (res.result.length == 0) {
-          this.form.setFieldsValue({
-            province: "",
-            city: ""
-          });
-        }else{
-          this.province = res.result;
-        }
-      });
-    },
-    onProvince(value) {
-      this.provinceId = value;
-      const params = {
-        areaId: value
-      };
-      city(params).then(res => {
-        this.city = res.result;
-      });
-    },
-    onCity(value) {
-      this.cityId = value;
     },
     beforeUpload(file) {
       let files = file.file
@@ -323,20 +229,16 @@ export default {
       }
       const isLt2M = files.size / 1024 / 1024 < 2;
       if (!isLt2M) {
-        this.$message.error(this.$t("Image Size Over 2MB"));
+        `this`.$message.error(this.$t("Image Size Over 2MB"));
         return isLt2M;
       }
-      getBase64(files, imageUrl => {
-        this.imgurl = imageUrl;
-      });
+      
       const formData = new FormData();
       formData.append("file", files);
       upLoad(formData).then(res => {
-        this.fileUrl = res.preview_url;
+        console.log(res)
+        this.imgurl = res;
       });
-    },
-    onChange(value) {
-      console.log(value);
     }
   },
   computed: {},
@@ -351,7 +253,7 @@ export default {
 #accountSet {
   //background-color: #fff;
   padding-top: 16px;
-
+  padding: 16px 20px 0;
   .ant-form-item {
     width: 100%;
   }

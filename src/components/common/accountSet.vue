@@ -38,79 +38,54 @@
             </a-form-item>
 
             <a-form-item label="Place">
-              <a-select
-                @change="countryBtn"
-                v-decorator="['countryName',{rules: [{ required: true, message: 'Please input the location.' }]}]"
-              >
-                <a-select-option
-                  v-for="(item, index) in country"
-                  :key="index"
-                  :value="item.id"
-                >{{item.name}}</a-select-option>
-              </a-select>
+              <a-input 
+                placeholder="Please input the location"
+                v-decorator="['countryName',{rules: [{ required: true, message: 'Please input the location' }]}]" 
+              />
             </a-form-item>
             <a-row :gutter="32">
               <a-col :span="12">
-                <a-form-item label="Address">
-                  <div class>
-                    <a-select
-                      @change="onProvince"
-                      placeholder="Please choose"
-                      v-decorator="['province',{rules: [{ required: true, message: 'Please choose' }]}]"
-                    >
-                      <a-select-option
-                        v-for="(item, index) in province"
-                        :key="index"
-                        :value="item.id"
-                      >{{item.name}}</a-select-option>
-                    </a-select>
-                  </div>
+                <a-form-item label="Province where">
+                  <a-input 
+                    placeholder="Please input province"
+                    v-decorator="['province',{rules: [{ required: true, message: 'Please input province' }]}]" 
+                  />
                 </a-form-item>
               </a-col>
               <a-col :span="12">
                 <a-form-item label="City where">
-                  <div class>
-                    <a-select
-                      @change="onCity"
-                      placeholder="Please choose"
-                      v-decorator="['city',{rules: [{ required: true, message: 'Please choose' }]}]"
-                    >
-                      <a-select-option
-                        v-for="(item, index) in city"
-                        :key="index"
-                        :value="item.id"
-                      >{{item.name}}</a-select-option>
-                    </a-select>
-                  </div>
+                  <a-input 
+                    placeholder="Please input city"
+                    v-decorator="['city',{rules: [{ required: true, message: 'Please input city' }]}]" 
+                  />
                 </a-form-item>
               </a-col>
             </a-row>
 
             <a-form-item label="Street">
               <a-input
-                placeholder="Street"
-                :autosize="{ minRows: 6 }"
+                placeholder="Please input street"
                 v-decorator="['streetName',{rules: [{ required: true, message: 'Please input street' }]}]"
               />
             </a-form-item>
-            <a-input-group compact>
-              <a-form-item label="Phone number">
-                <a-row :gutter="32">
-                  <a-col :span="4">
-                    <a-input
-                      placeholder="86"
-                      v-decorator="['phoneName1',{rules: [{ required: true, message: 'Please input your phone number' }]}]"
-                    />
-                  </a-col>
-                  <a-col :span="20">
-                    <a-input
-                      placeholder="Phone number"
-                      v-decorator="['phoneName2',{rules: [{ required: true, message: 'Please input your phone number' }]}]"
-                    />
-                  </a-col>
-                </a-row>
-              </a-form-item>
-            </a-input-group>
+            <a-row :gutter="32">
+              <a-col :span="4">
+                <a-form-item label="Phone number">
+                  <a-input
+                    placeholder="86"
+                    v-decorator="['phoneName1',{rules: [{ required: true, message: 'Please input your phone number' }]}]"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col :span="20">
+                <a-form-item style="padding-top: 29px;">
+                  <a-input
+                  placeholder="Phone number"
+                  v-decorator="['phoneName2',{rules: [{ required: true, message: 'Please input your phone number' }]}]"
+                />
+                </a-form-item>
+              </a-col>
+            </a-row>
           </a-form>
         </div>
       </a-col>
@@ -163,17 +138,9 @@
   </div>
 </template>
 <script>
-function getBase64(img, callback) {
-  const reader = new FileReader();
-  reader.addEventListener("load", () => callback(reader.result));
-  reader.readAsDataURL(img);
-}
 import {
   personSet,
   personEdit,
-  country,
-  province,
-  city,
   upLoad
 } from "@/api/system";
 import MyTitle from "@/components/MyTitle/MyTitle";
@@ -181,28 +148,8 @@ import commonBtn from "@/components/commonBtn/commonBtn";
 export default {
   data() {
     return {
-      countryValue: "",
-      province: "",
-      provinceId: "",
-      cityId: "",
-      city: "",
       itemTitle: "",
-      country: "",
-      personInfo: {},
-      places: "",
-      companyName: "",
-      companyWeb: "",
-      companyDesc: "",
-      address: "",
-      contact: "",
-      phoneFirst: "",
-      phoneLast: "",
-      areaId: "",
-      fileUrl: "",
-      fileUrl1: "",
-      imgurl: "",
-      imgurl1: "",
-      flag: "1"
+      imgurl: ""
     };
   },
   components: {
@@ -211,7 +158,6 @@ export default {
   },
   mounted() {
     this._personSet();
-    this._country();
   },
   methods: {
     _personSet() {
@@ -224,23 +170,14 @@ export default {
           monicker: result.monicker,
           company: result.intro,
           email: result.email,
-          countryName: result.countryName,
-          province: result.provinceName,
-          city: result.cityName,
+          countryName: result.country,
+          province: result.province,
+          city: result.city,
           streetName: result.address,
           phoneName1: phone1,
           phoneName2: phone2
         });
-        this.imgurl = result.img;
-        this.fileUrl = result.img
-        this.provinceId = result.province;
-        this.cityId = result.city;
-        this.countryValue = result.country;
-      });
-    },
-    _country() {
-      country().then(res => {
-        this.country = res.result;
+        this.imgurl = result.img
       });
     },
     submitPerson() {
@@ -252,11 +189,11 @@ export default {
               surname: values.surname,
               monicker: values.monicker,
               intro: values.company,
-              country: this.countryValue,
-              province: this.provinceId,
-              city: this.cityId,
+              country: values.countryName,
+              province: values.province,
+              city: values.city,
               address: values.streetName,
-              img: this.fileUrl,
+              img: this.imgurl,
               phone: values.phoneName1 + "," + values.phoneName2
             };
             personEdit(params).then(res => {
@@ -266,7 +203,7 @@ export default {
                   description: "The information has been updated.",
                   duration: 4
                 });
-                window.location.reload();
+                this._personSet();
               }
             });
           }
@@ -275,35 +212,6 @@ export default {
         }
       });
     },
-    countryBtn(value) {
-      this.countryValue = value;
-      const params = {
-        areaId: value
-      };
-      province(params).then(res => {     
-        if (res.result.length == 0) {
-          this.form.setFieldsValue({
-            province: "",
-            city: ""
-          });
-        }else{
-          this.province = res.result;
-        }
-      });
-    },
-    onProvince(value) {
-      this.provinceId = value;
-      const params = {
-        areaId: value
-      };
-      city(params).then(res => {
-        this.city = res.result;
-      });
-    },
-    onCity(value) {
-      this.cityId = value;
-    },
-    
     beforeUpload(file) {
       let files = file.file
       const isJPG = files.type === "image/jpeg";
@@ -317,13 +225,10 @@ export default {
         `this`.$message.error(this.$t("Image Size Over 2MB"));
         return isLt2M;
       }
-      getBase64(files, imageUrl => {
-        this.imgurl = imageUrl;
-      });
       const formData = new FormData();
       formData.append("file", files);
       upLoad(formData).then(res => {
-        this.fileUrl = res.preview_url;
+        this.imgurl = res;
       });
     }
   },
