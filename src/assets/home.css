@@ -171,6 +171,9 @@ nav a:hover,nav a.nav{text-shadow: gray 3px 3px 2px; }
 	opacity:0;/*透明度*/
 	transition:all .5s;/*延迟*/
 	transform:scale(1);/*放大1.5倍*/
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 .ingo_fm h3{
 	width:auto;

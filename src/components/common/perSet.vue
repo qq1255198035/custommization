@@ -14,38 +14,38 @@
 
             <a-row :gutter="32">
               <a-col :span="12">
-                <a-form-item label="First name">
+                <a-form-item label="First Name">
                   <a-input
-                    placeholder="First name"
+                    placeholder="First Name"
                     v-decorator="['surname',{rules: [{ required: true, message: 'Please input your first name' }]}]"
                   />
                 </a-form-item>
               </a-col>
               <a-col :span="12">
-                <a-form-item label="Last name">
+                <a-form-item label="Last Name">
                   <a-input
-                    placeholder="Last name"
+                    placeholder="Last Name"
                     v-decorator="['monicker',{rules: [{ required: true, message: 'Please input your last name' }]}]"
                   />
                 </a-form-item>
               </a-col>
             </a-row>
-            <a-form-item label="Bio">
+            <a-form-item label="Address">
               <a-input
-                placeholder="Bio"
-                v-decorator="['company',{rules: [{ required: true, message: 'Please input the bio' }]}]"
+                placeholder="Address"
+                v-decorator="['company',{rules: [{ required: true, message: 'Please input the Address' }]}]"
               />
             </a-form-item>
 
-            <a-form-item label="Place">
+            <a-form-item label="Country">
               <a-input 
-                placeholder="Please input the location"
-                v-decorator="['countryName',{rules: [{ required: true, message: 'Please input the location' }]}]" 
+                placeholder="Please input the Country"
+                v-decorator="['countryName',{rules: [{ required: true, message: 'Please input the Country' }]}]" 
               />
             </a-form-item>
             <a-row :gutter="32">
               <a-col :span="12">
-                <a-form-item label="Province where">
+                <a-form-item label="Province">
                   <a-input 
                     placeholder="Please input province"
                     v-decorator="['province',{rules: [{ required: true, message: 'Please input province' }]}]" 
@@ -53,7 +53,7 @@
                 </a-form-item>
               </a-col>
               <a-col :span="12">
-                <a-form-item label="City where">
+                <a-form-item label="City">
                   <a-input 
                     placeholder="Please input city"
                     v-decorator="['city',{rules: [{ required: true, message: 'Please input city' }]}]" 
@@ -96,7 +96,7 @@
       <a-col :lg="10" style="text-align: center">
         <div class="upload">
           <div class="top">
-            <p style="color: #33b8b3">Head Portrait</p>
+            <p style="color: #33b8b3">Profile Picture</p>
             <img
               v-if="imgurl"
               :src="imgurl"

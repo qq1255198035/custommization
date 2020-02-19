@@ -3,8 +3,8 @@
     <div v-for="items in orderArr" :key="items.id">
       <div class="order-title">
         <p>
-          <span>Order number: {{items.orderSn}}</span>
-          <span>Order time: {{items.createTime | formatTime}}</span>
+          <span>Order Number: {{items.orderSn}}</span>
+          <span>Order Time: {{items.createTime | formatTime}}</span>
           <span>Order Deadline: {{items.payEndDate | formatTime}}</span>
           <span>Status: {{items.orderStatus | statusFilter1}}</span>
         </p>

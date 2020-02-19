@@ -83,8 +83,7 @@
                         </div>
                         <!--反面-->
                         <div class="ingo_fm">
-                            <h3>sports</h3>
-                            <h4>Basketball jersry</h4>
+                            <h4>Coming Soon</h4>
                         </div>
                     </div>
                 </a-col>
@@ -97,8 +96,7 @@
                         </div>
                         <!--反面-->
                         <div class="ingo_fm">
-                            <h3>sports</h3>
-                            <h4>Basketball jersry</h4>
+                            <h4>Coming Soon</h4>
                         </div>
                     </div>
                 </a-col>
@@ -111,8 +109,7 @@
                         </div>
                         <!--反面-->
                         <div class="ingo_fm">
-                            <h3>sports</h3>
-                            <h4>Basketball jersry</h4>
+                            <h4>Coming Soon</h4>
                         </div>
                     </div>
                 </a-col>
@@ -127,8 +124,7 @@
                         </div>
                         <!--反面-->
                         <div class="ingo_fm">
-                            <h3>sports</h3>
-                            <h4>Basketball jersry</h4>
+                            <h4>Coming Soon</h4>
                         </div>
                     </div>
                 </a-col>
@@ -141,8 +137,7 @@
                         </div>
                         <!--反面-->
                         <div class="ingo_fm">
-                            <h3>sports</h3>
-                            <h4>Basketball jersry</h4>
+                            <h4>Coming Soon</h4>
                         </div>
                     </div>
                 </a-col>
@@ -155,8 +150,7 @@
                         </div>
                         <!--反面-->
                         <div class="ingo_fm">
-                            <h3>sports</h3>
-                            <h4>Basketball jersry</h4>
+                            <h4>Coming Soon</h4>
                         </div>
                     </div>
                 </a-col>
